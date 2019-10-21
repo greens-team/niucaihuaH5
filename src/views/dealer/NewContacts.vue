@@ -42,6 +42,7 @@ export default {
   name: 'NewContacts',
   data() {
     return {
+      username: '',
       checked: false
     }
   },

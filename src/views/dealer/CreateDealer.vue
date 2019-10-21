@@ -115,7 +115,7 @@
           v-model="username"
           label="狮桥开拓策略"
           type="textarea"
-          autosize="{ maxHeight: 200, minHeight: 200 }"
+          :autosize="{ maxHeight: 200, minHeight: 200 }"
           placeholder="请选择"
           label-width="130"
         />
