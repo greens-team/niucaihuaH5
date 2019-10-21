@@ -1,0 +1,82 @@
+<template>
+  <div class="Crm">
+
+    <div class="flex justify-around pt-8 pb-6 ">
+      <div>
+        <img src="../assets/crm/icon1.png" class="w-16" alt="">
+        <p class="leading-loose text-center text-gray-700 text-sm">
+          经销商
+        </p>
+      </div>
+      <div>
+        <img src="../assets/crm/icon2.png" class="w-16" alt="">
+        <p class="leading-loose text-center text-gray-700 text-sm">
+          联系人
+        </p>
+      </div>
+      <div>
+        <img src="../assets/crm/icon3.png" class="w-16" alt="">
+        <p class="leading-loose text-center text-gray-700 text-sm">
+          承租人
+        </p>
+      </div>
+    </div>
+
+    <div  class="bg-gray-100">
+
+      <div class="pt-3 pb-3">
+        <van-cell is-link>
+          <template slot="title">
+            <div class="flex  items-center">
+              <img src="../assets/crm/icon4.png" class="w-5 mr-2" alt="">
+              <span class="custom-title">项目管理</span>
+            </div>
+          </template>
+        </van-cell>
+      </div>
+      <van-cell-group>
+        <van-cell is-link>
+          <template slot="title">
+            <div class="flex  items-center">
+              <img src="../assets/crm/icon5.png" class="w-5 mr-2" alt="">
+              <span class="custom-title">厂商品牌</span>
+            </div>
+          </template>
+        </van-cell>
+        <van-cell is-link>
+          <template slot="title">
+            <div class="flex  items-center">
+              <img src="../assets/crm/icon6.png" class="w-5 mr-2" alt="">
+              <span class="custom-title">竞争对手</span>
+            </div>
+          </template>
+        </van-cell>
+        <van-cell is-link>
+          <template slot="title">
+            <div class="flex  items-center">
+              <img src="../assets/crm/icon7.png" class="w-5 mr-2" alt="">
+              <span class="custom-title">车型</span>
+            </div>
+          </template>
+        </van-cell>
+      </van-cell-group>
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Crm',
+  data() {
+    return {
+    }
+  },
+  methods: {
+  }
+}
+</script>
+
+<style scoped>
+</style>

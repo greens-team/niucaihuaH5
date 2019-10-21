@@ -35,6 +35,11 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  created () {
+    this.$ajax.scale.getTest({id:11122}).then(res => {
+      console.log(res)
+    })
   }
 }
 </script>

@@ -1,0 +1,23 @@
+import Vue from 'vue'
+import { Icon, Button, CellGroup, Cell, Tabbar, TabbarItem, Field, Dialog, NavBar, Toast, Search, Tabs, Tab, DatetimePicker, Popup, DropdownMenu, DropdownItem, Tag, CheckboxGroup, Checkbox, IndexBar, IndexAnchor, Uploader } from 'vant'
+
+Vue.use(Icon)
+Vue.use(Button)
+Vue.use(CellGroup)
+Vue.use(Cell)
+Vue.use(Tabbar)
+Vue.use(TabbarItem)
+Vue.use(Field)
+Vue.use(Dialog)
+Vue.use(NavBar)
+Vue.use(Toast)
+Vue.use(Search)
+Vue.use(Tabs)
+Vue.use(Tab)
+Vue.use(DatetimePicker)
+Vue.use(Popup)
+Vue.use(DropdownMenu).use(DropdownItem)
+Vue.use(Tag)
+Vue.use(Checkbox).use(CheckboxGroup)
+Vue.use(IndexBar).use(IndexAnchor)
+Vue.use(Uploader)
