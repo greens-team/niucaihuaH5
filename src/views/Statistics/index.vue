@@ -1,8 +1,11 @@
+/**
+ * index.vue        统计模块首页
+ */
+
+ <!-- 统计模块首页 -->
 <template>
   <div class="Statistics">
-    Statistics Statistics
-
-    <button @click="$router.push('/RecentVisit')">最近访问</button>
+    统计模块首页
   </div>
 </template>
 

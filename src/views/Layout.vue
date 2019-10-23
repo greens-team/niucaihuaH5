@@ -1,3 +1,4 @@
+<!-- 首页layout布局 -->
 <template>
   <div class="tabbar flex-1 flex flex-col">
 
@@ -14,12 +15,12 @@
           <img
             v-if="$store.state.currentModelActive == 0"
             slot="icon"
-            src="../assets/icon1_1.png"
+            src="../assets/tabsIcon/icon1_1.png"
           >
           <img
             v-else
             slot="icon"
-            src="../assets/icon1_0.png"
+            src="../assets/tabsIcon/icon1_0.png"
           >
         </van-tabbar-item>
         <van-tabbar-item>
@@ -27,12 +28,12 @@
           <img
             v-if="$store.state.currentModelActive == 1"
             slot="icon"
-            src="../assets/icon2_1.png"
+            src="../assets/tabsIcon/icon2_1.png"
           >
           <img
             v-else
             slot="icon"
-            src="../assets/icon2_0.png"
+            src="../assets/tabsIcon/icon2_0.png"
           >
         </van-tabbar-item>
         <van-tabbar-item>
@@ -40,12 +41,12 @@
           <img
             v-if="$store.state.currentModelActive == 2"
             slot="icon"
-            src="../assets/icon3_1.png"
+            src="../assets/tabsIcon/icon3_1.png"
           >
           <img
             v-else
             slot="icon"
-            src="../assets/icon3_0.png"
+            src="../assets/tabsIcon/icon3_0.png"
           >
         </van-tabbar-item>
         <van-tabbar-item>
@@ -53,15 +54,14 @@
           <img
             v-if="$store.state.currentModelActive == 3"
             slot="icon"
-            src="../assets/icon4_1.png"
+            src="../assets/tabsIcon/icon4_1.png"
           >
           <img
             v-else
             slot="icon"
-            src="../assets/icon4_0.png"
+            src="../assets/tabsIcon/icon4_0.png"
           >
         </van-tabbar-item>
-        <van-tabbar-item icon="setting-o">退出</van-tabbar-item>
       </van-tabbar>
     </div>
 
@@ -70,10 +70,10 @@
 
 <script>
 
-import Workbench  from '@/views/Workbench/Workbench.vue'    // 工作台
-import Crm        from '@/views/Crm.vue'          // CRM
-import Statistics from '@/views/Statistics.vue'   // 统计
-import My         from '@/views/My/Index.vue'           // 我
+import Workbench  from '@/views/Workbench'    // 工作台
+import Crm        from '@/views/Crm'          // CRM
+import Statistics from '@/views/Statistics'   // 统计
+import My         from '@/views/My'           // 我
 
 export default {
   name: 'tabbar',
@@ -86,9 +86,6 @@ export default {
     }
   },
   created () {
-    this.$ajax.scale.getTest({id:11122}).then(res => {
-      console.log(res)
-    })
   },
   watch: {
     '$store.state.currentModelActive' (val){

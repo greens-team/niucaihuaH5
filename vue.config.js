@@ -12,7 +12,7 @@ let mockApi = 'http://10.20.7.129:8090/app/mock/1/'
 //              /dp                                   /reviceLog
 //              http://10.112.180.13:8980             http://10.115.106.41:88 
 // let testApi = ['http://localhost:8980', 'http://localhost:88', 'http://user-behavior.gm.inc']
-let testApi = ['http://dev.crmh5.com:8088'] //['http://10.2.247.99:8088']
+let testApi = ['http://10.2.247.98:8000'] //['http://10.2.247.99:8088']
 
 
 let proxy = {}
@@ -23,16 +23,25 @@ methods.map(r=>{
   proxy['/api/'+r] = {
     target: mockApi,
     changeOrigin: true,
-    ws: true,
+    secure: false,  // 如果是https接口，需要配置这个参数
+    // ws: true, // 是否启用websockets
     pathRewrite: pathRewrite
   }
 })
 
 if (testApi){
+  proxy['/api/test/'] = {
+    target: testApi[0],
+    changeOrigin: true,
+    secure: false,  // 如果是https接口，需要配置这个参数
+    // ws: true, // 是否启用websockets
+    pathRewrite: {'/api/test': ''}
+  },
   proxy['/api'] = {
     target: testApi[0],
     changeOrigin: true,
-    ws: true,
+    secure: false,  // 如果是https接口，需要配置这个参数
+    // ws: true, // 是否启用websockets
     pathRewrite: {'/api': ''}
   }
   // proxy['/api/dp'] = {

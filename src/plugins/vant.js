@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Icon, Button, CellGroup, Cell, Tabbar, TabbarItem, Field, Dialog, NavBar, Toast, Search, Tabs, Tab, DatetimePicker, Popup, DropdownMenu, DropdownItem, Tag, CheckboxGroup, Checkbox, IndexBar, IndexAnchor, Uploader } from 'vant'
+import { Icon, Button, CellGroup, Cell, Tabbar, TabbarItem, Field, Dialog, NavBar, Toast, Search, Tabs, Tab, DatetimePicker, Popup, DropdownMenu, DropdownItem, Tag, CheckboxGroup, Checkbox, IndexBar, IndexAnchor, Uploader, Overlay } from 'vant'
 
 Vue.use(Icon)
 Vue.use(Button)
@@ -21,3 +21,4 @@ Vue.use(Tag)
 Vue.use(Checkbox).use(CheckboxGroup)
 Vue.use(IndexBar).use(IndexAnchor)
 Vue.use(Uploader)
+Vue.use(Overlay)

@@ -1,3 +1,4 @@
+<!-- 新建联系人 -->
 <template>
   <div class="NewContacts flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="新建联系人" left-text="取消" @click-left="$router.go(-1)" left-arrow>

@@ -1,19 +1,20 @@
+<!-- 首页 -->
 <template>
   <div class="home flex-1 flex flex-col">
-    <Tabbar v-if="loginStatus"></Tabbar>
+    <Layout v-if="loginStatus"></Layout>
     <Login v-else />
   </div>
 </template>
 
 <script>
 import Login from './Login'
-import Tabbar from './Tabbar'
+import Layout from './Layout'
 // import { mapState } from 'vuex'
 export default {
   name: 'home',
   components: {
     Login,
-    Tabbar
+    Layout
   },
   created(){
   },

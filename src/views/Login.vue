@@ -1,12 +1,13 @@
+<!-- 登录页面 -->
 <template>
   <div class="loginPage flex-1 flex flex-col">
 
     <div v-if="loading" class="flex-1 flex flex-col items-center justify-center relative">
-      <img src="../assets/logo1.png" alt="" class="w-40 -mt-20" />
+      <img src="../assets/login/logo1.png" alt="" class="w-40 -mt-20" />
       <p class="text-center text-gray-800 absolute bottom-0 mb-20">让工作更快乐，让协作更简单</p>
     </div>
     <div v-else class="pt-40">
-      <img src="../assets/logo2.png" alt="" class="w-40 m-auto"/>
+      <img src="../assets/login/logo2.png" alt="" class="w-40 m-auto"/>
       <p class="text-center text-gray-800  mt-8">规范企业管理，打造PDCA管理闭环</p>
       <div class="mt-20 w-10/12 m-auto">
         <van-field v-model="params.username" placeholder="请输入工号" />
@@ -60,9 +61,16 @@ export default {
           message: '账号或密码不能为空!'
         });
       }else{
-        this.$ajax.auth.login(this.params).then(res=>{
+        let params = {
+          code: "fxc",
+          password: "123456",
+          username: "admin",
+          uuid: "3111c4fb663d41a580c0fffc39812a37"
+        }
+        this.$ajax.auth.login(params).then(res=>{
           if (!res.code) {
             this.setLoginState(true);
+            localStorage.Authorization = 'Bearer ' + res.token
             this.$router.go(0)
           }else{
             this.loginFailedText = res.msg;

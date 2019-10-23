@@ -20,8 +20,10 @@ function initAjax (apiList, errorCallback, successCallback){
 
     _axios.interceptors.request.use(
       function(config) {
-        if(config.url.indexOf('user/login')<1){
-          config.headers.token = `redis_token:yangyang`;
+        if(!config.url.indexOf("/auth/login")){
+          config.headers.Authorization && delete config.headers.Authorization;
+        } else {
+          config.headers.Authorization = localStorage.Authorization || '';
         }
         return config;
       },

@@ -2,19 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
-import DealerManage from './views/dealer/DealerManage.vue' // 经销商管理
-import CreateDealer from './views/dealer/CreateDealer.vue' // 新增经销商
-import NewContacts from './views/dealer/NewContacts.vue'   // 新建联系人
-import MyBaseInfo from './views/My/BaseInfo/Base.vue'
-import Colleague from './views/Workbench/Colleague.vue'    // 选择同事
-import RecentVisit from './views/Workbench/RecentVisit.vue'          // 最近访问
+import DealerManage from './views/Dealer'                           // 经销商管理
+import CreateDealer from './views/Dealer/CreateDealer.vue'          // 新增经销商
+import NewContacts from './views/Dealer/NewContacts.vue'            // 新建联系人
+import MyBaseInfo from './views/My/BaseInfo'                        // 我的基本信息
+import Colleague from './views/Workbench/Colleague.vue'             // 选择同事及组织树
+import RecentVisit from './views/Workbench/RecentVisit.vue'         // 最近访问
 
-
-import DateRange from './components/DateRange/index.vue'    // 选择时间段
-import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue'    // 选择同事
-
-
-
+import DateRange from './components/DateRange'                      // 选择日期范围
+import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同事
 
 Vue.use(Router)
 
@@ -28,42 +24,42 @@ export default new Router({
       component: Home
     },
     {
-      path: '/DealerManage', // 经销商管理
+      path: '/DealerManage',     // 经销商管理
       name: 'DealerManage',
       component: DealerManage
     },
     {
-      path: '/CreateDealer', // 新增经销商
+      path: '/CreateDealer',     // 新增经销商
       name: 'CreateDealer',
       component: CreateDealer
     },
     {
-      path: '/NewContacts',  // 新建联系人
+      path: '/NewContacts',      // 新建联系人
       name: 'NewContacts',
       component: NewContacts
     },
     {
-      path: '/RecentVisit', // 最近访问
+      path: '/RecentVisit',      // 最近访问
       name: 'RecentVisit',
       component: RecentVisit
     },
     {
-      path: '/MyBaseInfo',
+      path: '/MyBaseInfo',      // 基本信息
       name: 'MyBaseInfo',
       component: MyBaseInfo
     },
     {
-      path: '/Colleague',
+      path: '/Colleague',       // 选择同事及组织
       name: 'Colleague',
       component: Colleague
     },
     {
-      path: '/DateRange',
+      path: '/DateRange',       // 日期范围
       name: 'DateRange',
       component: DateRange
     },
     {
-      path: '/WorkbenchSearch',
+      path: '/WorkbenchSearch', // 工作台搜索
       name: 'WorkbenchSearch',
       component: WorkbenchSearch
     },

@@ -1,3 +1,9 @@
+/**
+ * index.vue        我的模块首页
+ * BaseInfo.vue     我的基本信息
+ */
+
+ <!-- 我的模块首页 -->
 <template>
   <div class="My">
     <div class="baseinfo m-5 rounded-lg relative">

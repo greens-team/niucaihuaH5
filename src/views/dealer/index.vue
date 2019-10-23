@@ -1,3 +1,10 @@
+/**
+ * index.vue        经销商管理页面
+ * CreateDealer.vue 创建经销商页面
+ * NewContacts.vue  创建联系人
+ */
+
+ <!-- 经销商管理页面 -->
 <template>
   <div class="DealerManage">
 
@@ -39,11 +46,11 @@
       </van-tab>
     </van-tabs>
 
-    <div class="border-b border-gray-200">
+    <div class="border-b border-gray-200 flex items-center justify-around">
       <van-dropdown-menu>
         <van-dropdown-item v-model="value1" :options="option1" />
-        <van-dropdown-item v-model="value2" :options="option2" />
       </van-dropdown-menu>
+      <Screening @onSearch="onSearch" />
     </div>
 
     <!-- 全部 -->
@@ -105,8 +112,12 @@
 </template>
 
 <script>
+import Screening from '@/components/Screening'
 export default {
   name: 'DealerManage',
+  components: {
+    Screening
+  },
   data() {
     return {
       searchBar: false,
@@ -127,14 +138,13 @@ export default {
       value1: 0,
       value2: 'a',
       option1: [
-        { text: '排序', value: 0 },
-        { text: '新款商品', value: 1 },
-        { text: '活动商品', value: 2 }
+        { text: '默认排序', value: 0 },
+        { text: '按拜访时间排序', value: 1 },
+        { text: '按创建时间排序', value: 2 },
+        { text: '按名称排序', value: 3 }
       ],
       option2: [
         { text: '筛选', value: 'a' },
-        { text: '好评排序', value: 'b' },
-        { text: '销量排序', value: 'c' },
       ]
     }
   },
@@ -145,7 +155,8 @@ export default {
         message: '加载中...'
       })
     },
-    onSearch(){}
+    onSearch(){ // 筛选传参 params
+    }
   }
 }
 </script>

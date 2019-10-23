@@ -1,3 +1,4 @@
+<!-- 创建经销商页面 -->
 <template>
 <!--  -->
   <div class="CreateDealer flex-1 flex flex-col">
@@ -152,7 +153,7 @@
     >
       <div class="bg-gray-200">
         <div @click="$router.push('/NewContacts')" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
-        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">直接新建经销商</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="createDealer">直接新建经销商</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3">取消</div>
       </div>
     </van-popup>
@@ -165,10 +166,13 @@ export default {
   data() {
     return {
       username: '',
-      showNext: true
+      showNext: false
     }
   },
   methods: {
+    createDealer () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

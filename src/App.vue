@@ -1,7 +1,6 @@
 <template>
   <div id="app" class="fixed inset-0 flex flex-col">
     <router-view></router-view>
-
   </div>
 </template>
 
@@ -28,7 +27,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 .formBar::before{
   position: absolute;
   left:0;
@@ -50,5 +48,4 @@ export default {
   -webkit-transform: scaleY(.5);
   transform: scaleY(.5);
 }
-
 </style>

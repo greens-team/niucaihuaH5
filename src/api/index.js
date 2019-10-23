@@ -1,4 +1,3 @@
-
 // 1. 所有的 ajax api 在此文件夹下配置
 // 2. 根据业务模块，将 api 划分成不同的 modules，放在各自的文件内，单独维护
 // 3. 这里提供两个示例模块 - moduleA 与 moduleB，项目中根据业务功能命名。
@@ -17,19 +16,12 @@
     this.$ajax.module1.getDetail({id:11122}).then(res=>{
       console.log(res)
     })
-
  */
 
-  import reviceLog from './modules/reviceLog'
-  import scale from './modules/scale'
-  import salesAnalysis from './modules/salesAnalysis'
-  import auth from './modules/auth'
-  import workbench from './modules/workbench'
+import auth from './modules/auth'
+import workbench from './modules/workbench'
 
-  export default {
-    reviceLog,
-    scale,
-    salesAnalysis,
-    auth,
-    workbench
-  }
+export default {
+  auth,
+  workbench
+}

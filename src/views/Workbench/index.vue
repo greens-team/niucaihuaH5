@@ -1,3 +1,11 @@
+/**
+ * index.vue           工作台模块首页
+ * Colleague.vue       选择同事及组织页面
+ * RecentVisit.vue     最近访问
+ * WorkbenchSearch.vue 工作台搜索页面
+ */
+
+<!-- 工作台模块首页 -->
 <template>
   <div class="Workbench bg-gray-100 overflow-hidden">
 
@@ -51,14 +59,13 @@
       </div>
     </div>
 
-
     <!-- <van-uploader :after-read="afterRead" /> -->
 
     <!-- 快速入口 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadow">
       
       <div class="flex p-1">
-        <div class="font-bold" @click="test">快速入口</div>
+        <div class="font-bold">快速入口</div>
       </div>
       
       <div class="flex p-1 pt-2 justify-between">
@@ -287,11 +294,6 @@ export default {
     logout(){
       this.$store.commit('setLoginState', false)
       this.$router.go(0)
-    },
-    test(){
-      this.$ajax.auth.test({}).then(res=>{
-        console.log(res, 99 )
-      })
     }
   }
 }
