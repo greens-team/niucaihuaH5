@@ -1,6 +1,7 @@
 /**
  * m: mock
  */
+// 工作台模块 所需接口列表
 export default (mock)=>{
   return {
     get: {
@@ -13,7 +14,7 @@ export default (mock)=>{
       recentvisitlist: mock.POST +  '/workbench/recentvisitlist', // 最近访问列表
     },
     upload: {
-      upload: '/lbccrm/common/upload' 
+      // upload: '/lbccrm/common/upload' 
     }
   }
 };

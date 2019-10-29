@@ -22,18 +22,29 @@
       <div class="flex p-1 items-center justify-center">
         <div class="font-bold">销售简报</div>
         <div class="flex-1"></div>
-        <div class="text-xs text-gray-600 hover:text-blue-500" @click="$router.push('/Colleague')">
+        <div class="text-xs text-gray-600 hover:text-blue-500 ellipsis" @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})">
           <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
-          选择同事
+          <span v-if="$store.state.workbench.briefingColleagues.userGids.concat($store.state.workbench.briefingColleagues.deptGids).toString()" class="text-xs">
+            <span class="text-xs" v-for="(r,i) in $store.state.workbench.briefingColleagues.userGids" :key="i">
+              <span v-if="i">,</span>
+              {{r.split(',')[0]}}
+            </span>
+            <span class="text-xs" v-for="(r,i) in $store.state.workbench.briefingColleagues.deptGids" :key="'a'+i">
+              <span v-if="!i && $store.state.workbench.briefingColleagues.userGids.length">,</span>
+              <span v-if="i">,</span>
+              {{r.split(',')[0]}}
+            </span>
+          </span>
+          <span v-else class="text-xs">选择同事</span>
         </div>
         <div class="text-xs text-gray-600 pl-2 pr-2"> | </div>
         <!-- $root.moment(formatterSalesKitDate).format('YYYY-MM-DD') -->
-        <div class="flex items-center justify-center text-gray-600 hover:text-blue-500" @click="$router.push({name:'DateRange', params: briefingDate})">
+        <div class="flex items-center justify-center text-gray-600 hover:text-blue-500" @click="$router.push({name:'DateRange', params: $store.state.workbench.briefingDate})">
           <i class="iconfont iconcalendar mr-1"></i>
-          <div v-if="briefingDate.text" class="text-xs ">{{briefingDate.text}}</div>
+          <div v-if="$store.state.workbench.briefingDate.text" class="text-xs ">{{$store.state.workbench.briefingDate.text}}</div>
           <div v-else style="font-size:.5rem; line-height:.8rem;">
-            {{$root.moment(briefingDate.startTime).format('YYYY-MM-DD')}}<br />
-            {{$root.moment(briefingDate.endTime).format('YYYY-MM-DD')}}
+            {{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}<br />
+            {{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}
           </div>
         </div>
         
@@ -90,9 +101,10 @@
 
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 pt-2 pb-2 rounded-lg shadow">
-      <div class="flex p-1 border-b border-gray-200 pl-2 pr-2">
-        <div :class="['font-bold text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !currentTaskStatus}]" @click="currentTaskStatus=0;">我的任务</div>
-        <div :class="['font-bold relative ml-4 text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: currentTaskStatus}]"  @click="currentTaskStatus=1;">
+
+      <div class="flex p-1 border-b border-gray-200 pl-2 pr-2" swipeable>
+        <div :class="['font-bold text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]" @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);">我的任务</div>
+        <div :class="['font-bold relative ml-4 text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"  @click="$refs.swipe.swipeTo(1);$store.commit('setWorkbenchTaskStatus', 1);">
           同事任务
           <div  class="absolute" style="top: 0.1rem; right:-1.3rem">
             <van-icon name="arrow-down" />
@@ -102,76 +114,81 @@
         <van-icon size="20px" name="plus" @click="$router.push('/RecentVisit')"/>
       </div>
 
-      <!-- 我的任务列表 -->
-      <div v-if="!currentTaskStatus">
-        
-        <div class="flex mt-2 justify-center items-center  pl-2 pr-2">
-          <div class="text-sm text-gray-700 flex justify-center items-center" @click="taskDateBox= true;">
-            <i class="iconfont iconcalendar mr-1"></i>{{$root.moment(myTaskTime).format('YYYY-MM-DD')}}
-          </div>
-          <div class="flex-1"></div>
-          <!-- <div class="text-xs text-gray-600 hover:text-blue-500" @click="$router.push('/Colleague')">
-            <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
-            选择同事
-          </div> -->
-        </div>
-
-        <div class="text-gray-500 text-xs mt-3 border-t border-gray-100  p-2">
-          已完成：3
-          <span class="pl-3 text-xs">未完成：3</span>
-        </div>
 
 
-        <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in myTaskList" :key="'t'+i">
-          <div class="flex">
-            <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
-            <div class="flex-1"></div>
-            <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
-          </div>
-          <span class="text-base  text-gray-900">{{row.dealerName}}</span>
-          <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
-          <img v-show="row.isFinish" class="absolute bottom-0 right-0 mr-2 w-16" src="../../assets/workbench/icon5.png" alt="">
-        </div>
+      <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change='changeWorkbenchTaskStatus'>
+        <van-swipe-item>
+            <!-- 我的任务列表 -->
+            <div>
+              <!-- <CalendarControl /> -->
+              <div class="flex mt-2 justify-center items-center  pl-2 pr-2  pb-1">
+                <div class="text-sm text-gray-700 flex justify-center items-center" @click="taskDateBox= true;">
+                  <i class="iconfont iconcalendar mr-1"></i>{{$root.moment($store.state.workbench.myTaskTime).format('YYYY-MM-DD')}}
+                </div>
+                <div class="flex-1"></div>
+                <!-- <div class="text-xs text-gray-600 hover:text-blue-500" @click="$router.push('/Colleague')">
+                  <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
+                  选择同事
+                </div> -->
+              </div>
+              <!-- <div class="text-gray-500 text-xs mt-3 border-t border-gray-100  p-2">
+                已完成：3
+                <span class="pl-3 text-xs">未完成：3</span>
+              </div> -->
+              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.myTaskList" :key="'t'+i">
+                <div class="flex">
+                  <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
+                  <div class="flex-1"></div>
+                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                </div>
+                <span class="text-base  text-gray-900">{{row.dealerName}}</span>
+                <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
+                <img v-show="row.isFinish" class="absolute bottom-0 right-0 mr-2 w-16" src="../../assets/workbench/icon5.png" alt="">
+              </div>
+            </div>
+        </van-swipe-item>
+        <van-swipe-item>
+           <!-- 同事任务列表 -->
+            <div>
+              <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
+                <div class="text-sm text-gray-700 flex justify-center items-center" @click="taskDateBox= true;">
+                  <i class="iconfont iconcalendar mr-1"></i>{{$root.moment($store.state.workbench.colleaguesTaskTime).format('YYYY-MM-DD')}}
+                </div>
+                <div class="flex-1"></div>
+                <div class="text-xs text-gray-600 hover:text-blue-500 ellipsis"  @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})">
+                  <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
+                  <span v-if="$store.state.workbench.taskColleagues.userGids.concat($store.state.workbench.taskColleagues.deptGids).toString()" class="text-xs">
+                    <span class="text-xs" v-for="(r,i) in $store.state.workbench.taskColleagues.userGids" :key="i">
+                      <span v-if="i">,</span>
+                      {{r.split(',')[0]}}
+                    </span>
+                    <span class="text-xs" v-for="(r,i) in $store.state.workbench.taskColleagues.deptGids" :key="'a'+i">
+                      <span v-if="!i && $store.state.workbench.taskColleagues.userGids.length">,</span>
+                      <span v-if="i">,</span>
+                      {{r.split(',')[0]}}
+                    </span>
+                  </span>
+                  <span v-else class="text-xs">选择同事</span>
+                </div>
+              </div>
+              <!-- <div class="text-gray-500 text-xs mt-3 border-t border-gray-100 p-2">
+                已完成：3
+                <span class="pl-3 text-xs">未完成：3</span>
+              </div> -->
+              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.colleaguesTaskList" :key="'c'+i">
+                <div class="flex">
+                  <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
+                  <div class="flex-1"></div>
+                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                </div>
+                <span class="text-base  text-gray-900">{{row.dealerName}}</span>
+                <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
+                <img v-show="row.isFinish" class="absolute bottom-0 right-0 mr-2 w-16" src="../../assets/workbench/icon5.png" alt="">
+              </div>
+            </div>
+        </van-swipe-item>
+      </van-swipe>
 
-      </div>
-
-      <!-- 同事任务列表 -->
-      <div v-else>
-        
-        <div class="flex mt-2 justify-center items-center pl-2 pr-2">
-          <div class="text-sm text-gray-700 flex justify-center items-center" @click="taskDateBox= true;">
-            <i class="iconfont iconcalendar mr-1"></i>{{$root.moment(colleaguesTaskTime).format('YYYY-MM-DD')}}
-          </div>
-          <div class="flex-1"></div>
-          <div class="text-xs text-gray-600 hover:text-blue-500" @click="$router.push('/Colleague')">
-            <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
-            选择同事
-          </div>
-        </div>
-
-        <div class="text-gray-500 text-xs mt-3 border-t border-gray-100 p-2">
-          已完成：3
-          <span class="pl-3 text-xs">未完成：3</span>
-        </div>
-
-
-        <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in colleaguesTaskList" :key="'c'+i">
-          <div class="flex">
-            <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
-            <div class="flex-1"></div>
-            <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
-          </div>
-          <span class="text-base  text-gray-900">{{row.dealerName}}</span>
-          <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
-          <img v-show="row.isFinish" class="absolute bottom-0 right-0 mr-2 w-16" src="../../assets/workbench/icon5.png" alt="">
-        </div>
-
-
-      </div>
-
-
-      
-      
     </div>
 
 
@@ -190,42 +207,21 @@
       />
     </van-popup>
 
-
-
   </div>
 </template>
 
 <script>
+// import CalendarControl from '@/components/CalendarControl'
 export default {
   name: 'Workbench',
+  components: {
+    // CalendarControl
+  },
   data() {
     return {
       taskDateBox: false,
       taskTime: new Date(this.$root.moment().format('YYYY-MM-DD')),
-      myTaskTime: new Date(this.$root.moment().format('YYYY-MM-DD')), // 我的任务时间
-      colleaguesTaskTime: new Date(this.$root.moment().format('YYYY-MM-DD')), // 同事任务时间
-      
-      briefingDate: {
-        text: '本月',
-        startTime: this.$root.moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-        endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
-      },
-      // 请求参数
-      params: {
-        userType: 0,
-        startTime: '2019-05-23',
-        endTime: '2019-05-28',
-        userGids: [
-          "1111",
-          "33333"
-        ],
-        deptGids: [
-          "444433",
-          "3332"
-        ],
-        pageNum: 1,
-        pageSize: 20
-      },
+
       // 简报信息
       briefing: {
         addDealerCount: 0,
@@ -233,59 +229,48 @@ export default {
         addVisitCount: 0,
         dealerChangeStateCount: 0
       },
-      currentTaskStatus: 0,
 
-      myTaskList:[],
-      colleaguesTaskList:[],
-      
       visitAim:['客情维护','首次拜访','沟通需求','签单','贷后跟进'],
     }
   },
-  mounted(){
-    if(localStorage.briefingDate){
-      this.briefingDate =  JSON.parse(localStorage.briefingDate);
-    }
+  mounted () {
+    this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus)
     this.getBriefing()
-    this.getTaskList()
+    this.$store.dispatch('getTaskList')
   },
   watch: {
-    currentTaskStatus(){
-      // if(num){
-      this.getTaskList()
-      // }
+    '$store.state.workbench.workbenchTaskStatus'(){
+      this.$store.dispatch('getTaskList')
     }
   },
   methods: {
+    changeWorkbenchTaskStatus(index) {
+      this.$store.commit('setWorkbenchTaskStatus', index)
+    },
     // 确定任务时间
     confirmTaskTime(){
-      // 拼接请求参数
-      // this.taskTime  任务时间
-      // currentTaskStatus 任务类型 0我的任务 1同事任务
-      // myTaskTime colleaguesTaskTime
-
       // 重新请求任务列表
-
+      this.$store.state.workbench.workbenchTaskStatus ? this.$store.commit('setColleaguesTaskTime', this.taskTime) :  this.$store.commit('setMyTaskTime', this.taskTime)
       this.taskDateBox = false
-    },
-    formatter(type, value) {
-      if (type === 'year') {
-        return `${value}年`;
-      } else if (type === 'month') {
-        return `${value}月`
-      }
-      return `${value}日`;
-    },
-    // 获取任务列表
-    getTaskList(){
-      this.$ajax.workbench.taskList(this.params).then(res => {
-        if(!res.code){
-          this.currentTaskStatus ? (this.colleaguesTaskList = res.data.list) : (this.myTaskList = res.data.list)
-        }
-      })
+      this.$store.dispatch('getTaskList')
     },
     // 获取简报信息
     getBriefing() {
-      this.$ajax.workbench.getBriefing(this.params).then(res => {
+      let userGids = []
+      this.$store.state.workbench.briefingColleagues.userGids.map(r=>{
+        userGids.push(r.split(',')[1])
+      })
+      let deptGids = []
+      this.$store.state.workbench.briefingColleagues.deptGids.map(r=>{
+        deptGids.push(r.split(',')[1])
+      })
+      this.$ajax.workbench.getBriefing({
+        startTime: this.timeStamp(this.$store.state.workbench.briefingDate.startTime),
+        endTime: this.timeStamp(this.$store.state.workbench.briefingDate.endTime),
+        userGids: userGids,
+        deptGids: deptGids,
+        userType: this.$store.state.workbench.briefingColleagues.userType
+      }).then(res => {
         if(!res.code){
           this.briefing = res.data
         }
@@ -322,5 +307,12 @@ export default {
 }
 .rowBox:active{
   background-color: #f2f3f5;
+}
+
+.ellipsis{
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

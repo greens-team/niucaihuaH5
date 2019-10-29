@@ -130,11 +130,11 @@ export default {
       return `${value}日`;
     },
     cancel(){
-      localStorage.briefingDate = JSON.stringify(this.$route.params)
+      this.$store.commit('setBriefingDate', this.$route.params)
       this.$router.go(-1)
     },
     reset(){
-      localStorage.briefingDate = JSON.stringify({
+      this.$store.commit('setBriefingDate', {
         text: '本月',
         startTime: this.$root.moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
         endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
@@ -142,7 +142,7 @@ export default {
       this.$router.go(-1)
     },
     setTime(){
-      localStorage.briefingDate = JSON.stringify({
+      this.$store.commit('setBriefingDate', {
         text: '',
         startTime: this.$root.moment(this.params.startTime).startOf("Day").format('YYYY-MM-DD HH:mm:ss'),
         endTime: this.$root.moment(this.params.endTime).endOf("Day").format('YYYY-MM-DD HH:mm:ss')
@@ -217,7 +217,7 @@ export default {
           }
           break;
       }
-      localStorage.briefingDate = JSON.stringify({
+      this.$store.commit('setBriefingDate', {
         text: selected,
         startTime: time.startTime,
         endTime: time.endTime

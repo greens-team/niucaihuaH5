@@ -5,6 +5,8 @@ import Home from './views/Home.vue'
 import DealerManage from './views/Dealer'                           // 经销商管理
 import CreateDealer from './views/Dealer/CreateDealer.vue'          // 新增经销商
 import NewContacts from './views/Dealer/NewContacts.vue'            // 新建联系人
+import DealerInfo from './views/Dealer/DealerInfo.vue'              // 经销商详情
+
 import MyBaseInfo from './views/My/BaseInfo'                        // 我的基本信息
 import Colleague from './views/Workbench/Colleague.vue'             // 选择同事及组织树
 import RecentVisit from './views/Workbench/RecentVisit.vue'         // 最近访问
@@ -62,6 +64,11 @@ export default new Router({
       path: '/WorkbenchSearch', // 工作台搜索
       name: 'WorkbenchSearch',
       component: WorkbenchSearch
+    },
+    {
+      path: '/DealerInfo', // 经销商详情
+      name: 'DealerInfo',
+      component: DealerInfo
     },
     
     // {

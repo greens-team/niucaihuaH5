@@ -1,11 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import moment from './plugins/moment' // 时间统一处理
-
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+import moment from '@/plugins/moment' // 时间统一处理
+export default {
   state: {
     // 登录状态
     loginState: false,
@@ -117,4 +111,4 @@ export default new Vuex.Store({
       })
     },
   }
-})
+}

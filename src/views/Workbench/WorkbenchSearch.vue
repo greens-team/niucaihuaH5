@@ -10,6 +10,7 @@
         v-model="params.queryString"
         placeholder="请输入搜索关键词"
         show-action
+        @clear="onSearch"
         shape="round">
           <div slot="action" @click="onSearch(1)">搜索</div>
       </van-search>

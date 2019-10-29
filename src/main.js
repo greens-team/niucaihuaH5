@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/index.js'
 import './plugins/vant.js'            // vant 按需加载
 import moment from './plugins/moment' // 时间统一处理
 
@@ -22,6 +22,20 @@ ajax(apiList,function(error){
   // 请求成功统一处理
   // console.log(response)
 });
+
+// 获取时间戳
+Vue.prototype.timeStamp = (time) => {
+  return moment(time).valueOf()
+}
+
+Vue.prototype.formatter = (type, value) => {
+  if (type === 'year') {
+    return `${value}年`;
+  } else if (type === 'month') {
+    return `${value}月`
+  }
+  return `${value}日`;
+}
 
 new Vue({
   data(){
