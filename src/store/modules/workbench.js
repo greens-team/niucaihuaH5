@@ -2,7 +2,6 @@ import moment from '@/plugins/moment' // 时间统一处理
 export default {
   state: {
     // 登录状态
-    loginState: false,
     currentModelActive: 0,
 
     // 工作台任务状态
@@ -32,10 +31,9 @@ export default {
     colleaguesTaskTime: new Date(moment().format('YYYY-MM-DD')), // 同事任务时间
   },
   mutations: {
-    setLoginState (state, res) {
+    setLoginState (state, val) {
       // 变更登录状态
-      state.loginState = res
-      localStorage.loginState = res
+      localStorage.loginState = val
       state.currentModelActive = 0
     },
 

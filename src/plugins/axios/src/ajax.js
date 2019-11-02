@@ -9,6 +9,8 @@ const ajax = (axios) => {
 
   if (process.env.NODE_ENV === 'development') {
     axios.defaults.baseURL = '/api';
+  } else {
+    axios.defaults.baseURL = 'http://10.20.7.129:8000/';
   }
 
   let get = (url, params = {}) => {

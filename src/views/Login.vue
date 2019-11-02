@@ -61,16 +61,16 @@ export default {
           message: '账号或密码不能为空!'
         });
       }else{
-        let params = {
-          code: "fxc",
-          password: "123456",
-          username: "admin",
-          uuid: "3111c4fb663d41a580c0fffc39812a37"
-        }
-        this.$ajax.auth.login(params).then(res=>{
+        // let params = {
+        //   code: "fxc",
+        //   password: "123456",
+        //   username: "admin",
+        //   uuid: "3111c4fb663d41a580c0fffc39812a37"
+        // }
+        this.$ajax.auth.login(this.params).then(res=>{
           if (!res.code) {
             this.setLoginState(true);
-            localStorage.Authorization = 'Bearer ' + res.token
+            localStorage.Authorization = 'Bearer ' + res.data.token
             this.$router.go(0)
           }else{
             this.loginFailedText = res.msg;

@@ -27,12 +27,12 @@
             </div>
           </div> -->
           
-
           <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change='(num)=>{active=num}'>
-            <van-swipe-item>
-                <van-checkbox-group v-model="colleagues.userGids" class="bg-white">
-                  <van-checkbox icon-size="16px" class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" name="a">全选</van-checkbox>
+            <van-swipe-item >
+                <van-checkbox-group v-model="colleagues.userGids" class="bg-white"> 
+                  <!-- <van-checkbox icon-size="16px" class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" name="a">全选</van-checkbox> -->
                   <!-- <van-index-anchor index="A" class=" bg-gray-100"/> -->
+                  <div class="h-1"></div>
                   <van-checkbox v-for="(item, i) in colleagueData" :key="i" icon-size="16px" 
                     class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
                     :name="item.usrNm+','+item.id">
@@ -43,7 +43,7 @@
             <van-swipe-item>
                 <div class="pt-1 bg-gray-100">
                   <div class="bg-white pt-1 pl-3 pr-3">
-                    <van-checkbox-group v-model="colleagues.deptGids" class="bg-white NestedDept">
+                    <van-checkbox-group  v-model="colleagues.deptGids" class="bg-white NestedDept">
                       <NestedDept :deptData="deptData" />
                     </van-checkbox-group>
                   </div>

@@ -9,11 +9,11 @@
     </div>
 
     <div>
-      <van-tabbar v-model="$store.state.currentModelActive">
+      <van-tabbar v-model="$store.state.workbench.currentModelActive">
         <van-tabbar-item>
           <span class="text-sm">工作台</span>
           <img
-            v-if="$store.state.currentModelActive == 0"
+            v-if="$store.state.workbench.currentModelActive == 0"
             slot="icon"
             src="../assets/tabsIcon/icon1_1.png"
           >
@@ -26,7 +26,7 @@
         <van-tabbar-item>
           <span class="text-sm">CRM</span>
           <img
-            v-if="$store.state.currentModelActive == 1"
+            v-if="$store.state.workbench.currentModelActive == 1"
             slot="icon"
             src="../assets/tabsIcon/icon2_1.png"
           >
@@ -39,7 +39,7 @@
         <van-tabbar-item>
           <span class="text-sm">统计</span>
           <img
-            v-if="$store.state.currentModelActive == 2"
+            v-if="$store.state.workbench.currentModelActive == 2"
             slot="icon"
             src="../assets/tabsIcon/icon3_1.png"
           >
@@ -52,7 +52,7 @@
         <van-tabbar-item>
           <span class="text-sm">我</span>
           <img
-            v-if="$store.state.currentModelActive == 3"
+            v-if="$store.state.workbench.currentModelActive == 3"
             slot="icon"
             src="../assets/tabsIcon/icon4_1.png"
           >
@@ -88,12 +88,12 @@ export default {
   created () {
   },
   watch: {
-    '$store.state.currentModelActive' (val){
+    '$store.state.workbench.currentModelActive' (val){
       this.setCurrentModel(val)
     }
   },
   mounted() {
-    this.setCurrentModel(this.$store.state.currentModelActive)
+    this.setCurrentModel(this.$store.state.workbench.currentModelActive)
   },
   methods: {
     setCurrentModel (val) {

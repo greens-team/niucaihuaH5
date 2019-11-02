@@ -20,7 +20,7 @@ function initAjax (apiList, errorCallback, successCallback){
 
     _axios.interceptors.request.use(
       function(config) {
-        if(!config.url.indexOf("/auth/login")){
+        if(config.url.indexOf("/auth/login") != -1){
           config.headers.Authorization && delete config.headers.Authorization;
         } else {
           config.headers.Authorization = localStorage.Authorization || '';
