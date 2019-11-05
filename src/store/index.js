@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import workbench from './modules/workbench'
 import dealer from './modules/dealer'
+import newDealer from './modules/newDealer'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -9,7 +10,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     workbench,
-    dealer
+    dealer,
+    newDealer
   },
   getters
 })

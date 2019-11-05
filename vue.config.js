@@ -12,7 +12,7 @@ let mockApi = 'http://10.20.7.129:8090/app/mock/1/'
 //              /dp                                   /reviceLog
 //              http://10.112.180.13:8980             http://10.115.106.41:88 
 // let testApi = ['http://localhost:8980', 'http://localhost:88', 'http://user-behavior.gm.inc']
-let testApi = ['http://10.2.247.99:8000'] //['http://10.2.247.99:8088']
+let testApi = ['http://10.20.7.129:8000'] //['http://10.2.247.99:8088']
 
 let proxy = {}
 let methods = ['GET','POST','PUT','DELETE']

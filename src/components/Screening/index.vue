@@ -40,10 +40,16 @@
               />
             </van-popup>
 
-            <div class="flex justify-between items-center mt-5">
-              <div class="text-gray-700 font-bold">所属区域</div>
-              <van-dropdown-menu class="text-gray-600 ml-3 p-3" style="background-color: #edf2f7; width:70%; height: inherit; text-align:right;">
-                <van-dropdown-item v-model="value1" :options="option1" />
+            <div class="text-gray-700 font-bold  mt-5">所属区域</div>
+            <div class="flex flex-wrap text-center text-gray-600">
+              <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
+                <van-dropdown-item v-model="params.province" :options="$store.state.dealer.provincesList" />
+              </van-dropdown-menu>
+              <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
+                <van-dropdown-item v-model="params.city" :options="$store.state.dealer.citysList" />
+              </van-dropdown-menu>
+              <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
+                <van-dropdown-item v-model="params.area" :options="$store.state.dealer.areasList" />
               </van-dropdown-menu>
             </div>
 
@@ -65,9 +71,9 @@
 
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
-              <van-dropdown-menu class="text-gray-600 ml-3 p-3" style="background-color: #edf2f7; width:70%; height: inherit; text-align:right;">
-                <van-dropdown-item v-model="value1" :options="colleagueData" />
-              </van-dropdown-menu>
+              <div class="text-gray-600 ml-3 p-3 ellipsis" style="background-color: #edf2f7; width:70%; height: 39px; text-align:right;" @click="ownerUserGids = []; ownerUserGidsShow = true">
+                {{params.ownerUserGids | fiterUser}}
+              </div>
             </div>
 
             <!-- <div class="flex justify-between items-center mt-5">
@@ -98,9 +104,6 @@
                 <van-field type="number" v-model="params.visitCount" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
-            
-            
-            
 
             <div class="text-gray-700 font-bold  mt-5">是否在经销商附近打卡</div>
             <div class="flex flex-wrap justify-start text-center text-gray-600">
@@ -113,12 +116,32 @@
 
           </div>
         </div>
+
+        <van-popup
+          v-model="ownerUserGidsShow"
+          position="bottom"
+          :style="{ height: '40%'}">
+          <van-nav-bar
+            title="请选择负责人"
+            left-text="取消"
+            right-text="确定"
+            left-arrow
+            @click-left="ownerUserGidsShow = false;"
+            @click-right="params.ownerUserGids = ownerUserGidsValus; ownerUserGidsShow = false;"
+          />
+          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;">
+            <van-checkbox-group v-model="ownerUserGidsValus">
+              <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
+            </van-checkbox-group>
+          </div>
+        </van-popup>
+
         <div class="flex text-center">
           <div class="w-2/5 bg-gray-300 p-3 text-xl font-bold" @click="reset">重置</div>
           <div class="flex-1 bg-orange p-3 text-xl font-bold text-white" @click="finish">完成</div>
         </div>
-      </div>
 
+      </div>
 
     </van-popup>
     
@@ -130,6 +153,8 @@ export default {
   name: 'Screening',
   data() {
     return {
+      ownerUserGidsShow: false,
+      ownerUserGidsValus: [],
       screeningShow: false,
       params: {
         dealerName: '',
@@ -140,7 +165,11 @@ export default {
         visitCount: '',
         notVisitConditions: 1,
         visitConditions: 1,
-        level: 1
+        level: 1,
+        ownerUserGids: [],
+        area: '',
+        city: '',
+        province: '',
       },
       value1: 0,
       option1: [
@@ -152,31 +181,55 @@ export default {
       showTime: false,
       timeStr: new Date(this.$root.moment().format('YYYY-MM-DD')),
       timeType: 0,
-      colleagueData: []
+    }
+  },
+  filters: {
+    fiterUser(data){
+      if(!data.length){
+        return '请选择负责人'
+      }
+      let arr = []
+      data.map(r=>{
+        arr.push(r.usrNm)
+      })
+      return arr.toString()
     }
   },
   mounted() {
   },
-  methods: {
-    getColleague(){
-      this.$ajax.auth.colleague({
-        pageNum: 1,
-        pageSize: 10,
-        usrNM: '',
-        rlNm: ''
-      }).then(res=>{
-        if(!res.code){
-          this.colleagueData = res.data.resultList
-
-          // 明天 同事列表   省市区域列表
-
-
-
-
-
-        }
-      })
+  watch: {
+    ownerUserGidsShow (val) {
+      !val && (this.ownerUserGidsValus = [])
     },
+    screeningShow (val) {
+      if(val){
+        this.$store.dispatch('getProvinces').then(data=>{
+          this.params.province = data[0].value
+        })
+        this.$store.dispatch('getColleague',{
+          pageNum: 1,
+          pageSize: 10,
+          usrNM: '',
+          rlNm: ''
+        })
+      }
+    },
+    'params.province' (val) {
+      if (val) {
+        this.$store.dispatch('getCitys', val).then(data=>{
+          this.params.city = data[0].value
+        })
+      }
+    },
+    'params.city' (val) {
+      if (val) {
+        this.$store.dispatch('getAreas', val).then(data=>{
+          this.params.area = data[0].value
+        })
+      }
+    }
+  },
+  methods: {
     finish () {
       this.screeningShow = false
       this.$emit('onSearch', this.params)
@@ -184,6 +237,14 @@ export default {
     // 确定时间
     confirmTaskTime(){
       let timeStr = new Date(this.timeStr).getTime()
+      if (!this.timeType && this.params.endTime && timeStr > this.params.endTime ) {
+        this.$notify({ type: 'warning', message: '开始时间要小于结束时间' })
+        return
+      }
+      if (this.timeType && this.params.startTime && timeStr < this.params.startTime) {
+        this.$notify({ type: 'warning', message: '结束时间要大于开始时间' })
+        return
+      }
       this.timeType ? (this.params.endTime = timeStr) : (this.params.startTime = timeStr)
       this.showTime = false;
     },
@@ -198,7 +259,11 @@ export default {
         visitCount: '',
         notVisitConditions: 1,
         visitConditions: 1,
-        level: 1
+        level: 1,
+        ownerUserGids: [],
+        area: '',
+        city: '',
+        province: '',
       }
       this.finish()
     }
@@ -261,5 +326,11 @@ export default {
 .Screening /deep/ .van-picker__frame, .van-picker__loading .van-loading{
   border-top: 1px solid #ebedf0;
   border-bottom: 1px solid #ebedf0;
+}
+
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

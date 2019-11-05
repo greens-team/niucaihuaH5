@@ -57,17 +57,89 @@ export default {
     ],
     // 经销商列表数据
     listData: [],
+
+    provincesList: [],  // 省份
+    citysList: [],      // 城市
+    areasList: [],      // 区域
+
+    colleagueDataList: []
+
   },
   mutations: {
+    setAreasEmpty(state){
+      state.areasList = [{
+        text: '选择区',
+        value: ''
+      }]
+    },
   },
   actions: {
-    getListData ({state}, data) {
-      Object.assign(state.listParams, data)
-      window.$ajax.dealer.listData(state.listParams).then(res => {
+    getColleague ({state}, data={}) {
+      return new Promise(resolve => {
+        window.$ajax.auth.colleague(data).then( res => {
+          if (!res.code) {
+            state.colleagueDataList = res.data.resultList
+            resolve()
+          }
+        })
+      })
+    },
+    getListData ({state}, data = {}) {
+      let params = Object.assign(state.listParams, data)
+      params.ownerUserGids = params.ownerUserGids.map(r => {
+        return r.id
+      })
+      window.$ajax.dealer.listData(params).then(res => {
         if(!res.code){
           state.listData = res.data.list
           console.log(state.listData)
         }
+      })
+    },
+    getProvinces ({state}) { // 省份
+      return new Promise(resolve => {
+        window.$ajax.dealer.getProvinces({}).then(res => {
+          if(!res.code){
+            state.provincesList = res.data.map(r=>{
+              return {
+                value: r.provinceCode,
+                text: r.provinceName
+              }
+            })
+            resolve(state.provincesList)
+          }
+        })
+      })
+      
+    },
+    getCitys ({state}, code) { // 城市
+      return new Promise(resolve => {
+        window.$ajax.dealer.getCitys({provinceCode: code}).then(res => {
+          if(!res.code){
+            state.citysList = res.data.map(r=>{
+              return {
+                value: r.cityCode,
+                text: r.cityName
+              }
+            })
+          }
+          resolve(state.citysList)
+        })
+      })
+    },
+    getAreas ({state}, code) { // 区域
+      return new Promise(resolve => {
+        window.$ajax.dealer.getAreas({cityCode: code}).then(res => {
+          if(!res.code){
+            state.areasList = res.data.map(r=>{
+              return {
+                value: r.areaCode,
+                text: r.areaName
+              }
+            })
+            resolve(state.areasList)
+          }
+        })
       })
     }
   }
