@@ -24,7 +24,11 @@
           <van-icon name="plus" @click="$router.push('/CreateDealer')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
         </div>
       </div>
-       <div v-show="searchBar" class="flex items-center pl-3 pr-3 flex border-b border-gray-200">
+       <div v-show="searchBar" :class="['flex items-center pl-3 pr-3 flex border-b border-gray-200', {'pr-0': homeSearch }]">
+          <div v-if="homeSearch" @click="$router.go(-1)" class="flex  text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600" >
+            <van-icon  class="" name="arrow-left" />
+            <span>返回</span>
+          </div>
           <van-search
             class="flex-1"
             v-model="$store.state.dealer.listParams.queryString"
@@ -33,7 +37,8 @@
             show-action
             shape="round"
           >
-            <div slot="action" @click="searchBar = false; $store.dispatch('getListData',{queryString: ''})">取消</div>
+            <div v-if="homeSearch" slot="action"></div>
+            <div v-else slot="action"  @click="searchBar = false; $store.dispatch('getListData',{queryString: ''})">取消</div>
           </van-search>
         </div>
     </div>
@@ -73,14 +78,18 @@ export default {
     Screening,
     ListRow
   },
-  data() {
+  created () {
+    // 首页进来时直接显示搜索
+    if (this.$route.query.search) {
+      this.homeSearch = true
+      this.searchBar = true
+    }
+    this.$store.commit('setInitParams')
+  },
+  data () {
     return {
       searchBar: false,
-
-      value2: 'a',
-      option2: [
-        { text: '筛选', value: 'a' },
-      ]
+      homeSearch: false
     }
   },
   mounted() {

@@ -79,9 +79,16 @@
         <van-field
           v-model="$store.getters.NDparams.latitude"
           label="地理位置"
+          @focus="$router.push('/map')"
           placeholder="请填写经纬度"
           label-width="130"
         />
+
+        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+          <div style="width:130px; color:#323233;"> 地理位置</div>
+          <div  class="flex-1" @click="$router.push('/map')">{{$store.getters.NDparams.latitude && $store.getters.NDparams.longitude ? ($store.getters.NDparams.longitude +','+ $store.getters.NDparams.latitude) : '选择地图位置'}}</div>
+        </div>
+
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;"> 经销商分级</div>
             <van-dropdown-menu  class="border-0">
@@ -129,71 +136,6 @@
         />
 
         
-        <!-- <van-field
-          v-model="$store.state.NDparams."
-          required
-          label="所属地区"
-          placeholder="点击选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="业务类型"
-          placeholder="请选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="地理位置"
-          placeholder="请填写信息"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="日查征信次数"
-          placeholder="请填写信息"
-          label-width="130"
-        />
-
-        <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
-        <van-field
-          v-model="$store.state.NDparams."
-          label="经销商分级"
-          placeholder="请选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="业务状态"
-          placeholder="线索入库"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="经销品牌"
-          placeholder="请选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="经销车型"
-          placeholder="请选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          required
-          label="负责人"
-          placeholder="请选择"
-          label-width="130"
-        />
-        <van-field
-          v-model="$store.state.NDparams."
-          label="参与人"
-          placeholder="请选择"
-          label-width="130"
-        /> -->
-
       </div>
     </div>
 
@@ -204,7 +146,7 @@
       <div class="bg-gray-200">
         <div @click="$router.push('/NewContacts')" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="createDealer">直接新建经销商</div>
-        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3">取消</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="showNext=false">取消</div>
       </div>
     </van-popup>
   </div>
@@ -323,6 +265,9 @@ export default {
   },
   methods: {
     createDealer () {
+      this.$store.dispatch('addNewDealer').then(r=>{
+        console.log(r, 222)
+      })
       this.$router.go(-1)
     }
   }

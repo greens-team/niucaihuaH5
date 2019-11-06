@@ -5,6 +5,11 @@ import store from './store/index.js'
 import './plugins/vant.js'            // vant 按需加载
 import moment from './plugins/moment' // 时间统一处理
 
+import BaiduMap from 'vue-baidu-map'
+Vue.use(BaiduMap, {
+  ak: 'VKoxtkFSuXPVRULh2ohYVQ9tubl99xss'
+})
+
 Vue.config.productionTip = false
 
 // 统一数据请求

@@ -72,6 +72,29 @@ export default {
         value: ''
       }]
     },
+    setInitParams(state){
+      state.listParams = {
+        "area": "",                 // 区域
+        "city": "",                 // 城市
+        "dealerName": "",           // 经销商名称
+        "endTime": 0,               // 结束时间 时间戳 秒
+        "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 意向跟进  3  备案准入 4 达成合作   5 放弃）
+        "followerUserGids": [],     // 跟进人gid 集合
+        "level": 0,                 // 经销商分级（1 一级 2 二级）
+        "notVisitDays": 0,          // 没有拜访的天数
+        "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
+        "ownerUserGids": [],        // 负责人gid 集合
+        "pageNum": 1,               // 当前页数 1开始
+        "pageSize": 20,             // 每页数量
+        "province": "",             // 省
+        "queryString": "",          // 查询输入值
+        "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
+        "startTime": 0,             // 开始时间 时间戳 秒
+        "visitCount": 0,            // 拜访次数
+        "notVisitConditions": 1,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitConditions": 1       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      }
+    }
   },
   actions: {
     getColleague ({state}, data={}) {

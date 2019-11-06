@@ -14,6 +14,9 @@ import RecentVisit from './views/Workbench/RecentVisit.vue'         // 最近访
 import DateRange from './components/DateRange'                      // 选择日期范围
 import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同事
 
+
+import Map from './components/Map'                              // 选择地图
+
 Vue.use(Router)
 
 export default new Router({
@@ -70,6 +73,13 @@ export default new Router({
       name: 'DealerInfo',
       component: DealerInfo
     },
+    {
+      path: '/Map',   // 地图
+      name: 'Map',
+      component: Map
+    },
+
+    
     
     // {
     //   path: '/about',

@@ -100,17 +100,14 @@ export default {
     }
   },
   actions: {
-    // getListData ({state}, data = {}) {
-    //   let params = Object.assign(state.listParams, data)
-    //   params.ownerUserGids = params.ownerUserGids.map(r => {
-    //     return r.id
-    //   })
-    //   window.$ajax.dealer.listData(params).then(res => {
-    //     if(!res.code){
-    //       state.listData = res.data.list
-    //       console.log(state.listData)
-    //     }
-    //   })
-    // }
+    addNewDealer ({state}) {
+      return new Promise(resolve=>{
+        window.$ajax.dealer.add(state.params).then(res => {
+          if(!res.code){
+            resolve()
+          }
+        })
+      })
+    }
   }
 }

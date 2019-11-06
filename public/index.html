@@ -9,14 +9,11 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <!-- <link href="https://at.alicdn.com/t/font_489156_vcouc8ucv9l.css" rel="stylesheet"> -->
     <!-- <link href="https://at.alicdn.com/t/font_1442458_7b0onfyg65d.css" rel="stylesheet"> -->
-
     
     <link href="https://at.alicdn.com/t/font_1461543_o2s1ffegai.css" rel="stylesheet">
     
     <link href="https://at.alicdn.com/t/font_1442464_ukt8px336f.css" rel="stylesheet">
     <link href="https://at.alicdn.com/t/font_1442458_wrfi2wx2wji.css" rel="stylesheet">
-    
-    
 
   </head>
   <body ontouchstart="">
@@ -25,5 +22,41 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=VKoxtkFSuXPVRULh2ohYVQ9tubl99xss"></script>
+
+    <script>
+
+          function getLocation(){ 
+            if (navigator.geolocation){ 
+              navigator.geolocation.getCurrentPosition(showPosition,showError); 
+            }else{ 
+              alert("浏览器不支持地理定位。"); 
+            } 
+          } 
+          getLocation();
+
+          function showError(error){ 
+            switch(error.code) { 
+              case error.PERMISSION_DENIED: 
+                alert("定位失败,用户拒绝请求地理定位"); 
+                break; 
+              case error.POSITION_UNAVAILABLE: 
+                alert("定位失败,位置信息是不可用"); 
+                break; 
+              case error.TIMEOUT: 
+                alert("定位失败,请求获取用户位置超时"); 
+                break; 
+              case error.UNKNOWN_ERROR: 
+                alert("定位失败,定位系统失效"); 
+                break; 
+            } 
+          }
+
+          function showPosition(position){
+            localStorage.lng = position.coords.longitude
+            localStorage.lat = position.coords.latitude
+          }
+</script>
   </body>
 </html>
