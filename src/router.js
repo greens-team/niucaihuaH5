@@ -4,7 +4,9 @@ import Home from './views/Home.vue'
 
 import DealerManage from './views/Dealer'                           // 经销商管理
 import CreateDealer from './views/Dealer/CreateDealer.vue'          // 新增经销商
-import NewContacts from './views/Dealer/NewContacts.vue'            // 新建联系人
+import NewContacts from './components/Contacts/newContacts.vue'     // 新建联系人
+import ContactsList from './components/Contacts'                // 获取联系人列表
+import SelectedList from './components/Contacts/selectedList.vue'  // 已选中的联系人
 import DealerInfo from './views/Dealer/DealerInfo.vue'              // 经销商详情
 
 import MyBaseInfo from './views/My/BaseInfo'                        // 我的基本信息
@@ -39,6 +41,14 @@ export default new Router({
       component: CreateDealer
     },
     {
+      path: '/ContactsList',      // 获取联系人列表
+      name: 'ContactsList',
+      component: ContactsList 
+    },{
+      path: '/SelectedList',      // 新建联系人
+      name: 'SelectedList',
+      component: SelectedList
+    },{
       path: '/NewContacts',      // 新建联系人
       name: 'NewContacts',
       component: NewContacts

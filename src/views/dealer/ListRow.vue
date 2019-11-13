@@ -1,7 +1,7 @@
  <!-- 经销商列表组件 -->
 <template>
   <div>
-    <div class="flex flex-col p-4 border-b border-gray-200" v-for="(r,i) in $store.state.dealer.listData" :key="i">
+    <div class="flex flex-col p-4 border-b border-gray-200" v-for="(r,i) in $store.state.dealer.listData" :key="i" @click="goInfo(r.gid)">
       <div class="flex items-center">
         <div class="flex-1 text-lg font-bold">{{r.dealerName}}</div>
         <div class="text-sm text-gray-500">
@@ -30,6 +30,9 @@ export default {
   mounted() {
   },
   methods: {
+    goInfo(id){
+      this.$router.push({name: 'DealerInfo', query: {id: id}})
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 // import moment from '@/plugins/moment' // 时间统一处理
-// 经销商数据
+// 经销商列表及筛选的数据
 export default {
   state: {
     // 获取经营商列表的请求参数
