@@ -27,7 +27,6 @@ ajax(apiList,function(error){
   // 请求成功统一处理
   // console.log(response)
 });
-
 // 获取时间戳
 Vue.prototype.timeStamp = (time) => {
   return moment(time).valueOf()
