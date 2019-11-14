@@ -4,7 +4,17 @@ import Home from './views/Home.vue'
 
 import DealerManage from './views/Dealer'                           // 经销商管理
 import CreateDealer from './views/Dealer/CreateDealer.vue'          // 新增经销商
-import NewContacts from './views/Dealer/NewContacts.vue'            // 新建联系人
+
+import NewContacts from './components/Contacts/newContacts.vue'     // 新建联系人
+import ContactsList from './components/Contacts'                // 关联 获取联系人列表
+import SelectedList from './components/Contacts/selectedList.vue'  // 关联 已选中的联系人
+
+import CompetitorList from './components/Competitor'                // 关联 竞争对手列表
+import SelectedCompetitorList from './components/Competitor/selectedList.vue'  // 关联 已选中的竞争对手
+
+import LesseeList from './components/Lessee'                // 关联 竞争对手列表
+import SelectedLesseeList from './components/Lessee/selectedList.vue'  // 关联 已选中的竞争对手
+
 import DealerInfo from './views/Dealer/DealerInfo.vue'              // 经销商详情
 
 import MyBaseInfo from './views/My/BaseInfo'                        // 我的基本信息
@@ -39,6 +49,14 @@ export default new Router({
       component: CreateDealer
     },
     {
+      path: '/ContactsList',      // 获取联系人列表
+      name: 'ContactsList',
+      component: ContactsList 
+    },{
+      path: '/SelectedList',      // 新建联系人
+      name: 'SelectedList',
+      component: SelectedList
+    },{
       path: '/NewContacts',      // 新建联系人
       name: 'NewContacts',
       component: NewContacts
@@ -79,7 +97,28 @@ export default new Router({
       component: Map
     },
 
-    
+
+    {
+      path: '/CompetitorList',   // 关联竞争对手
+      name: 'CompetitorList',
+      component: CompetitorList
+    },
+    {
+      path: '/SelectedCompetitorList',   // 关联选中的竞争对手
+      name: 'SelectedCompetitorList',
+      component: SelectedCompetitorList
+    },
+    {
+      path: '/LesseeList',   // 关联承租人
+      name: 'LesseeList',
+      component: LesseeList
+    },
+    {
+      path: '/SelectedLesseeList',   // 关联选中的承租人
+      name: 'SelectedLesseeList',
+      component: SelectedLesseeList
+    },
+
     
     // {
     //   path: '/about',

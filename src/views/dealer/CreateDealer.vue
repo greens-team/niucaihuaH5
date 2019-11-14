@@ -1,6 +1,6 @@
 <!-- 创建经销商页面 -->
 <template>
-<!--  -->
+
   <div class="CreateDealer flex-1 flex flex-col">
     <van-nav-bar title="新建经销商" left-text="取消" @click-left="$router.go(-1)" left-arrow>
       <div slot="right" @click="showNext = true">下一步</div>
@@ -29,7 +29,7 @@
           label-width="130"
         />
         <div class="flex border-b border-gray-200 ml-4 items-center">
-          <div style="width:130px; color:#323233;"> 所属地区</div>
+          <div style="width:130px; color:#323233;">所属地区</div>
             <van-dropdown-menu class="flex-1 border-0 pr-3">
               <van-dropdown-item v-model="$store.getters.NDparams.rgnPrCd" :options="$store.state.dealer.provincesList" />
               <van-dropdown-item v-model="$store.getters.NDparams.rgnCyCd" :options="$store.state.dealer.citysList" />
@@ -76,13 +76,13 @@
         <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
 
         <!-- longitude -->
-        <van-field
+        <!-- <van-field
           v-model="$store.getters.NDparams.latitude"
           label="地理位置"
           @focus="$router.push('/map')"
           placeholder="请填写经纬度"
           label-width="130"
-        />
+        /> -->
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;"> 地理位置</div>
@@ -91,9 +91,9 @@
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;"> 经销商分级</div>
-            <van-dropdown-menu  class="border-0">
-              <van-dropdown-item v-model="$store.getters.NDparams.level" :options="$store.getters.NDlevelList" />
-            </van-dropdown-menu>
+          <van-dropdown-menu  class="border-0">
+            <van-dropdown-item v-model="$store.getters.NDparams.level" :options="$store.getters.NDlevelList" />
+          </van-dropdown-menu>
         </div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
@@ -134,7 +134,6 @@
           label-width="130"
           show-word-limit
         />
-
         
       </div>
     </div>
@@ -144,7 +143,7 @@
       position="bottom"
     >
       <div class="bg-gray-200">
-        <div @click="$router.push('/NewContacts')" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
+        <div @click="$router.push('/ContactsList')" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="createDealer">直接新建经销商</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="showNext=false">取消</div>
       </div>
@@ -184,13 +183,14 @@ export default {
       return arr.length ? arr.toString() : '请选择负责人'
     }
   },
-  mounted() {
+  mounted () {
+
     this.$store.dispatch('getProvinces').then(data=>{
-      this.$store.commit('setParams',{
-        rgnPrCd: data[0].value,
-        province: data[0].text})
+      this.$store.commit('setParams', {
+        rgnPrCd: this.$store.state.newDealer.params.rgnPrCd || data[0].value,
+        province: this.$store.state.newDealer.params.province || data[0].text})
     })
-    this.$store.dispatch('getColleague',{
+    this.$store.dispatch('getColleague', {
       pageNum: 1,
       pageSize: 10,
       usrNM: '',
@@ -231,8 +231,8 @@ export default {
       })
       this.$store.dispatch('getCitys', code).then(data=>{
         this.$store.commit('setParams',{
-          rgnCyCd: data[0].value,
-          city: data[0].text})
+          rgnCyCd: this.$store.state.newDealer.params.rgnCyCd || data[0].value,
+          city: this.$store.state.newDealer.params.city || data[0].text})
       })
     },
     '$store.getters.NDparams.rgnCyCd'(code){
@@ -255,8 +255,8 @@ export default {
       this.$store.state.dealer.areasList.some(r=>{
         if(r.value === code){
           this.$store.commit('setParams',{
-            rgnArCd: code,
-            area: r.text}
+            rgnArCd: this.$store.state.newDealer.params.rgnArCd || ode,
+            area: this.$store.state.newDealer.params.area || r.text}
           )
           return true;
         }
@@ -267,8 +267,8 @@ export default {
     createDealer () {
       this.$store.dispatch('addNewDealer').then(r=>{
         console.log(r, 222)
+        this.$router.go(-1)
       })
-      this.$router.go(-1)
     }
   }
 }

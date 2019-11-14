@@ -21,9 +21,14 @@
 import auth from './modules/auth'            // 登录、用户、部门
 import workbench from './modules/workbench'  // 工作台
 import dealer from './modules/dealer'        // 经销商
-
+import contacts from './modules/contacts'    // 联系人
+import competitor from './modules/competitor'  // 合作竞对
+import lessee from './modules/lessee'          // 承租人
 export default {
   auth,
   workbench,
-  dealer
+  dealer,
+  contacts,
+  competitor,
+  lessee
 }
