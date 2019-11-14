@@ -1,7 +1,7 @@
  <!-- 竞争对手列表页 -->
 <template>
   <div class="CompetitorList">
-    竞争对手 列表页
+    竞争对手 列表页 sdfsdfsad
     <div @click="$router.push('/CompetitorInfo')">详情页</div>
   </div>
 </template>
