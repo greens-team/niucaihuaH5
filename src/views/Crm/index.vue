@@ -19,7 +19,7 @@
           联系人
         </p>
       </div>
-      <div>
+      <div @click="$router.push('/Lessee')">
         <img src="../../assets/crm/icon3.png" class="w-16" alt="">
         <p class="leading-loose text-center text-gray-700 text-sm">
           承租人
@@ -50,7 +50,7 @@
         </van-cell>
         <van-cell is-link>
           <template slot="title">
-            <div class="flex  items-center">
+            <div class="flex  items-center" @click="$router.push('/Competitor')">
               <img src="../../assets/crm/icon6.png" class="w-5 mr-2" alt="">
               <span class="custom-title">竞争对手</span>
             </div>

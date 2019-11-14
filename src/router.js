@@ -25,6 +25,13 @@ import DateRange from './components/DateRange'                      // 选择日
 import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同事
 
 
+import Competitor from './views/Competitor'              //竞争对手列表页
+import CompetitorInfo from './views/Competitor/info.vue'  //竞争对手详情页
+import Lessee from './views/Lessee'              //竞争对手列表页
+import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
+
+
+
 import Map from './components/Map'                              // 选择地图
 
 Vue.use(Router)
@@ -119,7 +126,30 @@ export default new Router({
       component: SelectedLesseeList
     },
 
-    
+
+    {
+      path: '/Competitor',   //竞争对手列表页
+      name: 'Competitor',
+      component: Competitor
+    },
+    {
+      path: '/CompetitorInfo',   //竞争对手详情页
+      name: 'CompetitorInfo',
+      component: CompetitorInfo
+    },
+    {
+      path: '/Lessee',   //竞争对手列表页
+      name: 'Lessee',
+      component: Lessee
+    },
+    {
+      path: '/LesseeInfo',   //竞争对手详情页
+      name: 'LesseeInfo',
+      component: LesseeInfo
+    },
+
+
+ 
     // {
     //   path: '/about',
     //   name: 'about',
