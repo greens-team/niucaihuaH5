@@ -20,6 +20,7 @@ export default (m)=>{
       associatedcontacts: m.POST + '/dealer/associatedcontacts',// 关联和解除关联联系人
       associatedlessee: m.POST + '/dealer/associatedlessee',    // 关联和解除关联承租人
       associatedcompetitor: m.POST + '/dealer/associatedcompetitor', // 关联和解除关联合作竞对
+      editDealer: m.POST + '/dealer/edit', // 编辑经销商信息
     },
     upload: {
     }

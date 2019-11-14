@@ -42,10 +42,10 @@
             <div class="shadow-md rounded-lg bg-white m-3 mt-0 p-4">
               <div class="flex">
                 <div class="flex-1 font-bold">业务状态</div>
-                <p class="text-sm text-orange-500">放弃</p>
+                <!-- <p class="text-sm text-orange-500">放弃</p> -->
               </div>
               <div class="flex mt-2">
-                <div @click="$store.commit('setInfo', {followStatus: i})" v-for="(row,i) in $store.state.dealer.followStatus" :key="i" v-if="i && i<$store.state.dealer.followStatus.length-1" :class="['flex flex-1 items-center', {gray: i <= info.followStatus}]">
+                <div @click="changeFollowStatus(i)" v-for="(row,i) in $store.state.dealer.followStatus" :key="i" v-if="i && i<$store.state.dealer.followStatus.length-1" :class="['flex flex-1 items-center', {gray: i <= info.followStatus}]">
                   <div class="rounded bg-line p-2 text-center text-sm shadow" >{{row.name}}
                   </div>
                   <div class="triangle-line"></div>
@@ -133,7 +133,7 @@
                   <div v-if="$store.state.dealerInfo.currentTabsIndex === 1" class="contactslist shadow-md rounded-lg m-3 pt-3 pb-3 bg-white">
                     <div class="flex pl-3 pr-3 pb-3">
                       <div class="flex-1 font-bold">联系人</div>
-                      <div class="text-sm text-blue-500"  @click="associatedContacts">关联</div>
+                      <div class="text-sm text-blue-500"  @click="$router.push({path:'/ContactsList', query: {modelGid: id}})">关联</div>
                     </div>
                     <van-collapse v-model="currentContacts">
                       <van-collapse-item v-for="(r,i) in contactslist" :key="i" :title="r.contactsName" :name="r.id">
@@ -161,7 +161,7 @@
                   <div v-if="$store.state.dealerInfo.currentTabsIndex === 2" class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white">
                     <div class="flex pl-3 pr-3 pb-3">
                       <div class="flex-1 font-bold">竞争对手</div>
-                      <div class="text-sm text-blue-500">关联</div>
+                      <div class="text-sm text-blue-500" @click="$router.push({path:'/CompetitorList', query: {modelGid: id}})">关联</div>
                     </div>
                     <van-collapse v-model="currentCompetitor">
                       <van-collapse-item v-for="(r,i) in competitorlist" :key="i" :title="r.competorName" :name="r.id">
@@ -184,7 +184,7 @@
                   <div v-if="$store.state.dealerInfo.currentTabsIndex === 3" class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white">
                     <div class="flex pl-3 pr-3 pb-3">
                       <div class="flex-1 font-bold">承租人</div>
-                      <div class="text-sm text-blue-500">关联</div>
+                      <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div>
                     </div>
                     <van-collapse v-model="currentLesseelist">
                       <van-collapse-item v-for="(r,i) in lesseelist" :key="i" :title="r.lesseeName" :name="r.id">
@@ -309,6 +309,17 @@ export default {
     }
   },
   methods: {
+    changeFollowStatus(i){
+      this.$dialog.confirm({
+        message: '确认要改变业务状态吗？'
+      }).then(() => {
+        // on confirm
+        this.$store.dispatch('editDealer',Object.assign({},this.info, {followStatus: i})).then(msg=>{
+          this.$store.commit('setInfo', {followStatus: i})
+        })
+      });
+      
+    },
     getBaseInfo(num){
       if(num === 0){
         this.$store.dispatch('getinfo', this.id).then(res => {
@@ -333,9 +344,6 @@ export default {
           this.currentLesseelist = [this.lesseelist[0].id]
         })
       }
-    },
-    associatedContacts(){
-      this.$router.push({path:'/ContactsList', query: {modelGid: this.id}})
     },
     editor(){
       this.$store.commit('setNewDealerParams')

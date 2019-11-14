@@ -31,6 +31,15 @@ export default {
     },
   },
   actions: {
+    editDealer ({state}, data={}) { // 编辑经销商信息
+      return new Promise(resolve => {
+        window.$ajax.dealer.editDealer(data).then(res => {
+          if(!res.code){
+            resolve(res.msg)
+          }
+        })
+      })
+    }, 
     getinfo ({state}, id) { // 获取经销商 - 基本信息
       return new Promise(resolve => {
         window.$ajax.dealer.getinfo({dealerGid: id}).then(res => {
