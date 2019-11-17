@@ -70,7 +70,7 @@
                           备案信息 
                           <i class="iconfont iconweizhankai ml-2" ></i>
                         </div>
-                        <div class="text-sm text-orange-500">提交备案</div>
+                        <div class="text-sm text-orange-500" @click="recordSubmit">提交备案</div>
                       </div>
                       
                       <div v-show="showInfo1">
@@ -309,6 +309,19 @@ export default {
     }
   },
   methods: {
+    recordSubmit(){
+      if(this.info.dealerName && this.info.creditCode && this.info.gid){
+        this.$router.push({name:'recordCheck', query: {
+          dealerGid: this.info.gid,
+          dealerName: this.info.dealerName,
+          creditCode: this.info.creditCode
+        }})
+      }else{
+        this.$dialog.alert({
+          message: '经销商名称、统一社会信用代码不能为空，完善信息后，重新提交备案'
+        });
+      }
+    },
     changeFollowStatus(i){
       this.$dialog.confirm({
         message: '确认要改变业务状态吗？'
@@ -318,7 +331,6 @@ export default {
           this.$store.commit('setInfo', {followStatus: i})
         })
       });
-      
     },
     getBaseInfo(num){
       if(num === 0){

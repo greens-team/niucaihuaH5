@@ -31,6 +31,16 @@ import Lessee from './views/Lessee'              //竞争对手列表页
 import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
 
 
+import recordCheck from './views/record'  //经销商提交备案信息 检查
+import recordInfo from './views/record/info.vue'  //经销商提交备案
+
+
+import CreateTask from './views/Task/create.vue'  //经销商拜访记录
+import TaskDetail from './views/Task'  //任务详情
+
+
+
+
 
 import Map from './components/Map'                              // 选择地图
 
@@ -147,6 +157,36 @@ export default new Router({
       name: 'LesseeInfo',
       component: LesseeInfo
     },
+
+
+    {
+      path: '/recordCheck',   //经销商提交备案准入
+      name: 'recordCheck',
+      component: recordCheck
+    },
+    {
+      path: '/recordInfo',   //经销商提交备案信息
+      name: 'recordInfo',
+      component: recordInfo
+    },
+
+
+    {
+      path: '/CreateTask',   //新增拜访记录
+      name: 'CreateTask',
+      component: CreateTask
+    },
+    {
+      path: '/TaskDetail',   //任务详情
+      name: 'TaskDetail',
+      component: TaskDetail
+    },
+    
+
+
+    
+
+    
 
 
  

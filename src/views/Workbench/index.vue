@@ -84,11 +84,11 @@
           <img src="../../assets/workbench/icon1.png" alt="" class="w-10 m-auto mb-1">
           <div class="text-sm">经销商管理</div>
         </div>
-        <div class="text-center text-gray-800" @click="$router.push('/RecentVisit')">
+        <div class="text-center text-gray-800"  @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})">
           <img src="../../assets/workbench/icon2.png" alt="" class="w-10 m-auto mb-1">
           <div class="text-sm">新建拜访</div>
         </div>
-        <div class="text-center text-gray-800" @click="$router.push('/RecentVisit')">
+        <div class="text-center text-gray-800" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">
           <img src="../../assets/workbench/icon3.png" alt="" class="w-10 m-auto mb-1">
           <div class="text-sm">新建任务</div>
         </div>
@@ -111,7 +111,7 @@
           </div>
         </div>
         <div class="flex-1"></div>
-        <van-icon size="20px" name="plus" @click="$router.push('/RecentVisit')"/>
+        <van-icon size="20px" name="plus"  @click="newTask = true"/>
       </div>
 
 
@@ -207,6 +207,18 @@
       />
     </van-popup>
 
+
+    <van-popup
+      v-model="newTask"
+      position="bottom"
+    >
+      <div class="bg-gray-200">
+        <div @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">经销商拜访</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">任务事项</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="newTask=false">取消</div>
+      </div>
+    </van-popup>
+
   </div>
 </template>
 
@@ -231,6 +243,8 @@ export default {
       },
 
       visitAim:['客情维护','首次拜访','沟通需求','签单','贷后跟进'],
+
+      newTask: false
     }
   },
   mounted () {

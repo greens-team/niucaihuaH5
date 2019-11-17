@@ -24,11 +24,15 @@ import dealer from './modules/dealer'        // 经销商
 import contacts from './modules/contacts'    // 联系人
 import competitor from './modules/competitor'  // 合作竞对
 import lessee from './modules/lessee'          // 承租人
+import record from './modules/record'          // 经销商备案
+import task from './modules/task'             // 任务
 export default {
   auth,
   workbench,
   dealer,
   contacts,
   competitor,
-  lessee
+  lessee,
+  record,
+  task
 }

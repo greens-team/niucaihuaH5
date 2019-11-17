@@ -56,6 +56,15 @@ export default {
         value: 2
       }
     ],
+
+    splAttrCd: [{
+      value:1,
+      text: '自然人'
+    },{
+      value:2,
+      text: '法人'
+    }],
+
     businessTypesValues: [],
     businessTypes: [          // 业务类型
       {

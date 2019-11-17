@@ -8,7 +8,7 @@ export default (m)=>{
     get: {
       dept: m.GET + '/api/dept',
       colleague:  m.GET + '/api/user/list',
-      getUsersList: TEST_URL + '/api/users/list'
+      getUsersList: m.GET + '/api/users/list'
     },
     postJSON: {
       login: TEST_URL + '/auth/login', // '/lbccrm/system/user/login', //m.GET + 
