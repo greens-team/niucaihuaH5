@@ -10,7 +10,7 @@ export default {
       ownerUserGids: [],
       followerUserGids: []
     },
-    info: {},
+    info: {},   //合作竞对 - 基本信息
 
     editParams: {
       gid: '',
@@ -24,10 +24,11 @@ export default {
     listParams: {
       queryString: '',
       orderType: 1,
-      competorType: 1,
+      competorType: 0,
       pageNum: 1,
       pageSize: 10
     },
+
     list: [],
 
     associatedParams: {
@@ -46,9 +47,34 @@ export default {
     jobsUser: [],
     jobsUser1: [],
     selectedUserGids: [],
+    
+    competorStatus: [
+      '第三方', '厂商金融'
+    ],
+    competorType: [
+      {name:'全部',id: 0},
+      {name:'第三方',id:1},
+      {name:'厂商金融',id:2},
+      {name:'银行',id:3}
+    ],
+
+    tabs: [{
+      id: 0,
+      text: '基本信息'
+    },{
+      id: 1,
+      text: '操作历史'
+    },{
+      id: 2,
+      text: '动态记录'
+    }],
+    currentTabsIndex: 0
 
   },
   mutations: {
+    setCurrentTabsIndex(state, num){
+      state.currentTabsIndex = num
+    },
   },
   actions: {
     addCompetitor({state}, data = {}){   // 新建合作竞对
@@ -85,6 +111,7 @@ export default {
           if (!Number(res.code)) {
             state.list = res.data.list
             resolve(res.msg)
+            console.log(state.list)
           }
         })
       })

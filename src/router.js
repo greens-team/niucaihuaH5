@@ -148,12 +148,12 @@ export default new Router({
       component: CompetitorInfo
     },
     {
-      path: '/Lessee',   //竞争对手列表页
+      path: '/Lessee',   //承租人列表页
       name: 'Lessee',
       component: Lessee
     },
     {
-      path: '/LesseeInfo',   //竞争对手详情页
+      path: '/LesseeInfo',   //承租人详情页
       name: 'LesseeInfo',
       component: LesseeInfo
     },
