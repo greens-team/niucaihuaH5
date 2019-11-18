@@ -31,7 +31,6 @@ import Lessee from './views/Lessee'              //竞争对手列表页
 import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
 import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
 
-
 import recordCheck from './views/record'  //经销商提交备案信息 检查
 import recordInfo from './views/record/info.vue'  //经销商提交备案
 
@@ -42,6 +41,7 @@ import TaskDetail from './views/Task'  //任务详情
 
 import DealerList from './components/Dealer'                // 关联 经销商列表
 import SelectedDealerList from './components/Dealer/selectedList.vue'  // 关联 已选中的经销商
+import NewDealer from './components/Dealer/newDealer'     //关联经销商 - 新建经销商
 
 
 import Map from './components/Map'                              // 选择地图
@@ -70,15 +70,20 @@ export default new Router({
     {
       path: '/ContactsList',      // 获取联系人列表
       name: 'ContactsList',
-      component: ContactsList 
-    },{
+      component: ContactsList
+    }, {
       path: '/SelectedList',      // 新建联系人
       name: 'SelectedList',
       component: SelectedList
-    },{
+    }, {
       path: '/NewContacts',      // 新建联系人
       name: 'NewContacts',
       component: NewContacts
+    },
+    {
+      path: '/NewDealer',  //  新建经销商
+      name: 'NewDealer',
+      component: NewDealer
     },
     {
       path: '/RecentVisit',      // 最近访问
@@ -196,15 +201,15 @@ export default new Router({
       name: 'TaskDetail',
       component: TaskDetail
     },
-    
 
 
-    
-
-    
 
 
- 
+
+
+
+
+
     // {
     //   path: '/about',
     //   name: 'about',

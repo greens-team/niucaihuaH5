@@ -155,7 +155,7 @@
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">经销商</div>
-                  <div class="text-sm text-blue-500" @click="$router.push({path:'/DealerList', query: {modelGid: id}})">关联</div>
+                  <div class="text-sm" style="color:#FF9B02" @click="$router.push({path:'/DealerList', query: {modelGid: id}})">添加</div>
                 </div>
                 <van-collapse v-model="currentLessee">
                   <van-collapse-item class="text-gray-900 text-lg"
