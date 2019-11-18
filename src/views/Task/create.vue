@@ -4,7 +4,7 @@
     <van-nav-bar :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow 
           @click-right="save">
-      <div slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
+      <div v-if="editor" slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
     </van-nav-bar>
 
     <div class="taskCreateRow">
@@ -18,21 +18,21 @@
         </template>
       </van-cell>
 
-      <van-cell clickable>
+      <!-- <van-cell clickable>
         <template slot="title">
           <span class="custom-title">类型</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (taskPopupShow = true)">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p>
+          <p class="p5" @click="editor && (taskPopupShow = true)">{{visitTypeOption[$store.state.task.addEditTaskParams.visitType-1].text}}</p>
         </template>
-      </van-cell>
+      </van-cell> -->
 
       <van-cell clickable>
         <template slot="title">
           <span class="custom-title">时间</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (taskTimeShow = true)">{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime).format('YYYY-MM-DD') : '请选择时间'}}</p>
+          <p class="p5" @click="editor && (taskTimeShow = true)">{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime/1000).format('YYYY-MM-DD') : '请选择时间'}}</p>
         </template>
       </van-cell>
 
@@ -41,7 +41,7 @@
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && changeAlarmTime">{{alarmTimeText || '请选择提醒时间'}}</p>
+          <p class="p5" @click="editor && changeAlarmTime()">{{alarmTimeText || '请选择提醒时间'}}</p>
         </template>
       </van-cell>
 
@@ -90,6 +90,22 @@
           <p class="p5" v-else>{{$store.state.task.addEditTaskParams.comment}}</p>
         </template>
       </van-cell>
+
+
+
+      <div v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress" class="bg-gray-100 pt-3 pb-2">
+        <div class="pl-5">打卡位置</div>
+        <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2">
+          <div class="flex-1">
+            <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span><br />
+            <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span>
+          </div>
+          <i class="iconfont iconweizhi text-orange-500"></i>
+          <div>{{$store.state.task.addEditTaskParams.dealerLongitude}} {{$store.state.task.addEditTaskParams.dealerLatitud}}</div>
+        </div>
+      </div>
+
+
     </div>
 
     <div></div>
@@ -106,11 +122,11 @@
         right-text="确定"
         left-arrow
         @click-left="taskPopupShow = false"
-        @click-right="taskPopupShow = false; $store.state.task.addEditTaskParams.taskType = taskTypeVal"
+        @click-right="taskPopupShow = false; $store.state.task.addEditTaskParams.visitType = visitTypeVal"
       />
-      <van-radio-group v-model="taskTypeVal">
+      <van-radio-group v-model="visitTypeVal">
         <van-cell-group>
-          <van-cell v-for="(r,i) in taskTypeOption" :key="i" :title="r.text" clickable @click="taskTypeVal = r.value">
+          <van-cell v-for="(r,i) in visitTypeOption" :key="i" :title="r.text" clickable @click="visitTypeVal = r.value">
             <van-radio slot="right-icon" :name="r.value" />
           </van-cell>
         </van-cell-group>
@@ -243,20 +259,31 @@
       </van-radio-group>
     </van-popup>
 
-
     <van-popup
       v-model="newTask"
       position="bottom"
     >
       <div class="bg-gray-200">
-        <div @click="$router.push({name:'CreateTask',query:{taskType:1}})" class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer"><span class="text-orange-500 font-bold text-xl">创建拜访任务</span><br /><span class="text-gray-500 text-sm">未完成拜访，创建拜访任务</span></div>
-        <div class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2}})"><span class="text-orange-500 font-bold text-xl">创建拜访记录</span><br /><span class="text-gray-500 text-sm">已完成拜访，直接填写拜访记要</span></div>
+        <div @click="createTask" class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer"><span class="text-orange-500 font-bold text-xl">创建拜访任务</span><br /><span class="text-gray-500 text-sm">未完成拜访，创建拜访任务</span></div>
+        <div class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer" @click="createTaskLog(1)"><span class="text-orange-500 font-bold text-xl">直接填写拜访记录</span><br /><span class="text-gray-500 text-sm">已完成拜访，直接填写拜访记要</span></div>
         <div class="text-center border-b border-gray-300 bg-white items-center p-3 cursor-pointer mt-3 font-bold text-gray-700" @click="newTask=false">取 消</div>
       </div>
     </van-popup>
+    
 
-    <div v-if="!editor && $route.query.taskType == 2" class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0">
+    <div @click="finishTask" v-if="!editor && $route.query.taskType == 2 && taskId" class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0">
       完成任务
+    </div>
+
+    <div @click="clockIn" v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 0" class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0">
+      签到打卡
+    </div>
+    <div @click="createTaskLog(0)" v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 1" class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0">
+      填写拜访记录
+    </div>
+
+    <div @click="createTaskLog(0)" v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==1" class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0">
+      填写拜访记录
     </div>
 
     <!-- CreateTask
@@ -272,11 +299,11 @@ export default {
       newTask: false,
 
       value: '',
-      taskTypeOption: [
+      visitTypeOption: [
         { text: '经销商拜访', value: 1},
         { text: '任务事项', value: 2},
       ],
-      taskTypeVal: 1,
+      visitTypeVal: 1,
       taskPopupShow: false,
 
       taskTimeShow: false,
@@ -318,20 +345,49 @@ export default {
 
       editor: true,
 
+      taskId: '',
+
+      visitType: '',
+
+      taskStatus: 0
+
     }
   },
   filters:{
   },
   mounted() {
+
+    this.$store.commit('setAddEditTaskParams')
+
+    this.$route.query.taskType && (this.taskType = this.$route.query.taskType)
+    this.$route.query.gid && (this.taskId = this.$route.query.gid)
+
     this.editor = this.$route.query.editor
 
     this.$store.dispatch('getListData')
     this.$store.dispatch('getColleague',{
-          pageNum: 1,
-          pageSize: 10,
-          usrNM: '',
-          rlNm: ''
-        })
+      pageNum: 1,
+      pageSize: 10,
+      usrNM: '',
+      rlNm: ''
+    })
+
+    if(sessionStorage.localMap){
+      this.taskId = JSON.parse(sessionStorage.localMap).gid
+    }
+
+    if(this.taskId){
+
+      this.editor = false
+
+      this.$store.dispatch('getTaskInfo', {taskGid: this.taskId}).then(()=>{
+        this.$store.commit('setAddEditTaskParams', this.$store.state.task.taskInfo)
+        this.taskStatus = this.$store.state.task.taskInfo.taskStatus
+      })
+
+    }
+
+    
   },
   methods: {
     mainUserGidsFun(vals, key, userType){
@@ -373,8 +429,67 @@ export default {
       }else{
         //直接保存
         this.editor = false
+        this.$store.dispatch('addTask', {taskType: this.taskType}).then(res=>{
+          this.$dialog.alert({
+            message: res.msg
+          }).then(() => {
+            this.taskId = res.data
+          });
+        })
       }
+    },
+    //签到打卡 调地图
+    clockIn(){
+      this.$router.push({path:'/map',query:{clockIn:true, id: this.taskId}})
+    },
+    // 创建拜访任务
+    createTask(){
+      // 经销商拜访
+      // this.$store.state.task.addEditTaskParams.visitType = 0
+      this.visitTypeVal = 0;
+      this.editor = false
+      this.$store.dispatch('addTask', {taskType: this.taskType, visitType: 0}).then(res=>{
+        this.newTask = false
+        this.$dialog.alert({
+          message: res.msg
+        }).then(() => {
+           this.taskId = res.data
+          // this.$router.go(-1)
+        });
+      })
+    },
+
+    // 直接填写拜访记录
+    createTaskLog(visitType){
+      if(visitType){
+          // this.$store.state.task.addEditTaskParams.visitType = 1
+          this.visitTypeVal = visitType;
+          this.$store.dispatch('addTask', {taskType: this.taskType, visitType: visitType}).then(res=>{
+            this.newTask = false
+            this.$dialog.alert({
+              message: res.msg
+            }).then(() => {
+              this.taskId = res.data
+              // 跳转到填写拜访记录页面
+              this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+            });
+          })
+      }else{
+        this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+      }
+    },
+
+    // 完成并保存
+    finishTask(){
+      this.$store.dispatch('finishTask', this.taskId).then(res=>{
+        this.$dialog.alert({
+          message: res.msg
+        }).then(() => {
+          this.$router.go(-1)
+        });
+      })
     }
+
   }
 }
 </script>
@@ -394,6 +509,6 @@ export default {
   width: 120px;    flex: inherit;
 }
 .taskCreate .taskCreateRow /deep/ .van-cell__value {
-    text-align: inherit;
-    }
+  text-align: inherit;
+}
 </style>

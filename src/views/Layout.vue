@@ -36,7 +36,7 @@
             src="../assets/tabsIcon/icon2_0.png"
           >
         </van-tabbar-item>
-        <van-tabbar-item>
+        <!-- <van-tabbar-item>
           <span class="text-sm">统计</span>
           <img
             v-if="$store.state.workbench.currentModelActive == 2"
@@ -48,11 +48,11 @@
             slot="icon"
             src="../assets/tabsIcon/icon3_0.png"
           >
-        </van-tabbar-item>
+        </van-tabbar-item> -->
         <van-tabbar-item>
           <span class="text-sm">我</span>
           <img
-            v-if="$store.state.workbench.currentModelActive == 3"
+            v-if="$store.state.workbench.currentModelActive == 2"
             slot="icon"
             src="../assets/tabsIcon/icon4_1.png"
           >
@@ -105,7 +105,7 @@ export default {
           this.currentModel = Crm;
           break;
         case 2:
-          this.currentModel = Statistics;
+          this.currentModel = My;
           break;
         case 3:
           this.currentModel = My;

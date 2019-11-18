@@ -135,7 +135,8 @@
                 已完成：3
                 <span class="pl-3 text-xs">未完成：3</span>
               </div> -->
-              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.myTaskList" :key="'t'+i">
+              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.myTaskList" :key="'t'+i"
+                  @click="TaskDetail(row.gid)">
                 <div class="flex">
                   <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
                   <div class="flex-1"></div>
@@ -175,7 +176,8 @@
                 已完成：3
                 <span class="pl-3 text-xs">未完成：3</span>
               </div> -->
-              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.colleaguesTaskList" :key="'c'+i">
+              <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.colleaguesTaskList" :key="'c'+i"
+                @click="TaskDetail(row.gid)">
                 <div class="flex">
                   <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
                   <div class="flex-1"></div>
@@ -213,8 +215,8 @@
       position="bottom"
     >
       <div class="bg-gray-200">
-        <div @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">经销商拜访</div>
-        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">任务事项</div>
+        <div @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建拜访</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">新建任务</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="newTask=false">取消</div>
       </div>
     </van-popup>
@@ -248,6 +250,7 @@ export default {
     }
   },
   mounted () {
+    delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus)
     this.getBriefing()
     this.$store.dispatch('getTaskList')
@@ -293,6 +296,23 @@ export default {
     logout(){
       this.$store.commit('setLoginState', false)
       this.$router.go(0)
+    },
+    TaskDetail(id){
+      this.$store.dispatch('getTaskInfo',id).then(()=>{
+        let taskType = this.$store.state.task.taskInfo.taskType  // 1 经销商拜访 2 任务事项
+        let visitType = this.$store.state.task.taskInfo.visitType // 0 正常流程 1 直接完成
+        let taskStatus = this.$store.state.task.taskInfo.taskStatus // 0 创建完成 1 打卡完成或者手动标记完成 2 记录完成即任务结束完成
+        let gid = this.$store.state.task.taskInfo.gid
+        
+        //跳转到详情
+        if(taskStatus == 2){
+          this.$router.push({name:'TaskDetail',query:{id: id}})
+        }else{
+          this.$router.push({name:'CreateTask',query:{taskType:taskType,editor: true,gid: gid}})
+        }
+
+      })
+      // $router.push({name:'TaskDetail',query:{id: row.gid}})
     }
   }
 }

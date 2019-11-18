@@ -4,18 +4,6 @@ export default {
   state: {
     // visitType followerUserGids ownerUserGids
     addEditTaskParams: {
-      alarmTime: 0,
-      comment: '',
-      dealerGid: '',
-      followerUserGids: [],
-      mainUserGids: [],
-      otherUserGids: [],
-      ownerUserGids: [],
-      taskName: '',
-      taskTime: 0,
-      taskType: 1,
-      visitAim: 0,
-      visitType: 0
     },
 
     taskInfo: {},
@@ -55,15 +43,33 @@ export default {
       visitComment: ''
     },
 
+
+
   },
   mutations: {
+    setAddEditTaskParams(state, data = {}){
+      state.addEditTaskParams = Object.assign({}, {
+        alarmTime: 0,
+        comment: '',
+        dealerGid: '',
+        followerUserGids: [],
+        mainUserGids: [],
+        otherUserGids: [],
+        ownerUserGids: [],
+        taskName: '',
+        taskTime: 0,
+        taskType: 1,
+        visitAim: 0,
+        visitType: 0
+      }, data)
+    }
   },
   actions: {
     addTask ({state}, data={}) {  // 新建任务接口
       return new Promise(resolve => {
         window.$ajax.task.addTask(Object.assign(state.addEditTaskParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve(res)
           }
         })
       })
@@ -72,7 +78,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.getTaskInfo({taskGid: id}).then( res => {
           if (!res.code) {
-            this.taskInfo = res.data ? res.data : res
+            state.taskInfo = res.data ? res.data : res
             resolve(res.msg || '')
           }
         })
@@ -91,7 +97,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.clockincheck(Object.assign(state.clockincheckParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve(res)
           }
         })
       })
@@ -117,6 +123,15 @@ export default {
     editvisitlog ({state}, data={}) {  // 编辑拜访记录
       return new Promise(resolve => {
         window.$ajax.task.editvisitlog(Object.assign(state.addEditVisitlogParams, data)).then( res => {
+          if (!res.code) {
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+    finishTask ({state}, id) {  // 编辑拜访记录
+      return new Promise(resolve => {
+        window.$ajax.task.finishTask({taskGid: id}).then( res => {
           if (!res.code) {
             resolve(res.msg)
           }

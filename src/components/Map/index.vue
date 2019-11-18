@@ -3,7 +3,7 @@
   <div class="flex-1 flex flex-col">
 
     <van-nav-bar
-      title="选择地图位置"
+      :title="$route.query.clockIn?'签到打卡':'选择地图位置'"
       left-text="返回"
       right-text="确定"
       @click-left="$router.go(-1)"
@@ -68,7 +68,41 @@ export default {
         let o = JSON.parse(this.addressValue)
         this.$store.getters.NDparams.longitude =  String(o.lng).split('.')[1].length > 6 ? o.lng.toFixed(6) : o.lng
         this.$store.getters.NDparams.latitude = String(o.lat).split('.')[1].length > 6 ? o.lat.toFixed(6) : o.lat
-        this.$router.go(-1)
+
+        if(this.$route.query.id && this.$route.query.clockIn){
+          this.$store.dispatch('clockincheck',{
+            gid: this.$route.query.id,
+            longitude: this.$store.getters.NDparams.longitude,
+            latitude: this.$store.getters.NDparams.latitude
+          }).then(res=>{
+            this.$dialog.confirm({
+              message: res.data ? '你在打卡范围内' : '你不在打卡范围内',
+              confirmButtonText: '打卡'
+            }).then(() => {
+              let address = ''
+              this.addressList.some(r=>{
+                if(r.value == this.addressValue){
+                  address = r.text
+                }
+              })
+              // 确认打卡
+              let paras = {
+                gid: this.$route.query.id,
+                longitude: this.$store.getters.NDparams.longitude,
+                latitude: this.$store.getters.NDparams.latitude,
+                clockinPlaceName: address,
+                clockinPlaceAddress: address
+              }
+              this.$store.dispatch('clockin',paras).then(r=>{
+                sessionStorage.localMap = JSON.stringify(paras)
+              }).then(()=>{
+                this.$router.go(-1)
+              })
+            });
+          })
+        }else{
+          this.$router.go(-1)
+        }
       }else{
         this.$notify({ type: 'warning', message: '请选择地址' })
       }
@@ -76,6 +110,7 @@ export default {
 
   },
   mounted() {
+    delete sessionStorage.localMap;
     this.dragend({
       point: this.center
     })
