@@ -16,7 +16,7 @@
         </div>
 
         <van-tabs
-          class="tabs -mt-2 -mb-2"
+          class="tabs"
           v-model="$store.state.competitor.currentTabsIndex"
           @click="$refs.swipe.swipeTo($store.state.competitor.currentTabsIndex)"
         >
@@ -32,10 +32,10 @@
           ref="swipe"
           :loop="false"
           :show-indicators="false"
-          @change="(num)=>$store.commit('setCurrentTabsIndex', num)"
+          @change="(num)=>$store.commit('setCurrentTabsIndex_competitor', num)"
         >
           <van-swipe-item v-for="(row,index) in $store.state.competitor.tabs" :key="index">
-            <!-- 基本信息 -->
+            <!-- 基本信息 经销商-->
             <div v-if="$store.state.competitor.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <div class="absolute right-0 bottom-0 left-0 flex bg-white py-3">
+    <div class="flex bg-white footer-bar">
       <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
       <van-field
@@ -141,6 +141,10 @@ export default {
     "$store.state.competitor.currentTabsIndex"(num) {
       this.getBaseInfo(num);
     }
+  },
+  created() {
+    //每次进来时候将参数设置为初始值
+    this.$store.commit("setInitParams_tabs");
   },
   methods: {
     getBaseInfo(num) {
@@ -187,5 +191,11 @@ export default {
 .CompetitorInfo /deep/ .van-field {
   width: 70%;
   background-color: #f6f6f6;
+}
+.footer-bar {
+  position: relative;
+  height: 4rem;
+  line-height: 4rem;
+  align-items: center;
 }
 </style>

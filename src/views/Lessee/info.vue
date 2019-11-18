@@ -37,17 +37,17 @@
         <div class="shadow-md rounded-lg m-3 p-4 bg-white">
           <div class="mb-3 flex justify-between">
             <span class="text-xl font-bold">承租人状态</span>
-            <span>放弃</span>
+            <span class="text-sm text-red-500">放弃</span>
           </div>
           <div>
             <div class="flex mt-2">
-              <div v-for="(row,i) in $store.state.lessee.lesseeStatus" :key="i">
+              <div @click="changeFollowStatus(i)" v-for="(row,i) in $store.state.lessee.lesseeStatus" :key="i">
                 <div
                   v-if="i && i<$store.state.lessee.lesseeStatus.length-1"
-                  :class="['flex flex-1 items-center', {gray: i <= info.lesseeStatus}]"
+                  :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus+1}]"
                 >
-                  <div class="rounded bg-line p-2 text-center text-sm shadow">{{row.name}}</div>
-                  <div class="triangle-line"></div>
+                  <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
+                  <div class="status-correct"></div>
                 </div>
               </div>
             </div>
@@ -55,7 +55,7 @@
         </div>
 
         <van-tabs
-          class="tabs -mt-2 -mb-2"
+          class="tabs"
           v-model="$store.state.lessee.currentTabsIndex"
           @click="$refs.swipe.swipeTo($store.state.lessee.currentTabsIndex)"
         >
@@ -71,76 +71,125 @@
           ref="swipe"
           :loop="false"
           :show-indicators="false"
-          @change="(num)=>$store.commit('setCurrentTabsIndex', num)"
+          @change="(num)=>$store.commit('setCurrentTabsIndex_lessee', num)"
         >
           <van-swipe-item v-for="(row,index) in $store.state.lessee.tabs" :key="index">
-            <!-- 基本信息 -->
-            <!-- <div v-if="$store.state.competitor.currentTabsIndex === 0">
+            <!-- 基本信息 经销商-->
+            <div v-if="$store.state.lessee.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold">基本信息</div>
-                </div>
-                <div>
-                  <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">
-                      <span class="text-red-500">*</span>竞对名称
-                    </p>
-                    <p>{{info.competorName}}</p>
+                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
+                    承租人基本信息
+                    <i class="iconfont iconweizhankai ml-2"></i>
                   </div>
-                  <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">竞对类型</p>
-                    <p>{{$store.state.competitor.competorStatus[info.competorType-1]}}</p>
+                </div>
+                <div v-show="showInfo1">
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">
+                      <span class="text-red-500">*</span>承租人姓名
+                    </p>
+                    <p class="text-gray-900 text-sm">{{info.lesseeName}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">身份证号码</p>
+                    <p class="text-gray-900 text-sm">{{info.idcardNum}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">出生日期</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{$root.moment(info.birthday).format('YYYY-MM-DD')}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">婚姻状况</p>
+                    <p class="text-gray-900 text-sm">{{info.marry ? '已婚' : '未婚'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">性别</p>
+                    <p class="text-gray-900 text-sm">{{info.gender ? '女' : '男'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">客户类型</p>
+                    <!-- r.lesseeType -->
+                    <p class="text-gray-900 text-sm">自然人</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">手机号</p>
+                    <p class="text-gray-900 text-sm" style="color:#0885FF;">{{info.lesseePhone}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">年龄</p>
+                    <p class="text-gray-900 text-sm">{{Math.floor((((new Date()).valueOf() - info.birthday))/31536000000)}}
+                      </p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">户口所在地</p>
+                    <p class="text-gray-900 text-sm">{{info.domicilePlace}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">家庭住址</p>
+                    <p class="text-gray-900 text-sm" style="color:#0885FF;">{{info.homeAddress}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">从业年限</p>
+                    <p class="text-gray-900 text-sm">{{info.workingYears}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">照片</p>
+                    <img :src="info.userPic" width="130" alt="照片" />
+                  </div>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs text-gray-500">上传法人身份证件照片</p>
+                    <div class="flex">
+                      <img :src="info.idcardFrontPic" width="130" alt="身份证正面" />
+                      <img :src="info.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
+                    </div>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">备注</p>
+                    <p class="text-gray-900 text-sm">{{info.comment}}</p>
                   </div>
                 </div>
               </div>
 
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">经销商</div>
-                  <div class="text-sm text-blue-500">关联</div>
+                  <div class="text-sm text-blue-500" @click="$router.push({path:'/DealerList', query: {modelGid: id}})">关联</div>
                 </div>
-                <van-collapse v-model="currentCompetitor">
-                  <van-collapse-item
-                    v-for="(r,i) in competitorlist"
-                    :key="i"
-                    :title="r.dealerName"
-                    :name="r.dealerGid"
+                <van-collapse v-model="currentLessee">
+                  <van-collapse-item class="text-gray-900 text-lg"
+                    title="内蒙古赤峰商用车有限公司"
                   >
                     <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">
-                        <span class="text-red-500">*</span>竞对政策
-                      </p>
-                      <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">狮桥应对策略</p>
-                      <p class="text-gray-900 text-sm">{{r.tactics}}</p>
+                      <p class="text-xs text-gray-500">经销商名称</p>
+                      <p class="text-base" style="color:#0885FF;">内蒙古赤峰商用车有限公司</p>
                     </div>
                   </van-collapse-item>
                 </van-collapse>
               </div>
             </div>
 
-            <div v-if="$store.state.competitor.currentTabsIndex === 1">
+            <div v-if="$store.state.lessee.currentTabsIndex === 1">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
                   <div class="flex flex-1 items-center font-bold">操作历史</div>
                 </div>
               </div>
             </div>
-            <div v-if="$store.state.competitor.currentTabsIndex === 2">
+            <div v-if="$store.state.lessee.currentTabsIndex === 2">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
                   <div class="flex flex-1 items-center font-bold">动态记录</div>
                 </div>
               </div>
-            </div>-->
+            </div>
           </van-swipe-item>
         </van-swipe>
       </div>
     </div>
 
-    <div class="absolute right-0 bottom-0 left-0 flex bg-white py-3">
+    <div class="flex bg-white footer-bar">
       <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
       <van-field
@@ -164,8 +213,14 @@ export default {
       info: {},
       lesseeInfolist: [],
       currentLessee: [],
-      workProgress: ""
+      workProgress: "",
+      showInfo1: true,
+      showInfo2: false
     };
+  },
+  created() {
+    //每次进来时候将参数设置为初始值
+    this.$store.commit("setInitParams_tabs");
   },
   mounted() {
     this.id = this.$route.query.id;
@@ -187,10 +242,20 @@ export default {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
           this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
-          this.currentCompetitor = [this.lesseeInfolist[0].dealerGid];
+          this.currentLessee = [this.lesseeInfolist[0].dealerGid];
         });
       }
-    }
+    },
+    changeFollowStatus(i){
+      this.$dialog.confirm({
+        message: '确认要改变业务状态吗？'
+      }).then(() => {
+        // on confirm
+        this.$store.dispatch('editLessee',Object.assign({},this.info, {lesseeStatus: i})).then(msg=>{
+          this.$store.commit('setInfo', {lesseeStatus: i})
+        })
+      });
+    },
   }
 };
 </script>
@@ -209,5 +274,56 @@ export default {
 }
 .LesseeInfo /deep/ .van-tabs__nav {
   background: transparent;
+}
+.bg-line {
+  background: #f4f4f4;
+  flex: 1;
+  color: #252525;
+}
+
+.gray .bg-line {
+  background: linear-gradient(#ffad00, #ffd844);
+  flex: 1;
+  color: #222;
+}
+.gray .status-correct {
+  position: absolute;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  background: #fff;
+  right: 1.2rem;
+  bottom: 0.2rem;
+}
+.gray .status-correct::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  width: 50%;
+  height: 30%;
+  border: 2px solid #ffbc42;
+  border-radius: 1px;
+  border-top: none;
+  border-right: none;
+  background: transparent;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.LesseeInfo /deep/ .van-field {
+  width: 70%;
+  background-color: #f6f6f6;
+}
+.LesseeInfo /deep/ .van-cell__title span {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
+.footer-bar {
+  position: relative;
+  height: 4rem;
+  line-height: 4rem;
+  align-items: center;
 }
 </style>

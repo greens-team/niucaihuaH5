@@ -62,7 +62,12 @@ export default {
     citysList: [],      // 城市
     areasList: [],      // 区域
 
-    colleagueDataList: []
+    colleagueDataList: [],
+
+    confirmUserGids: [],
+    jobsUser: [],
+    selectedUserGids: [],
+
 
   },
   mutations: {

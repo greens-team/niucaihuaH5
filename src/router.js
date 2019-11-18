@@ -29,6 +29,7 @@ import Competitor from './views/Competitor'              //竞争对手列表页
 import CompetitorInfo from './views/Competitor/info.vue'  //竞争对手详情页
 import Lessee from './views/Lessee'              //竞争对手列表页
 import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
+import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
 
 
 import recordCheck from './views/record'  //经销商提交备案信息 检查
@@ -39,7 +40,8 @@ import CreateTask from './views/Task/create.vue'  //经销商拜访记录
 import TaskDetail from './views/Task'  //任务详情
 
 
-
+import DealerList from './components/Dealer'                // 关联 经销商列表
+import SelectedDealerList from './components/Dealer/selectedList.vue'  // 关联 已选中的经销商
 
 
 import Map from './components/Map'                              // 选择地图
@@ -136,7 +138,16 @@ export default new Router({
       component: SelectedLesseeList
     },
 
-
+    {
+      path: '/DealerList',   // 关联经销商
+      name: 'DealerList',
+      component: DealerList
+    },
+    {
+      path: '/SelectedDealerList',   // 关联选中的经销商
+      name: 'SelectedDealerList',
+      component: SelectedDealerList
+    },
     {
       path: '/Competitor',   //竞争对手列表页
       name: 'Competitor',
@@ -157,7 +168,11 @@ export default new Router({
       name: 'LesseeInfo',
       component: LesseeInfo
     },
-
+    {
+      path: '/CreateLessee',   //新建承租人
+      name: 'CreateLessee',
+      component: CreateLessee
+    },
 
     {
       path: '/recordCheck',   //经销商提交备案准入

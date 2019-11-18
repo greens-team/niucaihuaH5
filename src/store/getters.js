@@ -8,5 +8,10 @@ const getters = {
   NDbusinessTypesValues: state => state.newDealer.businessTypesValues,
   NDbusinessTypes: state => state.newDealer.businessTypes,
 
+  //新建承租人数据
+  NLparams: state => state.newLessee.params,
+  NLmarryList: state => state.newLessee.marryList,
+  NLlesseeTypeList: state => state.newLessee.lesseeTypeList,
+  
 }
 export default getters

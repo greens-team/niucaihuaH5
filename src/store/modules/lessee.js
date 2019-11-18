@@ -89,9 +89,24 @@ export default {
     currentTabsIndex: 0
   },
   mutations: {
-    setCurrentTabsIndex(state, num) {
+    setInfo(state, data = {}){
+      Object.assign(state.info, data)
+    },
+    setCurrentTabsIndex_lessee(state, num) {
       state.currentTabsIndex = num
     },
+    setInitParams(state) {
+      state.listParams = {
+        queryString: '',
+        orderType: 1,
+        lesseeStatus: 0,
+        pageNum: 1,
+        pageSize: 10
+      }
+    },
+    setInitParams_tabs(state) {
+      state.currentTabsIndex = 0
+    }
   },
   actions: {
     addLessee({ state }, data = {}) {   // 新建承租人

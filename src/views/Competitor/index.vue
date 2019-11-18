@@ -103,6 +103,10 @@ export default {
       homeSearch: false
     };
   },
+  created() {
+    //设置为初始值
+    this.$store.commit("setInitParams");
+  },
   mounted() {
     this.$store.dispatch("listCompetitor");
   },
