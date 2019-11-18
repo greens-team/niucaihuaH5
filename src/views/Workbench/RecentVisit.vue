@@ -12,7 +12,7 @@
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll">
           <van-cell-group v-if="listData.length">
-            <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType">
+            <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType"  @click="$router.push({name: 'DealerInfo', query: {id: row.modelGid}})">
               <template slot="title">
                 <p class="leading-snug">{{row.someName}}<br />
                   <span class="text-gray-500">{{row.modelName}}</span>

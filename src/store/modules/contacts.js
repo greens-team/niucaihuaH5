@@ -17,9 +17,7 @@ export default {
 
     createContactsParams: {},
 
-    getContactsInfoParams: {  // 获取联系人详情
-      contactsGid: ""
-    },
+ 
     contactsInfo: {},
 
     editContactsParams: {  // 编辑联系人信息
@@ -42,6 +40,12 @@ export default {
         }
       ]
     },
+
+    orderType: [
+      { text: '默认排序', value: 0 },
+      { text: '按创建时间排序', value: 1 },
+      { text: '按名称排序', value: 2 }
+    ]
 
   },
   mutations: {
@@ -77,9 +81,9 @@ export default {
         })
       })
     },
-    getContactsInfo({state}, data = {}){ // 获取联系人详情
+    getContactsInfo({state}, gid){ // 获取联系人详情
       return new Promise(resolve => {
-        window.$ajax.contacts.getContactsInfo(Object.assign(state.getContactsInfoParams, data)).then( res => {
+        window.$ajax.contacts.getContactsInfo({contactsGid: gid}).then( res => {
           if (!Number(res.code)) {
             state.contactsInfo = res.data
             resolve()

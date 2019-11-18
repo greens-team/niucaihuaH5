@@ -7,13 +7,13 @@
   <div class="Crm">
 
     <div class="flex justify-around pt-8 pb-6 ">
-      <div>
+      <div @click="$router.push('/DealerManage')">
         <img src="../../assets/crm/icon1.png" class="w-16" alt="">
         <p class="leading-loose text-center text-gray-700 text-sm">
           经销商
         </p>
       </div>
-      <div>
+      <div @click="$router.push('/Contacts')">
         <img src="../../assets/crm/icon2.png" class="w-16" alt="">
         <p class="leading-loose text-center text-gray-700 text-sm">
           联系人

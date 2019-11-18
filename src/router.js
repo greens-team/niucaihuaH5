@@ -38,6 +38,13 @@ import recordInfo from './views/record/info.vue'  //经销商提交备案
 
 import CreateTask from './views/Task/create.vue'  //经销商拜访记录
 import TaskDetail from './views/Task'  //任务详情
+import VisitRecord from './views/Task/visitRecord.vue'  //拜访记录
+
+import Contacts from './views/Contacts'   // 联系人列表页面
+import ContactsInfo from './views/Contacts/info.vue'   // 联系人详情信息页面
+
+
+
 
 
 import DealerList from './components/Dealer'                // 关联 经销商列表
@@ -196,6 +203,25 @@ export default new Router({
       name: 'TaskDetail',
       component: TaskDetail
     },
+    {
+      path: '/VisitRecord',   //拜访记录
+      name: 'VisitRecord',
+      component: VisitRecord
+    },
+
+
+    
+
+     {
+      path: '/Contacts',   //联系人列表页面
+      name: 'Contacts',
+      component: Contacts
+    },{
+      path: '/ContactsInfo',   //联系人详情信息页面
+      name: 'ContactsInfo',
+      component: ContactsInfo
+    },
+    
     
 
 
