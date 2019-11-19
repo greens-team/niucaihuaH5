@@ -449,7 +449,7 @@ export default {
     this.$store.dispatch('getListData')
     this.$store.dispatch('getColleague',{
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 30,
       usrNM: '',
       rlNm: ''
     })

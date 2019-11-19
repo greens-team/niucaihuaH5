@@ -63,6 +63,8 @@ export default {
           obj.jobTitle = this.$store.state.contacts.jobsUser[i]
           arr.push(obj)
         }
+
+
       })
 
       if(this.$route.query.modelGid){
@@ -84,7 +86,7 @@ export default {
         this.$store.getters.NDparams.dealerContactsList = arr
         this.$store.getters.NDparams.addType = 1
 
-        this.$store.dispatch('addNewDealer').then(r=>{
+        this.$store.dispatch('addCreateDealer').then(r=>{
           console.log(r, 222)
           this.$router.push('/DealerManage')
         })

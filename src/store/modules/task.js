@@ -48,7 +48,7 @@ export default {
   },
   mutations: {
     setAddEditTaskParams(state, data = {}){
-      state.addEditTaskParams = Object.assign({}, {
+     Object.assign(state.addEditTaskParams, {
         alarmTime: 0,
         comment: '',
         dealerGid: '',
@@ -57,7 +57,7 @@ export default {
         otherUserGids: [],
         ownerUserGids: [],
         taskName: '',
-        taskTime: 0,
+        taskTime: new Date().getTime()/1000,
         taskType: 1,
         visitAim: 0,
         visitType: 0
@@ -67,7 +67,16 @@ export default {
   actions: {
     addTask ({state}, data={}) {  // 新建任务接口
       return new Promise(resolve => {
-        window.$ajax.task.addTask(Object.assign(state.addEditTaskParams, data)).then( res => {
+        Object.assign(state.addEditTaskParams, data)
+        let params = Object.assign({}, state.addEditTaskParams, {
+          mainUserGids: state.addEditTaskParams.mainUserGids.length && state.addEditTaskParams.mainUserGids.split(',').map(r=>{
+            return String(r)
+          }),
+          otherUserGids: state.addEditTaskParams.otherUserGids.length && state.addEditTaskParams.otherUserGids.split(',').map(r=>{
+            return String(r)
+          }),
+        })
+        window.$ajax.task.addTask(params).then( res => {
           if (!res.code) {
             resolve(res)
           }

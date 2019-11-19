@@ -143,7 +143,8 @@
                   <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
                 </div>
                 <span class="text-base  text-gray-900">{{row.dealerName}}</span>
-                <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
+                <!-- {{row.positionName}} > -->
+                <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
                 <img v-show="row.isFinish" class="absolute bottom-0 right-0 mr-2 w-16" src="../../assets/workbench/icon5.png" alt="">
               </div>
             </div>
@@ -250,14 +251,26 @@ export default {
     }
   },
   mounted () {
+    // 滚动加载
+    this.scrollLoad(document.getElementById('taskListBox'), (resolve)=>{
+        if(this.$store.state.workbench.workbenchTaskStatus){
+          this.$store.state.workbench.colleaguesTaskPageNum++
+        }else{
+          this.$store.state.workbench.myTaskPageNum++
+        }
+        this.$store.dispatch('getTaskList').then(msg=>{
+          resolve(msg)
+        })
+    })
+
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus)
     this.getBriefing()
-    this.$store.dispatch('getTaskList')
+    this.$store.dispatch('getTaskList', {pageNum: 1})
   },
   watch: {
     '$store.state.workbench.workbenchTaskStatus'(){
-      this.$store.dispatch('getTaskList')
+      this.$store.dispatch('getTaskList', {pageNum: 1})
     }
   },
   methods: {
@@ -269,7 +282,7 @@ export default {
       // 重新请求任务列表
       this.$store.state.workbench.workbenchTaskStatus ? this.$store.commit('setColleaguesTaskTime', this.taskTime) :  this.$store.commit('setMyTaskTime', this.taskTime)
       this.taskDateBox = false
-      this.$store.dispatch('getTaskList')
+      this.$store.dispatch('getTaskList', {pageNum: 1})
     },
     // 获取简报信息
     getBriefing() {

@@ -22,22 +22,46 @@
           placeholder="请填写信息"
           label-width="130"
         />
-        <van-field
+
+        <!-- <van-field
           v-model="$store.getters.NDparams.establishTime"
           label="成立日期"
           placeholder="请填写信息"
           label-width="130"
-        />
+        /> -->
+
+        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+          <div style="width:130px; color:#323233;">成立日期</div>
+          <div  class="flex-1" @click="establishTimeShow = true">{{$store.getters.NDparams.establishTime ? $root.moment($store.getters.NDparams.establishTime * 1000).format('YYYY-MM-DD') : '请选择时间'}}</div>
+        </div>
+
+
+        <!-- 开始时间 -->
+        <van-popup
+          v-model="establishTimeShow"
+          position="bottom"
+        >
+          <van-datetime-picker
+            @cancel="establishTimeShow=false"
+            @confirm="establishTimeShow=false;$store.commit('setParams', {establishTime: timeStamp(currentDate) / 1000})"
+            v-model="currentDate"
+            :formatter="formatter"
+            type="date"
+          />
+        </van-popup>
+
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">所属地区</div>
             <van-dropdown-menu class="flex-1 border-0 pr-3">
-              <van-dropdown-item v-model="$store.getters.NDparams.rgnPrCd" :options="$store.state.dealer.provincesList" />
-              <van-dropdown-item v-model="$store.getters.NDparams.rgnCyCd" :options="$store.state.dealer.citysList" />
-              <van-dropdown-item v-model="$store.getters.NDparams.rgnArCd" :options="$store.state.dealer.areasList" />
+              <van-dropdown-item v-model="$store.state.newDealer.params.rgnPrCd" :options="$store.state.dealer.provincesList" />
+              <van-dropdown-item v-model="$store.state.newDealer.params.rgnCyCd" :options="$store.state.dealer.citysList" />
+              <van-dropdown-item v-if="$store.state.dealer.areasList.length" v-model="$store.state.newDealer.params.rgnArCd" :options="$store.state.dealer.areasList" />
             </van-dropdown-menu>
         </div>
+
+
         <van-field
-          v-model="$store.getters.NDparams.address"
+          v-model="$store.state.newDealer.params.address"
           label="详情地址"
           placeholder="请填写街道号码信息"
           label-width="130"
@@ -53,6 +77,7 @@
           <div style="width:130px; color:#323233;"> 业务类型</div>
           <div  class="flex-1" @click="businessTypesShow = true">{{typeList | typeListFilter}}</div>
         </div>
+        
         <van-popup
           v-model="businessTypesShow"
           position="bottom"
@@ -143,7 +168,7 @@
       position="bottom"
     >
       <div class="bg-gray-200">
-        <div @click="$router.push('/ContactsList')" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
+        <div @click="goContactsList" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建联系人</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="createDealer">直接新建经销商</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="showNext=false">取消</div>
       </div>
@@ -164,7 +189,13 @@ export default {
       ownerUserGidsValus: [],
       ownerUserGidsA: [],
       ownerUserGidsB: [],
-      ownerUserGidsType: 1
+      ownerUserGidsType: 1,
+
+
+      currentDate: '',
+      establishTimeShow: false,
+
+      initCount: 0
     }
   },
   filters: {
@@ -184,18 +215,42 @@ export default {
     }
   },
   mounted () {
+    // this.$store.commit('setNewDealerParams')
+
+    this.typeList = this.$store.state.newDealer.businessTypesValues || []
 
     this.$store.dispatch('getProvinces').then(data=>{
       this.$store.commit('setParams', {
         rgnPrCd: this.$store.state.newDealer.params.rgnPrCd || data[0].value,
         province: this.$store.state.newDealer.params.province || data[0].text})
+      // this.getCity(data[0].value)
     })
     this.$store.dispatch('getColleague', {
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 30,
       usrNM: '',
       rlNm: ''
     })
+
+
+
+    // 回显赋值
+    this.$store.state.newDealer.params.ownerUserGids && this.$store.state.newDealer.params.ownerUserGids.length && this.$store.state.newDealer.params.ownerUserGids.split(',').map(id=>{
+      this.$store.state.dealer.colleagueDataList.map(r=>{
+        if(id == r.id){
+          this.ownerUserGidsA.push(r);
+        }
+        })
+    })
+    this.$store.state.newDealer.params.followerUserGids && this.$store.state.newDealer.params.followerUserGids.length && this.$store.state.newDealer.params.followerUserGids.split(',').map(id=>{
+      this.$store.state.dealer.colleagueDataList.map(r=>{
+        if(id == r.id){
+          this.ownerUserGidsB.push(r);
+        }
+        })
+    })
+
+
   },
   watch: {
     ownerUserGidsA(data){
@@ -219,39 +274,14 @@ export default {
       })
       this.$store.state.newDealer.params.chkBusTypCdList = vals.toString()
     },
-    '$store.getters.NDparams.rgnPrCd'(code){
-      this.$store.state.dealer.provincesList.some(r=>{
-        if(r.value === code){
-          this.$store.commit('setParams',{
-            rgnPrCd: code,
-            province: r.text}
-          )
-          return true;
-        }
-      })
-      this.$store.dispatch('getCitys', code).then(data=>{
-        this.$store.commit('setParams',{
-          rgnCyCd: this.$store.state.newDealer.params.rgnCyCd || data[0].value,
-          city: this.$store.state.newDealer.params.city || data[0].text})
-      })
+    '$store.state.newDealer.params.rgnPrCd'(code){
+      this.initCount++
+      code && this.getCity(code)
     },
-    '$store.getters.NDparams.rgnCyCd'(code){
-      this.$store.state.dealer.citysList.some(r=>{
-        if(r.value === code){
-          this.$store.commit('setParams',{
-            rgnCyCd: code,
-            city: r.text}
-          )
-          return true;
-        }
-      })
-      this.$store.dispatch('getAreas', code).then(data=>{
-        this.$store.commit('setParams',{
-          rgnArCd: data[0].value,
-          area: data[0].text})
-      })
+    '$store.state.newDealer.params.rgnCyCd'(code){
+      code && this.getArea(code)
     },
-    '$store.getters.NDparams.rgnArCd'(code){
+    '$store.state.newDealer.params.rgnArCd'(code){
       this.$store.state.dealer.areasList.some(r=>{
         if(r.value === code){
           this.$store.commit('setParams',{
@@ -264,11 +294,59 @@ export default {
     }
   },
   methods: {
-    createDealer () {
-      this.$store.dispatch('addNewDealer').then(r=>{
-        console.log(r, 222)
-        this.$router.go(-1)
+    getArea(code){
+      this.$store.state.dealer.citysList.some(r=>{
+        if(r.value === code){
+          this.$store.commit('setParams',{
+            rgnCyCd: code,
+            city: r.text}
+          )
+          return true;
+        }
       })
+      this.$store.dispatch('getAreas', code).then(data=>{
+        this.$store.commit('setParams',{
+          rgnArCd: data.length && this.$store.state.newDealer.params.rgnArCd && this.initCount == 1 ? this.$store.state.newDealer.params.rgnArCd : (data[0] ? data[0].value : ''),
+          area: data.length && this.$store.state.newDealer.params.area && this.initCount == 1 ? this.$store.state.newDealer.params.area : (data[0] ? data[0].text : '')})
+      })
+    },
+    getCity(code){
+      this.$store.state.dealer.provincesList.some(r=>{
+        if(r.value === code){
+          this.$store.commit('setParams',{
+            rgnPrCd: code,
+            province: r.text}
+          )
+          return true;
+        }
+      })
+      this.$store.dispatch('getCitys', code).then(data=>{
+        this.$store.commit('setParams',{
+          rgnCyCd: this.$store.state.newDealer.params.rgnCyCd && this.initCount == 1 ? this.$store.state.newDealer.params.rgnCyCd : data[0].value,
+          city: this.$store.state.newDealer.params.city && this.initCount == 1 ? this.$store.state.newDealer.params.city : data[0].text})
+        // this.getArea(data[0].value)
+      })
+    },
+    goContactsList(){
+      if(!this.$store.state.newDealer.params.dealerName){
+        this.$dialog.alert({
+            message: '经销商名称不能为空'
+        });
+      }else{
+        this.$router.push('/ContactsList')
+      }
+    }, 
+    createDealer () {
+      if(!this.$store.state.newDealer.params.dealerName){
+        this.$dialog.alert({
+            message: '经销商名称不能为空'
+        });
+      }else{
+        this.$store.dispatch('addCreateDealer').then(r=>{
+          console.log(r, 222)
+          this.$router.go(-1)
+        })
+      }
     }
   }
 }

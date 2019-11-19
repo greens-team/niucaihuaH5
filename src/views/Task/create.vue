@@ -10,6 +10,7 @@
     <div class="taskCreateRow">
       <van-cell clickable>
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">主题</span>
         </template>
         <template slot="default">
@@ -29,15 +30,17 @@
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">时间</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (taskTimeShow = true)">{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime/1000).format('YYYY-MM-DD') : '请选择时间'}}</p>
+          <p class="p5" @click="editor && (taskTimeShow = true)">{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime*1000).format('YYYY-MM-DD HH:mm') : '请选择时间'}}</p>
         </template>
       </van-cell>
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
@@ -47,6 +50,7 @@
 
       <van-cell clickable v-if="$route.query.taskType == 1">
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
@@ -56,6 +60,7 @@
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">拜访人</span>
         </template>
         <template slot="default">
@@ -65,6 +70,7 @@
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-white">*</span>
           <span class="custom-title">协访人</span>
         </template>
         <template slot="default">
@@ -74,6 +80,7 @@
 
       <van-cell clickable v-if="$route.query.taskType == 1">
         <template slot="title">
+          <span class="text-red-400">*</span>
           <span class="custom-title">拜访目的</span>
         </template>
         <template slot="default">
@@ -83,6 +90,7 @@
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-white">*</span>
           <span class="custom-title">备注</span>
         </template>
         <template slot="default">
@@ -139,11 +147,12 @@
       position="bottom"
     >
       <van-datetime-picker
+        type="datetime"
+        :min-date="new Date()"
         @cancel="taskTimeShow=false"
-        @confirm="taskTimeShow=false;$store.state.task.addEditTaskParams.taskTime = timeStamp(currentDate)"
+        @confirm="taskTimeShow=false; $store.state.task.addEditTaskParams.taskTime = Math.floor(timeStamp(currentDate) / 1000)"
         v-model="currentDate"
         :formatter="formatter"
-        type="date"
       />
     </van-popup>
 
@@ -158,7 +167,7 @@
         right-text="确定"
         left-arrow
         @click-left="alarmTimeShow = false"
-        @click-right="alarmTimeShow = false; alarmTimeText = alarmTimeVal.text; $store.state.task.addEditTaskParams.alarmTime = $store.state.task.addEditTaskParams.taskTime - alarmTimeVal.value"
+        @click-right="alarmTimeShow = false; alarmTimeText = alarmTimeVal.text; $store.state.task.addEditTaskParams.alarmTime = Math.floor(($store.state.task.addEditTaskParams.taskTime*1000 - alarmTimeVal.value)/1000)"
       />
       <van-radio-group v-model="alarmTimeVal">
         <van-cell-group>
@@ -248,7 +257,7 @@
         right-text="确定"
         left-arrow
         @click-left="visitAimShow = false"
-        @click-right="visitAimShow = false; $store.state.task.addEditTaskParams.visitAim = visitAimObj.value; visitAimText=visitAimObj.text"
+        @click-right="visitAimShow = false; $store.state.task.addEditTaskParams.visitAim = visitAimObj.id; visitAimText=visitAimObj.text"
       />
       <van-radio-group v-model="visitAimObj">
         <van-cell-group>
@@ -307,7 +316,7 @@ export default {
       taskPopupShow: false,
 
       taskTimeShow: false,
-      currentDate: '',
+      currentDate: new Date(),
 
       alarmTimeShow: false,
       alarmTimeVal: '',
@@ -367,7 +376,7 @@ export default {
     this.$store.dispatch('getListData')
     this.$store.dispatch('getColleague',{
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 30,
       usrNM: '',
       rlNm: ''
     })
@@ -380,9 +389,21 @@ export default {
 
       this.editor = false
 
-      this.$store.dispatch('getTaskInfo', {taskGid: this.taskId}).then(()=>{
+      this.$store.dispatch('getTaskInfo', this.taskId).then(()=>{
         this.$store.commit('setAddEditTaskParams', this.$store.state.task.taskInfo)
         this.taskStatus = this.$store.state.task.taskInfo.taskStatus
+
+        // 回显 提醒分钟的值 
+        let ms = this.$store.state.task.addEditTaskParams.taskTime * 1000 - this.$store.state.task.addEditTaskParams.alarmTime * 1000
+        this.alarmTimeOption.some(r=>{
+          if(r.value == ms){
+            this.alarmTimeText = r.text
+            return true
+          }
+        })
+        // 回显 相关经销商的值 
+        this.dealerName = this.$store.state.task.addEditTaskParams.dealerName
+
       })
 
     }
@@ -424,6 +445,21 @@ export default {
       }
     },
     save(){
+
+      let params = this.$store.state.task.addEditTaskParams
+      if(params.taskName === '' || params.alarmTime === '' || params.taskTime === '' || params.mainUserGids === ''){
+        this.$dialog.alert({
+          message: '请认真填写'
+        });
+        return
+      }
+      if(this.$route.query.taskType === 1 && (params.visitAim === '' || params.dealerGid === '')){
+        this.$dialog.alert({
+          message: '请认真填写'
+        });
+        return
+      }
+      
       if(this.$route.query.taskType == 1){
         this.newTask = true
       }else{

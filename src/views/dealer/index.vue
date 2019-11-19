@@ -33,12 +33,12 @@
             class="flex-1"
             v-model="$store.state.dealer.listParams.queryString"
             placeholder="请输入搜索关键词"
-            @input="(keyword)=>$store.dispatch('getListData',{queryString: keyword})"
+            @input="(keyword)=>$store.dispatch('getListData',{queryString: keyword, pageNum: 1})"
             show-action
             shape="round"
           >
             <div v-if="homeSearch" slot="action"></div>
-            <div v-else slot="action"  @click="searchBar = false; $store.dispatch('getListData',{queryString: ''})">取消</div>
+            <div v-else slot="action"  @click="searchBar = false; $store.dispatch('getListData',{queryString: '', pageNum: 1})">取消</div>
           </van-search>
         </div>
     </div>
@@ -51,7 +51,7 @@
     <div class="border-b border-gray-200 flex items-center justify-around">
       <van-dropdown-menu>
         <van-dropdown-item 
-          @change="(num)=>$store.dispatch('getListData',{orderType: num})" 
+          @change="(num)=>$store.dispatch('getListData',{orderType: num, pageNum: 1})" 
           v-model="$store.state.dealer.listParams.orderType" 
           :options="$store.state.dealer.orderType" />
       </van-dropdown-menu>
@@ -59,9 +59,9 @@
     </div>
 
     <div class="flex-1 relative" >
-      <div class="absolute inset-0 overflow-y-scroll">
-        <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change="(num)=>$store.dispatch('getListData',{followStatus: num})">
-          <van-swipe-item v-for="(row,index) in $store.state.dealer.followStatus" :key="index"> <ListRow /> </van-swipe-item>
+      <div class="absolute inset-0 overflow-y-scroll" ref="dealerListBox">
+        <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change="(num)=>$store.dispatch('getListData',{followStatus: num, pageNum: 1})">
+          <van-swipe-item v-for="(row,index) in $store.state.dealer.followStatus" :key="index" > <ListRow /> </van-swipe-item>
         </van-swipe>
       </div>
     </div>
@@ -93,7 +93,16 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('getListData')
+
+    this.scrollLoad(this.$refs.dealerListBox, (resolve)=>{
+        this.$store.dispatch('getListData', {
+          pageNum: this.$store.state.dealer.listParams.pageNum+1
+        }).then(msg=>{
+          resolve(msg)
+        })
+    })
+
+    this.$store.dispatch('getListData', {pageNum: 1})
   },
   methods: {
     onClickRight() {

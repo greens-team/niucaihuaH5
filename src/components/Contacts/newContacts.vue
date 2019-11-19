@@ -9,6 +9,7 @@
         <div class="relative formBar font-bold text-base p-3 pl-4">联系人</div>
         <van-field
           v-model="$store.state.contacts.createContactsParams.contactsName"
+          required
           label="姓名"
           placeholder="请输入姓名"
           label-width="130"
@@ -45,14 +46,20 @@ export default {
   },
   methods: {
     finish(){
-      if(this.$store.state.contacts.createContactsParams.contactsName){
-        this.$store.dispatch('createContacts').then(msg => {
-          this.$notify({ type: 'success', message: msg })
-          this.$store.state.contacts.listContactsParams.queryString = ''
-          this.$router.go(-1)
-        })
+      if(!this.$store.state.contacts.createContactsParams.contactsName){
+        this.$dialog.alert({
+            message: '联系人姓名不能为空'
+        });
       }else{
-        this.$notify({ type: 'warning', message: '请填写姓名' })
+        if(this.$store.state.contacts.createContactsParams.contactsName){
+          this.$store.dispatch('createContacts').then(msg => {
+            this.$notify({ type: 'success', message: msg })
+            this.$store.state.contacts.listContactsParams.queryString = ''
+            this.$router.go(-1)
+          })
+        }else{
+          this.$notify({ type: 'warning', message: '请填写姓名' })
+        }
       }
     }
   }

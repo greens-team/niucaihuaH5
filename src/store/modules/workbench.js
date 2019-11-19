@@ -1,6 +1,12 @@
 import moment from '@/plugins/moment' // 时间统一处理
 export default {
   state: {
+    
+    colleaguesTaskPageNum:1,
+    myTaskPageNum:1,
+
+    isLastPage: false,
+    
     // 登录状态
     currentModelActive: 0,
 
@@ -64,7 +70,7 @@ export default {
   actions: {
 
     // 获取任务列表
-    getTaskList({state}){
+    getTaskList({state},data = {}){
       let userGids = []
       state.taskColleagues.userGids.map(r => {
         userGids.push(r.split(',')[1])
@@ -77,36 +83,50 @@ export default {
       let params = {}
       if(state.workbenchTaskStatus){
         params = {
-          startTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 00:00:00')),
-          endTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 23:59:59')),
+          startTime:this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 00:00:00'))/1000,
+          endTime:this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 23:59:59'))/1000,
           userGids: userGids,
           deptGids: deptGids,
           userType: 1,
-          pageNum: 1,
+          pageNum: state.colleaguesTaskPageNum,
           pageSize: 20
         }
       }else{
         params = {
-          startTime: this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 00:00:00')),
-          endTime: this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 23:59:59')),
+          startTime:this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 00:00:00'))/1000,
+          endTime:this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 23:59:59'))/1000,
           userGids: [],
           deptGids: [],
           userType: 0,
-          pageNum: 1,
+          pageNum: state.myTaskPageNum,
           pageSize: 20
         }
       }
+      Object.assign(params, data)
+
+      if(params.pageNum == 1){
+        state.isLastPage = false
+      }
+
+      if(state.isLastPage){
+        return
+      }
+      
       window.$ajax.workbench.taskList(params).then(res => {
         if(!res.code){
           if (state.workbenchTaskStatus) {
             state.myTaskList = []
-            state.colleaguesTaskList = res.data.list
+            state.colleaguesTaskList = params.pageNum == 1 ? res.data.list : state.colleaguesTaskList.concat(res.data.list)
           } else { 
             state.colleaguesTaskList = []
-            state.myTaskList = res.data.list
+            state.myTaskList = params.pageNum == 1 ? res.data.list : state.myTaskList.concat(res.data.list)
+          }
+          if(res.data.list.length < params.pageSize){
+            state.isLastPage = true
           }
         }
       })
+
     },
   }
 }

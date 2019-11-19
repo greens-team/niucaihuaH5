@@ -2,6 +2,7 @@
 // 经销商列表及筛选的数据
 export default {
   state: {
+    isLastPage: false,
     // 获取经营商列表的请求参数
     listParams: {
       "area": "",                 // 区域
@@ -117,11 +118,23 @@ export default {
       params.ownerUserGids = params.ownerUserGids.map(r => {
         return r.id
       })
-      window.$ajax.dealer.listData(params).then(res => {
-        if(!res.code){
-          state.listData = res.data.list
-          console.log(state.listData)
+      if(params.pageNum == 1){
+        state.isLastPage = false
+      }
+      return new Promise(resolve => {
+        if(state.isLastPage){
+          resolve()
+          return
         }
+        window.$ajax.dealer.listData(params).then(res => {
+          if(!res.code){
+            state.listData = params.pageNum == 1 ? res.data.list : state.listData.concat(res.data.list)
+            if(res.data.list.length < params.pageSize){
+              state.isLastPage = true
+            }
+            resolve(state.listData)
+          }
+        })
       })
     },
     getProvinces ({state}) { // 省份

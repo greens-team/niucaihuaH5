@@ -37,10 +37,38 @@ Vue.prototype.formatter = (type, value) => {
     return `${value}年`;
   } else if (type === 'month') {
     return `${value}月`
+  } else if (type == 'day'){
+    return `${value}日`;
+  } else if (type == 'hour'){
+    return `${value}时`;
+  } else if (type == 'minute'){
+    return `${value}分`;
   }
-  return `${value}日`;
 }
 
+Vue.prototype.scrollLoad = (domBox, callback) => {
+  // domScroll.onscroll = function(){
+  //   console.log(domBox.clientHeight, domBox.scrollHeight,)
+  //   console.log(domScroll.clientHeight, domScroll.scrollHeight,)
+  //   //callback
+  // }
+  let isSend = false
+  domBox.onscroll = function(){
+    if(domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend){
+      isSend = true
+      new Promise(resolve=>{
+        callback(resolve)
+      }).then(()=>{
+        isSend = false
+      })
+    }
+    // console.log(domBox.clientHeight, domBox.scrollHeight, domBox.scrollTop)
+
+    // console.log(domScroll.clientHeight, domScroll.scrollHeight,)
+    //callback
+  }
+
+}
 new Vue({
   data(){
     return {

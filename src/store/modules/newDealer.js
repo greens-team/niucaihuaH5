@@ -149,9 +149,17 @@ export default {
     }
   },
   actions: {
-    addNewDealer ({state}) {
+    addCreateDealer ({state}) {
       return new Promise(resolve=>{
-        window.$ajax.dealer.add(state.params).then(res => {
+        let params = Object.assign({}, state.params, {
+          followerUserGids: state.params.followerUserGids && state.params.followerUserGids.length ? state.params.followerUserGids.split(',').map(r=>{
+            return String(r)
+          }) : [],
+          ownerUserGids: state.params.ownerUserGids && state.params.ownerUserGids.length ? state.params.ownerUserGids.split(',').map(r=>{
+            return String(r)
+          }) : []
+        })
+        window.$ajax.dealer.add(params).then(res => {
           if(!res.code){
             resolve()
           }

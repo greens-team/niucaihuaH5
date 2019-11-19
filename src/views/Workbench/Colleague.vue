@@ -19,7 +19,7 @@
     </van-tabs>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0 overflow-y-scroll" ref="colleagueListBox">
 
           <!-- <div class="pt-1 bg-gray-100" v-if="active == 0">
             <div class="bg-white pt-1">
@@ -35,8 +35,8 @@
                   <div class="h-1"></div>
                   <van-checkbox v-for="(item, i) in colleagueData" :key="i" icon-size="16px" 
                     class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
-                    :name="item.usrNm+','+item.id">
-                      {{item.usrNm}}
+                    :name="item.refRlNm+','+item.id">
+                      {{item.refRlNm}}
                   </van-checkbox>
                 </van-checkbox-group>
             </van-swipe-item>
@@ -105,6 +105,21 @@ export default {
     this.getColleague()
   },
   mounted() {
+
+    // this.scrollLoad(this.$refs.colleagueListBox, (resolve)=>{
+
+    //     if(this.$store.state.workbench.workbenchTaskStatus){
+    //       this.$store.state.workbench.colleaguesTaskPageNum++
+    //     }else{
+    //       this.$store.state.workbench.myTaskPageNum++
+    //     }
+    //     this.$store.dispatch('getTaskList').then(msg=>{
+    //       resolve(msg)
+    //     })
+
+    // })
+    
+    
     // this.selected = this.$route.params
   },
   methods: {
@@ -117,7 +132,7 @@ export default {
     getColleague(){
       this.$ajax.auth.colleague({
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 30,
         usrNM: this.searchKeyword,
         rlNm: ''
       }).then(res=>{

@@ -22,19 +22,19 @@
               </div>
               <div class="flex mt-4 justify-between">
                 <div class="text-center  text-xs">
-                  4<br/>联系人
+                  {{info.contactsCount}}<br/>联系人
                 </div>
-                <div class="text-center  text-xs">
+                <!-- <div class="text-center  text-xs">
                   4<br/>经营品牌
-                </div>
-                <div class="text-center  text-xs">
+                </div> -->
+                <!-- <div class="text-center  text-xs">
                   4<br/>在售车型
+                </div> -->
+                <div class="text-center  text-xs">
+                  {{info.competitorCount}}<br/>竞争对手
                 </div>
                 <div class="text-center  text-xs">
-                  4<br/>竞争对手
-                </div>
-                <div class="text-center  text-xs">
-                  4<br/>承租人
+                  {{info.lesseeCount}}<br/>承租人
                 </div>
               </div>
             </div>
