@@ -2,37 +2,50 @@
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
     <van-nav-bar title="新建承租人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
-      <div slot="right" @click="showNext = true">下一步</div>
+      <div slot="right" @click="createLessee">下一步</div>
     </van-nav-bar>
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto pr-4">
         <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
         <van-field
-          v-model="$store.getters.NLparams.lesseeName"
+          v-model="$store.state.lessee.addParams.lesseeName"
           required
           label="承租人名称"
           placeholder="请填写信息"
           label-width="130"
         />
         <van-field
-          v-model="$store.getters.NLparams.idcardNum"
+          v-model="$store.state.lessee.addParams.idcardNum"
           label="身份证件号"
           placeholder="请填写信息"
           label-width="130"
         />
-        <van-field
-          v-model="$store.getters.NLparams.birthday"
-          label="出生日期"
-          placeholder="请填写信息"
-          label-width="130"
-        />
+        <div class="date-time-input-wrap">
+          <van-field
+            label="出生日期"
+            label-width="130"
+            v-model="birthday"
+            placeholder="选择时间"
+            readonly="readonly"
+            @click="taskTimeShow = true"
+          />
+          <van-popup v-model="taskTimeShow" position="bottom" :overlay="true">
+            <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              :min-date="minDate"
+              @cancel="taskTimeShow = false"
+              @confirm="getBirthdayTime();"
+            />
+          </van-popup>
+        </div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">性别</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
-              v-model="$store.getters.NLparams.marry"
-              :options="$store.getters.NLmarryList"
+              v-model="$store.state.lessee.addParams.marry"
+              :options="$store.state.lessee.marryList"
             />
           </van-dropdown-menu>
         </div>
@@ -41,39 +54,39 @@
           <div style="width:130px; color:#323233;">客户类型</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
-              v-model="$store.getters.NLparams.lesseeType"
-              :options="$store.getters.NLlesseeTypeList"
+              v-model="$store.state.lessee.addParams.lesseeType"
+              :options="$store.state.lessee.lesseeTypeList"
             />
           </van-dropdown-menu>
         </div>
 
         <van-field
-          v-model="$store.getters.NLparams.lesseePhone"
+          v-model="$store.state.lessee.addParams.lesseePhone"
           label="手机号"
           placeholder="请填写信息"
           label-width="130"
         />
         <van-field
-          v-model="$store.getters.NLparams.domicilePlace"
+          v-model="$store.state.lessee.addParams.domicilePlace"
           label="户口所在地"
           placeholder="请填写信息"
           label-width="130"
         />
         <van-field
-          v-model="$store.getters.NLparams.homeAddress"
+          v-model="$store.state.lessee.addParams.homeAddress"
           label="家庭住址"
           placeholder="请填写信息"
           label-width="130"
         />
         <van-field
-          v-model="$store.getters.NLparams.workingYears"
+          v-model="$store.state.lessee.addParams.workingYears"
           label="从业年限"
           placeholder="请填写信息"
           label-width="130"
         />
 
         <van-field
-          v-model="$store.getters.NLparams.comment"
+          v-model="$store.state.lessee.addParams.comment"
           :rows="5"
           autosize
           type="textarea"
@@ -92,10 +105,40 @@ export default {
   name: "CreateLessee",
   data() {
     return {
-      showNext: false
+      showNext: false,
+      taskTimeShow: false,
+      currentDate: new Date(),
+      birthday: "",
+      minDate:new Date(1970, 10, 1)
     };
   },
-  filters: {},
-  watch: {}
+  mounted() {
+    this.getCurrentDate();
+  },
+  methods: {
+
+    //获取当前时间
+    getCurrentDate() {
+      let currentTime = this.$root
+        .moment(new Date().getTime())
+        .format("YYYY-MM-DD");
+      this.birthday = currentTime;
+      this.$store.state.lessee.addParams.birthday = new Date().getTime();
+    },
+    createLessee() {
+      this.$store.dispatch("addLessee").then(r => {
+        this.$router.go(-1);
+        this.$store
+      });
+    },
+    getBirthdayTime(){
+      this.taskTimeShow = false;
+      let birthdayTime = this.$root
+        .moment(this.$root.timeStamp(this.currentDate))
+        .format("YYYY-MM-DD");
+      this.birthday = birthdayTime;
+      this.$store.state.lessee.addParams.birthday = this.$root.timeStamp(this.currentDate);
+    }
+  }
 };
 </script>

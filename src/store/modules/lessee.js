@@ -4,7 +4,7 @@ export default {
   state: {
 
     addParams: {
-      birthday: 0,
+      birthday: '',
       comment: '',
       domicilePlace: '',
       followerUserGids: [],
@@ -19,8 +19,21 @@ export default {
       marry: 0,
       ownerUserGids: [],
       userPic: '',
-      workingYears: 0
+      workingYears: ''
     },
+    marryList: [{             // 选择性别
+      text: '男',
+      value: 0
+    }, {
+      text: '女',
+      value: 1
+    }],
+    lesseeTypeList: [
+      {
+        text: '自然人',
+        value: 0
+      }
+    ],
     info: {},
 
     editParams: {
@@ -86,10 +99,12 @@ export default {
       id: 2,
       text: '动态记录'
     }],
-    currentTabsIndex: 0
+    currentTabsIndex: 0,
+
+
   },
   mutations: {
-    setInfo(state, data = {}){
+    setInfo(state, data = {}) {
       Object.assign(state.info, data)
     },
     setCurrentTabsIndex_lessee(state, num) {
@@ -106,6 +121,26 @@ export default {
     },
     setInitParams_tabs(state) {
       state.currentTabsIndex = 0
+    },
+    setInitAddParams(state) {
+      state.addParams = {
+        birthday: '',
+        comment: '',
+        domicilePlace: '',
+        followerUserGids: [],
+        gender: 0,
+        homeAddress: '',
+        idcardBackPic: '',
+        idcardFrontPic: '',
+        idcardNum: '',
+        lesseeName: '',
+        lesseePhone: '',
+        lesseeType: 0,
+        marry: 0,
+        ownerUserGids: [],
+        userPic: '',
+        workingYears: ''
+      }
     }
   },
   actions: {

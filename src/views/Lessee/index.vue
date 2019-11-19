@@ -23,7 +23,7 @@
             class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
           />
           <!-- 添加图标 -->
-          <van-icon name="plus" @click="$store.commit('setNewLesseeParams'); $router.push('/CreateLessee')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
+          <van-icon name="plus" @click="$store.commit('setInitAddParams');$router.push('/CreateLessee')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
         </div>
       </div>
       <div

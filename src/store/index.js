@@ -7,7 +7,6 @@ import newDealer from './modules/newDealer'    // 经销商 - 新建表单数据
 import contacts from './modules/contacts'      // 联系人 - 增删改查 所需数据
 import competitor from './modules/competitor'  // 合作竞对
 import lessee from './modules/lessee'          // 承租人
-import newLessee from './modules/newLessee'    // 承租人 - 新建
 import record from './modules/record'          // 承租人
 import task from './modules/task'              // 任务
 import getters from './getters'
@@ -23,7 +22,6 @@ const store = new Vuex.Store({
     dealerInfo,
     competitor,
     lessee,
-    newLessee,
     record,
     task
   },
