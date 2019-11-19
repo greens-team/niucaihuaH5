@@ -2,7 +2,12 @@
 <template>
   <div class="LesseeInfo flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="承租人" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <i class="iconfont iconqipaocaidanbianji-bang" slot="right" style="font-size: 1.6rem;"></i>
+      <i
+        class="iconfont iconqipaocaidanbianji-bang"
+        @click="editor"
+        slot="right"
+        style="font-size: 1.6rem;"
+      ></i>
       <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
     </van-nav-bar>
     <div class="flex-1 relative">
@@ -41,7 +46,11 @@
           </div>
           <div>
             <div class="flex mt-2">
-              <div @click="changeFollowStatus(i)" v-for="(row,i) in $store.state.lessee.lesseeStatus" :key="i">
+              <div
+                @click="changeFollowStatus(i)"
+                v-for="(row,i) in $store.state.lessee.lesseeStatus"
+                :key="i"
+              >
                 <div
                   v-if="i && i<$store.state.lessee.lesseeStatus.length-1"
                   :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus+1}]"
@@ -119,8 +128,9 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">年龄</p>
-                    <p class="text-gray-900 text-sm">{{Math.floor((((new Date()).valueOf() - info.birthday))/31536000000)}}
-                      </p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{Math.floor((((new Date()).valueOf() - info.birthday))/31536000000)}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">户口所在地</p>
@@ -155,12 +165,14 @@
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">经销商</div>
-                  <div class="text-sm" style="color:#FF9B02" @click="$router.push({path:'/DealerList', query: {modelGid: id}})">添加</div>
+                  <div
+                    class="text-sm"
+                    style="color:#FF9B02"
+                    @click="$router.push({path:'/DealerList', query: {modelGid: id}})"
+                  >添加</div>
                 </div>
                 <van-collapse v-model="currentLessee">
-                  <van-collapse-item class="text-gray-900 text-lg"
-                    title="内蒙古赤峰商用车有限公司"
-                  >
+                  <van-collapse-item class="text-gray-900 text-lg" title="内蒙古赤峰商用车有限公司">
                     <div class="border-b border-gray-100 pt-2 pb-2">
                       <p class="text-xs text-gray-500">经销商名称</p>
                       <p class="text-base" style="color:#0885FF;">内蒙古赤峰商用车有限公司</p>
@@ -246,16 +258,31 @@ export default {
         });
       }
     },
-    changeFollowStatus(i){
-      this.$dialog.confirm({
-        message: '确认要改变业务状态吗？'
-      }).then(() => {
-        // on confirm
-        this.$store.dispatch('editLessee',Object.assign({},this.info, {lesseeStatus: i})).then(msg=>{
-          this.$store.commit('setInfo', {lesseeStatus: i})
+    changeFollowStatus(i) {
+      this.$dialog
+        .confirm({
+          message: "确认要改变业务状态吗？"
         })
-      });
+        .then(() => {
+          // on confirm
+          this.$store
+            .dispatch(
+              "editLessee",
+              Object.assign({}, this.info, { lesseeStatus: i })
+            )
+            .then(msg => {
+              this.$store.commit("setInfo", { lesseeStatus: i });
+            });
+        });
     },
+    editor() {
+      this.$store.commit("setInitEditParams");
+      this.$store.commit(
+        "setParams",
+        Object.assign(this.info, { lesseeType: 0 })
+      );
+      this.$router.push("/EditLessee");
+    }
   }
 };
 </script>

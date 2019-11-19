@@ -37,7 +37,7 @@ export default {
     info: {},
 
     editParams: {
-      birthday: 0,
+      birthday: '',
       comment: '',
       domicilePlace: '',
       followerUserGids: [],
@@ -141,6 +141,35 @@ export default {
         userPic: '',
         workingYears: ''
       }
+    },
+    
+    setInitEditParams(state) {
+      state.editParams = {
+        birthday: '',
+        comment: '',
+        domicilePlace: '',
+        followerUserGids: [],
+        gender: 0,
+        homeAddress: '',
+        idcardBackPic: '',
+        idcardFrontPic: '',
+        idcardNum: '',
+        lesseeName: '',
+        lesseePhone: '',
+        lesseeType: 0,
+        marry: 0,
+        ownerUserGids: [],
+        userPic: '',
+        workingYears: 0,
+        lesseeStatus: 0,
+        giveupReason: '',
+        giveupComment: '',
+        gid: ''
+      }
+    },
+    //编辑承租人 页面初始显示
+    setParams(state, data = {}){
+      Object.assign(state.editParams, data)
     }
   },
   actions: {
@@ -178,7 +207,6 @@ export default {
           if (!Number(res.code)) {
             state.list = res.data.list
             resolve(res.msg)
-            console.log(state.list)
           }
         })
       })

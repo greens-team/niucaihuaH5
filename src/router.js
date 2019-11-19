@@ -30,6 +30,7 @@ import CompetitorInfo from './views/Competitor/info.vue'  //竞争对手详情�
 import Lessee from './views/Lessee'              //竞争对手列表页
 import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
 import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
+import EditLessee from './views/Lessee/editLessee.vue'          // 新增承租人
 
 import recordCheck from './views/record'  //经销商提交备案信息 检查
 import recordInfo from './views/record/info.vue'  //经销商提交备案
@@ -184,6 +185,12 @@ export default new Router({
       path: '/CreateLessee',   //新建承租人
       name: 'CreateLessee',
       component: CreateLessee
+    },
+
+    {
+      path: '/EditLessee',   //新建承租人
+      name: 'EditLessee',
+      component: EditLessee
     },
 
     {
