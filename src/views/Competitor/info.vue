@@ -2,7 +2,12 @@
 <template>
   <div class="CompetitorInfo flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="竞争对手" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <i class="iconfont iconqipaocaidanbianji-bang" slot="right" style="font-size: 1.6rem;"></i>
+      <i
+        class="iconfont iconqipaocaidanbianji-bang"
+        @click="editor"
+        slot="right"
+        style="font-size: 1.6rem;"
+      ></i>
       <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
     </van-nav-bar>
 
@@ -11,7 +16,7 @@
         <div class="shadow-md rounded-lg m-3 p-4 bg-white">
           <div class="mb-3">
             <p class="text-xl font-bold">{{info.competorName}}</p>
-            <p class="text-sm">{{$store.state.competitor.competorStatus[info.competorType-1]}}</p>
+            <p class="text-sm">{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
           </div>
         </div>
 
@@ -50,7 +55,7 @@
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">竞对类型</p>
-                    <p>{{$store.state.competitor.competorStatus[info.competorType-1]}}</p>
+                    <p>{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
                   </div>
                 </div>
               </div>
@@ -155,6 +160,18 @@ export default {
           this.currentCompetitor = [this.competitorlist[0].dealerGid];
         });
       }
+    },
+    editor() {
+      this.$store.commit("setEditParams");
+      this.$store.commit(
+        "setParams",
+        Object.assign({
+          comment: this.info.comment,
+          competorName: this.info.competorName,
+          competorType: this.info.competorType
+        })
+      );
+      this.$router.push("/EditCompetitor");
     }
   }
 };

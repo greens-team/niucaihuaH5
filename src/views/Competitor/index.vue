@@ -1,6 +1,6 @@
 <!-- 竞争对手列表页 -->
 <template>
-  <div class="CompetitorList">
+  <div class="CompetitorList flex-1 flex flex-col">
     <div class="flex flex-col">
       <div class="flex-1 items-center pl-3 pr-3 flex border-b border-gray-200" v-show="!searchBar">
         <div class="flex-1 flex">
@@ -23,7 +23,12 @@
             class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
           />
           <!-- 添加图标 -->
-          <van-icon name="plus" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600" />
+          <van-icon
+            name="plus"
+            @click="$store.commit('setInitAddParams');$router.push('/CreateCompetitor')"
+            slot="right"
+            class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
+          />
         </div>
       </div>
       <div
@@ -62,6 +67,17 @@
         :name="row.id"
       ></van-tab>
     </van-tabs>
+
+    <div class="border-b border-gray-200 flex items-center justify-start px-4">
+      <van-dropdown-menu>
+        <van-dropdown-item
+          @change="(num)=>$store.dispatch('listCompetitor',{orderType: num})"
+          v-model="$store.state.competitor.listParams.orderType"
+          :options="$store.state.competitor.orderType"
+        />
+      </van-dropdown-menu>
+    </div>
+
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll">
         <van-swipe
@@ -72,17 +88,18 @@
         >
           <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
             <div
-              class="p-1 m-3 border-b"
+              class="p-1 border-b border-gray-200"
               v-for="(r,i) in $store.state.competitor.list"
               :key="i"
               @click="getInfo(r.gid)"
             >
+            
               <van-cell is-link>
                 <template slot="title">
                   <p class="custom-title text-lg font-bold">{{r.competorName}}</p>
                   <p
                     class="text-gray-800"
-                  >{{$store.state.competitor.competorStatus[r.competorType-1]}}</p>
+                  >{{$store.state.competitor.competorStatus[r.competorType-1].text}}</p>
                 </template>
               </van-cell>
             </div>

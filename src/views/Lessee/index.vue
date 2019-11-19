@@ -1,6 +1,6 @@
  <!-- 承租人列表页 -->
 <template>
-  <div class="LesseeList">
+  <div class="LesseeList flex-1 flex flex-col">
     <div class="flex flex-col">
       <div class="flex-1 items-center pl-3 pr-3 flex border-b border-gray-200" v-show="!searchBar">
         <div class="flex-1 flex">

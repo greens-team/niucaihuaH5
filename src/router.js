@@ -27,10 +27,13 @@ import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同
 
 import Competitor from './views/Competitor'              //竞争对手列表页
 import CompetitorInfo from './views/Competitor/info.vue'  //竞争对手详情页
-import Lessee from './views/Lessee'              //竞争对手列表页
-import LesseeInfo from './views/Lessee/info.vue'  //竞争对手详情页
+import CreateCompetitor from './views/Competitor/CreateCompetitor.vue'   //新建竞争对手
+import EditCompetitor from './views/Competitor/editCompetitor.vue'   //新建竞争对手
+
+import Lessee from './views/Lessee'              //承租人列表页
+import LesseeInfo from './views/Lessee/info.vue'  //承租人详情页
 import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
-import EditLessee from './views/Lessee/editLessee.vue'          // 新增承租人
+import EditLessee from './views/Lessee/editLessee.vue'          // 编辑承租人
 
 import recordCheck from './views/record'  //经销商提交备案信息 检查
 import recordInfo from './views/record/info.vue'  //经销商提交备案
@@ -171,6 +174,17 @@ export default new Router({
       name: 'CompetitorInfo',
       component: CompetitorInfo
     },
+    {
+      path: '/CreateCompetitor',   //新增竞争对手
+      name: 'CreateCompetitor',
+      component: CreateCompetitor
+    },
+    {
+      path: '/EditCompetitor',   //编辑竞争对手
+      name: 'EditCompetitor',
+      component: EditCompetitor
+    },
+    
     {
       path: '/Lessee',   //承租人列表页
       name: 'Lessee',

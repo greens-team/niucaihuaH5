@@ -109,14 +109,13 @@ export default {
       taskTimeShow: false,
       currentDate: new Date(),
       birthday: "",
-      minDate:new Date(1970, 10, 1)
+      minDate: new Date(1970, 10, 1)
     };
   },
   mounted() {
     this.getCurrentDate();
   },
   methods: {
-
     //获取当前时间
     getCurrentDate() {
       let currentTime = this.$root
@@ -130,13 +129,15 @@ export default {
         this.$router.go(-1);
       });
     },
-    getBirthdayTime(){
+    getBirthdayTime() {
       this.taskTimeShow = false;
       let birthdayTime = this.$root
         .moment(this.$root.timeStamp(this.currentDate))
         .format("YYYY-MM-DD");
       this.birthday = birthdayTime;
-      this.$store.state.lessee.addParams.birthday = this.$root.timeStamp(this.currentDate);
+      this.$store.state.lessee.addParams.birthday = this.$root.timeStamp(
+        this.currentDate
+      );
     }
   }
 };

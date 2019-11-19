@@ -5,7 +5,7 @@ export default {
 
     addParams: {
       competorName: '',
-      competorType: 0,
+      competorType: 1,
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
@@ -15,7 +15,7 @@ export default {
     editParams: {
       gid: '',
       competorName: '',
-      competorType: 0,
+      competorType: 1,
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
@@ -24,7 +24,7 @@ export default {
     listParams: {
       queryString: '',
       orderType: 1,
-      competorType: 0,
+      competorType: 1,
       pageNum: 1,
       pageSize: 10
     },
@@ -48,14 +48,29 @@ export default {
     jobsUser1: [],
     selectedUserGids: [],
 
-    competorStatus: [
+    competorStatus_1: [
       '第三方', '厂商金融'
+    ],
+    competorStatus: [
+      {
+        text: '第三方',
+        value: 1
+      },
+      {
+        text: '厂商金融',
+        value: 2
+      }
     ],
     competorType: [
       { name: '全部', id: 0 },
       { name: '第三方', id: 1 },
       { name: '厂商金融', id: 2 },
-      { name: '银行', id: 3 }
+      // { name: '银行', id: 3 }
+    ],
+
+    orderType: [
+      { text: '按创建时间排序', value: 1 },
+      { text: '按名称排序', value: 2 }
     ],
 
     tabs: [{
@@ -79,13 +94,37 @@ export default {
       state.listParams = {
         queryString: '',
         orderType: 1,
-        competorType: 0,
+        competorType: 0,   //竞对类型 0全部 1第三方 2厂商金融
         pageNum: 1,
         pageSize: 10
       }
     },
-    setInitParams_tabs(state){
+    setInitParams_tabs(state) {
       state.currentTabsIndex = 0
+    },
+    setInitAddParams(state) {
+
+      state.addParams = {
+        competorName: '',
+        competorType: 1,
+        comment: '',
+        ownerUserGids: [],
+        followerUserGids: []
+      }
+    },
+    setEditParams(state) {
+      state.editParams = {
+        gid: '',
+        competorName: '',
+        competorType: 1,
+        comment: '',
+        ownerUserGids: [],
+        followerUserGids: []
+      }
+    },
+    //编辑竞争对手 页面初始显示
+    setParams(state, data = {}){
+      Object.assign(state.editParams, data)
     }
   },
   actions: {
