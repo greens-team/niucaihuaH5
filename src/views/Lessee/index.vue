@@ -105,7 +105,7 @@
                         plain
                         type="primary"
                         class="text-sm"
-                      >{{$store.state.lessee.status[r.lesseeStatus]}}</van-tag>
+                      >{{$store.state.lessee.status[r.lesseeStatus-1]}}</van-tag>
                     </div>
                   </div>
                   <div class="text-xs text-gray-900">{{r.homeAddress}}</div>

@@ -105,9 +105,7 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">出生日期</p>
-                    <p
-                      class="text-gray-900 text-sm"
-                    >{{$root.moment(info.birthday).format('YYYY-MM-DD')}}</p>
+                    <p class="text-gray-900 text-sm">{{info.birthday}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">婚姻状况</p>
@@ -126,12 +124,12 @@
                     <p class="text-xs text-gray-500">手机号</p>
                     <p class="text-gray-900 text-sm" style="color:#0885FF;">{{info.lesseePhone}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
+                  <!-- <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">年龄</p>
                     <p
                       class="text-gray-900 text-sm"
                     >{{Math.floor((((new Date()).valueOf() - info.birthday))/31536000000)}}</p>
-                  </div>
+                  </div>-->
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">户口所在地</p>
                     <p class="text-gray-900 text-sm">{{info.domicilePlace}}</p>
@@ -168,14 +166,20 @@
                   <div
                     class="text-sm"
                     style="color:#FF9B02"
-                    @click="$router.push({path:'/DealerList', query: {modelGid: id}})"
-                  >添加</div>
+                    @click="$router.push({path:'/DealerList', query: {modelGid: id,flag:1}})"
+                  >关联</div>
                 </div>
-                <van-collapse v-model="currentLessee">
-                  <van-collapse-item class="text-gray-900 text-lg" title="内蒙古赤峰商用车有限公司">
+                <van-collapse v-model="currentLessee" v-show="isShowDealer">
+                  <van-collapse-item
+                    v-for="(r,i) in lesseeInfolist"
+                    :key="i"
+                    :title="r.dealerName"
+                    :name="r.dealerGid"
+                    class="text-gray-900 text-lg"
+                  >
                     <div class="border-b border-gray-100 pt-2 pb-2">
                       <p class="text-xs text-gray-500">经销商名称</p>
-                      <p class="text-base" style="color:#0885FF;">内蒙古赤峰商用车有限公司</p>
+                      <p class="text-base" style="color:#0885FF;">{{r.dealerName}}</p>
                     </div>
                   </van-collapse-item>
                 </van-collapse>
@@ -227,7 +231,7 @@ export default {
       currentLessee: [],
       workProgress: "",
       showInfo1: true,
-      showInfo2: false
+      isShowDealer: false
     };
   },
   created() {
@@ -244,7 +248,7 @@ export default {
     }
   },
   watch: {
-    "$store.state.competitor.currentTabsIndex"(num) {
+    "$store.state.lessee.currentTabsIndex"(num) {
       this.getBaseInfo(num);
     }
   },
@@ -253,8 +257,24 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
-          this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
-          this.currentLessee = [this.lesseeInfolist[0].dealerGid];
+          if (this.$store.state.lessee.info.dealerList != null) {
+            this.isShowDealer = true;
+            this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
+            this.currentLessee = [this.lesseeInfolist[0].dealerGid];
+          } else {
+            this.isShowDealer = false;
+          }
+
+          //判断如果出生日期为null 显示空 
+
+          if (this.info.birthday == null) {
+            console.log(this.info);
+            this.info.birthday = null
+          } else {
+            this.info.birthday = this.$root
+              .moment(this.info.birthday * 1000)
+              .format("YYYY-MM-DD");
+          }
         });
       }
     },
@@ -276,11 +296,15 @@ export default {
         });
     },
     editor() {
-      this.$store.commit("setInitEditParams");
+      // this.$store.commit("setInitEditParams");
       this.$store.commit(
         "setParams",
-        Object.assign(this.info, { lesseeType: 0 })
+        Object.assign(this.info, {
+          lesseeType: 0,
+          lesseeStatus: 1 //默认就是线索承租人
+        })
       );
+      console.log(this.info,"---")
       this.$router.push("/EditLessee");
     }
   }

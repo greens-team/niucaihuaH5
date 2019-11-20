@@ -2,7 +2,7 @@
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
     <van-nav-bar title="编辑承租人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
-      <div slot="right" @click="editLessee">下一步</div>
+      <div slot="right" @click="editLessee">保存</div>
     </van-nav-bar>
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto pr-4">
@@ -112,21 +112,38 @@ export default {
     };
   },
   mounted() {
-    this.getCurrentDate();
+    this.setBirthday();
   },
   methods: {
+    setBirthday() {
+      let birthday = this.$store.state.lessee.editParams.birthday;
+      console.log(birthday);
+      if (birthday != null) {
+        this.birthday = this.$root
+          .moment(this.$store.state.lessee.editParams.birthday * 1000)
+          .format("YYYY-MM-DD");
+      }
+    },
     //获取当前时间
     getCurrentDate() {
       let currentTime = this.$root
         .moment(new Date().getTime())
         .format("YYYY-MM-DD");
       this.birthday = currentTime;
-      this.$store.state.lessee.editParams.birthday = new Date().getTime();
+      this.$store.state.lessee.editParams.birthday = Math.floor(
+        new Date().getTime() / 1000
+      );
     },
     editLessee() {
-      this.$store.dispatch("editLessee").then(r => {
-        this.$router.go(-1);
-      });
+      if (!this.$store.state.lessee.editParams.lesseeName) {
+        this.$dialog.alert({
+          message: "承租人名称不能为空"
+        });
+      } else {
+        this.$store.dispatch("editLessee").then(r => {
+          this.$router.go(-1);
+        });
+      }
     },
     getBirthdayTime() {
       this.birthdayTimeShow = false;
@@ -134,8 +151,8 @@ export default {
         .moment(this.$root.timeStamp(this.currentDate))
         .format("YYYY-MM-DD");
       this.birthday = birthdayTime;
-      this.$store.state.lessee.editParams.birthday = this.$root.timeStamp(
-        this.currentDate
+      this.$store.state.lessee.editParams.birthday = Math.floor(
+        this.$root.timeStamp(this.currentDate) / 1000
       );
     }
   }

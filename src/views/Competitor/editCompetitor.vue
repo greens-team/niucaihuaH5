@@ -2,7 +2,7 @@
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
     <van-nav-bar title="编辑竞争对手" left-text="取消" @click-left="$router.go(-1)" left-arrow>
-      <div slot="right" @click="editCompetitor">下一步</div>
+      <div slot="right" @click="editCompetitor">保存</div>
     </van-nav-bar>
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto pr-4">

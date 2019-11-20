@@ -2,7 +2,7 @@
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
     <van-nav-bar title="新建承租人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
-      <div slot="right" @click="createLessee">下一步</div>
+      <div slot="right" @click="createLessee">保存</div>
     </van-nav-bar>
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto pr-4">

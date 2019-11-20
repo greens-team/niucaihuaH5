@@ -51,7 +51,9 @@ import ContactsInfo from './views/Contacts/info.vue'   // 联系人详情信息�
 
 
 import DealerList from './components/Dealer'                // 关联 经销商列表
-import SelectedDealerList from './components/Dealer/selectedList.vue'  // 关联 已选中的经销商
+import DealerSelectedList from './components/Dealer/DealerSelectedList.vue'  // 承租人关联 已选中的经销商
+import CompetitorSelectedList from './components/Dealer/CompetitorSelectedList.vue'
+ 
 import NewDealer from './components/Dealer/newDealer'     //关联经销商 - 新建经销商
 
 
@@ -160,10 +162,16 @@ export default new Router({
       component: DealerList
     },
     {
-      path: '/SelectedDealerList',   // 关联选中的经销商
-      name: 'SelectedDealerList',
-      component: SelectedDealerList
+      path: '/DealerSelectedList',   // 承租人关联选中的经销商
+      name: 'DealerSelectedList',
+      component: DealerSelectedList
     },
+    {
+      path: '/CompetitorSelectedList',   // 承租人关联选中的经销商
+      name: 'CompetitorSelectedList',
+      component: CompetitorSelectedList
+    },
+    
     {
       path: '/Competitor',   //竞争对手列表页
       name: 'Competitor',

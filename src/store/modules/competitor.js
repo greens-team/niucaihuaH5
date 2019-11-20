@@ -43,6 +43,9 @@ export default {
       ]
     },
 
+
+    //合作竞对 关联和解除经销商
+
     confirmUserGids: [],
     jobsUser: [],
     jobsUser1: [],
@@ -112,16 +115,16 @@ export default {
         followerUserGids: []
       }
     },
-    setEditParams(state) {
-      state.editParams = {
-        gid: '',
-        competorName: '',
-        competorType: 1,
-        comment: '',
-        ownerUserGids: [],
-        followerUserGids: []
-      }
-    },
+    // setEditParams(state) {
+    //   state.editParams = {
+    //     gid: '',
+    //     competorName: '',
+    //     competorType: 1,
+    //     comment: '',
+    //     ownerUserGids: [],
+    //     followerUserGids: []
+    //   }
+    // },
     //编辑竞争对手 页面初始显示
     setParams(state, data = {}) {
       Object.assign(state.editParams, data)

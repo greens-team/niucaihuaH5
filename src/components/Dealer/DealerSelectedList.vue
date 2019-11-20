@@ -1,4 +1,4 @@
-<!-- 选中的经销商 -->
+<!-- 承租人 关联选中 的经销商 c-->
 <template>
   <div class="selectedListLessee flex flex-1 flex-col">
     <van-nav-bar
@@ -89,7 +89,7 @@ export default {
         modelGid: this.$route.query.modelGid,
         modelGids: arr.map(r=>{
           return r.contactsGid
-        }).toString()
+        })
       }).then(msg=>{
         this.$notify({ type: 'success', message: msg })
         this.$router.go(-2)

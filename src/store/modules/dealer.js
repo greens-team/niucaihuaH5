@@ -67,6 +67,7 @@ export default {
 
     confirmUserGids: [],
     jobsUser: [],
+    jobsUser1: [],
     selectedUserGids: [],
 
 

@@ -49,7 +49,8 @@
                 <div>
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">
-                      <span class="text-red-500">*</span>竞对名称
+                      竞对名称
+                      <!-- <span class="text-red-500">*</span>竞对名称 -->
                     </p>
                     <p>{{info.competorName}}</p>
                   </div>
@@ -63,9 +64,13 @@
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex pl-3 pr-3 pb-3">
                   <div class="flex-1 font-bold">经销商</div>
-                  <div class="text-sm text-blue-500">关联</div>
+                  <div
+                    class="text-sm"
+                    style="color:#FF9B02"
+                    @click="$router.push({path:'/DealerList', query: {modelGid: id,flag:2}})"
+                  >关联</div>
                 </div>
-                <van-collapse v-model="currentCompetitor">
+                <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">
                   <van-collapse-item
                     v-for="(r,i) in competitorlist"
                     :key="i"
@@ -74,7 +79,8 @@
                   >
                     <div class="border-b border-gray-100 pt-2 pb-2">
                       <p class="text-xs text-gray-500">
-                        <span class="text-red-500">*</span>竞对政策
+                        竞对政策
+                        <!-- <span class="text-red-500">*</span> -->
                       </p>
                       <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
                     </div>
@@ -130,7 +136,8 @@ export default {
       info: {},
       currentCompetitor: [],
       competitorlist: [],
-      workProgress: ""
+      workProgress: "",
+      isShowCompetitor: false
     };
   },
   mounted() {
@@ -156,21 +163,19 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getCompetitorInfo", this.id).then(res => {
           this.info = this.$store.state.competitor.info;
-          this.competitorlist = this.$store.state.competitor.info.dealerList;
-          this.currentCompetitor = [this.competitorlist[0].dealerGid];
+          if (this.$store.state.competitor.info.dealerList != null) {
+            this.isShowCompetitor = true;
+            this.competitorlist = this.$store.state.competitor.info.dealerList;
+            this.currentCompetitor = [this.competitorlist[0].dealerGid];
+          } else {
+            this.isShowCompetitor = false;
+          }
         });
       }
     },
     editor() {
-      this.$store.commit("setEditParams");
-      this.$store.commit(
-        "setParams",
-        Object.assign({
-          comment: this.info.comment,
-          competorName: this.info.competorName,
-          competorType: this.info.competorType
-        })
-      );
+      // this.$store.commit("setEditParams");
+      this.$store.commit("setParams", this.info);
       this.$router.push("/EditCompetitor");
     }
   }

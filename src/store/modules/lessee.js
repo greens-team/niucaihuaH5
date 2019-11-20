@@ -6,7 +6,7 @@ export default {
   state: {
     isLastPage: false,
     addParams: {
-      birthday: '',
+      birthday: 0,
       comment: '',
       domicilePlace: '',
       followerUserGids: [],
@@ -39,7 +39,7 @@ export default {
     info: {},
 
     editParams: {
-      birthday: '',
+      birthday: null,
       comment: '',
       domicilePlace: '',
       followerUserGids: [],
@@ -75,6 +75,8 @@ export default {
       modelGid: '',
       modelGids: []
     },
+
+    //承租人 关联和解除关联经销商
 
     confirmUserGids: [],
     jobsUser: [],
@@ -126,28 +128,8 @@ export default {
     },
     setInitAddParams(state) {
       state.addParams = {
-        birthday: '',
-        comment: '',
-        domicilePlace: '',
-        followerUserGids: [],
-        gender: 0,
-        homeAddress: '',
-        idcardBackPic: '',
-        idcardFrontPic: '',
-        idcardNum: '',
-        lesseeName: '',
-        lesseePhone: '',
-        lesseeType: 0,
-        marry: 0,
-        ownerUserGids: [],
-        userPic: '',
-        workingYears: ''
-      }
-    },
-    
-    setInitEditParams(state) {
-      state.editParams = {
-        birthday: '',
+
+        birthday: null,
         comment: '',
         domicilePlace: '',
         followerUserGids: [],
@@ -163,15 +145,17 @@ export default {
         ownerUserGids: [],
         userPic: '',
         workingYears: 0,
-        lesseeStatus: 0,
+        lesseeStatus: 1,
         giveupReason: '',
         giveupComment: '',
         gid: ''
       }
     },
+    
     //编辑承租人 页面初始显示
     setParams(state, data = {}){
-      Object.assign(state.editParams, data)
+      Object.assign(state.editParams, data);
+      console.log(state.editParams,"vuex")
     }
   },
   actions: {

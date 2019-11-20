@@ -1,4 +1,4 @@
-<!-- 关联经销商列表 -->
+<!-- 关联经销商列表 c -->
 <template>
   <div class="LesseeList flex flex-1 flex-col">
     <van-nav-bar
@@ -7,7 +7,7 @@
       @click-left="$store.state.dealer.confirmUserGids=[];$store.state.dealer.jobsUser=[]; $store.state.dealer.selectedUserGids = [];$router.go(-1)"
       left-arrow
     >
-    <!-- <div slot="right" @click="$router.push('/newDealer')">新建</div> -->
+      <!-- <div slot="right" @click="$router.push('/newDealer')">新建</div> -->
     </van-nav-bar>
 
     <van-search
@@ -44,7 +44,7 @@
           {{r.split(',')[0]}}
         </span>
       </div>
-      <div slot="right" class="py-2 px-3 rounded-sm text-white nextPage" @click="selectedList">下一步</div>
+      <div slot="right" class="py-2 px-3 rounded-sm text-white nextPage" @click="selectedList()">下一步</div>
     </div>
   </div>
 </template>
@@ -54,7 +54,8 @@ export default {
   name: "DealerList",
   created() {},
   data() {
-    return {};
+    return {
+    };
   },
   watch: {
     "$store.state.dealer.listParams.queryString"(val) {
@@ -69,17 +70,34 @@ export default {
   },
   methods: {
     selectedList() {
-      if (this.$store.state.dealer.selectedUserGids.length) {
-        this.$store.state.dealer.jobsUser = [];
-        this.$route.query.modelGid
-          ? this.$router.push({
-              path: "/SelectedDealerList",
-              query: { modelGid: this.$route.query.modelGid }
-            })
-          : this.$router.push("/SelectedDealerList");
-        this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
+      // console.log(this.$route.query.flag,"flag")
+      let flag = this.$route.query.flag;
+      if (flag == 1) {
+        if (this.$store.state.dealer.selectedUserGids.length) {
+          this.$store.state.dealer.jobsUser = [];
+          this.$route.query.modelGid
+            ? this.$router.push({
+                path: "/DealerSelectedList",
+                query: { modelGid: this.$route.query.modelGid }
+              })
+            : this.$router.push("/DealerSelectedList");
+          this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
+        } else {
+          this.$notify({ type: "warning", message: "请选择联系人" });
+        }
       } else {
-        this.$notify({ type: "warning", message: "请选择联系人" });
+        if (this.$store.state.dealer.selectedUserGids.length) {
+          this.$store.state.dealer.jobsUser = [];
+          this.$route.query.modelGid
+            ? this.$router.push({
+                path: "/CompetitorSelectedList",
+                query: { modelGid: this.$route.query.modelGid }
+              })
+            : this.$router.push("/CompetitorSelectedList");
+          this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
+        } else {
+          this.$notify({ type: "warning", message: "请选择联系人" });
+        }
       }
     }
   }
@@ -93,6 +111,6 @@ export default {
   white-space: nowrap;
 }
 .nextPage {
-  background: linear-gradient(to right , #fec43a,#ff9505);
+  background: linear-gradient(to right, #fec43a, #ff9505);
 }
 </style>
