@@ -13,6 +13,7 @@ export default (m)=>{
       taskList: m.POST + '/task/list',                         // 获取任务列表
       workbenchSearch: m.POST +  '/workbench/search',          // 工作台搜索
       recentvisitlist: m.POST +  '/workbench/recentvisitlist', // 最近访问列表
+      addRecentvisit: m.POST +  '/workbench/addrecentvisit',   // 埋点-最近访问的数据
     },
     upload: {
       // upload: '/lbccrm/common/upload' 

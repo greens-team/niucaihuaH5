@@ -93,7 +93,6 @@ export default {
     }
   },
   mounted() {
-
     this.scrollLoad(this.$refs.dealerListBox, (resolve)=>{
         this.$store.dispatch('getListData', {
           pageNum: this.$store.state.dealer.listParams.pageNum+1

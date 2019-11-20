@@ -29,10 +29,10 @@ export default {
           modelAttr: ''
         }
       ],
-      competitorOrderCount: 0,
+      competitorOrderCount: 1,
       dealerDes: '',
       gid: '',
-      lbPreOrderCount: 0,
+      lbPreOrderCount: 1,
       lesseeList: [
         {
           lesseeName: '',
@@ -48,7 +48,7 @@ export default {
   },
   mutations: {
     setAddEditTaskParams(state, data = {}){
-     Object.assign(state.addEditTaskParams, {
+      state.addEditTaskParams = Object.assign({
         alarmTime: 0,
         comment: '',
         dealerGid: '',
@@ -69,12 +69,12 @@ export default {
       return new Promise(resolve => {
         Object.assign(state.addEditTaskParams, data)
         let params = Object.assign({}, state.addEditTaskParams, {
-          mainUserGids: state.addEditTaskParams.mainUserGids.length && state.addEditTaskParams.mainUserGids.split(',').map(r=>{
+          mainUserGids: state.addEditTaskParams.mainUserGids.length ? state.addEditTaskParams.mainUserGids.split(',').map(r=>{
             return String(r)
-          }),
-          otherUserGids: state.addEditTaskParams.otherUserGids.length && state.addEditTaskParams.otherUserGids.split(',').map(r=>{
+          }) : [],
+          otherUserGids: state.addEditTaskParams.otherUserGids.length ? state.addEditTaskParams.otherUserGids.split(',').map(r=>{
             return String(r)
-          }),
+          }) : [],
         })
         window.$ajax.task.addTask(params).then( res => {
           if (!res.code) {

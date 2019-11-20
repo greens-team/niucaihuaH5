@@ -278,6 +278,9 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id
+
+    this.addRecentvisit({modelObjType:1, modelId:this.id})
+
     if(this.$store.state.dealerInfo.currentTabsIndex){
       this.getBaseInfo(0)
       this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex)

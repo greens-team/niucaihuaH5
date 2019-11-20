@@ -68,6 +68,13 @@ export default {
     }
   },
   actions: {
+    addRecentvisit({state}, data = {}){
+      return new Promise(resolve=>{
+        window.$ajax.workbench.addRecentvisit(data).then(res => {
+          resolve(res)
+        })
+      })
+    },
 
     // 获取任务列表
     getTaskList({state},data = {}){

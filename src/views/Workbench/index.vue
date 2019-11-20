@@ -138,9 +138,10 @@
               <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.myTaskList" :key="'t'+i"
                   @click="TaskDetail(row.gid)">
                 <div class="flex">
-                  <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
+                  <span class="text-base font-bold text-gray-900">{{row.taskName}}</span>
+                  <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span>
                   <div class="flex-1"></div>
-                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm:ss')}}</span>
                 </div>
                 <span class="text-base  text-gray-900">{{row.dealerName}}</span>
                 <!-- {{row.positionName}} > -->
@@ -182,7 +183,7 @@
                 <div class="flex">
                   <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
                   <div class="flex-1"></div>
-                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                  <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm:ss')}}</span>
                 </div>
                 <span class="text-base  text-gray-900">{{row.dealerName}}</span>
                 <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>

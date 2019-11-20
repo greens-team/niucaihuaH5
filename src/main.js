@@ -46,6 +46,12 @@ Vue.prototype.formatter = (type, value) => {
   }
 }
 
+Vue.prototype.addRecentvisit = (data) => {
+  store.dispatch('addRecentvisit', data).then(r=>{
+    console.log(r)
+  })
+}
+
 Vue.prototype.scrollLoad = (domBox, callback) => {
   // domScroll.onscroll = function(){
   //   console.log(domBox.clientHeight, domBox.scrollHeight,)

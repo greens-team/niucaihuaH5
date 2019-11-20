@@ -1,8 +1,9 @@
  <!-- 拜访记录表单 -->
 <template>
+
   <div class="VisitRecord flex flex-1 flex-col">
     <van-nav-bar title="填写拜访记录" left-text="返回" 
-      @click-left="$router.go(-1)" left-arrow >
+      @click-left="$router.push('/')" left-arrow >
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -10,6 +11,7 @@
 
           <van-cell clickable>
             <template slot="title">
+              <span class="text-red-400 -ml-1">*</span>
               <span class="custom-title">近期运营情况</span>
             </template>
             <template slot="default">
@@ -128,13 +130,19 @@ export default {
   },
   methods: {
     finishTask(){
-      this.$store.dispatch('addvisitlog', {gid: this.$route.query.id}).then((msg)=>{
+      if(!this.$store.state.task.addEditVisitlogParams.dealerDes){
         this.$dialog.alert({
-            message: msg
-          }).then(() => {
-            this.$router.push('/')
-          });
-      }) 
+            message: '请认真填写'
+        });
+      }else{
+        this.$store.dispatch('addvisitlog', {gid: this.$route.query.id}).then((msg)=>{
+          this.$dialog.alert({
+              message: msg
+            }).then(() => {
+              this.$router.push('/')
+            });
+        }) 
+      }
     }
   }
 }

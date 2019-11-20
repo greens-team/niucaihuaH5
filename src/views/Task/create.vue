@@ -215,7 +215,7 @@
       :style="{ height: '50%',}"
     >
       <van-nav-bar
-        title="选择经销商"
+        :title="!userType ? '选择拜访人' : '选择协访人'"
         left-text="取消"
         right-text="确定"
         left-arrow
@@ -376,7 +376,7 @@ export default {
     this.$store.dispatch('getListData')
     this.$store.dispatch('getColleague',{
       pageNum: 1,
-      pageSize: 30,
+      pageSize: 10,
       usrNM: '',
       rlNm: ''
     })
@@ -404,6 +404,41 @@ export default {
         // 回显 相关经销商的值 
         this.dealerName = this.$store.state.task.addEditTaskParams.dealerName
 
+        //回显 拜访人 mainUserNames
+        // mainUserNames
+
+        this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
+          return {
+            id: r.modelGid,
+            refRlNm: r.modelName
+          }
+        })
+
+        this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
+          return {
+            id: r.modelGid,
+            refRlNm: r.modelName
+          }
+        })
+
+
+         
+        // this.otherUserGids
+        // this.$store.state.task.addEditTaskParams.mainUserGids
+        // this.$store.state.task.addEditTaskParams.otherUserGids
+
+        // id
+        
+        //回显 协访人 otherUserNames
+        
+        // 回显 visitAim
+        this.visitAimTypes.some(r=>{
+          if(r.id == this.$store.state.task.addEditTaskParams.visitAim){
+            this.visitAimText = r.text
+            return true
+          }
+        })
+        
       })
 
     }
@@ -412,6 +447,7 @@ export default {
   },
   methods: {
     mainUserGidsFun(vals, key, userType){
+      console.log(vals, key, userType)
       if(!vals.length && key == 'refRlNm' && !userType){
         return '请选择拜访人'
       }
