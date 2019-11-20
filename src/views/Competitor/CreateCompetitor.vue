@@ -47,9 +47,15 @@ export default {
   },
   methods: {
     createCompetitor() {
-      this.$store.dispatch("addCompetitor").then(r => {
-        this.$router.go(-1);
-      });
+      if (!this.$store.state.competitor.addParams.competorName) {
+        this.$dialog.alert({
+          message: "合作竞对名称不能为空"
+        });
+      } else {
+        this.$store.dispatch("addCompetitor").then(r => {
+          this.$router.go(-1);
+        });
+      }
     }
   }
 };

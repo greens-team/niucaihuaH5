@@ -2,7 +2,7 @@
 // 关联竞争对手
 export default {
   state: {
-
+    isLastPage: false,
     addParams: {
       competorName: '',
       competorType: 1,
@@ -24,7 +24,7 @@ export default {
     listParams: {
       queryString: '',
       orderType: 1,
-      competorType: 1,
+      competorType: 0,
       pageNum: 1,
       pageSize: 10
     },
@@ -123,7 +123,7 @@ export default {
       }
     },
     //编辑竞争对手 页面初始显示
-    setParams(state, data = {}){
+    setParams(state, data = {}) {
       Object.assign(state.editParams, data)
     }
   },
@@ -157,10 +157,20 @@ export default {
       })
     },
     listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
+      let params = Object.assign(state.listParams, data);
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
       return new Promise(resolve => {
-        window.$ajax.competitor.listCompetitor(Object.assign(state.listParams, data)).then(res => {
-          if (!Number(res.code)) {
-            state.list = res.data.list
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.competitor.listCompetitor(params).then(res => {
+          if (!res.code) {
+            state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
+            if (res.data.list.length < params.pageSize)
+              state.isLastPage = true
             resolve(res.msg)
           }
         })

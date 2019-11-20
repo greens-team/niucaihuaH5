@@ -23,7 +23,12 @@
             class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
           />
           <!-- 添加图标 -->
-          <van-icon name="plus" @click="$store.commit('setInitAddParams');$router.push('/CreateLessee')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
+          <van-icon
+            name="plus"
+            @click="$store.commit('setInitAddParams');$router.push('/CreateLessee')"
+            slot="right"
+            class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
+          />
         </div>
       </div>
       <div
@@ -40,8 +45,8 @@
         </div>
         <van-search
           class="flex-1"
-          v-model="$store.state.competitor.listParams.queryString"
-          @input="(keyword)=>$store.dispatch('listLessee',{queryString: keyword})"
+          v-model="$store.state.lessee.listParams.queryString"
+          @input="query"
           placeholder="请输入搜索关键词"
           show-action
           shape="round"
@@ -66,7 +71,7 @@
     <div class="border-b border-gray-200 flex items-center justify-start px-4">
       <van-dropdown-menu>
         <van-dropdown-item
-          @change="(num)=>$store.dispatch('listLessee',{orderType: num})"
+          @change="(num)=>$store.dispatch('listLessee',{orderType: num,pageNum:1})"
           v-model="$store.state.lessee.listParams.orderType"
           :options="$store.state.lessee.orderType"
         />
@@ -74,12 +79,12 @@
     </div>
 
     <div class="flex-1 relative h-full">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0 overflow-y-scroll" ref="lesseeListBox">
         <van-swipe
           ref="swipe"
           :loop="false"
           :show-indicators="false"
-          @change="(num)=>$store.dispatch('listLessee',{lesseeStatus: num})"
+          @change="(num)=>$store.dispatch('listLessee',{lesseeStatus: num,pageNum:1})"
         >
           <van-swipe-item v-for="(row,index) in $store.state.lessee.lesseeStatus" :key="index">
             <div
@@ -89,7 +94,9 @@
               @click="goInfo(r.gid)"
             >
               <div class="flex items-center">
-                <div class="w-12 h-12 text-center rounded-full mr-4 text-3xl text-gray-700 baseName">z</div>
+                <div
+                  class="w-12 h-12 text-center rounded-full mr-4 text-3xl text-gray-700 baseName"
+                >z</div>
                 <div style="flex:1">
                   <div class="flex items-center">
                     <div class="flex-1 text-base font-bold">{{r.lesseeName}}</div>
@@ -128,15 +135,28 @@ export default {
       homeSearch: false
     };
   },
-  created(){
-    this.$store.commit('setInitParams')
+  created() {
+    this.$store.commit("setInitParams");
   },
   mounted() {
-    this.$store.dispatch("listLessee");
+    this.scrollLoad(this.$refs.lesseeListBox, resolve => {
+      this.$store
+        .dispatch("listLessee", {
+          pageNum: this.$store.state.lessee.listParams.pageNum + 1
+        })
+        .then(msg => {
+          resolve(msg);
+        });
+    });
+
+    this.$store.dispatch("listLessee", { pageNum: 1 });
   },
   methods: {
     goInfo(id) {
       this.$router.push({ name: "LesseeInfo", query: { id: id } });
+    },
+    query(keyword) {
+      this.$store.dispatch("listLessee", { queryString: keyword, pageNum: 1 });
     }
   }
 };
@@ -169,6 +189,10 @@ export default {
   position: absolute;
 }
 .baseName {
-  background: linear-gradient(245deg,rgba(255,191,42,1) 0%,rgba(254,233,124,1) 100%)
+  background: linear-gradient(
+    245deg,
+    rgba(255, 191, 42, 1) 0%,
+    rgba(254, 233, 124, 1) 100%
+  );
 }
 </style>

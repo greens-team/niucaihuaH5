@@ -125,9 +125,15 @@ export default {
       this.$store.state.lessee.addParams.birthday = new Date().getTime();
     },
     createLessee() {
-      this.$store.dispatch("addLessee").then(r => {
-        this.$router.go(-1);
-      });
+      if (!this.$store.state.lessee.addParams.lesseeName) {
+        this.$dialog.alert({
+          message: "承租人名称不能为空"
+        });
+      } else {
+        this.$store.dispatch("addLessee").then(r => {
+          this.$router.go(-1);
+        });
+      }
     },
     getBirthdayTime() {
       this.taskTimeShow = false;

@@ -46,7 +46,7 @@
         <van-search
           class="flex-1"
           v-model="$store.state.competitor.listParams.queryString"
-          @input="(keyword)=>$store.dispatch('listCompetitor',{queryString: keyword})"
+          @input="query()"
           placeholder="请输入搜索关键词"
           show-action
           shape="round"
@@ -71,7 +71,7 @@
     <div class="border-b border-gray-200 flex items-center justify-start px-4">
       <van-dropdown-menu>
         <van-dropdown-item
-          @change="(num)=>$store.dispatch('listCompetitor',{orderType: num})"
+          @change="(num)=>$store.dispatch('listCompetitor',{orderType: num,pageNum:1})"
           v-model="$store.state.competitor.listParams.orderType"
           :options="$store.state.competitor.orderType"
         />
@@ -79,12 +79,12 @@
     </div>
 
     <div class="flex-1 relative h-full">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0 overflow-y-scroll" ref="competitorListBox">
         <van-swipe
           ref="swipe"
           :loop="false"
           :show-indicators="false"
-          @change="(num)=>$store.dispatch('listCompetitor',{competorType: num})"
+          @change="(num)=>$store.dispatch('listCompetitor',{competorType: num,pageNum:1})"
         >
           <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
             <div
@@ -93,13 +93,12 @@
               :key="i"
               @click="getInfo(r.gid)"
             >
-            
               <van-cell is-link>
                 <template slot="title">
                   <p class="custom-title text-lg font-bold">{{r.competorName}}</p>
                   <p
                     class="text-gray-800"
-                  >{{$store.state.competitor.competorStatus[r.competorType-1].text}}</p>
+                  >{{$store.state.competitor.competorStatus_1[r.competorType-1]}}</p>
                 </template>
               </van-cell>
             </div>
@@ -125,11 +124,26 @@ export default {
     this.$store.commit("setInitParams");
   },
   mounted() {
-    this.$store.dispatch("listCompetitor");
+    this.scrollLoad(this.$refs.competitorListBox, resolve => {
+      this.$store
+        .dispatch("listCompetitor", {
+          pageNum: this.$store.state.competitor.listParams.pageNum + 1
+        })
+        .then(msg => {
+          resolve(msg);
+        });
+    });
+    this.$store.dispatch("listCompetitor", { pageNum: 1 });
   },
   methods: {
     getInfo(id) {
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
+    },
+    query(keyword) {
+      this.$store.dispatch("listCompetitor", {
+        queryString: keyword,
+        pageNum: 1
+      });
     }
   }
 };

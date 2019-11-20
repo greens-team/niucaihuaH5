@@ -1,8 +1,10 @@
+import { stat } from "fs";
+
 // import moment from '@/plugins/moment' // 时间统一处理
 // 关联 承租人
 export default {
   state: {
-
+    isLastPage: false,
     addParams: {
       birthday: '',
       comment: '',
@@ -202,10 +204,21 @@ export default {
       })
     },
     listLessee({ state }, data = {}) {   // 获取承租人列表
+      let params = Object.assign(state.listParams,data)
+      if(params.pageNum == 1){
+        state.isLastPage = false;
+      }
       return new Promise(resolve => {
-        window.$ajax.lessee.listLessee(Object.assign(state.listParams, data)).then(res => {
-          if (!Number(res.code)) {
-            state.list = res.data.list
+        if(state.isLastPage){
+          resolve();
+          return;
+        }
+        window.$ajax.lessee.listLessee(params).then(res => {
+          if (!res.code) {
+            state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
+            if(res.data.list.length < params.pageSize){
+              state.isLastPage = true;
+            }
             resolve(res.msg)
           }
         })
@@ -214,7 +227,7 @@ export default {
     associatedLessee({ state }, data = {}) {   // 关联和解除关联经销商
       return new Promise(resolve => {
         window.$ajax.lessee.associatedLessee(Object.assign(state.associatedParams, data)).then(res => {
-          if (!Number(res.code)) {
+          if (!res.code) {
             resolve(res.msg)
           }
         })
