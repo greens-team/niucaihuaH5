@@ -54,8 +54,7 @@ export default {
   name: "DealerList",
   created() {},
   data() {
-    return {
-    };
+    return {};
   },
   watch: {
     "$store.state.dealer.listParams.queryString"(val) {
@@ -70,7 +69,6 @@ export default {
   },
   methods: {
     selectedList() {
-      // console.log(this.$route.query.flag,"flag")
       let flag = this.$route.query.flag;
       if (flag == 1) {
         if (this.$store.state.dealer.selectedUserGids.length) {
@@ -85,7 +83,8 @@ export default {
         } else {
           this.$notify({ type: "warning", message: "请选择联系人" });
         }
-      } else {
+      }
+      if (flag == 2) {
         if (this.$store.state.dealer.selectedUserGids.length) {
           this.$store.state.dealer.jobsUser = [];
           this.$route.query.modelGid
@@ -94,6 +93,20 @@ export default {
                 query: { modelGid: this.$route.query.modelGid }
               })
             : this.$router.push("/CompetitorSelectedList");
+          this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
+        } else {
+          this.$notify({ type: "warning", message: "请选择联系人" });
+        }
+      }
+      if (flag == 3) {
+        if (this.$store.state.dealer.selectedUserGids.length) {
+          this.$store.state.dealer.jobsUser = [];
+          this.$route.query.modelGid
+            ? this.$router.push({
+                path: "/ContactsSelectedList",
+                query: { modelGid: this.$route.query.modelGid }
+              })
+            : this.$router.push("/ContactsSelectedList");
           this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
         } else {
           this.$notify({ type: "warning", message: "请选择联系人" });

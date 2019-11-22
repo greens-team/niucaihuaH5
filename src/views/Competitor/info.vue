@@ -8,7 +8,7 @@
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-      <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
+      <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
     </van-nav-bar>
     <div>
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
@@ -31,7 +31,6 @@
         ></van-tab>
       </van-tabs>
     </div>
-    <div style="height: .5rem;background: #fff;"></div>
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
         <van-swipe
@@ -270,24 +269,26 @@ export default {
       }
     },
     editor() {
-      this.$store.commit("setParams", this.info);
+      this.$store.commit("setParamsCompetitor", this.info);
       this.$router.push("/EditCompetitor");
     },
     tapToSearch() {
-      // 
-      this.$store.dispatch(
-        "addNewslogCompetitor",
-        Object.assign({ modelId: this.id, modelObjType: 4 })
-      );
-
+      //
       this.$store
         .dispatch(
-          "listNewslogCompetitor",
-          Object.assign({ modelId: this.id, modelObjType: 4, pageNum: 1 })
+          "addNewslogCompetitor",
+          Object.assign({ modelId: this.id, modelObjType: 4 })
         )
-        .then(res => {
-          this.newslogList = this.$store.state.competitor.listNewslog;
-          this.$store.state.competitor.addNewslogParams.content = ''
+        .then(msg => {
+          this.$store
+            .dispatch(
+              "listNewslogCompetitor",
+              Object.assign({ modelId: this.id, modelObjType: 4, pageNum: 1 })
+            )
+            .then(res => {
+              this.newslogList = this.$store.state.competitor.listNewslog;
+              this.$store.state.competitor.addNewslogParams.content = "";
+            });
         });
     }
   }

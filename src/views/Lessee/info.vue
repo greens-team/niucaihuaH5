@@ -8,76 +8,73 @@
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-      <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
+      <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
     </van-nav-bar>
-    <div class="flex-1 relative">
-      <div class="absolute inset-0">
-        <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-          <div class="mb-3 flex justify-between">
-            <span class="text-xl font-bold">{{info.lesseeName}}</span>
-            <div>
-              <img
-                src="../../assets/lessee/iphone.png"
-                class="inline-block float-left mt-2 w-6 mr-6"
-                alt
-              />
-              <img
-                src="../../assets/lessee/map.png"
-                class="inline-block float-left mt-2 w-6 mr-5"
-                alt
-              />
-            </div>
-          </div>
-          <div class="flex mt-4 justify-between">
-            <p class="text-sm">{{info.homeAddress}}</p>
-          </div>
-          <div class="flex mt-4 justify-between">
-            <div class="text-center text-xs">
-              4
-              <br />经销商
-            </div>
+    <div>
+      <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+        <div class="mb-3 flex justify-between">
+          <span class="text-xl font-bold">{{info.lesseeName}}</span>
+          <div>
+            <img
+              src="../../assets/lessee/iphone.png"
+              class="inline-block float-left mt-2 w-6 mr-6"
+              alt
+            />
+            <img
+              src="../../assets/lessee/map.png"
+              class="inline-block float-left mt-2 w-6 mr-5"
+              alt
+            />
           </div>
         </div>
-
-        <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-          <div class="mb-3 flex justify-between">
-            <span class="text-xl font-bold">承租人状态</span>
-            <span class="text-sm text-red-500">放弃</span>
+        <div class="flex mt-4 justify-between">
+          <p class="text-sm">{{info.homeAddress}}</p>
+        </div>
+        <div class="flex mt-4 justify-between">
+          <div class="text-center text-xs">
+            4
+            <br />经销商
           </div>
-          <div>
-            <div class="flex mt-2">
+        </div>
+      </div>
+
+      <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+        <div class="mb-3 flex justify-between">
+          <span class="text-xl font-bold">承租人状态</span>
+          <span class="text-sm text-red-500">放弃</span>
+        </div>
+        <div>
+          <div class="flex mt-2">
+            <div
+              @click="changeFollowStatus(i)"
+              v-for="(row,i) in $store.state.lessee.lesseeStatus"
+              :key="i"
+            >
               <div
-                @click="changeFollowStatus(i)"
-                v-for="(row,i) in $store.state.lessee.lesseeStatus"
-                :key="i"
+                v-if="i && i<$store.state.lessee.lesseeStatus.length-1"
+                :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus+1}]"
               >
-                <div
-                  v-if="i && i<$store.state.lessee.lesseeStatus.length-1"
-                  :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus+1}]"
-                >
-                  <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
-                  <div class="status-correct"></div>
-                </div>
+                <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
+                <div class="status-correct"></div>
               </div>
             </div>
           </div>
         </div>
-
-        <van-tabs
-          class="tabs"
-          v-model="$store.state.lessee.currentTabsIndex"
-          @click="$refs.swipe.swipeTo($store.state.lessee.currentTabsIndex)"
-        >
-          <van-tab
-            v-for="(row,index) in $store.state.lessee.tabs"
-            :key="index"
-            :title="row.text"
-            :name="row.id"
-          ></van-tab>
-        </van-tabs>
       </div>
+
+      <van-tabs
+        class="tabs"
+        v-model="$store.state.lessee.currentTabsIndex"
+        @click="$refs.swipe.swipeTo($store.state.lessee.currentTabsIndex)"
+      >
+        <van-tab
+          v-for="(row,index) in $store.state.lessee.tabs"
+          :key="index"
+          :title="row.text"
+          :name="row.id"
+        ></van-tab>
+      </van-tabs>
     </div>
-    <div style="height: 3rem;background: #fff;"></div>
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
         <van-swipe
@@ -345,7 +342,6 @@ export default {
           });
       }
       if (num === 2) {
-
         this.scrollLoad(this.$refs.listBox, resolve => {
           this.$store
             .dispatch(
@@ -391,7 +387,7 @@ export default {
     editor() {
       // this.$store.commit("setInitEditParams");
       this.$store.commit(
-        "setParams",
+        "setParamsLessee",
         Object.assign(this.info, {
           lesseeType: 0,
           lesseeStatus: 1 //默认就是线索承租人
@@ -400,19 +396,21 @@ export default {
       this.$router.push("/EditLessee");
     },
     tapToSearch() {
-      this.$store.dispatch(
-        "addNewslogLessee",
-        Object.assign({ modelId: this.id, modelObjType: 3 })
-      );
-
       this.$store
         .dispatch(
-          "listNewslogLessee",
-          Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
+          "addNewslogLessee",
+          Object.assign({ modelId: this.id, modelObjType: 3 })
         )
-        .then(res => {
-          this.newslogList = this.$store.state.lessee.listNewslog;
-          this.$store.state.lessee.addNewslogParams.content = ''
+        .then(msg => {
+          this.$store
+            .dispatch(
+              "listNewslogLessee",
+              Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
+            )
+            .then(res => {
+              this.newslogList = this.$store.state.lessee.listNewslog;
+              this.$store.state.lessee.addNewslogParams.content = "";
+            });
         });
     }
   }

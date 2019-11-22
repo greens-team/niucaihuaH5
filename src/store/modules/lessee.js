@@ -107,14 +107,14 @@ export default {
 
     //添加动态记录
     addNewslogParams: {
-      modelObjType: 1,  //1 经销商 2 联系人 3 承租人 4 竞争对手
+      modelObjType: 3,  //1 经销商 2 联系人 3 承租人 4 竞争对手
       modelId: "",
       content: '',
       pics: ''
     },
     // 获取动态记录
     newslogParams: {
-      modelObjType: 1,  
+      modelObjType: 3,  
       modelId: "",
       pageNum: 1,
       pageSize: 10
@@ -123,7 +123,7 @@ export default {
 
     // 获取操作记录
     operatelogParams: {
-      modelObjType: 1,  
+      modelObjType: 3,  
       modelId: "",
       pageNum: 1,
       pageSize: 10
@@ -177,7 +177,7 @@ export default {
     },
 
     //编辑承租人 页面初始显示
-    setParams(state, data = {}) {
+    setParamsLessee(state, data = {}) {
       Object.assign(state.editParams, data);
     }
   },
@@ -293,6 +293,6 @@ export default {
           }
         })
       })
-    },
+    }
   }
 }

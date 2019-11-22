@@ -151,7 +151,7 @@ export default {
     //   }
     // },
     //编辑竞争对手 页面初始显示
-    setParams(state, data = {}) {
+    setParamsCompetitor(state, data = {}) {
       Object.assign(state.editParams, data)
     }
   },

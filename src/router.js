@@ -25,14 +25,14 @@ import DateRange from './components/DateRange'                      // 选择日
 import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同事
 
 
-import Competitor from './views/Competitor'              //竞争对手列表页
-import CompetitorInfo from './views/Competitor/info.vue'  //竞争对手详情页
-import CreateCompetitor from './views/Competitor/CreateCompetitor.vue'   //新建竞争对手
-import EditCompetitor from './views/Competitor/editCompetitor.vue'   //新建竞争对手
+import Competitor from './views/Competitor'              // 竞争对手列表页
+import CompetitorInfo from './views/Competitor/info.vue'  // 竞争对手详情页
+import CreateCompetitor from './views/Competitor/createCompetitor.vue'   // 新建竞争对手
+import EditCompetitor from './views/Competitor/editCompetitor.vue'   // 编辑竞争对手
 
 import Lessee from './views/Lessee'              //承租人列表页
 import LesseeInfo from './views/Lessee/info.vue'  //承租人详情页
-import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
+import CreateLessee from './views/Lessee/createLessee.vue'          // 新增承租人
 import EditLessee from './views/Lessee/editLessee.vue'          // 编辑承租人
 
 import recordCheck from './views/record'  //经销商提交备案信息 检查
@@ -45,6 +45,8 @@ import VisitRecord from './views/Task/visitRecord.vue'  //拜访记录
 
 import Contacts from './views/Contacts'   // 联系人列表页面
 import ContactsInfo from './views/Contacts/info.vue'   // 联系人详情信息页面
+import CreateContacts from './views/Contacts/createContacts.vue'   // 新建联系人
+import EditContacts from './views/Contacts/editContacts.vue'   // 编辑联系人
 
 
 
@@ -52,8 +54,9 @@ import ContactsInfo from './views/Contacts/info.vue'   // 联系人详情信息�
 
 import DealerList from './components/Dealer'                // 关联 经销商列表
 import DealerSelectedList from './components/Dealer/DealerSelectedList.vue'  // 承租人关联 已选中的经销商
-import CompetitorSelectedList from './components/Dealer/CompetitorSelectedList.vue'
- 
+import CompetitorSelectedList from './components/Dealer/CompetitorSelectedList.vue'   // 竞争对手 关联已选中的经销商
+import ContactsSelectedList from './components/Dealer/ContactsSelectedList.vue'   // 竞争对手 关联已选中的经销商
+
 import NewDealer from './components/Dealer/newDealer'     //关联经销商 - 新建经销商
 
 
@@ -167,9 +170,15 @@ export default new Router({
       component: DealerSelectedList
     },
     {
-      path: '/CompetitorSelectedList',   // 承租人关联选中的经销商
+      path: '/CompetitorSelectedList',   // 竞争对手关联选中的经销商
       name: 'CompetitorSelectedList',
       component: CompetitorSelectedList
+    },
+
+    {
+      path: '/ContactsSelectedList',   // 联系人关联选中的经销商
+      name: 'ContactsSelectedList',
+      component: ContactsSelectedList
     },
     
     {
@@ -183,12 +192,12 @@ export default new Router({
       component: CompetitorInfo
     },
     {
-      path: '/CreateCompetitor',   //新增竞争对手
+      path: '/CreateCompetitor',   // 新增竞争对手
       name: 'CreateCompetitor',
       component: CreateCompetitor
     },
     {
-      path: '/EditCompetitor',   //编辑竞争对手
+      path: '/EditCompetitor',   // 编辑竞争对手
       name: 'EditCompetitor',
       component: EditCompetitor
     },
@@ -256,7 +265,16 @@ export default new Router({
       name: 'ContactsInfo',
       component: ContactsInfo
     },
-    
+    {
+      path: '/CreateContacts',   //新增联系人
+      name: 'CreateContacts',
+      component: CreateContacts
+    },
+    {
+      path: '/EditContacts',   //编辑联系人
+      name: 'EditContacts',
+      component: EditContacts
+    },
 
 
 
