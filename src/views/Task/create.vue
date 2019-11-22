@@ -3,8 +3,10 @@
   <div class="taskCreate">
     <van-nav-bar :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow 
-          @click-right="save">
-      <div v-if="editor" slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
+         >
+      <div  @click="save" v-if="editor && !taskId" slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
+      <div slot="right" v-if="!editor && $route.query.taskType == 1 && taskId" @click="editor = !editor">编辑</div>
+      <div  @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
     </van-nav-bar>
 
     <div class="taskCreateRow">
@@ -24,7 +26,7 @@
           <span class="custom-title">类型</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (taskPopupShow = true)">{{visitTypeOption[$store.state.task.addEditTaskParams.visitType-1].text}}</p>
+          <p class="p5" @click="editor && (taskPopupShow = true)">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p>
         </template>
       </van-cell> -->
 
@@ -134,7 +136,7 @@
       />
       <van-radio-group v-model="visitTypeVal">
         <van-cell-group>
-          <van-cell v-for="(r,i) in visitTypeOption" :key="i" :title="r.text" clickable @click="visitTypeVal = r.value">
+          <van-cell v-for="(r,i) in taskTypeOption" :key="i" :title="r.text" clickable @click="visitTypeVal = r.value">
             <van-radio slot="right-icon" :name="r.value" />
           </van-cell>
         </van-cell-group>
@@ -308,7 +310,7 @@ export default {
       newTask: false,
 
       value: '',
-      visitTypeOption: [
+      taskTypeOption: [
         { text: '经销商拜访', value: 1},
         { text: '任务事项', value: 2},
       ],
@@ -414,6 +416,7 @@ export default {
           }
         })
 
+        //回显 协访人 otherUserNames
         this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
           return {
             id: r.modelGid,
@@ -421,16 +424,6 @@ export default {
           }
         })
 
-
-         
-        // this.otherUserGids
-        // this.$store.state.task.addEditTaskParams.mainUserGids
-        // this.$store.state.task.addEditTaskParams.otherUserGids
-
-        // id
-        
-        //回显 协访人 otherUserNames
-        
         // 回显 visitAim
         this.visitAimTypes.some(r=>{
           if(r.id == this.$store.state.task.addEditTaskParams.visitAim){
@@ -558,6 +551,23 @@ export default {
           message: res.msg
         }).then(() => {
           this.$router.go(-1)
+        });
+      })
+    },
+    editorFun(){
+      
+      let mainUserNames = this.$store.state.task.addEditTaskParams.mainUserNames ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
+        return String(r.modelGid)
+      }) : []
+      let otherUserNames = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
+        return String(r.modelGid)
+      }) : []
+      this.$store.dispatch('editTask',{mainUserGids:mainUserNames,otherUserGids:otherUserNames}).then(res=>{
+        this.newTask = false
+        this.$dialog.alert({
+          message: res.msg
+        }).then(() => {
+          this.editor = false
         });
       })
     }
