@@ -259,9 +259,50 @@ export default {
   data() {
     return {
       radio: '',
-      resultVal: {},
-      dealerRecord: {},
-      splRecord: {},
+      resultVal: {
+      },
+      dealerRecord: {
+        address: '',
+        area: '',
+        certNo: '',
+        certTypCd: '',
+        chkBusTypCdList: '',
+        city: '',
+        contactsName: '',
+        contactsPhone: '',
+        creditCode: '',
+        dealerName: '',
+        establishTime: '',
+        gid: '',
+        ownerCd: '',
+        province: '',
+        rgnArCd: '',
+        rgnCyCd: '',
+        rgnPrCd: '',
+        rlTypCd: '',
+        splAttrCd: ''
+      },
+      splRecord: {
+        address:'',
+        area:'',
+        certNo:'',
+        certTypCd:'',
+        chkBusTypCdList:'',
+        city:'',
+        contactsName:'',
+        contactsPhone:'',
+        creditCode:'',
+        dealerName:'',
+        establishTime:'',
+        gid:'',
+        ownerCd:'',
+        province:'',
+        rgnArCd:'',
+        rgnCyCd:'',
+        rgnPrCd:'',
+        rlTypCd:'',
+        splAttrCd:''
+      },
       currentIndex: 0
     }
   },
@@ -273,9 +314,13 @@ export default {
       dealerName: this.$route.query.dealerName,
       creditCode: this.$route.query.creditCode
     }).then(()=>{
-      this.dealerRecord = this.$store.state.record.dealerRecord
-      this.splRecord = this.$store.state.record.splRecord
+      Object.assign(this.dealerRecord, this.$store.state.record.dealerRecord)
+      Object.assign(this.splRecord,  this.$store.state.record.splRecord || {})
+      Object.assign(this.resultVal, this.splRecord,  this.$store.state.record.splRecord || {})
       this.resultVal = Object.assign({}, this.splRecord, {geoLocation: this.splRecord.province+'/'+this.splRecord.city+'/'+this.splRecord.area})
+      //  if(this.splRecord.province && this.splRecord.city){
+      //   this.resultVal.geoLocation = this.splRecord.province+'/'+this.splRecord.city+'/'+this.splRecord.area;
+      //   }
     })
   },
   methods: {

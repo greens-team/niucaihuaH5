@@ -4,24 +4,24 @@
   <div class="DealerInfo flex-1 flex flex-col bg-gray-100">
 
     <van-nav-bar
-      title="经销商详情"
+      :title="info.dealerName"
       @click-left="$router.go(-1)"
       left-text="返回"
       left-arrow>
         <i class="iconfont iconqipaocaidanbianji-bang" @click="editor" slot="right" style="font-size: 1.6rem;"></i>
-        <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
+        <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
     </van-nav-bar>
 
-    <div class="flex-1 relative" >
+    <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll">
 
             <div class="shadow-md rounded-lg m-3 p-4 bg-white">
               <div class="flex">
                 <p class="flex-1 text-xl font-bold">{{info.dealerName}}</p>
-                <i class="iconfont iconweizhi text-orange-500"></i>
+                <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
               </div>
               <div class="flex mt-4 justify-between">
-                <div class="text-center  text-xs">
+                <div class="text-center  text-xs" @click="$refs.swipe.swipeTo(1)">
                   {{info.contactsCount}}<br/>联系人
                 </div>
                 <!-- <div class="text-center  text-xs">
@@ -30,10 +30,10 @@
                 <!-- <div class="text-center  text-xs">
                   4<br/>在售车型
                 </div> -->
-                <div class="text-center  text-xs">
+                <div class="text-center  text-xs" @click="$refs.swipe.swipeTo(2)">
                   {{info.competitorCount}}<br/>竞争对手
                 </div>
-                <div class="text-center  text-xs">
+                <div class="text-center  text-xs" @click="$refs.swipe.swipeTo(3)">
                   {{info.lesseeCount}}<br/>承租人
                 </div>
               </div>
@@ -45,7 +45,7 @@
                 <!-- <p class="text-sm text-orange-500">放弃</p> -->
               </div>
               <div class="flex mt-2">
-                <div @click="changeFollowStatus(i)" v-for="(row,i) in $store.state.dealer.followStatus" :key="i" v-if="i && i<$store.state.dealer.followStatus.length-1" :class="['flex flex-1 items-center', {gray: i <= info.followStatus}]">
+                <div @click="changeFollowStatus(i)" v-for="(row,i) in $store.state.dealer.followStatus" :key="i" v-if="i" :class="['flex flex-1 items-center', {gray: i <= info.followStatus}]">
                   <div class="rounded bg-line p-2 text-center text-sm shadow" >{{row.name}}
                   </div>
                   <div class="triangle-line"></div>
@@ -136,24 +136,24 @@
                       <div class="text-sm text-blue-500"  @click="$router.push({path:'/ContactsList', query: {modelGid: id}})">关联</div>
                     </div>
                     <van-collapse v-model="currentContacts">
-                      <van-collapse-item v-for="(r,i) in contactslist" :key="i" :title="r.contactsName" :name="r.id">
-                        <div class="border-b border-gray-100 pt-2 pb-2">
-                          <p class="text-xs text-gray-500">姓名</p>
-                          <p class="text-gray-900 text-sm">{{r.contactsName}}</p>
-                        </div>
-                        <div class="border-b border-gray-100 pt-2 pb-2">
-                          <p class="text-xs text-gray-500">职务</p>
-                          <p class="text-gray-900 text-sm">{{r.jobTitle}}</p>
-                        </div>
-                        <div class="border-b border-gray-100 pt-2 pb-2">
-                          <p class="text-xs text-gray-500">电话</p>
-                          <p class="text-gray-900 text-sm">{{r.contactsPhone}}</p>
-                        </div>
-                        <div class="pt-2 pb-2">
-                          <p class="text-xs text-gray-500">微信</p>
-                          <p class="text-gray-900 text-sm">{{r.weichatNum}}</p>
-                        </div>
-                      </van-collapse-item>
+                        <van-collapse-item v-for="(r,i) in contactslist" :key="i" :title="r.contactsName" :name="r.id">
+                          <div class="border-b border-gray-100 pt-2 pb-2">
+                            <p class="text-xs text-gray-500">姓名</p>
+                            <p class="text-gray-900 text-sm">{{r.contactsName}}</p>
+                          </div>
+                          <div class="border-b border-gray-100 pt-2 pb-2">
+                            <p class="text-xs text-gray-500">职务</p>
+                            <p class="text-gray-900 text-sm">{{r.jobTitle}}</p>
+                          </div>
+                          <div class="border-b border-gray-100 pt-2 pb-2">
+                            <p class="text-xs text-gray-500">电话</p>
+                            <p class="text-gray-900 text-sm">{{r.contactsPhone}}</p>
+                          </div>
+                          <div class="pt-2 pb-2">
+                            <p class="text-xs text-gray-500">微信</p>
+                            <p class="text-gray-900 text-sm">{{r.weichatNum}}</p>
+                          </div>
+                        </van-collapse-item>
                     </van-collapse>
                     
                   </div>
@@ -252,10 +252,29 @@
             <!-- {{info}} -->
 
 
-          </div>
-      </div>
+        </div>
+    </div>
 
 
+  
+    <div class="flex bg-white footer-bar border-t border-gray-300" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
+      <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
+      <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+      <form class="search-block flex-1" action="javascript:void 0">
+        <input
+          style="width:100%;text-align: center;"
+          type="text"
+          placeholder="请输入工作进展"
+          input-align="center"
+          class="rounded-lg h-12"
+          v-model="$store.state.lessee.addNewslogParams.content"
+          @keyup.13="tapToSearch"
+        />
+      </form>
+      <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
+    </div>
+
+  
   </div>
 </template>
 
@@ -273,7 +292,7 @@ export default {
       currentCompetitor: [],
       currentLesseelist: [],
       showInfo1: true,
-      showInfo2: false
+      showInfo2: true
     }
   },
   mounted() {
@@ -296,9 +315,7 @@ export default {
   filters: {
     getBusTypCdList(val, all){
       return val && all.filter(r=>{
-        if(val.split(',').includes(r.value)){
-          return true
-        }
+        return val.includes(r.value)
       }).map(r=>{
         return r.text
       }).toString()
@@ -312,6 +329,7 @@ export default {
     }
   },
   methods: {
+    tapToSearch() {},
     recordSubmit(){
       if(this.info.dealerName && this.info.creditCode && this.info.gid){
         this.$router.push({name:'recordCheck', query: {
@@ -344,27 +362,26 @@ export default {
       if(num === 1){
         this.$store.dispatch('getcontactslist', this.id).then(res => {
           this.contactslist = this.$store.state.dealerInfo.contactslist
-          this.currentContacts = [this.contactslist[0].id]
+          this.currentContacts = this.contactslist.length ? [this.contactslist[0].id] : []
         })
       }
       if(num === 2){
         this.$store.dispatch('getcompetitorlist', this.id).then(res => {
           this.competitorlist = this.$store.state.dealerInfo.competitorlist
-          this.currentCompetitor = [this.competitorlist[0].id]
+          this.currentCompetitor = this.competitorlist.length ? [this.competitorlist[0].id] : []
         })
       }
       if(num === 3){
         this.$store.dispatch('getlesseelist', this.id).then(res => {
           this.lesseelist = this.$store.state.dealerInfo.lesseelist
-          this.currentLesseelist = [this.lesseelist[0].id]
+          this.currentLesseelist = this.lesseelist.length ? [this.lesseelist[0].id] : []
         })
       }
     },
     editor(){
       this.$store.commit('setNewDealerParams')
       this.$store.commit('setParams', this.$store.state.dealerInfo.baseInfo)
-      console.log(this.$store.state.dealerInfo.baseInfo, 111)
-      this.$router.push('/CreateDealer')
+      this.$router.push({path:'/CreateDealer',query:{editor:true}})
     }
   }
 }

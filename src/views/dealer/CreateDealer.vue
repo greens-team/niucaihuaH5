@@ -2,8 +2,9 @@
 <template>
 
   <div class="CreateDealer flex-1 flex flex-col">
-    <van-nav-bar title="新建经销商" left-text="取消" @click-left="$router.go(-1)" left-arrow>
-      <div slot="right" @click="showNext = true">下一步</div>
+    <van-nav-bar :title="$route.query.editor ? $store.state.newDealer.params.dealerName : '新建经销商'" left-text="取消" @click-left="$router.go(-1)" left-arrow>
+      <div v-if="$route.query.editor" slot="right" @click="save">保存</div>
+      <div v-else slot="right" @click="showNext = true">下一步</div>
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -192,7 +193,7 @@ export default {
       ownerUserGidsType: 1,
 
 
-      currentDate: '',
+      currentDate: new Date(),
       establishTimeShow: false,
 
       initCount: 0
@@ -217,13 +218,25 @@ export default {
   mounted () {
     // this.$store.commit('setNewDealerParams')
 
+
+
     this.typeList = this.$store.state.newDealer.businessTypesValues || []
 
+    if(this.$route.query.editor){
+      this.typeList = this.$store.getters.NDbusinessTypes.filter(r=>{
+        return this.$store.state.newDealer.params.chkBusTypCdList.includes(r.value)
+      })
+    }
+    
+    
     this.$store.dispatch('getProvinces').then(data=>{
       this.$store.commit('setParams', {
         rgnPrCd: this.$store.state.newDealer.params.rgnPrCd || data[0].value,
         province: this.$store.state.newDealer.params.province || data[0].text})
-      // this.getCity(data[0].value)
+        if(this.$route.query.editor){ // 从详情页面 到 编辑信息时
+          this.initCount++
+          this.getCity(this.$store.state.newDealer.params.rgnPrCd)
+        }
     })
     this.$store.dispatch('getColleague', {
       pageNum: 1,
@@ -233,22 +246,21 @@ export default {
     })
 
 
-
     // 回显赋值
-    this.$store.state.newDealer.params.ownerUserGids && this.$store.state.newDealer.params.ownerUserGids.length && this.$store.state.newDealer.params.ownerUserGids.split(',').map(id=>{
-      this.$store.state.dealer.colleagueDataList.map(r=>{
-        if(id == r.id){
-          this.ownerUserGidsA.push(r);
-        }
-        })
-    })
-    this.$store.state.newDealer.params.followerUserGids && this.$store.state.newDealer.params.followerUserGids.length && this.$store.state.newDealer.params.followerUserGids.split(',').map(id=>{
-      this.$store.state.dealer.colleagueDataList.map(r=>{
-        if(id == r.id){
-          this.ownerUserGidsB.push(r);
-        }
-        })
-    })
+    // this.$store.state.newDealer.params.ownerUserGids && this.$store.state.newDealer.params.ownerUserGids.length && this.$store.state.newDealer.params.ownerUserGids.split(',').map(id=>{
+    //   this.$store.state.dealer.colleagueDataList.map(r=>{
+    //     if(id == r.id){
+    //       this.ownerUserGidsA.push(r);
+    //     }
+    //     })
+    // })
+    // this.$store.state.newDealer.params.followerUserGids && this.$store.state.newDealer.params.followerUserGids.length && this.$store.state.newDealer.params.followerUserGids.split(',').map(id=>{
+    //   this.$store.state.dealer.colleagueDataList.map(r=>{
+    //     if(id == r.id){
+    //       this.ownerUserGidsB.push(r);
+    //     }
+    //     })
+    // })
 
 
   },
@@ -324,7 +336,11 @@ export default {
         this.$store.commit('setParams',{
           rgnCyCd: this.$store.state.newDealer.params.rgnCyCd && this.initCount == 1 ? this.$store.state.newDealer.params.rgnCyCd : data[0].value,
           city: this.$store.state.newDealer.params.city && this.initCount == 1 ? this.$store.state.newDealer.params.city : data[0].text})
-        // this.getArea(data[0].value)
+
+          if(this.$route.query.editor && this.initCount == 1){ // 从详情页面 到 编辑信息时
+            this.getArea(this.$store.state.newDealer.params.rgnCyCd)
+          }
+
       })
     },
     goContactsList(){
@@ -343,10 +359,14 @@ export default {
         });
       }else{
         this.$store.dispatch('addCreateDealer').then(r=>{
-          console.log(r, 222)
           this.$router.go(-1)
         })
       }
+    },
+    save(){
+      this.$store.dispatch('editDealer', this.$store.state.newDealer.params).then(r=>{
+        this.$router.go(-1)
+      })
     }
   }
 }

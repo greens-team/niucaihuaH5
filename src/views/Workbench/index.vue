@@ -181,7 +181,8 @@
               <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.colleaguesTaskList" :key="'c'+i"
                 @click="TaskDetail(row.gid)">
                 <div class="flex">
-                  <span class="text-base font-bold text-gray-900">{{visitAim[row.visitAim]}}</span>
+                  <span class="text-base font-bold text-gray-900">{{row.taskName}}</span>
+                  <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span>
                   <div class="flex-1"></div>
                   <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm:ss')}}</span>
                 </div>
@@ -296,8 +297,8 @@ export default {
         deptGids.push(r.split(',')[1])
       })
       this.$ajax.workbench.getBriefing({
-        startTime: this.timeStamp(this.$store.state.workbench.briefingDate.startTime),
-        endTime: this.timeStamp(this.$store.state.workbench.briefingDate.endTime),
+        startTime: this.timeStamp(this.$store.state.workbench.briefingDate.startTime)/1000,
+        endTime: this.timeStamp(this.$store.state.workbench.briefingDate.endTime)/1000,
         userGids: userGids,
         deptGids: deptGids,
         userType: this.$store.state.workbench.briefingColleagues.userType

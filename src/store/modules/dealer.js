@@ -32,9 +32,9 @@ export default {
       {name:'全部',id: 0},
       {name:'线索入库',id:1},
       {name:'意向跟进',id:2},
-      {name:'备案准入',id:3},
-      {name:'达成合作',id:4},
-      {name:'放弃',id:5}
+      // {name:'备案准入',id:3},
+      // {name:'达成合作',id:4},
+      // {name:'放弃',id:5}
     ],
     orderType: [
       { text: '默认排序', value: 0 },
@@ -117,7 +117,7 @@ export default {
     getListData ({state}, data = {}) {
       let params = Object.assign(state.listParams, data)
       params.ownerUserGids = params.ownerUserGids.map(r => {
-        return r.id
+        return String(r.id)
       })
       if(params.pageNum == 1){
         state.isLastPage = false
