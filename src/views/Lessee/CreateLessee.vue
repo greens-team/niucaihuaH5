@@ -20,6 +20,7 @@
           placeholder="请填写信息"
           label-width="130"
         />
+
         <div class="date-time-input-wrap">
           <van-field
             label="出生日期"
@@ -44,8 +45,8 @@
           <div style="width:130px; color:#323233;">性别</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
-              v-model="$store.state.lessee.addParams.marry"
-              :options="$store.state.lessee.marryList"
+              v-model="$store.state.lessee.addParams.gender"
+              :options="$store.state.lessee.genderList"
             />
           </van-dropdown-menu>
         </div>
@@ -113,16 +114,11 @@ export default {
     };
   },
   mounted() {
-    this.getCurrentDate();
+    this.setBirthday();
   },
   methods: {
-    //获取当前时间
-    getCurrentDate() {
-      let currentTime = this.$root
-        .moment(new Date().getTime())
-        .format("YYYY-MM-DD");
-      this.birthday = currentTime;
-      this.$store.state.lessee.addParams.birthday = new Date().getTime();
+    setBirthday() {
+      this.birthday = this.$root.moment( new Date().getTime()).format("YYYY-MM-DD");
     },
     createLessee() {
       if (!this.$store.state.lessee.addParams.lesseeName) {
@@ -143,7 +139,7 @@ export default {
       this.birthday = birthdayTime;
       this.$store.state.lessee.addParams.birthday = this.$root.timeStamp(
         this.currentDate
-      );
+      )/1000;
     }
   }
 };

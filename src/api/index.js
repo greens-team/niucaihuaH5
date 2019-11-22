@@ -26,6 +26,8 @@ import competitor from './modules/competitor'  // 合作竞对
 import lessee from './modules/lessee'          // 承租人
 import record from './modules/record'          // 经销商备案
 import task from './modules/task'             // 任务
+import history from './modules/history'             // 动态记录、操作历史
+
 export default {
   auth,
   workbench,
@@ -34,5 +36,6 @@ export default {
   competitor,
   lessee,
   record,
-  task
+  task,
+  history
 }

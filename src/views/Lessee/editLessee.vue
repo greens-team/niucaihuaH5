@@ -20,6 +20,7 @@
           placeholder="请填写信息"
           label-width="130"
         />
+
         <div class="date-time-input-wrap">
           <van-field
             label="出生日期"
@@ -44,8 +45,8 @@
           <div style="width:130px; color:#323233;">性别</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
-              v-model="$store.state.lessee.editParams.marry"
-              :options="$store.state.lessee.marryList"
+              v-model="$store.state.lessee.editParams.gender"
+              :options="$store.state.lessee.genderList"
             />
           </van-dropdown-menu>
         </div>
@@ -116,23 +117,12 @@ export default {
   },
   methods: {
     setBirthday() {
-      let birthday = this.$store.state.lessee.editParams.birthday;
-      console.log(birthday);
-      if (birthday != null) {
-        this.birthday = this.$root
-          .moment(this.$store.state.lessee.editParams.birthday * 1000)
-          .format("YYYY-MM-DD");
+      let birthday = this.$store.state.lessee.info.birthday;
+      if (birthday == null) {
+        this.birthday = birthday;
+      } else {
+        this.birthday = this.$root.moment(birthday * 1000).format("YYYY-MM-DD");
       }
-    },
-    //获取当前时间
-    getCurrentDate() {
-      let currentTime = this.$root
-        .moment(new Date().getTime())
-        .format("YYYY-MM-DD");
-      this.birthday = currentTime;
-      this.$store.state.lessee.editParams.birthday = Math.floor(
-        new Date().getTime() / 1000
-      );
     },
     editLessee() {
       if (!this.$store.state.lessee.editParams.lesseeName) {
@@ -151,9 +141,7 @@ export default {
         .moment(this.$root.timeStamp(this.currentDate))
         .format("YYYY-MM-DD");
       this.birthday = birthdayTime;
-      this.$store.state.lessee.editParams.birthday = Math.floor(
-        this.$root.timeStamp(this.currentDate) / 1000
-      );
+      this.$store.state.lessee.editParams.birthday = this.$root.timeStamp(this.currentDate)/1000;
     }
   }
 };

@@ -11,7 +11,7 @@
       <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i>
     </van-nav-bar>
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0">
         <div class="shadow-md rounded-lg m-3 p-4 bg-white">
           <div class="mb-3 flex justify-between">
             <span class="text-xl font-bold">{{info.lesseeName}}</span>
@@ -75,7 +75,11 @@
             :name="row.id"
           ></van-tab>
         </van-tabs>
-
+      </div>
+    </div>
+    <div style="height: 3rem;background: #fff;"></div>
+    <div class="flex-1 relative h-full">
+      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
         <van-swipe
           ref="swipe"
           :loop="false"
@@ -105,7 +109,9 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">出生日期</p>
-                    <p class="text-gray-900 text-sm">{{info.birthday}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{info.birthday == null ? null : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">婚姻状况</p>
@@ -187,16 +193,50 @@
             </div>
 
             <div v-if="$store.state.lessee.currentTabsIndex === 1">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold">操作历史</div>
+              <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+                <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
+                  <div class="flex-1 font-bold">动态记录</div>
+                </div>
+                <div
+                  class="border-b"
+                  style="padding-top: 1rem;padding-bottom: 1rem;"
+                  v-for="(r,i) in newslogList"
+                  :key="i"
+                >
+                  <div class="flex">
+                    <div
+                      class="w-12 h-12 text-center rounded-full mr-4 text-3xl text-gray-700 baseName"
+                    >z</div>
+                    <div>
+                      <div class="text-ms font-bold">{{r.userName}}</div>
+                      <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center mt-3">
+                    <p
+                      v-if="r.content != '' "
+                      class="text-ms leading-relaxed"
+                      style="color:#252525"
+                    >{{r.content}}</p>
+                    <img v-if="r.pics != '' " :src="r.pics" alt />
+                  </div>
                 </div>
               </div>
             </div>
             <div v-if="$store.state.lessee.currentTabsIndex === 2">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold">动态记录</div>
+                <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
+                  <div class="flex-1 font-bold">操作历史</div>
+                </div>
+                <div
+                  class="border-b"
+                  style="padding-top: 1rem;padding-bottom: 1rem;"
+                  v-for="(r,i) in operatelogList"
+                  :key="i"
+                >
+                  <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span>
+                  <span class="text-gray-600">{{r.content}}</span>
                 </div>
               </div>
             </div>
@@ -208,13 +248,19 @@
     <div class="flex bg-white footer-bar">
       <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
-      <van-field
-        class="rounded-lg h-12"
-        v-model="workProgress"
-        placeholder="请输入工作进展"
-        label-width="130"
-        input-align="center"
-      />
+
+      <form class="search-block" action="javascript:void 0">
+        <input
+          style="width:100%;text-align: center;"
+          type="text"
+          placeholder="请输入工作进展"
+          input-align="center"
+          class="rounded-lg h-12"
+          v-model="$store.state.lessee.addNewslogParams.content"
+          @keyup.13="tapToSearch"
+        />
+      </form>
+
       <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
     </div>
   </div>
@@ -229,9 +275,10 @@ export default {
       info: {},
       lesseeInfolist: [],
       currentLessee: [],
-      workProgress: "",
       showInfo1: true,
-      isShowDealer: false
+      isShowDealer: false,
+      newslogList: [],
+      operatelogList: []
     };
   },
   created() {
@@ -265,17 +312,63 @@ export default {
             this.isShowDealer = false;
           }
 
-          //判断如果出生日期为null 显示空 
-
+          //判断如果出生日期为null 显示空
           if (this.info.birthday == null) {
-            console.log(this.info);
-            this.info.birthday = null
-          } else {
-            this.info.birthday = this.$root
-              .moment(this.info.birthday * 1000)
-              .format("YYYY-MM-DD");
+            this.info.birthday = null;
           }
         });
+      }
+      if (num === 1) {
+        // 动态记录
+        this.scrollLoad(this.$refs.listBox, resolve => {
+          this.$store
+            .dispatch(
+              "listNewslogLessee",
+              Object.assign({
+                pageNum: this.$store.state.lessee.newslogParams.pageNum + 1,
+                modelId: this.id,
+                modelObjType: 3
+              })
+            )
+            .then(msg => {
+              this.newslogList = this.$store.state.lessee.listNewslog;
+            });
+        });
+
+        this.$store
+          .dispatch(
+            "listNewslogLessee",
+            Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
+          )
+          .then(msg => {
+            this.newslogList = this.$store.state.lessee.listNewslog;
+          });
+      }
+      if (num === 2) {
+
+        this.scrollLoad(this.$refs.listBox, resolve => {
+          this.$store
+            .dispatch(
+              "listOperatelogLessee",
+              Object.assign({
+                pageNum: this.$store.state.lessee.operatelogParams.pageNum + 1,
+                modelId: this.id,
+                modelObjType: 3
+              })
+            )
+            .then(msg => {
+              this.operatelogList = this.$store.state.lessee.listOperatelog;
+            });
+        });
+
+        this.$store
+          .dispatch(
+            "listOperatelogLessee",
+            Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
+          )
+          .then(res => {
+            this.operatelogList = this.$store.state.lessee.listOperatelog;
+          });
       }
     },
     changeFollowStatus(i) {
@@ -304,8 +397,23 @@ export default {
           lesseeStatus: 1 //默认就是线索承租人
         })
       );
-      console.log(this.info,"---")
       this.$router.push("/EditLessee");
+    },
+    tapToSearch() {
+      this.$store.dispatch(
+        "addNewslogLessee",
+        Object.assign({ modelId: this.id, modelObjType: 3 })
+      );
+
+      this.$store
+        .dispatch(
+          "listNewslogLessee",
+          Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
+        )
+        .then(res => {
+          this.newslogList = this.$store.state.lessee.listNewslog;
+          this.$store.state.lessee.addNewslogParams.content = ''
+        });
     }
   }
 };
@@ -322,9 +430,6 @@ export default {
 }
 .LesseeInfo /deep/ .van-tab--active span {
   font-size: 1.2rem;
-}
-.LesseeInfo /deep/ .van-tabs__nav {
-  background: transparent;
 }
 .bg-line {
   background: #f4f4f4;
@@ -376,5 +481,15 @@ export default {
   height: 4rem;
   line-height: 4rem;
   align-items: center;
+}
+.baseName {
+  background: linear-gradient(
+    245deg,
+    rgba(255, 191, 42, 1) 0%,
+    rgba(254, 233, 124, 1) 100%
+  );
+}
+.search-block {
+  width: 80%;
 }
 </style>

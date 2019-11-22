@@ -23,7 +23,7 @@ export default {
       userPic: '',
       workingYears: ''
     },
-    marryList: [{             // 选择性别
+    genderList: [{             // 选择性别
       text: '男',
       value: 0
     }, {
@@ -98,13 +98,37 @@ export default {
       text: '基本信息'
     }, {
       id: 1,
-      text: '操作历史'
+      text: '动态记录'
     }, {
       id: 2,
-      text: '动态记录'
+      text: '操作历史'
     }],
     currentTabsIndex: 0,
 
+    //添加动态记录
+    addNewslogParams: {
+      modelObjType: 1,  //1 经销商 2 联系人 3 承租人 4 竞争对手
+      modelId: "",
+      content: '',
+      pics: ''
+    },
+    // 获取动态记录
+    newslogParams: {
+      modelObjType: 1,  
+      modelId: "",
+      pageNum: 1,
+      pageSize: 10
+    },
+    listNewslog: [],
+
+    // 获取操作记录
+    operatelogParams: {
+      modelObjType: 1,  
+      modelId: "",
+      pageNum: 1,
+      pageSize: 10
+    },
+    listOperatelog: []
 
   },
   mutations: {
@@ -151,11 +175,10 @@ export default {
         gid: ''
       }
     },
-    
+
     //编辑承租人 页面初始显示
-    setParams(state, data = {}){
+    setParams(state, data = {}) {
       Object.assign(state.editParams, data);
-      console.log(state.editParams,"vuex")
     }
   },
   actions: {
@@ -188,19 +211,19 @@ export default {
       })
     },
     listLessee({ state }, data = {}) {   // 获取承租人列表
-      let params = Object.assign(state.listParams,data)
-      if(params.pageNum == 1){
+      let params = Object.assign(state.listParams, data)
+      if (params.pageNum == 1) {
         state.isLastPage = false;
       }
       return new Promise(resolve => {
-        if(state.isLastPage){
+        if (state.isLastPage) {
           resolve();
           return;
         }
         window.$ajax.lessee.listLessee(params).then(res => {
           if (!res.code) {
             state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
-            if(res.data.list.length < params.pageSize){
+            if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
             resolve(res.msg)
@@ -212,6 +235,60 @@ export default {
       return new Promise(resolve => {
         window.$ajax.lessee.associatedLessee(Object.assign(state.associatedParams, data)).then(res => {
           if (!res.code) {
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+
+    addNewslogLessee({ state }, data = {}) {   // 添加动态记录
+      return new Promise(resolve => {
+        window.$ajax.history.addNewslog(Object.assign(state.addNewslogParams, data)).then(res => {
+          if (!res.code) {
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+
+    listNewslogLessee({ state }, data = {}) {   // 获取动态记录列表
+      let params = Object.assign(state.newslogParams, data)
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
+      return new Promise(resolve => {
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.history.listNewslog(params).then(res => {
+          if (!res.code) {
+            state.listNewslog = params.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list);
+            if (res.data.list.length < params.pageSize) {
+              state.isLastPage = true;
+            }
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+
+    listOperatelogLessee({ state }, data = {}) {   // 操作历史
+      let params = Object.assign(state.operatelogParams, data)
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
+      return new Promise(resolve => {
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.history.listOperatelog(params).then(res => {
+          if (!res.code) {
+            state.listOperatelog = params.pageNum == 1 ? res.data.list : state.listOperatelog.concat(res.data.list);
+            if (res.data.list.length < params.pageSize) {
+              state.isLastPage = true;
+            }
             resolve(res.msg)
           }
         })
