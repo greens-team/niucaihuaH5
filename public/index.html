@@ -22,40 +22,72 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
-    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=VKoxtkFSuXPVRULh2ohYVQ9tubl99xss"></script>
+    <!-- <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=VKoxtkFSuXPVRULh2ohYVQ9tubl99xss"></script> -->
 
     <script>
 
-          function getLocation(){ 
-            if (navigator.geolocation){ 
-              navigator.geolocation.getCurrentPosition(showPosition,showError); 
-            }else{ 
-              alert("浏览器不支持地理定位。"); 
-            } 
-          } 
-          getLocation();
 
-          function showError(error){ 
-            switch(error.code) { 
-              case error.PERMISSION_DENIED: 
-                alert("定位失败,用户拒绝请求地理定位"); 
-                break; 
-              case error.POSITION_UNAVAILABLE: 
-                alert("定位失败,位置信息是不可用"); 
-                break; 
-              case error.TIMEOUT: 
-                alert("定位失败,请求获取用户位置超时"); 
-                break; 
-              case error.UNKNOWN_ERROR: 
-                alert("定位失败,定位系统失效"); 
-                break; 
-            } 
-          }
 
-          function showPosition(position){
-            localStorage.lng = position.coords.longitude
-            localStorage.lat = position.coords.latitude
-          }
+// navigator.geolocation.getCurrentPosition((position) => {
+//   debugger
+//     let lat = position.coords.latitude;
+//     let lng = position.coords.longitude;
+//     const pointBak = new BMap.Point(lng, lat);
+//     const convertor = new BMap.Convertor();
+//     debugger
+//     convertor.translate([pointBak], 1, 5,function(resPoint) {
+//         if(resPoint && resPoint.points && resPoint.points.length>0){
+//             lng = resPoint.points[0].lng;
+//             lat = resPoint.points[0].lat;
+//         }
+//         const point = new BMap.Point(lng, lat);
+//         const geo = new BMap.Geocoder();
+//         debugger
+//         geo.getLocation(point, (res) => {
+//           console.log(point)
+//         });
+//     });
+// });
+
+                      
+            
+
+
+          // function getLocation(){ 
+          //   if (navigator.geolocation){ 
+          //     navigator.geolocation.getCurrentPosition(showPosition,showError,{
+          //       enableHighAccuracy: true,
+          //       timeout: 5000,
+          //       maximumAge: 0
+          //     }); 
+          //   }else{ 
+          //     alert("浏览器不支持地理定位。"); 
+          //   } 
+          // } 
+          // getLocation();
+
+          // function showError(error){ 
+          //   console.log(error)
+          //   switch(error.code) { 
+          //     case error.PERMISSION_DENIED: 
+          //       alert("定位失败,用户拒绝请求地理定位"); 
+          //       break; 
+          //     case error.POSITION_UNAVAILABLE: 
+          //       alert("定位失败,位置信息是不可用"); 
+          //       break; 
+          //     case error.TIMEOUT: 
+          //       alert("定位失败,请求获取用户位置超时"); 
+          //       break; 
+          //     case error.UNKNOWN_ERROR: 
+          //       alert("定位失败,定位系统失效"); 
+          //       break; 
+          //   } 
+          // }
+
+          // function showPosition(position){
+          //   localStorage.lng = position.coords.longitude
+          //   localStorage.lat = position.coords.latitude
+          // }
 </script>
   </body>
 </html>

@@ -16,7 +16,7 @@
       <van-radio v-for="(r,i) in addressList" :key="i" icon-size="15px" :name="r.value" class=" text-sm p-2 border-b border-gray-200"><span class="ellipsis">{{r.text}}</span></van-radio>
     </van-radio-group>
 
-    <baidu-map class="flex-1  map" :center="center" :zoom="zoom"  > 
+    <baidu-map class="flex-1  map" :center="center" :zoom="zoom"  @ready="handler"> 
       <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
       <bm-marker :position="center" :dragging="true" @dragend="dragend"></bm-marker>
     </baidu-map>
@@ -25,26 +25,27 @@
 </template>
 
 <script>
-import {BmlMarkerClusterer} from 'vue-baidu-map'
+// import {BmlMarkerClusterer, BaiduMap, BmScale, BmGeolocation } from 'vue-baidu-map'
 export default {
   name: 'Map',
   data() {
     return {
-      center: {lng: Number(localStorage.lng), lat:Number(localStorage.lat)},
+      center: '',
       zoom: 18,
       addressList: [],
-      addressValue: ''
+      addressValue: '',
+      BMap: ''
     }
   },
   components: {
-    BmlMarkerClusterer
+    // BmlMarkerClusterer
   },
   methods: {
     dragend(event){
       let _this = this
-      var map = new BMap.Map("allmap");
-      var point = new BMap.Point(event.point.lng,event.point.lat);
-      var gc = new BMap.Geocoder();
+      var map = new this.BMap.Map("allmap");
+      var point = new this.BMap.Point(event.point.lng,event.point.lat);
+      var gc = new this.BMap.Geocoder();
       gc.getLocation(point, function(rs){
         // _this.center = point;
         var addComp = rs.addressComponents;
@@ -108,12 +109,42 @@ export default {
       }
     },
 
+    handler({BMap, map}){
+
+    //   var geolocation = new BMap.Geolocation();
+    // // 开启SDK辅助定位
+    // geolocation.enableSDKLocation();
+    // geolocation.getCurrentPosition(function(r){
+    //   console.log(r)
+    //   // if(this.getStatus() == BMAP_STATUS_SUCCESS){
+    //   //   var mk = new BMap.Marker(r.point);
+    //   //   map.addOverlay(mk);
+    //   //   map.panTo(r.point);
+    //   //   alert('您的位置：'+r.point.lng+','+r.point.lat);
+    //   // }
+    //   // else {
+    //   //   alert('failed'+this.getStatus());
+    //   // }        
+    // });
+
+
+      this.BMap = BMap
+      var geolocation1 = new this.BMap.Geolocation();
+      geolocation1.enableSDKLocation();
+      geolocation1.getCurrentPosition((position) => {
+        console.log(position)
+        this.center = {lng: position.point.lng, lat:position.point.lat}
+        this.dragend({
+          point: this.center
+        })
+      })
+    }
+
   },
   mounted() {
     delete sessionStorage.localMap;
-    this.dragend({
-      point: this.center
-    })
+
+    
   },
 }
 </script>

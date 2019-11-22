@@ -114,19 +114,68 @@ export default {
   data() {
     return {
       competitorList: [
-         { text: '选择竞对名称', value: 0 },
-      ]
+         { text: '请选择竞对名称', value: 0 },
+      ],
+      ediotr: true
     }
   },
   mounted() {
+
+    this.$store.dispatch('getTaskInfo', this.$route.query.id).then(()=>{
+      if(this.$store.state.task.taskInfo.dealerDes){
+        // 回显数据
+        this.$store.state.task.addEditVisitlogParams = {
+          competitorList: this.$store.state.task.taskInfo.competitorList.map(r=>{
+            return {
+              modelGid: r.competitorGid,
+              modelAttr: r.racePolicy,
+            }
+          }),
+          competitorOrderCount: this.$store.state.task.taskInfo.competitorOrderCount,
+          dealerDes: this.$store.state.task.taskInfo.dealerDes,
+          gid: this.$store.state.task.taskInfo.gid,
+          lbPreOrderCount: this.$store.state.task.taskInfo.lbPreOrderCount,
+          lesseeList: this.$store.state.task.taskInfo.lesseeList,
+          pics: this.$store.state.task.taskInfo.pic,
+          visitComment: this.$store.state.task.taskInfo.visitComment
+        }
+
+        this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList.map(r=>{
+          return {
+            text: r.competorName,
+            value: r.competitorGid,
+          }
+        }))
+        
+      }
+    })
+
+    // 请求赋值competitorList
     this.$store.dispatch('listCompetitor').then(()=>{
-      this.competitorList = this.$store.state.competitor.list.map(r=>{
+      this.competitorList = this.competitorList.concat(this.$store.state.competitor.list.map(r=>{
         return {
           text: r.competorName,
           value: r.gid
         }
-      })
+      }))
     })
+
+    // 排除competitorList中重复的值
+    setTimeout(() => {
+      let keys = []
+      this.competitorList = this.competitorList.filter(r=>{
+        if(!keys.includes(r.value)){
+          keys.push(r.value)
+          return true
+        }else{
+          return false
+        }
+      })
+      console.log(this.competitorList)
+    }, 2000);
+
+  },
+  watch: {
   },
   methods: {
     finishTask(){
