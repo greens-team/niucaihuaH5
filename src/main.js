@@ -5,6 +5,9 @@ import store from './store/index.js'
 import './plugins/vant.js'            // vant 按需加载
 import moment from './plugins/moment' // 时间统一处理
 
+import { Notify } from 'vant'
+
+
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'VKoxtkFSuXPVRULh2ohYVQ9tubl99xss'
@@ -16,17 +19,25 @@ Vue.config.productionTip = false
 import ajax from '@/plugins/axios'
 import apiList from '@/api'
 
-ajax(apiList,function(error){
+ajax(apiList,error=>{
   // 请求错误统一处理
-  // console.log(error.response, error.response.status, 767)
-  if(error.response.status == 403){
-    alert('response.status:' + 403)
-    // window.location.href="http://localhost:88/#/login"
+  if(!error.response || error.response.status == 401){
+    Notify({ type: 'warning', message: error.response.statusText })
+    delete localStorage.Authorization
+    store.commit('setLoginState', false)
+    router.push('/')
   }
-},function(){
+  if(error.response.status !== 401){
+    Notify({ type: 'warning', message: error.response.data.msg || error.response.statusText })
+  }
+},function(response){
   // 请求成功统一处理
-  // console.log(response)
+  if(Number(response.data.code)){
+    Notify({ type: 'warning', message: response.data.msg })
+    return
+  }
 });
+
 // 获取时间戳
 Vue.prototype.timeStamp = (time) => {
   return moment(time).valueOf()

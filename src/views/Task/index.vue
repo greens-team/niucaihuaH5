@@ -1,7 +1,7 @@
  <!-- 拜访任务详情 -->
 <template>
   <div class="taskDetails  flex flex-1 flex-col">
-    <van-nav-bar :title="$store.state.task.addEditTaskParams.dealerName" left-text="返回" 
+    <van-nav-bar :title="$store.state.task.addEditTaskParams.taskName" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow>
       <div @click="editorFun" slot="right">编辑</div>
     </van-nav-bar>

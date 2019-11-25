@@ -152,7 +152,7 @@
         type="datetime"
         :min-date="new Date()"
         @cancel="taskTimeShow=false"
-        @confirm="taskTimeShow=false; $store.state.task.addEditTaskParams.taskTime = Math.floor(timeStamp(currentDate) / 1000)"
+        @confirm="confirmTaskTime"
         v-model="currentDate"
         :formatter="formatter"
       />
@@ -164,7 +164,7 @@
       position="bottom"
     >
       <van-nav-bar
-        title="选择类型"
+        title="提醒时间"
         left-text="取消"
         right-text="确定"
         left-arrow
@@ -225,7 +225,7 @@
         @click-right="clickRight"
       />
       <div class="flex-1 relative">
-        <div class="absolute inset-0 overflow-y-auto">
+        <div class="absolute inset-0 overflow-y-auto" ref="userListBox">
           <van-checkbox-group v-model="mainUserGidsArr">
             <van-cell-group>
               <van-cell
@@ -321,8 +321,8 @@ export default {
       currentDate: new Date(),
 
       alarmTimeShow: false,
-      alarmTimeVal: '',
-      alarmTimeText: '',
+      alarmTimeVal:  { text: '30分钟', value: 30*60*1000},
+      alarmTimeText: '30分钟',
       alarmTimeOption: [
         { text: '5分钟', value: 5*60*1000},
         { text: '10分钟', value: 10*60*1000},
@@ -360,11 +360,40 @@ export default {
 
       visitType: '',
 
-      taskStatus: 0
+      taskStatus: 0,
+
+      getColleaguePageNum: 1,
+      colleagueLastPage: false,
 
     }
   },
   filters:{
+  },
+  watch: {
+    mainUserGidsShow(val){
+      if(!val){
+        setTimeout(() => {
+          // 负责人 参与人 联系列表滚动加载
+          !this.$refs.userListBox.onscroll && this.scrollLoad(this.$refs.userListBox, resolve => {
+            if(!this.colleagueLastPage){
+              this.$store.dispatch('getColleague',{
+                pageNum: ++this.getColleaguePageNum,
+                pageSize: 10,
+                usrNM: '',
+                rlNm: ''
+              }).then(len=>{
+                if(len < 10){
+                  this.colleagueLastPage = true
+                }
+                resolve()
+              })
+            }else{
+              resolve()
+            }
+          })
+        }, 0);
+      }
+    }
   },
   mounted() {
 
@@ -377,7 +406,7 @@ export default {
 
     this.$store.dispatch('getListData')
     this.$store.dispatch('getColleague',{
-      pageNum: 1,
+      pageNum: this.getColleaguePageNum,
       pageSize: 10,
       usrNM: '',
       rlNm: ''
@@ -526,6 +555,8 @@ export default {
 
     // 直接填写拜访记录
     createTaskLog(visitType){
+      // 清空填写拜访记录
+      this.$store.commit('setAddEditVisitlogParams')
       if(visitType){
           // this.$store.state.task.addEditTaskParams.visitType = 1
           this.visitTypeVal = visitType;
@@ -570,7 +601,16 @@ export default {
           this.editor = false
         });
       })
-    }
+    },
+
+    confirmTaskTime(){
+      this.taskTimeShow=false; 
+      this.$store.state.task.addEditTaskParams.taskTime = Math.floor(this.timeStamp(this.currentDate) / 1000); 
+      debugger
+      if(this.$store.state.task.addEditTaskParams.alarmTime && this.alarmTimeVal.value){
+        this.$store.state.task.addEditTaskParams.alarmTime = Math.floor((this.timeStamp(this.currentDate) - this.alarmTimeVal.value)/1000)
+      }
+    } 
 
   }
 }

@@ -47,9 +47,30 @@ export default {
 
   },
   mutations: {
+    setAddEditVisitlogParams(state){
+      state.addEditVisitlogParams = {
+        competitorList: [
+          {
+            modelGid: '',
+            modelAttr: ''
+          }
+        ],
+        competitorOrderCount: 1,
+        dealerDes: '',
+        gid: '',
+        lbPreOrderCount: 1,
+        lesseeList: [
+          {
+            lesseeName: '',
+            lesseeComment: ''
+          }
+        ],
+        pics: '',
+        visitComment: ''
+      }
+    },
     setAddEditTaskParams(state, data = {}){
       state.addEditTaskParams = Object.assign({
-        alarmTime: 0,
         comment: '',
         dealerGid: '',
         followerUserGids: [],
@@ -58,9 +79,11 @@ export default {
         ownerUserGids: [],
         taskName: '',
         taskTime: new Date().getTime()/1000,
+        alarmTime: Math.floor((new Date().getTime() - 30*60*1000)/1000),
         taskType: 1,
         visitAim: 0,
         visitType: 0
+
       }, data)
     }
   },

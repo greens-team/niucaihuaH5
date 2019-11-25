@@ -61,7 +61,7 @@
         </div>
         <div class="text-center text-gray-800 text-sm">
           <span class="text-base font-bold">{{briefing.addVisitCount}}</span>个<br />
-          新增经拜访
+          新增拜访
         </div>
         <div class="text-center text-gray-800 text-sm">
           <span class="text-base font-bold">{{briefing.dealerChangeStateCount}}</span>个<br />
@@ -218,8 +218,8 @@
       position="bottom"
     >
       <div class="bg-gray-200">
-        <div @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">新建拜访</div>
-        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">新建任务</div>
+        <div @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})" class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer">经销商拜访</div>
+        <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer" @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})">任务事项</div>
         <div class="text-center border-b border-gray-300 bg-white h-12 flex items-center justify-center cursor-pointer mt-3" @click="newTask=false">取消</div>
       </div>
     </van-popup>
