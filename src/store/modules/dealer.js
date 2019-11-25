@@ -108,8 +108,8 @@ export default {
       return new Promise(resolve => {
         window.$ajax.auth.colleague(data).then( res => {
           if (!res.code) {
-            state.colleagueDataList = res.data.resultList
-            resolve()
+            state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
+            resolve(res.data.resultList.length)
           }
         })
       })

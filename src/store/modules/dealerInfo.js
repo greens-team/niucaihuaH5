@@ -19,8 +19,17 @@ export default {
     },{
       id: 3,
       text: '承租人'
+    },{
+      id: 4,
+      text: '动态记录'
+    },{
+      id: 5,
+      text: '操作历史'
     }],
-    currentTabsIndex: 0
+    currentTabsIndex: 0,
+
+    listNewslog: [],
+    listOperatelog: []
   },
   mutations: {
     setInfo(state, data = {}){
@@ -107,5 +116,38 @@ export default {
         })
       })
     }, 
+    listNewslog ({state},data = {}) {  // 获取动态记录列表
+      return new Promise(resolve => {
+        window.$ajax.dealer.listNewslog(data).then(res => {
+          if(!res.code){
+            state.listNewslog = data.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list)
+            resolve(res.data.list.length)
+          }
+        })
+      })
+    }, 
+    addNewslog ({state},data = {}) {  // 添加动态记录列表
+      return new Promise(resolve => {
+        window.$ajax.dealer.addNewslog(data).then(res => {
+          if(!res.code){
+            resolve(res.msg)
+          }
+        })
+      })
+    }, 
+    listOperatelog ({state},data = {}) {  // 获取操作记录列表
+      return new Promise(resolve => {
+        window.$ajax.dealer.listOperatelog(data).then(res => {
+          if(!res.code){
+            state.listOperatelog = data.pageNum == 1 ? res.data.list :  state.listOperatelog.concat(res.data.list)
+            resolve(res.data.list.length)
+          }
+        })
+      })
+    }, 
+
+    
+
+    
   }
 }

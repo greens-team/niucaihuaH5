@@ -53,11 +53,6 @@ Vue.prototype.addRecentvisit = (data) => {
 }
 
 Vue.prototype.scrollLoad = (domBox, callback) => {
-  // domScroll.onscroll = function(){
-  //   console.log(domBox.clientHeight, domBox.scrollHeight,)
-  //   console.log(domScroll.clientHeight, domScroll.scrollHeight,)
-  //   //callback
-  // }
   let isSend = false
   domBox.onscroll = function(){
     if(domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend){
@@ -68,10 +63,6 @@ Vue.prototype.scrollLoad = (domBox, callback) => {
         isSend = false
       })
     }
-    // console.log(domBox.clientHeight, domBox.scrollHeight, domBox.scrollTop)
-
-    // console.log(domScroll.clientHeight, domScroll.scrollHeight,)
-    //callback
   }
 
 }
