@@ -2,7 +2,12 @@
 <template>
   <div class="ContactsInfo flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="联系人详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <i class="iconfont iconqipaocaidanbianji-bang"  @click="editor" slot="right" style="font-size: 1.6rem;"></i>
+      <i
+        class="iconfont iconqipaocaidanbianji-bang"
+        @click="editor"
+        slot="right"
+        style="font-size: 1.6rem;"
+      ></i>
       <!-- <i class="iconfont icongengduo ml-2" style="font-size: 1.2rem;"></i> -->
     </van-nav-bar>
     <div>
@@ -87,7 +92,11 @@
                   >
                     <div class="border-b border-gray-100 pt-2 pb-2">
                       <p class="text-xs text-gray-500">经销商名称</p>
-                      <p class="text-base" style="color:#0885FF;">{{r.dealerName}}</p>
+                      <p
+                        class="text-base"
+                        style="color:#0885FF;"
+                        @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
+                      >{{r.dealerName}}</p>
                     </div>
                     <div class="border-b border-gray-100 pt-2 pb-2">
                       <p class="text-xs text-gray-500">职务</p>
@@ -150,7 +159,11 @@
     </div>
 
     <div class="flex bg-white footer-bar">
-      <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
+      <i
+        class="iconfont iconjingxiaoshangbaifang mx-3"
+        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
+        style="font-size: 2rem;"
+      ></i>
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
 
       <form class="search-block" action="javascript:void 0">
@@ -298,7 +311,7 @@ export default {
     editor() {
       this.$store.commit("setParamsContatcs", this.info);
       this.$router.push("/EditContacts");
-    },
+    }
   }
 };
 </script>

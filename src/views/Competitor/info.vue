@@ -76,12 +76,18 @@
                     :key="i"
                     :title="r.dealerName"
                     :name="r.dealerGid"
+                    class="text-gray-900 text-lg"
                   >
                     <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">
-                        竞对政策
-                        <!-- <span class="text-red-500">*</span> -->
-                      </p>
+                      <p class="text-xs text-gray-500">经销商名称</p>
+                      <p
+                        class="text-base"
+                        style="color:#0885FF;"
+                        @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
+                      >{{r.dealerName}}</p>
+                    </div>
+                    <div class="border-b border-gray-100 pt-2 pb-2">
+                      <p class="text-xs text-gray-500">竞对政策</p>
                       <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
                     </div>
                     <div class="border-b border-gray-100 pt-2 pb-2">
@@ -147,7 +153,11 @@
     </div>
 
     <div class="flex bg-white footer-bar">
-      <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
+      <i
+        class="iconfont iconjingxiaoshangbaifang mx-3"
+        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
+        style="font-size: 2rem;"
+      ></i>
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
 
       <form class="search-block" action="javascript:void 0">
