@@ -71,7 +71,7 @@ export default {
         modelGid: this.$route.query.modelGid,
         modelGids: arr.map(r=>{
           return r.contactsGid
-        }).toString()
+        })
       }).then(msg=>{
         this.$notify({ type: 'success', message: msg })
         this.$router.go(-2)

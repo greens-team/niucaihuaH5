@@ -48,7 +48,7 @@
               <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
                 <van-dropdown-item v-model="params.city" :options="$store.state.dealer.citysList" />
               </van-dropdown-menu>
-              <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
+              <van-dropdown-menu v-if="$store.state.dealer.areasList.length" class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
                 <van-dropdown-item v-model="params.area" :options="$store.state.dealer.areasList" />
               </van-dropdown-menu>
             </div>
@@ -105,7 +105,7 @@
               </div>
             </div>
 
-            <div class="text-gray-700 font-bold  mt-5">是否在经销商附近打卡</div>
+            <div class="text-gray-700 font-bold  mt-5">关系健康度</div>
             <div class="flex flex-wrap justify-start text-center text-gray-600">
               <div v-for="(r,i) in $store.state.dealer.relationHealth" :key="i" 
                 @click="params.relationHealth = r.id"
@@ -116,7 +116,6 @@
 
           </div>
         </div>
-
         <van-popup
           v-model="ownerUserGidsShow"
           position="bottom"
@@ -190,7 +189,7 @@ export default {
       }
       let arr = []
       data.map(r=>{
-        arr.push(r.usrNm)
+        arr.push(r.refRlNm)
       })
       return arr.toString()
     }
@@ -203,7 +202,7 @@ export default {
     },
     screeningShow (val) {
       if(val){
-        this.$store.dispatch('getProvinces').then(data=>{
+        !this.params.province && this.$store.dispatch('getProvinces').then(data=>{
           this.params.province = data[0].value
         })
         this.$store.dispatch('getColleague',{
@@ -224,7 +223,7 @@ export default {
     'params.city' (val) {
       if (val) {
         this.$store.dispatch('getAreas', val).then(data=>{
-          this.params.area = data[0].value
+          this.params.area = data.length ? data[0].value : ''
         })
       }
     }
