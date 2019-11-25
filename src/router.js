@@ -27,12 +27,12 @@ import WorkbenchSearch from './views/Workbench/WorkbenchSearch.vue' // 选择同
 
 import Competitor from './views/Competitor'              // 竞争对手列表页
 import CompetitorInfo from './views/Competitor/info.vue'  // 竞争对手详情页
-import CreateCompetitor from './views/Competitor/createCompetitor.vue'   // 新建竞争对手
+import CreateCompetitor from './views/Competitor/CreateCompetitor.vue'   // 新建竞争对手
 import EditCompetitor from './views/Competitor/editCompetitor.vue'   // 编辑竞争对手
 
 import Lessee from './views/Lessee'              //承租人列表页
 import LesseeInfo from './views/Lessee/info.vue'  //承租人详情页
-import CreateLessee from './views/Lessee/createLessee.vue'          // 新增承租人
+import CreateLessee from './views/Lessee/CreateLessee.vue'          // 新增承租人
 import EditLessee from './views/Lessee/editLessee.vue'          // 编辑承租人
 
 import recordCheck from './views/record'  //经销商提交备案信息 检查
