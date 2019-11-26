@@ -50,14 +50,6 @@ export default {
       ]
     },
 
-    //联系人 关联和解除经销商
-
-    confirmUserGids: [],
-    jobsUser: [],
-    // jobsUser1: [],
-    selectedUserGids: [],
-
-
     orderType: [
       { text: '按创建时间排序', value: 1 },
       { text: '按名称排序', value: 2 }
@@ -226,7 +218,6 @@ export default {
           if (!res.code) {
             state.listNewslog = params.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list);
             if (res.data.list.length < params.pageSize) {
-              console.log(state.listNewslog, 'vuex')
               state.isLastPage = true;
             }
             resolve(res.msg)

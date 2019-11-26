@@ -28,7 +28,7 @@
     </div>
 
     <div class="bg-gray-100 mt-8">
-      <van-cell is-link>
+      <!-- <van-cell is-link>
         <template slot="title">
           <div  class="flex items-center justify-between w-24">
             <div class="flex-1 flex items-center justify-center">
@@ -47,7 +47,7 @@
             <p>活动状态</p>
           </div>
         </template>
-      </van-cell>
+      </van-cell> 
       <van-cell class="mt-3" is-link>
         <template slot="title">
           <div  class="flex items-center  justify-between w-24">
@@ -58,7 +58,8 @@
           </div>
         </template>
       </van-cell>
-      <van-cell is-link>
+      -->
+      <van-cell is-link @click="$router.push('/FeedBack');"> 
         <template slot="title">
           <div  class="flex items-center  justify-between w-24">
             <div class="flex-1 flex items-center justify-center">
@@ -68,17 +69,16 @@
           </div>
         </template>
       </van-cell>
-      <van-cell class="mt-3" is-link>
+      <van-cell class="mt-3" is-link @click="$router.push('/MySetInfo');">
         <template slot="title">
-          <div  class="flex items-center  justify-between w-24">
+          <div  class="flex items-center  justify-between w-24" >
             <div class="flex-1 flex items-center justify-center">
               <img class="w-6 h-6 mr-1" src="../../assets/my/icon5.png" alt="">
+              <span class="custom-title">设置信息</span>
             </div>
-            <p>设置信息</p>
           </div>
         </template>
       </van-cell>
-      <div></div>
     </div>
   </div>
 </template>

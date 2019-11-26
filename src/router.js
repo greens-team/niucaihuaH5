@@ -18,6 +18,8 @@ import SelectedLesseeList from './components/Lessee/selectedList.vue'  // 关联
 import DealerInfo from './views/Dealer/DealerInfo.vue'              // 经销商详情
 
 import MyBaseInfo from './views/My/BaseInfo'                        // 我的基本信息
+import MySetInfo from './views/My/BaseInfo/setInfo.vue'             // 我的设置
+import FeedBack from './views/My/BaseInfo/feedBack.vue'
 import Colleague from './views/Workbench/Colleague.vue'             // 选择同事及组织树
 import RecentVisit from './views/Workbench/RecentVisit.vue'         // 最近访问
 
@@ -112,6 +114,16 @@ export default new Router({
       component: MyBaseInfo
     },
     {
+      path: '/MySetInfo',      // 基本信息
+      name: 'MySetInfo',
+      component: MySetInfo
+    },
+    {
+      path: '/FeedBack',        // 意见反馈
+      name: 'FeedBack',
+      component: FeedBack
+    },
+    {
       path: '/Colleague',       // 选择同事及组织
       name: 'Colleague',
       component: Colleague
@@ -180,7 +192,7 @@ export default new Router({
       name: 'ContactsSelectedList',
       component: ContactsSelectedList
     },
-    
+
     {
       path: '/Competitor',   //竞争对手列表页
       name: 'Competitor',
@@ -201,7 +213,7 @@ export default new Router({
       name: 'EditCompetitor',
       component: EditCompetitor
     },
-    
+
     {
       path: '/Lessee',   //承租人列表页
       name: 'Lessee',
@@ -254,13 +266,13 @@ export default new Router({
     },
 
 
-    
 
-     {
+
+    {
       path: '/Contacts',   //联系人列表页面
       name: 'Contacts',
       component: Contacts
-    },{
+    }, {
       path: '/ContactsInfo',   //联系人详情信息页面
       name: 'ContactsInfo',
       component: ContactsInfo

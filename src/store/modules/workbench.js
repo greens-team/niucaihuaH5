@@ -40,7 +40,7 @@ export default {
     setLoginState (state, val) {
       // 变更登录状态
       localStorage.loginState = val
-      state.currentModelActive = 0
+      state.currentModelActive = 0;
     },
 
     // 我的任务时间
