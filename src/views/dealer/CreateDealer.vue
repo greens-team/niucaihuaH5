@@ -135,14 +135,14 @@
           position="bottom"
           :style="{ height: '40%'}">
           <van-nav-bar
-            title="请选择业务类型"
+            :title="ownerUserGidsType == 1 ? '负责人' : '参与人'"
             left-text="取消"
             right-text="确定"
             left-arrow
             @click-left="ownerUserGidsShow = false;"
             @click-right="ownerUserGidsType == 1 ? (ownerUserGidsA = ownerUserGidsValus) : (ownerUserGidsB = ownerUserGidsValus); ownerUserGidsShow = false;"
           />
-          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;">
+          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;" ref="userListBox">
             <van-checkbox-group v-model="ownerUserGidsValus">
               <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
             </van-checkbox-group>
@@ -196,9 +196,13 @@ export default {
       currentDate: new Date(),
       establishTimeShow: false,
 
-      initCount: 0
+      initCount: 0,
+
+      getColleaguePageNum: 1,
+      colleagueLastPage: false,
     }
   },
+
   filters: {
     typeListFilter(data){
       let arr = [];
@@ -238,9 +242,11 @@ export default {
           this.getCity(this.$store.state.newDealer.params.rgnPrCd)
         }
     })
-    this.$store.dispatch('getColleague', {
-      pageNum: 1,
-      pageSize: 30,
+
+    
+    this.$store.dispatch('getColleague',{
+      pageNum: this.getColleaguePageNum,
+      pageSize: 10,
       usrNM: '',
       rlNm: ''
     })
@@ -265,6 +271,30 @@ export default {
 
   },
   watch: {
+    ownerUserGidsShow(val){
+      if(val){
+        setTimeout(() => {
+          // 负责人 参与人 联系列表滚动加载
+          !this.$refs.userListBox.onscroll && this.scrollLoad(this.$refs.userListBox, resolve => {
+            if(!this.colleagueLastPage){
+              this.$store.dispatch('getColleague',{
+                pageNum: ++this.getColleaguePageNum,
+                pageSize: 10,
+                usrNM: '',
+                rlNm: ''
+              }).then(len=>{
+                if(len < 10){
+                  this.colleagueLastPage = true
+                }
+                resolve()
+              })
+            }else{
+              resolve()
+            }
+          })
+        }, 0);
+      }
+    },
     ownerUserGidsA(data){
       let vals=[];
       data.map(r=>{

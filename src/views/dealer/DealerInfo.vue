@@ -13,7 +13,7 @@
     </van-nav-bar>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
 
             <div class="shadow-md rounded-lg m-3 p-4 bg-white">
               <div class="flex">
@@ -244,6 +244,56 @@
                     </van-collapse>
                   </div>
 
+                  <div v-if="$store.state.dealerInfo.currentTabsIndex === 4" class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white">
+                    <div class="flex pl-3 pr-3 pb-3 border-b">
+                      <div class="flex-1 font-bold">动态记录</div>
+                      <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
+                    </div>
+
+                        <div
+                          class="border-b ml-4 mr-4"
+                          style="padding-top: 1rem;padding-bottom: 1rem;"
+                          v-for="(r,i) in $store.state.dealerInfo.listNewslog"
+                          :key="i"
+                        >
+                          <div class="flex">
+                            <div
+                              class="w-12 h-12 text-center rounded-full mr-4 text-3xl text-gray-700 baseName"
+                            >z</div>
+                            <div>
+                              <div class="text-ms font-bold">{{r.userName}}</div>
+                              <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center mt-3">
+                            <p
+                              v-if="r.content != '' "
+                              class="text-ms leading-relaxed"
+                              style="color:#252525"
+                            >{{r.content}}</p>
+                            <img v-if="r.pics != '' " :src="r.pics" alt />
+                          </div>
+                        </div>
+                        
+                  </div>
+
+                  <div v-if="$store.state.dealerInfo.currentTabsIndex === 5" class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white">
+                    <div class="flex pl-3 pr-3 pb-3  border-b">
+                      <div class="flex-1 font-bold">操作历史</div>
+                      <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
+                    </div>
+                    <div
+                      class="border-b ml-4 mr-4"
+                      style="padding-top: 1rem;padding-bottom: 1rem;"
+                      v-for="(r,i) in $store.state.dealerInfo.listOperatelog"
+                      :key="i"
+                    >
+                      <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span>
+                      <span class="text-gray-600">{{r.content}}</span>
+                    </div>
+                  </div>
+
                   
 
               </van-swipe-item>
@@ -267,7 +317,7 @@
           placeholder="请输入工作进展"
           input-align="center"
           class="rounded-lg h-12"
-          v-model="$store.state.lessee.addNewslogParams.content"
+          v-model="newsLogContent"
           @keyup.13="tapToSearch"
         />
       </form>
@@ -292,7 +342,14 @@ export default {
       currentCompetitor: [],
       currentLesseelist: [],
       showInfo1: true,
-      showInfo2: true
+      showInfo2: true,
+
+      listNewslogPageNum: 1,
+      listOperatelogNum: 1,
+      isNewslogLastPage: false,
+      isOperatelogLastPage: false,
+
+      newsLogContent: ''
     }
   },
   mounted() {
@@ -306,6 +363,40 @@ export default {
     }else{
       this.getBaseInfo(0)
     }
+
+    // 动态记录
+    this.scrollLoad(this.$refs.listBox, resolve => {
+      if(this.$store.state.dealerInfo.currentTabsIndex == 4 && !this.isNewslogLastPage){
+          this.$store.dispatch( "listNewslog",{
+              modelObjType: 1,
+              modelId: this.id,
+              pageNum: ++this.listNewslogPageNum,
+              pageSize: 10
+            }
+          ).then(len => {
+            if(len < 10){
+              this.isNewslogLastPage = true
+            }
+            resolve();
+          });
+      }
+      if(this.$store.state.dealerInfo.currentTabsIndex == 5 && !this.isOperatelogLastPage){
+          this.$store.dispatch("listOperatelog",{
+              modelObjType: 1,
+              modelId: this.id,
+              pageNum: ++this.listOperatelogNum,
+              pageSize: 10
+            }
+          ).then(len => {
+            if(len < 10){
+              this.isOperatelogLastPage = true
+            }
+            resolve();
+          });
+      }
+      resolve();
+    });
+
   },
   watch: {
     '$store.state.dealerInfo.currentTabsIndex'(num){
@@ -329,7 +420,24 @@ export default {
     }
   },
   methods: {
-    tapToSearch() {},
+    tapToSearch() {
+      this.$store.dispatch('addNewslog',{
+        modelObjType: 1,
+        modelId: this.id,
+        content: this.newsLogContent,
+        pics: ''
+      }).then((msg)=>{
+        this.isNewslogLastPage = false
+        this.listNewslogPageNum = 1
+        this.newsLogContent = ''
+        this.$store.dispatch('listNewslog', {
+          modelObjType: 1,
+          modelId: this.id,
+          pageNum: this.listNewslogPageNum,
+          pageSize: 10
+        })
+      })
+    },
     recordSubmit(){
       if(this.info.dealerName && this.info.creditCode && this.info.gid){
         this.$router.push({name:'recordCheck', query: {
@@ -375,6 +483,22 @@ export default {
         this.$store.dispatch('getlesseelist', this.id).then(res => {
           this.lesseelist = this.$store.state.dealerInfo.lesseelist
           this.currentLesseelist = this.lesseelist.length ? [this.lesseelist[0].id] : []
+        })
+      }
+      if(num === 4) {
+        this.$store.dispatch('listNewslog', {
+          modelObjType: 1,
+          modelId: this.id,
+          pageNum: this.listNewslogPageNum,
+          pageSize: 10
+        })
+      }
+      if(num === 5) {
+        this.$store.dispatch('listOperatelog', {
+          modelObjType: 1,
+          modelId: this.id,
+          pageNum: this.listOperatelogNum,
+          pageSize: 10
         })
       }
     },
@@ -433,6 +557,14 @@ export default {
 .DealerInfo .tabs /deep/ .van-tag{padding:0 0.2em;}
 .DealerInfo .tabs /deep/ .van-tabs__nav {
   background-color: inherit;
+}
+
+.baseName {
+  background: linear-gradient(
+    245deg,
+    rgba(255, 191, 42, 1) 0%,
+    rgba(254, 233, 124, 1) 100%
+  );
 }
 
 

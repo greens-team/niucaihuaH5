@@ -21,6 +21,11 @@ export default (m)=>{
       associatedlessee: m.POST + '/dealer/associatedlessee',    // 关联和解除关联承租人
       associatedcompetitor: m.POST + '/dealer/associatedcompetitor', // 关联和解除关联合作竞对
       editDealer: m.POST + '/dealer/edit', // 编辑经销商信息
+
+      listNewslog: m.POST + '/newslog/listpage', // 获取动态记录列表
+      addNewslog: m.POST + '/newslog/add', // 添加动态记录列表
+      listOperatelog: m.POST + '/operatelog/listpage', // 获取操作记录列表
+
     },
     upload: {
     }

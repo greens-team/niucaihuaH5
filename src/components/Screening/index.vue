@@ -128,7 +128,7 @@
             @click-left="ownerUserGidsShow = false;"
             @click-right="params.ownerUserGids = ownerUserGidsValus; ownerUserGidsShow = false;"
           />
-          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;">
+          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;" ref="ownerUserList">
             <van-checkbox-group v-model="ownerUserGidsValus">
               <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
             </van-checkbox-group>
@@ -180,6 +180,9 @@ export default {
       showTime: false,
       timeStr: new Date(this.$root.moment().format('YYYY-MM-DD')),
       timeType: 0,
+
+      getColleaguePageNum: 1,
+      colleagueLastPage:false
     }
   },
   filters: {
@@ -199,14 +202,39 @@ export default {
   watch: {
     ownerUserGidsShow (val) {
       !val && (this.ownerUserGidsValus = [])
+      if(val){
+        setTimeout(() => {
+          // 负责人联系列表滚动加载
+          !this.$refs.ownerUserList.onscroll && this.scrollLoad(this.$refs.ownerUserList, resolve => {
+            if(!this.colleagueLastPage){
+              this.$store.dispatch('getColleague',{
+                pageNum: ++this.getColleaguePageNum,
+                pageSize: 10,
+                usrNM: '',
+                rlNm: ''
+              }).then(len=>{
+                if(len < 10){
+                  this.colleagueLastPage = true
+                }
+                resolve()
+              })
+            }else{
+              resolve()
+            }
+          })
+        },0);
+
+      }
     },
     screeningShow (val) {
       if(val){
         !this.params.province && this.$store.dispatch('getProvinces').then(data=>{
           this.params.province = data[0].value
         })
+        this.getColleaguePageNum = 1;
+        this.colleagueLastPage = false;
         this.$store.dispatch('getColleague',{
-          pageNum: 1,
+          pageNum: this.getColleaguePageNum,
           pageSize: 10,
           usrNM: '',
           rlNm: ''
