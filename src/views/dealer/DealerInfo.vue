@@ -84,7 +84,7 @@
                         </div>
                         <div class="border-t border-gray-100 p-2">
                           <p class="text-xs text-gray-500">成立日期</p>
-                          <p>{{info.establishTime}}</p>
+                          <p>{{$root.moment(info.establishTime*1000).format('YYYY-MM-DD')}}</p>
                         </div>
                         <div class="border-t border-gray-100 p-2">
                           <p class="text-xs text-gray-500">所属地区</p>
@@ -115,7 +115,11 @@
                       <div v-show="showInfo2">
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">地理位置</p>
-                          <p>{{info.longitude}},{{info.latitude}}</p>
+                          <div class="flex">
+                            {{info.province +' '+ info.city +' '+ info.area}}
+                            <div class="flex-1"></div>
+                            <i @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})" class="iconfont iconweizhibang text-orange-500"></i>
+                          </div>
                         </div>
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">经销商分级</p>
@@ -139,7 +143,7 @@
                         <van-collapse-item v-for="(r,i) in contactslist" :key="i" :title="r.contactsName" :name="r.id">
                           <div class="border-b border-gray-100 pt-2 pb-2">
                             <p class="text-xs text-gray-500">姓名</p>
-                            <p class="text-gray-900 text-sm">{{r.contactsName}}</p>
+                            <p class="text-gray-900 text-sm text-blue-500" @click="$router.push({path:'/ContactsInfo',query:{gid:r.gid}})">{{r.contactsName}}</p>
                           </div>
                           <div class="border-b border-gray-100 pt-2 pb-2">
                             <p class="text-xs text-gray-500">职务</p>
@@ -167,7 +171,7 @@
                       <van-collapse-item v-for="(r,i) in competitorlist" :key="i" :title="r.competorName" :name="r.id">
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">竞对名称</p>
-                          <p class="text-gray-900 text-sm">{{r.competorName}}</p>
+                          <p class="text-gray-900 text-sm  text-blue-500" @click="$router.push({path:'/CompetitorInfo',query:{id:r.gid}})">{{r.competorName}}</p>
                         </div>
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">竞对政策</p>
@@ -190,7 +194,7 @@
                       <van-collapse-item v-for="(r,i) in lesseelist" :key="i" :title="r.lesseeName" :name="r.id">
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">姓名</p>
-                          <p class="text-gray-900 text-sm">{{r.lesseeName}}</p>
+                          <p class="text-gray-900 text-sm text-blue-500" @click="$router.push({path:'/LesseeInfo',query:{id:r.gid}})">{{r.lesseeName}}</p>
                         </div>
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">证件号码</p>

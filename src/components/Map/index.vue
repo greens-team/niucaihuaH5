@@ -5,16 +5,20 @@
     <van-nav-bar
       :title="$route.query.clockIn?'签到打卡':'选择地图位置'"
       left-text="返回"
-      right-text="确定"
+      :right-text="$route.query.lng ? '' : '确定'"
       @click-left="$router.go(-1)"
       @click-right="setLocation"
     />
-   
-    <div class="p-1 text-sm text-gray-500 pl-3 text-center bg-gray-100">拖动地图上的红色图标，可选择地址</div>
-    
-    <van-radio-group v-model="addressValue">
-      <van-radio v-for="(r,i) in addressList" :key="i" icon-size="15px" :name="r.value" class=" text-sm p-2 border-b border-gray-200"><span class="ellipsis">{{r.text}}</span></van-radio>
-    </van-radio-group>
+
+    <div v-if="!$route.query.lng">
+      
+        <div class="p-1 text-sm text-gray-500 pl-3 text-center bg-gray-100">拖动地图上的红色图标，可选择地址</div>
+        
+        <van-radio-group v-model="addressValue">
+          <van-radio v-for="(r,i) in addressList" :key="i" icon-size="15px" :name="r.value" class=" text-sm p-2 border-b border-gray-200"><span class="ellipsis">{{r.text}}</span></van-radio>
+        </van-radio-group>
+
+    </div>
 
     <baidu-map class="flex-1  map" :center="center" :zoom="zoom"  @ready="handler"> 
       <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
@@ -127,17 +131,32 @@ export default {
     //   // }        
     // });
 
+        this.BMap = BMap
+        if(this.$route.query.lng){
+          this.center = {
+            lng: this.$route.query.lng, 
+            lat: this.$route.query.lat
+          }
+          this.dragend({
+            point: this.center
+          })
+        }else{
+              
+              var geolocation1 = new this.BMap.Geolocation();
+              geolocation1.enableSDKLocation();
+              geolocation1.getCurrentPosition((position) => {
+                console.log(position)
+                this.center = {
+                  lng: position.point.lng, 
+                  lat:position.point.lat
+                }
+                this.dragend({
+                  point: this.center
+                })
+              })
+        }
 
-      this.BMap = BMap
-      var geolocation1 = new this.BMap.Geolocation();
-      geolocation1.enableSDKLocation();
-      geolocation1.getCurrentPosition((position) => {
-        console.log(position)
-        this.center = {lng: position.point.lng, lat:position.point.lat}
-        this.dragend({
-          point: this.center
-        })
-      })
+
     }
 
   },

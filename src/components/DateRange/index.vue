@@ -142,11 +142,18 @@ export default {
       this.$router.go(-1)
     },
     setTime(){
-      this.$store.commit('setBriefingDate', {
+      let params = {
         text: '',
         startTime: this.$root.moment(this.params.startTime).startOf("Day").format('YYYY-MM-DD HH:mm:ss'),
         endTime: this.$root.moment(this.params.endTime).endOf("Day").format('YYYY-MM-DD HH:mm:ss')
-      })
+      }
+      if(params.startTime > params.endTime){
+        this.$dialog.alert({
+          message: '开始时间不能晚于结束时间'
+        });
+        return
+      }
+      this.$store.commit('setBriefingDate', params)
       this.$router.go(-1)
     },
     setTimeText(selected){

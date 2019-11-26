@@ -3,7 +3,7 @@
 
   <div class="VisitRecord flex flex-1 flex-col">
     <van-nav-bar title="填写拜访记录" left-text="返回" 
-      @click-left="$router.push('/')" left-arrow >
+      @click-left="$router.go(-1)" left-arrow >
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -184,11 +184,11 @@ export default {
             message: '请认真填写'
         });
       }else{
-        this.$store.dispatch('addvisitlog', {gid: this.$route.query.id}).then((msg)=>{
+        this.$store.dispatch(this.$route.query.back ? 'addvisitlog' : 'editvisitlog', {gid: this.$route.query.id}).then((msg)=>{
           this.$dialog.alert({
               message: msg
             }).then(() => {
-              this.$router.push('/')
+              this.$route.query.back ? this.$router.replace('/') : this.$router.go(-1)
             });
         }) 
       }

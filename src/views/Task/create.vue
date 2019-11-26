@@ -1,11 +1,11 @@
  <!-- 新建拜访任务 -->
 <template>
   <div class="taskCreate">
-    <van-nav-bar :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'" left-text="返回" 
+    <van-nav-bar :title="taskId ? $store.state.task.addEditTaskParams.taskName : ($route.query.taskType == 1 ?'经销商拜访' : '任务事项')" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow 
          >
       <div  @click="save" v-if="editor && !taskId" slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
-      <div slot="right" v-if="!editor && $route.query.taskType == 1 && taskId" @click="editor = !editor">编辑</div>
+      <div slot="right" v-if="!editor && taskId && !taskStatus " @click="editor = !editor">编辑</div>
       <div  @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
     </van-nav-bar>
 
@@ -111,7 +111,7 @@
             <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span>
           </div>
           <i class="iconfont iconweizhi text-orange-500"></i>
-          <div>{{$store.state.task.addEditTaskParams.dealerLongitude}} {{$store.state.task.addEditTaskParams.dealerLatitud}}</div>
+          <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" class="iconfont iconweizhibang"></i></div>
         </div>
       </div>
 
@@ -438,20 +438,19 @@ export default {
         //回显 拜访人 mainUserNames
         // mainUserNames
 
-        this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
+        this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
           return {
             id: r.modelGid,
             refRlNm: r.modelName
           }
-        })
-
+        }) : []
         //回显 协访人 otherUserNames
-        this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
+        this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
           return {
             id: r.modelGid,
             refRlNm: r.modelName
           }
-        })
+        }) : []
 
         // 回显 visitAim
         this.visitAimTypes.some(r=>{
@@ -477,7 +476,7 @@ export default {
         return '请选择协访人'
       }
       return vals.map(r=>{
-        return r[key]
+        return String(r[key])
       }).toString()
     },
     changeAlarmTime(){
@@ -496,9 +495,11 @@ export default {
       this.mainUserGidsShow = false; 
       if(this.userType == 0){
         this.mainUserGids = this.mainUserGidsArr;
+        this.$store.state.task.addEditTaskParams.mainUserNames = this.mainUserGidsArr;
         this.$store.state.task.addEditTaskParams.mainUserGids = this.mainUserGidsFun(this.mainUserGidsArr, 'id', 0)
       }else{
         this.otherUserGids = this.mainUserGidsArr;
+        this.$store.state.task.addEditTaskParams.otherUserNames = this.mainUserGidsArr;
         this.$store.state.task.addEditTaskParams.otherUserGids = this.mainUserGidsFun(this.mainUserGidsArr, 'id', 1)
       }
     },
@@ -573,7 +574,7 @@ export default {
             });
           })
       }else{
-        this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+        this.$router.push({name:'VisitRecord',query:{id: this.taskId, back: 'home'}})
       }
     },
 
@@ -588,17 +589,16 @@ export default {
       })
     },
     editorFun(){
-      
       let mainUserNames = this.$store.state.task.addEditTaskParams.mainUserNames ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
-        return String(r.modelGid)
+        return String(r.modelGid || r.id)
       }) : []
       let otherUserNames = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
-        return String(r.modelGid)
+        return String(r.modelGid || r.id)
       }) : []
-      this.$store.dispatch('editTask',{mainUserGids:mainUserNames,otherUserGids:otherUserNames}).then(res=>{
+      this.$store.dispatch('editTask',{mainUserGids:mainUserNames,otherUserGids:otherUserNames}).then(msg=>{
         this.newTask = false
         this.$dialog.alert({
-          message: res.msg
+          message: msg
         }).then(() => {
           this.editor = false
         });
