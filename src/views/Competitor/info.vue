@@ -194,6 +194,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
+    this.addRecentvisit({modelObjType:4, modelId:this.id})
     if (this.$store.state.competitor.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.competitor.currentTabsIndex);

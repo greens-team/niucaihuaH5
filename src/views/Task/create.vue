@@ -528,6 +528,7 @@ export default {
             message: res.msg
           }).then(() => {
             this.taskId = res.data
+            this.$router.go(-1)
           });
         })
       }
@@ -548,7 +549,7 @@ export default {
           message: res.msg
         }).then(() => {
            this.taskId = res.data
-          // this.$router.go(-1)
+           this.$router.go(-1)
         });
       })
     },
@@ -566,8 +567,9 @@ export default {
               message: res.msg
             }).then(() => {
               this.taskId = res.data
+              this.$router.go(-1)
               // 跳转到填写拜访记录页面
-              this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+              // this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
             });
           })
       }else{
@@ -606,7 +608,7 @@ export default {
     confirmTaskTime(){
       this.taskTimeShow=false; 
       this.$store.state.task.addEditTaskParams.taskTime = Math.floor(this.timeStamp(this.currentDate) / 1000); 
-      debugger
+    
       if(this.$store.state.task.addEditTaskParams.alarmTime && this.alarmTimeVal.value){
         this.$store.state.task.addEditTaskParams.alarmTime = Math.floor((this.timeStamp(this.currentDate) - this.alarmTimeVal.value)/1000)
       }

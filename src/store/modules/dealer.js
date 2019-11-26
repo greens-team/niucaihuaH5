@@ -64,6 +64,7 @@ export default {
     areasList: [],      // 区域
 
     colleagueDataList: [],
+    deptDataList: [],
 
     confirmUserGids: [],
     jobsUser: [],
@@ -104,6 +105,16 @@ export default {
     }
   },
   actions: {
+    getDept ({state}, data={}) {
+      return new Promise(resolve => {
+        window.$ajax.auth.dept(data).then( res => {
+          if (!res.code) {
+            state.deptDataList = res.data.content
+            resolve(res.data.content)
+          }
+        })
+      })
+    },
     getColleague ({state}, data={}) {
       return new Promise(resolve => {
         window.$ajax.auth.colleague(data).then( res => {

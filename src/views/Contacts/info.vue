@@ -209,6 +209,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.gid;
+    this.addRecentvisit({modelObjType:2, modelId:this.id})
     if (this.$store.state.contacts.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.contacts.currentTabsIndex);

@@ -33,7 +33,7 @@
                   <!-- <van-checkbox icon-size="16px" class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" name="a">全选</van-checkbox> -->
                   <!-- <van-index-anchor index="A" class=" bg-gray-100"/> -->
                   <div class="h-1"></div>
-                  <van-checkbox v-for="(item, i) in colleagueData" :key="i" icon-size="16px" 
+                  <van-checkbox v-for="(item, i) in $store.state.dealer.colleagueDataList" :key="i" icon-size="16px" 
                     class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
                     :name="item.refRlNm+','+item.id">
                       {{item.refRlNm}}
@@ -44,7 +44,7 @@
                 <div class="pt-1 bg-gray-100">
                   <div class="bg-white pt-1 pl-3 pr-3">
                     <van-checkbox-group  v-model="colleagues.deptGids" class="bg-white NestedDept">
-                      <NestedDept :deptData="deptData" />
+                      <NestedDept :deptData="$store.state.dealer.deptDataList" />
                     </van-checkbox-group>
                   </div>
                 </div>
@@ -81,13 +81,14 @@ export default {
     return {
       searchKeyword: '',
       active: 0,
-      deptData: [],
-      colleagueData: [],
       colleagues: {
         userGids: [],
         deptGids: [],
         userType: 1
-      }
+      },
+
+      getColleaguePageNum: 1,
+      colleagueLastPage: false,
     }
   },
   watch:{
@@ -95,6 +96,7 @@ export default {
       this.active ? this.getDept() : this.getColleague()
     },
     active(num){
+      this.searchKeyword = ''
       num ? this.getDept() : this.getColleague()
     }
   },
@@ -106,41 +108,54 @@ export default {
   },
   mounted() {
 
-    // this.scrollLoad(this.$refs.colleagueListBox, (resolve)=>{
-
-    //     if(this.$store.state.workbench.workbenchTaskStatus){
-    //       this.$store.state.workbench.colleaguesTaskPageNum++
-    //     }else{
-    //       this.$store.state.workbench.myTaskPageNum++
-    //     }
-    //     this.$store.dispatch('getTaskList').then(msg=>{
-    //       resolve(msg)
-    //     })
-
-    // })
     
-    
-    // this.selected = this.$route.params
+
   },
   methods: {
     getDept(keyword){
-      this.$ajax.auth.dept({}).then(res=>{
-        this.deptData = res.data.content
-        this.colleagueData = []
+      this.$store.dispatch('getDept',{
+          name: this.searchKeyword,
+          enabled: true
+      }).then(()=>{
+        this.$store.state.dealer.colleagueDataList = []
       })
     },
     getColleague(){
-      this.$ajax.auth.colleague({
-        pageNum: 1,
-        pageSize: 30,
-        usrNM: this.searchKeyword,
-        rlNm: ''
-      }).then(res=>{
-        if(!res.code){
-          this.colleagueData = res.data.resultList
-          this.deptData = []
-        }
+      this.colleagueLastPage = false
+      this.getColleaguePageNum = 1
+      this.$store.dispatch('getColleague',{
+        pageNum: this.getColleaguePageNum,
+        pageSize: 20,
+        usrNM: '',
+        rlNm: this.searchKeyword
+      }).then(()=>{
+        this.$store.state.dealer.deptDataList = []
       })
+
+      setTimeout(() => {
+        // 同事列表滚动加载
+        this.scrollLoad(this.$refs.colleagueListBox, resolve => {
+          console.log(111)
+          if(!this.active){
+            if(!this.colleagueLastPage){
+              this.$store.dispatch('getColleague',{
+                pageNum: ++this.getColleaguePageNum,
+                pageSize: 20,
+                usrNM: '',
+                rlNm: this.searchKeyword
+              }).then(len => {
+                if(len < 20){
+                  this.colleagueLastPage = true
+                }
+                resolve()
+              })
+            }else{
+              resolve()
+            }
+          }
+        })
+      }, 0);
+
     },
     selectColleague() {
       if (this.colleagues.userGids.concat(this.colleagues.deptGids).length) {
