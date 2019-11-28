@@ -27,6 +27,7 @@ import lessee from './modules/lessee'          // 承租人
 import record from './modules/record'          // 经销商备案
 import task from './modules/task'             // 任务
 import history from './modules/history'             // 动态记录、操作历史
+import my from './modules/my'
 
 export default {
   auth,
@@ -37,5 +38,6 @@ export default {
   lessee,
   record,
   task,
-  history
+  history,
+  my
 }

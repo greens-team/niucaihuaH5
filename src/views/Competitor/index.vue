@@ -2,32 +2,33 @@
 <template>
   <div class="CompetitorList flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-3 pr-3 flex border-b border-gray-200" v-show="!searchBar">
+      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar">
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
             class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
           >
-            <van-icon class name="arrow-left" />
-            <span>返回</span>
+            <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
-        <div class="flex-1 text-center text-lg font-medium pt-2">合作竞对</div>
+        <div class="flex-1 text-center text-lg font-medium">合作竞对</div>
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
 
           <!-- 搜索图标 -->
-          <van-icon
-            name="search"
+          <img
+            class="bar_icon search_icon"
             @click="searchBar = true"
-            class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
+            src="../../assets/topBarIcon/search_icon.png"
+            alt="搜索"
           />
+
           <!-- 添加图标 -->
-          <van-icon
-            name="plus"
+          <img
+            class="bar_icon plus_icon"
             @click="$store.commit('setInitAddParams');$router.push('/CreateCompetitor')"
-            slot="right"
-            class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"
+            src="../../assets/topBarIcon/add_icon.png"
+            alt="添加"
           />
         </div>
       </div>
@@ -46,13 +47,17 @@
         <van-search
           class="flex-1"
           v-model="$store.state.competitor.listParams.queryString"
-          @input="query()"
+          @input="(keyword)=>$store.dispatch('listCompetitor',{queryString: keyword,pageNum: 1})"
           placeholder="请输入搜索关键词"
           show-action
           shape="round"
         >
           <div v-if="homeSearch" slot="action"></div>
-          <div v-else slot="action" @click="searchBar = false">取消</div>
+          <div
+            v-else
+            slot="action"
+            @click="searchBar = false;$store.dispatch('listCompetitor',{queryString: '', pageNum: 1})"
+          >取消</div>
         </van-search>
       </div>
     </div>
@@ -69,13 +74,16 @@
     </van-tabs>
 
     <div class="border-b border-gray-200 flex items-center justify-start px-4">
-      <van-dropdown-menu>
-        <van-dropdown-item
-          @change="(num)=>$store.dispatch('listCompetitor',{orderType: num,pageNum:1})"
-          v-model="$store.state.competitor.listParams.orderType"
-          :options="$store.state.competitor.orderType"
-        />
-      </van-dropdown-menu>
+      <div style="position:relative;margin-left: 1.286rem;">
+        <van-dropdown-menu>
+          <van-dropdown-item
+            @change="(num)=>$store.dispatch('listCompetitor',{orderType: num,pageNum:1})"
+            v-model="$store.state.competitor.listParams.orderType"
+            :options="$store.state.competitor.orderType"
+          />
+        </van-dropdown-menu>
+        <img class="order_icon" src="../../assets/lessee/order.png" alt />
+      </div>
     </div>
 
     <div class="flex-1 relative h-full">
@@ -138,21 +146,15 @@ export default {
   methods: {
     getInfo(id) {
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
-    },
-    query(keyword) {
-      this.$store.dispatch("listCompetitor", {
-        queryString: keyword,
-        pageNum: 1
-      });
     }
   }
 };
 </script>
 
 <style scoped>
-.CompetitorList /deep/.van-tabs__line {
+.CompetitorList /deep/ .van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 4px;
+  height: 6px;
 }
 .CompetitorList /deep/ .van-hairline--top-bottom::after,
 .CompetitorList /deep/ .van-hairline-unset--top-bottom::after {
@@ -171,5 +173,39 @@ export default {
 .CompetitorList /deep/ .van-cell {
   display: flex;
   align-items: center;
+}
+.search_icon {
+  margin-right: 1.143rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
+}
+.order_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+}
+.CompetitorList /deep/ .van-dropdown-menu__title::after {
+  opacity: 0;
+}
+.CompetitorList /deep/ .van-dropdown-menu__title {
+  padding: 0 25px;
+  color: #80848d;
+}
+.CompetitorList /deep/ .van-dropdown-item__option--active,
+.LesseeList /deep/ .van-dropdown-item__option--active .van-dropdown-item__icon {
+  color: #ff9b02;
+}
+.CompetitorList /deep/ .van-dropdown-item__option--active,
+.CompetitorList
+  /deep/
+  .van-dropdown-item__option--active
+  .van-dropdown-item__icon {
+  color: #ff9b02;
 }
 </style>

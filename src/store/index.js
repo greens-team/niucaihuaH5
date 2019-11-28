@@ -9,6 +9,7 @@ import competitor from './modules/competitor'  // 合作竞对
 import lessee from './modules/lessee'          // 承租人
 import record from './modules/record'          // 承租人
 import task from './modules/task'              // 任务
+import my from './modules/my'              // 任务
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
     competitor,
     lessee,
     record,
-    task
+    task,
+    my
   },
   getters
 })

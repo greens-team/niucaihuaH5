@@ -38,6 +38,9 @@ export default {
   data() {
     return {};
   },
+  created(){
+    this.$store.commit("setParamsEmpty");
+  },
   mounted() {},
   methods: {
     finish() {
@@ -48,6 +51,7 @@ export default {
           jobTitle: "",
           jobTitle1: ""
         };
+        console.log(this.$store.state.dealer.jobsUser1[i])
         this.$store.state.dealer.confirmUserGids.some(x => {
           if (x == r) {
             obj.contactsGid = x.split(",")[1];

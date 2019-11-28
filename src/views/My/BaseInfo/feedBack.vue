@@ -2,7 +2,7 @@
 <template>
   <div class="feedBack">
     <van-nav-bar title="意见反馈" left-text @click-left="$router.go(-1)" left-arrow>
-      <span slot="right" class="w-5">提交</span>
+      <span slot="right" class="w-5" @click="$store.dispatch('submitFeedBack');$router.go(-1)">提交</span>
     </van-nav-bar>
 
     <div class="rounded-lg">
@@ -19,7 +19,7 @@
 
           <van-field
             @input="inputTotal()"
-            v-model="content"
+            v-model="$store.state.my.submitParams.content"
             :rows="5"
             autosize
             type="textarea"
@@ -41,7 +41,7 @@
           <div class="py-3 px-4 flex justify-between" style="background:#F8FAFB">
             <span style="color:#484C55">联系电话</span>
           </div>
-          <div class="py-3 px-4 bg-white">18141923000</div>
+          <van-field v-model="$store.state.my.submitParams.phone" type="input" clearable placeholder="请输入手机号" />
         </div>
       </div>
       <div class="emialUs">
@@ -58,18 +58,19 @@ export default {
   name: "Feedback",
   data() {
     return {
-      content: "",
       wordTotal: 0,
-      fileList: []
+      fileList: [],
     };
   },
   methods: {
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
+      console.log(file.file.name)
     },
     inputTotal(keyword) {
-      this.wordTotal = this.content.length;
-    }
+      this.wordTotal = this.$store.state.my.submitParams.content.length;
+    },
+
   }
 };
 </script>
@@ -92,12 +93,15 @@ export default {
   border: 1px solid #d0d0d1;
 }
 .feedBack /deep/ textarea::-webkit-input-placeholder {
-  color: #C4C6CC;
+  color: #c4c6cc;
 }
 .feedBack /deep/ textarea::-moz-input-placeholder {
-  color: #C4C6CC;
+  color: #c4c6cc;
 }
 .feedBack /deep/ textarea::-ms-input-placeholder {
-  color: #C4C6CC;
+  color: #c4c6cc;
+}
+.feedBack /deep/ .van-uploader__preview-delete {
+  color: #F42929;
 }
 </style>

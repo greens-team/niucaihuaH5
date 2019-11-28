@@ -29,9 +29,9 @@ export default {
       '稳定型', '已终止', '合作中', '深入沟通', '进行中'
     ],
     followStatus: [
-      {name:'全部',id: 0},
-      {name:'线索入库',id:1},
-      {name:'意向跟进',id:2},
+      { name: '全部', id: 0 },
+      { name: '线索入库', id: 1 },
+      { name: '意向跟进', id: 2 },
       // {name:'备案准入',id:3},
       // {name:'达成合作',id:4},
       // {name:'放弃',id:5}
@@ -43,18 +43,18 @@ export default {
       { text: '按名称排序', value: 3 }
     ],
     relationHealth: [
-      {id: 1, text: '极差'},
-      {id: 2, text: '差'},
-      {id: 3, text: '一般'},
-      {id: 4, text: '好'},
-      {id: 5, text: '很好'}
+      { id: 1, text: '极差' },
+      { id: 2, text: '差' },
+      { id: 3, text: '一般' },
+      { id: 4, text: '好' },
+      { id: 5, text: '很好' }
     ],
     conditions: [
-      {text: '大于',    value: 1},
-      {text: '等于',    value: 2},
-      {text: '小于',    value: 3},
-      {text: '大于等于', value: 4},
-      {text: '小于等于', value: 5},
+      { text: '大于', value: 1 },
+      { text: '等于', value: 2 },
+      { text: '小于', value: 3 },
+      { text: '大于等于', value: 4 },
+      { text: '小于等于', value: 5 },
     ],
     // 经销商列表数据
     listData: [],
@@ -73,13 +73,17 @@ export default {
 
   },
   mutations: {
-    setAreasEmpty(state){
+    setParamsEmpty(state) {
+      state.jobsUser = []
+      state.jobsUser1 = []
+    },
+    setAreasEmpty(state) {
       state.areasList = [{
         text: '选择区',
         value: ''
       }]
     },
-    setInitParams(state){
+    setInitParams(state) {
       state.listParams = {
         "area": "",                 // 区域
         "city": "",                 // 城市
@@ -104,9 +108,9 @@ export default {
     }
   },
   actions: {
-    getColleague ({state}, data={}) {
+    getColleague({ state }, data = {}) {
       return new Promise(resolve => {
-        window.$ajax.auth.colleague(data).then( res => {
+        window.$ajax.auth.colleague(data).then(res => {
           if (!res.code) {
             state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
             resolve(res.data.resultList.length)
@@ -114,23 +118,23 @@ export default {
         })
       })
     },
-    getListData ({state}, data = {}) {
+    getListData({ state }, data = {}) {
       let params = Object.assign(state.listParams, data)
       params.ownerUserGids = params.ownerUserGids.map(r => {
         return String(r.id)
       })
-      if(params.pageNum == 1){
+      if (params.pageNum == 1) {
         state.isLastPage = false
       }
       return new Promise(resolve => {
-        if(state.isLastPage){
+        if (state.isLastPage) {
           resolve()
           return
         }
         window.$ajax.dealer.listData(params).then(res => {
-          if(!res.code){
+          if (!res.code) {
             state.listData = params.pageNum == 1 ? res.data.list : state.listData.concat(res.data.list)
-            if(res.data.list.length < params.pageSize){
+            if (res.data.list.length < params.pageSize) {
               state.isLastPage = true
             }
             resolve(state.listData)
@@ -138,11 +142,11 @@ export default {
         })
       })
     },
-    getProvinces ({state}) { // 省份
+    getProvinces({ state }) { // 省份
       return new Promise(resolve => {
         window.$ajax.dealer.getProvinces({}).then(res => {
-          if(!res.code){
-            state.provincesList = res.data.map(r=>{
+          if (!res.code) {
+            state.provincesList = res.data.map(r => {
               return {
                 value: r.provinceCode,
                 text: r.provinceName
@@ -152,13 +156,13 @@ export default {
           }
         })
       })
-      
+
     },
-    getCitys ({state}, code) { // 城市
+    getCitys({ state }, code) { // 城市
       return new Promise(resolve => {
-        window.$ajax.dealer.getCitys({provinceCode: code}).then(res => {
-          if(!res.code){
-            state.citysList = res.data.map(r=>{
+        window.$ajax.dealer.getCitys({ provinceCode: code }).then(res => {
+          if (!res.code) {
+            state.citysList = res.data.map(r => {
               return {
                 value: r.cityCode,
                 text: r.cityName
@@ -169,11 +173,11 @@ export default {
         })
       })
     },
-    getAreas ({state}, code) { // 区域
+    getAreas({ state }, code) { // 区域
       return new Promise(resolve => {
-        window.$ajax.dealer.getAreas({cityCode: code}).then(res => {
-          if(!res.code){
-            state.areasList = res.data.map(r=>{
+        window.$ajax.dealer.getAreas({ cityCode: code }).then(res => {
+          if (!res.code) {
+            state.areasList = res.data.map(r => {
               return {
                 value: r.areaCode,
                 text: r.areaName

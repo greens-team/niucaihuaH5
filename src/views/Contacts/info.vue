@@ -1,15 +1,37 @@
  <!-- 联系人 内容页 -->
 <template>
   <div class="ContactsInfo flex-1 flex flex-col bg-gray-100">
-    <van-nav-bar title="联系人详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
+    <!-- <van-nav-bar title="联系人详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
         @click="editor"
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-      <!-- <i class="iconfont icongengduo ml-2" style="font-size: 1.2rem;"></i> -->
-    </van-nav-bar>
+    </van-nav-bar>-->
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">联系人详情</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+
+        <!-- 添加图标 -->
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          @click="editor"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+      </div>
+    </div>
     <div>
       <div class="shadow-md rounded-lg m-3 flex p-4 bg-white pt-6 pb-6" style="line-height:3rem;">
         <div class="circleBg font-bold mr-3 text-xl" style="color:#252525">M</div>
@@ -50,31 +72,41 @@
             <div v-if="$store.state.contacts.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
+                  <div
+                    class="flex flex-1 items-center font-bold border_line"
+                    style="height:3.143rem;"
+                    @click="showInfo1 = !showInfo1"
+                  >
                     基本信息
-                    <i class="iconfont iconweizhankai ml-2"></i>
+                    <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
-                  <div class="border-b border-gray-100 pt-2 pb-2">
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">
                       <span class="text-red-500">*</span>姓名
                     </p>
                     <p class="text-gray-900 text-sm">{{info.contactsName}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">电话</p>
-                    <p class="text-gray-900 text-sm">{{info.contactsPhone}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{info.contactsPhone ? info.contactsPhone : '—'}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">E-mail</p>
-                    <p class="text-gray-900 text-sm">{{info.weichatNum}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text-gray-500">微信号</p>
+                    <p class="text-gray-900 text-sm">{{info.weichatNum ? info.weichatNum : '—'}}</p>
+                  </div>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs text-gray-500">备注</p>
+                    <p class="text-gray-900 text-sm">{{info.comment ? info.comment : '—'}}</p>
                   </div>
                 </div>
               </div>
 
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3">
+                <div class="flex pr-3 pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
                     class="text-sm"
@@ -90,7 +122,7 @@
                     :name="r.dealerGid"
                     class="text-gray-900 text-lg"
                   >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
+                    <div class="border_line pt-2 pb-2">
                       <p class="text-xs text-gray-500">经销商名称</p>
                       <p
                         class="text-base"
@@ -98,9 +130,9 @@
                         @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
                       >{{r.dealerName}}</p>
                     </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
+                    <div class="pt-2 pb-2">
                       <p class="text-xs text-gray-500">职务</p>
-                      <p class="text-base" style="color:#0885FF;">{{r.jobTitle}}</p>
+                      <p class="text-base">{{r.jobTitle ? r.jobTitle : '—'}}</p>
                     </div>
                   </van-collapse-item>
                 </van-collapse>
@@ -126,7 +158,7 @@
                     </div>
                   </div>
 
-                  <div class="flex items-center mt-3">
+                  <div class="flex items-center mt-3 pl-2">
                     <p
                       v-if="r.content != '' "
                       class="text-ms leading-relaxed"
@@ -168,13 +200,13 @@
 
       <form class="search-block" action="javascript:void 0">
         <input
-          style="width:100%;text-align: center;"
           type="text"
           placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg h-12"
+          class="rounded-lg h-12 progress"
           v-model="$store.state.contacts.addNewslogParams.content"
           @keyup.13="tapToSearch"
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='请输入工作进展'"
         />
       </form>
 
@@ -309,7 +341,15 @@ export default {
     },
 
     editor() {
-      this.$store.commit("setParamsContatcs", this.info);
+      if (this.info.comment == null) {
+        this.info.comment = "";
+      } else {
+        this.info.comment;
+      }
+      this.$store.commit(
+        "setParamsContatcs",
+        Object.assign(this.info, { comment: this.info.comment })
+      );
       this.$router.push("/EditContacts");
     }
   }
@@ -320,14 +360,15 @@ export default {
 .circleBg {
   background: linear-gradient(
     245deg,
-    rgba(255, 191, 42, 1) 0%,
-    rgba(254, 233, 124, 1) 100%
+    rgba(255, 164, 0, 1) 0%,
+    rgba(255, 205, 43, 1) 100%
   );
   width: 3rem;
   height: 3rem;
   border-radius: 2rem;
   text-align: center;
   line-height: 3rem;
+  color: #252525;
 }
 
 .ContactsInfo .tabs /deep/.van-tabs__line {
@@ -355,5 +396,70 @@ export default {
 }
 .search-block {
   width: 80%;
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  text-align: center;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  text-align: center;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+.progress {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #f6f6f6;
+}
+.ContactsInfo {
+  background: #f7f8f9;
+}
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
+    0 2px 4px -1px rgba(0, 0, 0, 0.01);
+}
+.border_line {
+  border-bottom: 1px solid #ededee;
+}
+.text_title {
+  color: #80848d;
+}
+.text_content {
+  color: #252525;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.ContactsInfo /deep/ .van-nav-bar__right {
+  bottom: 12px;
+}
+.search_icon {
+  margin-right: 1.143rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
+}
+.order_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+}
+.ContactsInfo /deep/ .van-hairline--top-bottom::after,
+.ContactsInfo /deep/ .van-hairline-unset--top-bottom::after {
+  border-width: 0px;
 }
 </style>

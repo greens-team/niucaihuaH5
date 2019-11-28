@@ -1,15 +1,39 @@
  <!-- 竞争对手内容页 -->
 <template>
   <div class="CompetitorInfo flex-1 flex flex-col bg-gray-100">
-    <van-nav-bar title="竞争对手" @click-left="$router.go(-1)" left-text="返回" left-arrow>
+    <!-- <van-nav-bar title="竞争对手" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
         @click="editor"
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-      <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
-    </van-nav-bar>
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">竞争对手详情</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+
+        <!-- 添加图标 -->
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          @click="editor"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+      </div>
+    </div>
+
     <div>
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3">
@@ -44,20 +68,35 @@
             <div v-if="$store.state.competitor.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold">基本信息</div>
+                  <div
+                    class="flex flex-1 items-center font-bold border_line"
+                    style="height:3.143rem;"
+                    @click="showInfo1 = !showInfo1"
+                  >
+                    基本信息
+                    <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
+                  </div>
+
+                  <!-- <div class="flex flex-1 items-center font-bold">基本信息</div> -->
                 </div>
-                <div>
-                  <div class="border-t border-gray-100 p-2 mt-2">
+                <div v-show="showInfo1">
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">
                       竞对名称
                       <!-- <span class="text-red-500">*</span>竞对名称 -->
                     </p>
                     <p>{{info.competorName}}</p>
                   </div>
-                  <div class="border-t border-gray-100 p-2 mt-2">
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">竞对类型</p>
                     <p>{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
                   </div>
+
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs text-gray-500">备注</p>
+                    <p>{{info.comment ? info.comment : '—'}}</p>
+                  </div>
+
                 </div>
               </div>
 
@@ -78,7 +117,7 @@
                     :name="r.dealerGid"
                     class="text-gray-900 text-lg"
                   >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
+                    <div class="border_line pt-2 pb-2">
                       <p class="text-xs text-gray-500">经销商名称</p>
                       <p
                         class="text-base"
@@ -86,11 +125,11 @@
                         @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
                       >{{r.dealerName}}</p>
                     </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
+                    <div class="border_line pt-2 pb-2">
                       <p class="text-xs text-gray-500">竞对政策</p>
                       <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
                     </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
+                    <div class="pt-2 pb-2">
                       <p class="text-xs text-gray-500">狮桥应对策略</p>
                       <p class="text-gray-900 text-sm">{{r.tactics}}</p>
                     </div>
@@ -162,13 +201,13 @@
 
       <form class="search-block" action="javascript:void 0">
         <input
-          style="width:100%;text-align: center;"
           type="text"
           placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg h-12"
+          class="rounded-lg h-12 progress"
           v-model="$store.state.competitor.addNewslogParams.content"
           @keyup.13="tapToSearch"
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='请输入工作进展'"
         />
       </form>
 
@@ -188,6 +227,7 @@ export default {
       competitorlist: [],
       workProgress: "",
       isShowCompetitor: false,
+      showInfo1: true,
       newslogList: [],
       operatelogList: []
     };
@@ -348,5 +388,71 @@ export default {
 }
 .search-block {
   width: 80%;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  text-align: center;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  text-align: center;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+.progress {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #f6f6f6;
+}
+.ContactsInfo {
+  background: #f7f8f9;
+}
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
+    0 2px 4px -1px rgba(0, 0, 0, 0.01);
+}
+.border_line {
+  border-bottom: 1px solid #ededee;
+}
+.text_title {
+  color: #80848d;
+}
+.text_content {
+  color: #252525;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.CompetitorInfo /deep/ .van-nav-bar__right {
+  bottom: 12px;
+}
+.search_icon {
+  margin-right: 1.143rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
+}
+.order_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+}
+.CompetitorInfo /deep/ .van-hairline--top-bottom::after,
+.CompetitorInfo /deep/ .van-hairline-unset--top-bottom::after {
+  border-width: 0px;
 }
 </style>

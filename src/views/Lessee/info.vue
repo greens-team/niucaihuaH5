@@ -1,28 +1,55 @@
  <!-- 承租人内容页 -->
 <template>
   <div class="LesseeInfo flex-1 flex flex-col bg-gray-100">
-    <van-nav-bar title="承租人" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <i
-        class="iconfont iconqipaocaidanbianji-bang"
-        @click="editor"
+    <!-- <van-nav-bar title="承租人" @click-left="$router.go(-1)" left-text="返回" left-arrow>
+      <img
+        class="bar_icon edit_icon"
         slot="right"
-        style="font-size: 1.6rem;"
-      ></i>
-      <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
-    </van-nav-bar>
+        @click="editor"
+        src="../../assets/topBarIcon/edit_icon.png"
+        alt="编辑"
+      />
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">承租人</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+
+        <!-- 添加图标 -->
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          @click="editor"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+      </div>
+    </div>
+
     <div>
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3 flex justify-between">
-          <span class="text-xl font-bold">{{info.lesseeName}}</span>
+          <span class="text-xl font-bold lessee_name">{{info.lesseeName}}</span>
           <div>
             <img
               src="../../assets/lessee/iphone.png"
-              class="inline-block float-left mt-2 w-6 mr-6"
+              class="inline-block float-left mt-2 mr-6"
+              style="width:1.57rem;"
               alt
             />
             <img
               src="../../assets/lessee/map.png"
-              class="inline-block float-left mt-2 w-6 mr-5"
+              style="width:1.57rem;"
+              class="inline-block float-left mt-2 mr-5"
               alt
             />
           </div>
@@ -31,8 +58,8 @@
           <p class="text-sm">{{info.homeAddress}}</p>
         </div>
         <div class="flex mt-4 justify-between">
-          <div class="text-center text-xs">
-            4
+          <div class="text-center text-xs" @click="$refs.swipe.swipeTo(1)">
+            {{this.$store.state.lessee.info.dealerList == null ? 0 : this.$store.state.lessee.info.dealerList.length}}
             <br />经销商
           </div>
         </div>
@@ -41,7 +68,7 @@
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3 flex justify-between">
           <span class="text-xl font-bold">承租人状态</span>
-          <span class="text-sm text-red-500">放弃</span>
+          <!-- <span class="text-sm text-red-500">放弃</span> -->
         </div>
         <div>
           <div class="flex mt-2">
@@ -51,8 +78,8 @@
               :key="i"
             >
               <div
-                v-if="i && i<$store.state.lessee.lesseeStatus.length-1"
-                :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus+1}]"
+                v-if="i"
+                :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus}]"
               >
                 <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
                 <div class="status-correct"></div>
@@ -88,83 +115,88 @@
             <div v-if="$store.state.lessee.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
-                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
+                  <div
+                    class="flex flex-1 items-center font-bold border_line"
+                    style="height:3.143rem;"
+                    @click="showInfo1 = !showInfo1"
+                  >
                     承租人基本信息
-                    <i class="iconfont iconweizhankai ml-2"></i>
+                    <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">
                       <span class="text-red-500">*</span>承租人姓名
                     </p>
-                    <p class="text-gray-900 text-sm">{{info.lesseeName}}</p>
+                    <p class="text_content text-sm">{{info.lesseeName}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">身份证号码</p>
-                    <p class="text-gray-900 text-sm">{{info.idcardNum}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">身份证号码</p>
+                    <p class="text_content text-sm">{{info.idcardNum}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">出生日期</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">出生日期</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text_content text-sm"
                     >{{info.birthday == null ? null : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">婚姻状况</p>
-                    <p class="text-gray-900 text-sm">{{info.marry ? '已婚' : '未婚'}}</p>
+                  <!-- <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">婚姻状况</p>
+                    <p class="text_content text-sm">{{info.marry ? '已婚' : '未婚'}}</p>
+                  </div>-->
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">性别</p>
+                    <p class="text_content text-sm">{{info.gender ? '女' : '男'}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">性别</p>
-                    <p class="text-gray-900 text-sm">{{info.gender ? '女' : '男'}}</p>
-                  </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">客户类型</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text-gray-900 text-sm">自然人</p>
+                    <p class="text_content text-sm">{{info.lesseeType ? '法人' : '自然人'}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">手机号</p>
-                    <p class="text-gray-900 text-sm" style="color:#0885FF;">{{info.lesseePhone}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">手机号</p>
+                    <p class="text_content text-sm" style="color:#0885FF;">{{info.lesseePhone}}</p>
                   </div>
                   <!-- <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">年龄</p>
+                    <p class="text-xs text_title">年龄</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text_content text-sm"
                     >{{Math.floor((((new Date()).valueOf() - info.birthday))/31536000000)}}</p>
                   </div>-->
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">户口所在地</p>
-                    <p class="text-gray-900 text-sm">{{info.domicilePlace}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">户口所在地</p>
+                    <p class="text_content text-sm">{{info.domicilePlace}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">家庭住址</p>
-                    <p class="text-gray-900 text-sm" style="color:#0885FF;">{{info.homeAddress}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">家庭住址</p>
+                    <p class="text_content text-sm" style="color:#0885FF;">{{info.homeAddress}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">从业年限</p>
-                    <p class="text-gray-900 text-sm">{{info.workingYears}}</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">从业年限</p>
+                    <p class="text_content text-sm">{{info.workingYears}}</p>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">照片</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">照片</p>
                     <img :src="info.userPic" width="130" alt="照片" />
                   </div>
-                  <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">上传法人身份证件照片</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">上传法人身份证件照片</p>
                     <div class="flex">
                       <img :src="info.idcardFrontPic" width="130" alt="身份证正面" />
                       <img :src="info.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
                     </div>
                   </div>
-                  <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">备注</p>
-                    <p class="text-gray-900 text-sm">{{info.comment}}</p>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs text_title">备注</p>
+                    <p class="text_content text-sm">{{info.comment ? info.comment : '—'}}</p>
                   </div>
                 </div>
               </div>
-
+            </div>
+            <div v-if="$store.state.lessee.currentTabsIndex === 1">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3">
+                <div class="flex pr-3 pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
                     class="text-sm"
@@ -178,10 +210,10 @@
                     :key="i"
                     :title="r.dealerName"
                     :name="r.dealerGid"
-                    class="text-gray-900 text-lg"
+                    class="text_content text-lg"
                   >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">经销商名称</p>
+                    <div class="pt-2 pb-2 border_line">
+                      <p class="text-xs text_title">经销商名称</p>
                       <p
                         class="text-base"
                         style="color:#0885FF;"
@@ -193,7 +225,7 @@
               </div>
             </div>
 
-            <div v-if="$store.state.lessee.currentTabsIndex === 1">
+            <div v-if="$store.state.lessee.currentTabsIndex === 2">
               <div class="shadow-md rounded-lg m-3 p-4 bg-white">
                 <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
                   <div class="flex-1 font-bold">动态记录</div>
@@ -214,7 +246,7 @@
                     </div>
                   </div>
 
-                  <div class="flex items-center mt-3">
+                  <div class="flex items-center mt-3 pl-2">
                     <p
                       v-if="r.content != '' "
                       class="text-ms leading-relaxed"
@@ -225,7 +257,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="$store.state.lessee.currentTabsIndex === 2">
+            <div v-if="$store.state.lessee.currentTabsIndex === 3">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
                   <div class="flex-1 font-bold">操作历史</div>
@@ -256,16 +288,15 @@
 
       <form class="search-block" action="javascript:void 0">
         <input
-          style="width:100%;text-align: center;"
           type="text"
           placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg h-12"
+          class="rounded-lg h-12 progress"
           v-model="$store.state.lessee.addNewslogParams.content"
           @keyup.13="tapToSearch"
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='请输入工作进展'"
         />
       </form>
-
       <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
     </div>
   </div>
@@ -309,21 +340,36 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
-          if (this.$store.state.lessee.info.dealerList != null) {
-            this.isShowDealer = true;
-            this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
-            this.currentLessee = [this.lesseeInfolist[0].dealerGid];
-          } else {
-            this.isShowDealer = false;
-          }
 
-          //判断如果出生日期为null 显示空
-          if (this.info.birthday == null) {
-            this.info.birthday = null;
-          }
+          // if (this.$store.state.lessee.info.dealerList != null) {
+          //   this.isShowDealer = true;
+          //   this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
+          //   this.currentLessee = [this.lesseeInfolist[0].dealerGid];
+          // } else {
+          //   this.isShowDealer = false;
+          // }
+
+          // //判断如果出生日期为null 显示空
+          // if (this.info.birthday == null) {
+          //   this.info.birthday = null;
+          // }
         });
       }
       if (num === 1) {
+        if (this.$store.state.lessee.info.dealerList != null) {
+          this.isShowDealer = true;
+          this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
+          this.currentLessee = [this.lesseeInfolist[0].dealerGid];
+        } else {
+          this.isShowDealer = false;
+        }
+
+        //判断如果出生日期为null 显示空
+        if (this.info.birthday == null) {
+          this.info.birthday = null;
+        }
+      }
+      if (num === 2) {
         // 动态记录
         this.scrollLoad(this.$refs.listBox, resolve => {
           this.$store
@@ -349,7 +395,7 @@ export default {
             this.newslogList = this.$store.state.lessee.listNewslog;
           });
       }
-      if (num === 2) {
+      if (num === 3) {
         this.scrollLoad(this.$refs.listBox, resolve => {
           this.$store
             .dispatch(
@@ -394,13 +440,7 @@ export default {
     },
     editor() {
       // this.$store.commit("setInitEditParams");
-      this.$store.commit(
-        "setParamsLessee",
-        Object.assign(this.info, {
-          lesseeType: 0,
-          lesseeStatus: 1 //默认就是线索承租人
-        })
-      );
+      this.$store.commit("setParamsLessee", Object.assign(this.info));
       this.$router.push("/EditLessee");
     },
     tapToSearch() {
@@ -428,14 +468,20 @@ export default {
 <style scoped>
 .LesseeInfo /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 4px;
+  height: 6px;
 }
 .LesseeInfo /deep/ .van-hairline--top-bottom::after,
 .LesseeInfo /deep/ .van-hairline-unset--top-bottom::after {
   border: 0;
 }
 .LesseeInfo /deep/ .van-tab--active span {
-  font-size: 1.2rem;
+  font-size: 1.143rem;
+}
+.LesseeInfo /deep/ .van-tab span {
+  font-size: 1.143rem;
+}
+.LesseeInfo /deep/ .van-tabs__nav {
+  background: #f7f8f9;
 }
 .bg-line {
   background: #f4f4f4;
@@ -497,5 +543,80 @@ export default {
 }
 .search-block {
   width: 80%;
+}
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  text-align: center;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  text-align: center;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+.progress {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #f6f6f6;
+}
+.LesseeInfo {
+  background: #f7f8f9;
+}
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
+    0 2px 4px -1px rgba(0, 0, 0, 0.01);
+}
+.border_line {
+  border-bottom: 1px solid #ededee;
+}
+.text_title {
+  color: #80848d;
+}
+.text_content {
+  color: #252525;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.LesseeInfo /deep/ .van-nav-bar__right {
+  bottom: 12px;
+}
+.search_icon {
+  margin-right: 1.143rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
+}
+.order_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+}
+.LesseeInfo /deep/ .van-cell:not(:last-child)::after {
+  border-bottom: 1px solid #ededee;
+  -webkit-transform: scaleY(1);
+  transform: scaleY(1);
+}
+.border_line {
+  border-bottom: 1px solid #ededee;
+}
+.lessee_name {
+  width: 16rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
