@@ -195,6 +195,17 @@
                 </div>
               </template>
 
+              <van-cell clickable v-if="picUrl">
+                <template slot="title">
+                  <span class="custom-title">图片</span>
+                </template>
+                <template slot="default">
+                  <p class="p5">
+                    <img :src="picUrl" alt="">
+                  </p>
+                </template>
+              </van-cell>
+
               <van-cell clickable>
                 <template slot="title">
                   <span class="custom-title">备注</span>
@@ -254,7 +265,8 @@ export default {
 
       taskId: '',
 
-      taskStatus: null
+      taskStatus: null,
+      picUrl: ''
 
     }
   },
@@ -278,6 +290,9 @@ export default {
             return true
           }
         })
+
+        this.picUrl = window.picServer + this.$store.state.task.addEditTaskParams.pics;
+
         // 回显 相关经销商的值 
         this.dealerName = this.$store.state.task.addEditTaskParams.dealerName
 

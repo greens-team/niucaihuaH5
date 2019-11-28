@@ -66,7 +66,9 @@
           <span class="custom-title">拜访人</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (mainUserGidsShow = true,mainUserGidsArr=[],userType=0)">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</p>
+          <UserList title="选择负责人" :paramsVal="mainUserGids" @setParams="val=>mainUserGids = val" soltCon="true" class="p5">
+            {{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}
+          </UserList>
         </template>
       </van-cell>
 
@@ -76,9 +78,12 @@
           <span class="custom-title">协访人</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (mainUserGidsShow = true,mainUserGidsArr=[],userType=1)">{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</p>
+          <UserList title="选择负责人" :paramsVal="otherUserGids" @setParams="val=>otherUserGids = val" soltCon="true" class="p5">
+            {{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}
+          </UserList>
         </template>
       </van-cell>
+
 
       <van-cell clickable v-if="$route.query.taskType == 1">
         <template slot="title">
@@ -210,8 +215,8 @@
 
 
     <!-- 拜访人 -->
-    <van-popup
-      v-model="mainUserGidsShow"
+    <!-- <van-popup
+      v-model=""
       position="bottom"
       class="flex flex-col"
       :style="{ height: '50%',}"
@@ -221,12 +226,12 @@
         left-text="取消"
         right-text="确定"
         left-arrow
-        @click-left="mainUserGidsShow = false"
+        @click-left=" = false"
         @click-right="clickRight"
       />
       <div class="flex-1 relative">
         <div class="absolute inset-0 overflow-y-auto" ref="userListBox">
-          <van-checkbox-group v-model="mainUserGidsArr">
+          <van-checkbox-group v-model="">
             <van-cell-group>
               <van-cell
                 v-for="(item, index) in $store.state.dealer.colleagueDataList"
@@ -246,7 +251,7 @@
 
         </div>
       </div>
-    </van-popup>
+    </van-popup> -->
 
     <!-- 拜访目的 -->
     <van-popup
@@ -303,8 +308,12 @@
 </template>
 
 <script>
+import UserList from '@/components/UserList/index.vue'
 export default {
   name: 'taskCreate',
+  components: {
+    UserList
+  },
   data() {
     return {
       newTask: false,
@@ -337,10 +346,7 @@ export default {
       dealerName: '',
       dealerRow: {},
 
-      mainUserGidsShow: false,
       mainUserGids: [],
-      mainUserGidsArr: [],
-      userType: '',
       otherUserGids: [],
       
       visitAimTypes: [
@@ -362,37 +368,18 @@ export default {
 
       taskStatus: 0,
 
-      getColleaguePageNum: 1,
-      colleagueLastPage: false,
-
     }
   },
   filters:{
   },
   watch: {
-    mainUserGidsShow(val){
-      if(!val){
-        setTimeout(() => {
-          // 负责人 参与人 联系列表滚动加载
-          !this.$refs.userListBox.onscroll && this.scrollLoad(this.$refs.userListBox, resolve => {
-            if(!this.colleagueLastPage){
-              this.$store.dispatch('getColleague',{
-                pageNum: ++this.getColleaguePageNum,
-                pageSize: 10,
-                usrNM: '',
-                rlNm: ''
-              }).then(len=>{
-                if(len < 10){
-                  this.colleagueLastPage = true
-                }
-                resolve()
-              })
-            }else{
-              resolve()
-            }
-          })
-        }, 0);
-      }
+    mainUserGids(val){
+      this.$store.state.task.addEditTaskParams.mainUserNames = val;
+      this.$store.state.task.addEditTaskParams.mainUserGids = this.mainUserGidsFun(val, 'id', 0)
+    },
+    otherUserGids(val){
+      this.$store.state.task.addEditTaskParams.otherUserNames = val;
+      this.$store.state.task.addEditTaskParams.otherUserGids = this.mainUserGidsFun(val, 'id', 1)
     }
   },
   mounted() {
@@ -405,12 +392,6 @@ export default {
     this.editor = this.$route.query.editor
 
     this.$store.dispatch('getListData')
-    this.$store.dispatch('getColleague',{
-      pageNum: this.getColleaguePageNum,
-      pageSize: 10,
-      usrNM: '',
-      rlNm: ''
-    })
 
     if(sessionStorage.localMap){
       this.taskId = JSON.parse(sessionStorage.localMap).gid
@@ -459,16 +440,12 @@ export default {
             return true
           }
         })
-        
       })
-
     }
-
     
   },
   methods: {
     mainUserGidsFun(vals, key, userType){
-      console.log(vals, key, userType)
       if(!vals.length && key == 'refRlNm' && !userType){
         return '请选择拜访人'
       }
@@ -490,18 +467,6 @@ export default {
     },
     toggle(index) {
       this.$refs.checkboxes[index].toggle();
-    },
-    clickRight(){
-      this.mainUserGidsShow = false; 
-      if(this.userType == 0){
-        this.mainUserGids = this.mainUserGidsArr;
-        this.$store.state.task.addEditTaskParams.mainUserNames = this.mainUserGidsArr;
-        this.$store.state.task.addEditTaskParams.mainUserGids = this.mainUserGidsFun(this.mainUserGidsArr, 'id', 0)
-      }else{
-        this.otherUserGids = this.mainUserGidsArr;
-        this.$store.state.task.addEditTaskParams.otherUserNames = this.mainUserGidsArr;
-        this.$store.state.task.addEditTaskParams.otherUserGids = this.mainUserGidsFun(this.mainUserGidsArr, 'id', 1)
-      }
     },
     save(){
 

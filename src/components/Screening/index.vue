@@ -69,19 +69,12 @@
               <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = 3">三级经销商</div>
             </div>
 
+       
+
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
-              <div class="text-gray-600 ml-3 p-3 ellipsis" style="background-color: #edf2f7; width:70%; height: 39px; text-align:right;" @click="ownerUserGids = []; ownerUserGidsShow = true">
-                {{params.ownerUserGids | fiterUser}}
-              </div>
+              <UserList title="选择负责人" :paramsVal="params.ownerUserGids" @setParams="val=>params.ownerUserGids = val" class="text-gray-600 ml-3 p-3 ellipsis" style="background-color: #edf2f7; width:70%; height: 39px; text-align:right;" />
             </div>
-
-            <!-- <div class="flex justify-between items-center mt-5">
-              <div class="text-gray-700 font-bold">参与人</div>
-              <van-dropdown-menu class="text-gray-600 ml-3 p-3" style="background-color: #edf2f7; width:70%; height: inherit; text-align:right;">
-                <van-dropdown-item v-model="value1" :options="option1" />
-              </van-dropdown-menu>
-            </div> -->
 
             <div class="flex items-center mt-5">
               <div class="text-gray-700 font-bold">未拜访天数</div>
@@ -116,24 +109,6 @@
 
           </div>
         </div>
-        <van-popup
-          v-model="ownerUserGidsShow"
-          position="bottom"
-          :style="{ height: '40%'}">
-          <van-nav-bar
-            title="请选择负责人"
-            left-text="取消"
-            right-text="确定"
-            left-arrow
-            @click-left="ownerUserGidsShow = false;"
-            @click-right="params.ownerUserGids = ownerUserGidsValus; ownerUserGidsShow = false;"
-          />
-          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;" ref="ownerUserList">
-            <van-checkbox-group v-model="ownerUserGidsValus">
-              <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
-            </van-checkbox-group>
-          </div>
-        </van-popup>
 
         <div class="flex text-center">
           <div class="w-2/5 bg-gray-300 p-3 text-xl font-bold" @click="reset">重置</div>
@@ -148,12 +123,14 @@
 </template>
 
 <script>
+import UserList from '@/components/UserList/index.vue'
 export default {
   name: 'Screening',
+  components: {
+    UserList
+  },
   data() {
     return {
-      ownerUserGidsShow: false,
-      ownerUserGidsValus: [],
       screeningShow: false,
       params: {
         dealerName: '',
@@ -180,9 +157,6 @@ export default {
       showTime: false,
       timeStr: new Date(this.$root.moment().format('YYYY-MM-DD')),
       timeType: 0,
-
-      getColleaguePageNum: 1,
-      colleagueLastPage:false
     }
   },
   filters: {
@@ -200,44 +174,10 @@ export default {
   mounted() {
   },
   watch: {
-    ownerUserGidsShow (val) {
-      !val && (this.ownerUserGidsValus = [])
-      if(val){
-        setTimeout(() => {
-          // 负责人联系列表滚动加载
-          !this.$refs.ownerUserList.onscroll && this.scrollLoad(this.$refs.ownerUserList, resolve => {
-            if(!this.colleagueLastPage){
-              this.$store.dispatch('getColleague',{
-                pageNum: ++this.getColleaguePageNum,
-                pageSize: 10,
-                usrNM: '',
-                rlNm: ''
-              }).then(len=>{
-                if(len < 10){
-                  this.colleagueLastPage = true
-                }
-                resolve()
-              })
-            }else{
-              resolve()
-            }
-          })
-        },0);
-
-      }
-    },
     screeningShow (val) {
       if(val){
         !this.params.province && this.$store.dispatch('getProvinces').then(data=>{
           this.params.province = data[0].value
-        })
-        this.getColleaguePageNum = 1;
-        this.colleagueLastPage = false;
-        this.$store.dispatch('getColleague',{
-          pageNum: this.getColleaguePageNum,
-          pageSize: 10,
-          usrNM: '',
-          rlNm: ''
         })
       }
     },
@@ -257,6 +197,7 @@ export default {
     }
   },
   methods: {
+    setParams(val){console.log(val);this.params.ownerUserGids = val},
     finish () {
       this.screeningShow = false
       this.$emit('onSearch', this.params)
