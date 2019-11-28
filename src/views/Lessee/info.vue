@@ -323,6 +323,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
+    this.addRecentvisit({modelObjType:3, modelId:this.id})
     if (this.$store.state.lessee.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);

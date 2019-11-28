@@ -2,6 +2,13 @@
 // 新建经销商数据
 export default {
   state: {
+    // legalParams: {
+    //   dealerGid: '',
+    //   contactsName: '',
+    //   contactsPhone: '',
+    //   certTypCd: '',
+    //   certNo: ''
+    // }, 
     params: {
 
       // dealerName: '',         // 名称
@@ -144,7 +151,14 @@ export default {
         followerUserGids: [],   // 跟进人gid集合
   
         comment: '',            // 备注
-  
+        
+
+
+        dealerGid: '',
+        contactsName: '',
+        contactsPhone: '',
+        certTypCd: '',
+        certNo: ''
       }
     }
   },

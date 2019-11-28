@@ -70,7 +70,7 @@
                           备案信息 
                           <i class="iconfont iconweizhankai ml-2" ></i>
                         </div>
-                        <div class="text-sm text-orange-500" @click="recordSubmit">提交备案</div>
+                        <div class="text-sm text-orange-500" @click="recordSubmit">{{info.recordStatus ? $store.state.record.recordStatus[info.recordStatus] : '提交备案'}}</div>
                       </div>
                       
                       <div v-show="showInfo1">
@@ -84,7 +84,7 @@
                         </div>
                         <div class="border-t border-gray-100 p-2">
                           <p class="text-xs text-gray-500">成立日期</p>
-                          <p>{{info.establishTime}}</p>
+                          <p>{{$root.moment(info.establishTime*1000).format('YYYY-MM-DD')}}</p>
                         </div>
                         <div class="border-t border-gray-100 p-2">
                           <p class="text-xs text-gray-500">所属地区</p>
@@ -102,6 +102,41 @@
                           <p class="text-xs text-gray-500">业务类型</p>
                           <p>{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
                         </div>
+
+                        <div v-if="info.contactsName">
+                          <div class="border-t border-gray-100 p-2 mt-2">
+                            <p class="text-xs text-gray-500">法人姓名</p>
+                            <p>{{info.contactsName}}</p>
+                          </div>
+                          <div class="border-t border-gray-100 p-2 mt-2">
+                            <p class="text-xs text-gray-500">证件类型</p>
+                            <p>{{$store.state.record.certTypCd[info.certTypCd]}}</p>
+                          </div>
+                          <div class="border-t border-gray-100 p-2 mt-2">
+                            <p class="text-xs text-gray-500">证件号码</p>
+                            <p>{{info.certNo}}</p>
+                          </div>
+                          <div class="border-t border-gray-100 p-2 mt-2">
+                            <p class="text-xs text-gray-500">手机号码</p>
+                            <p>{{info.contactsPhone}}</p>
+                          </div>
+                        </div>
+
+                        <div v-if="info.idcardFrontPic" class="border-t border-gray-100 p-2 mt-2 flex">
+                          <div class="flex-1">
+                            <p class="text-xs text-gray-500">法人身份证正面</p>
+                            <img :src="picServer + info.idcardFrontPic" alt="">
+                          </div>
+                          <div class="flex-1  ml-3">
+                            <p class="text-xs text-gray-500">法人身份证反面</p>
+                            <img :src="picServer + info.idcardBackPic" alt="">
+                          </div>
+                        </div>
+                        <div class="border-t border-gray-100 p-2 mt-2" v-if="info.licensePic">
+                          <p class="text-xs text-gray-500">营业执照</p>
+                          <img :src="picServer + info.licensePic" alt="">
+                        </div>
+
                       </div>
 
                     </div>
@@ -115,12 +150,17 @@
                       <div v-show="showInfo2">
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">地理位置</p>
-                          <p>{{info.longitude}},{{info.latitude}}</p>
+                          <div class="flex">
+                            {{info.province +' '+ info.city +' '+ info.area}}
+                            <div class="flex-1"></div>
+                            <i @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})" class="iconfont iconweizhibang text-orange-500"></i>
+                          </div>
                         </div>
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">经销商分级</p>
                           <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
                         </div>
+
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">备注信息</p>
                           <p>{{info.comment}}</p>
@@ -139,7 +179,7 @@
                         <van-collapse-item v-for="(r,i) in contactslist" :key="i" :title="r.contactsName" :name="r.id">
                           <div class="border-b border-gray-100 pt-2 pb-2">
                             <p class="text-xs text-gray-500">姓名</p>
-                            <p class="text-gray-900 text-sm">{{r.contactsName}}</p>
+                            <p class="text-gray-900 text-sm text-blue-500" @click="$router.push({path:'/ContactsInfo',query:{gid:r.gid}})">{{r.contactsName}}</p>
                           </div>
                           <div class="border-b border-gray-100 pt-2 pb-2">
                             <p class="text-xs text-gray-500">职务</p>
@@ -167,7 +207,7 @@
                       <van-collapse-item v-for="(r,i) in competitorlist" :key="i" :title="r.competorName" :name="r.id">
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">竞对名称</p>
-                          <p class="text-gray-900 text-sm">{{r.competorName}}</p>
+                          <p class="text-gray-900 text-sm  text-blue-500" @click="$router.push({path:'/CompetitorInfo',query:{id:r.gid}})">{{r.competorName}}</p>
                         </div>
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">竞对政策</p>
@@ -190,7 +230,7 @@
                       <van-collapse-item v-for="(r,i) in lesseelist" :key="i" :title="r.lesseeName" :name="r.id">
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">姓名</p>
-                          <p class="text-gray-900 text-sm">{{r.lesseeName}}</p>
+                          <p class="text-gray-900 text-sm text-blue-500" @click="$router.push({path:'/LesseeInfo',query:{id:r.gid}})">{{r.lesseeName}}</p>
                         </div>
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">证件号码</p>
@@ -308,8 +348,15 @@
 
   
     <div class="flex bg-white footer-bar border-t border-gray-300" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
-      <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
-      <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+      
+      <van-uploader>
+        <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
+      </van-uploader>
+      <van-uploader capture>
+        <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+      </van-uploader>
+
+      
       <form class="search-block flex-1" action="javascript:void 0">
         <input
           style="width:100%;text-align: center;"
@@ -349,10 +396,13 @@ export default {
       isNewslogLastPage: false,
       isOperatelogLastPage: false,
 
-      newsLogContent: ''
+      newsLogContent: '',
+
+      picServer: ''
     }
   },
   mounted() {
+    this.picServer = window.picServer
     this.id = this.$route.query.id
 
     this.addRecentvisit({modelObjType:1, modelId:this.id})
@@ -439,23 +489,30 @@ export default {
       })
     },
     recordSubmit(){
-      if(this.info.dealerName && this.info.creditCode && this.info.gid){
-        this.$router.push({name:'recordCheck', query: {
-          dealerGid: this.info.gid,
-          dealerName: this.info.dealerName,
-          creditCode: this.info.creditCode
-        }})
-      }else{
-        this.$dialog.alert({
-          message: '经销商名称、统一社会信用代码不能为空，完善信息后，重新提交备案'
-        });
+      if(!this.info.recordStatus){
+        sessionStorage.record && delete sessionStorage.record
+        sessionStorage.record = JSON.stringify({
+            idcardFrontPic:  this.info.idcardFrontPic,
+            idcardBackPic:  this.info.idcardBackPic,
+            licensePic:  this.info.licensePic
+        })
+        if(this.info.dealerName && this.info.creditCode && this.info.gid){
+          this.$router.push({name:'recordCheck', query: {
+            dealerGid: this.info.gid,
+            dealerName: this.info.dealerName,
+            creditCode: this.info.creditCode
+          }})
+        }else{
+          this.$dialog.alert({
+            message: '经销商名称、统一社会信用代码不能为空，完善信息后，重新提交备案'
+          });
+        }
       }
     },
     changeFollowStatus(i){
       this.$dialog.confirm({
         message: '确认要改变业务状态吗？'
       }).then(() => {
-        // on confirm
         this.$store.dispatch('editDealer',Object.assign({},this.info, {followStatus: i})).then(msg=>{
           this.$store.commit('setInfo', {followStatus: i})
         })
@@ -505,7 +562,7 @@ export default {
     editor(){
       this.$store.commit('setNewDealerParams')
       this.$store.commit('setParams', this.$store.state.dealerInfo.baseInfo)
-      this.$router.push({path:'/CreateDealer',query:{editor:true}})
+      this.$router.push({path:'/CreateDealer',query:{editor:true,id: this.id}})
     }
   }
 }

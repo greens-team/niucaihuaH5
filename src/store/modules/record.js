@@ -5,6 +5,7 @@ export default {
     dealerRecord: {}, // crm经销商信息
     splRecord: {}, // 业务系统经销商信息
 
+    recordStatus: ['未提交', '审核中', '审核通过', '审核不通过', '驳回呈报人', '呈报人处理', '呈报人知悉'],
     
     certTypCd: {  // 证件类型
       '0':'身份证',

@@ -3,7 +3,7 @@
   <div class="taskDetails  flex flex-1 flex-col">
     <van-nav-bar :title="$store.state.task.addEditTaskParams.taskName" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow>
-      <div @click="editorFun" slot="right">编辑</div>
+      <div @click="editorFun" v-if="taskStatus == 2 && $store.state.task.addEditTaskParams.taskType == 1" slot="right">编辑</div>
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -103,96 +103,108 @@
                 <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span><br />
                 <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span>
               </div>
-              <i class="iconfont iconweizhi text-orange-500"></i>
-              <div>{{$store.state.task.addEditTaskParams.dealerLongitude}} {{$store.state.task.addEditTaskParams.dealerLatitud}}</div>
+              <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.longitude, lat:$store.state.task.addEditTaskParams.latitude}})" class="iconfont iconweizhibang text-orange-500"></i></div>
+            </div>
+          </div>
+
+          <div v-if="$store.state.task.addEditTaskParams.address" class="bg-gray-100 pt-3 pb-2">
+            <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">经销商位置</div>
+            <div class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white">
+              <div class="flex-1">
+                <span class="text-blue-500">{{$store.state.task.addEditTaskParams.address}}</span><br />
+                <span>{{$store.state.task.addEditTaskParams.address}}</span>
+              </div>
+              <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" class="iconfont iconweizhibang text-orange-500"></i></div>
             </div>
           </div>
 
 
 
-          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录</div>
+            <div v-if="$store.state.task.addEditTaskParams.dealerDes">
 
-          <van-cell clickable>
-            <template slot="title">
-              <span class="custom-title">近期运营情况</span>
-            </template>
-            <template slot="default">
-              <p class="p5">{{$store.state.task.addEditTaskParams.dealerDes}}</p>
-            </template>
-          </van-cell>
+              <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录</div>
 
-          <van-cell clickable>
-            <template slot="title">
-              <span class="custom-title">狮桥意向单量</span>
-            </template>
-            <template slot="default">
-              <p class="p5">{{$store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
-            </template>
-          </van-cell>
-
-          <template v-if="$store.state.task.addEditTaskParams.lesseeList">
-            <div v-for="(r,i) in $store.state.task.addEditTaskParams.lesseeList" :key="i+'bb'">
               <van-cell clickable>
                 <template slot="title">
-                  <span class="custom-title">意向承租人</span>
+                  <span class="custom-title">近期运营情况</span>
                 </template>
                 <template slot="default">
-                  <p class="p5">{{r.lesseeName}}</p>
+                  <p class="p5">{{$store.state.task.addEditTaskParams.dealerDes}}</p>
                 </template>
               </van-cell>
+
+              <van-cell clickable>
+                <template slot="title">
+                  <span class="custom-title">狮桥意向单量</span>
+                </template>
+                <template slot="default">
+                  <p class="p5">{{$store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
+                </template>
+              </van-cell>
+
+              <template v-if="$store.state.task.addEditTaskParams.lesseeList">
+                <div v-for="(r,i) in $store.state.task.addEditTaskParams.lesseeList" :key="i+'bb'">
+                  <van-cell clickable>
+                    <template slot="title">
+                      <span class="custom-title">意向承租人</span>
+                    </template>
+                    <template slot="default">
+                      <p class="p5">{{r.lesseeName}}</p>
+                    </template>
+                  </van-cell>
+                  <van-cell clickable>
+                    <template slot="title">
+                      <span class="custom-title">备注</span>
+                    </template>
+                    <template slot="default">
+                      <p class="p5">{{r.lesseeComment}}</p>
+                    </template>
+                  </van-cell>
+                  <div></div>
+                </div>
+              </template>
+
+              <van-cell clickable>
+                <template slot="title">
+                  <span class="custom-title">竞对单量</span>
+                </template>
+                <template slot="default">
+                  <p class="p5">{{$store.state.task.addEditTaskParams.competitorOrderCount}}</p>
+                </template>
+              </van-cell>
+
+              <template v-if="$store.state.task.addEditTaskParams.competitorList">
+                <div v-for="(r,i) in $store.state.task.addEditTaskParams.competitorList" :key="i+'aa'">
+                  <van-cell clickable>
+                    <template slot="title">
+                      <span class="custom-title">竞对名称</span>
+                    </template>
+                    <template slot="default">
+                        <p class="p5">{{r.competorName}}</p>
+                    </template>
+                  </van-cell>
+                  <van-cell clickable>
+                    <template slot="title">
+                      <span class="custom-title">竞对政策</span>
+                    </template>
+                    <template slot="default">
+                      <p class="p5">{{r.racePolicy}}</p>
+                    </template>
+                  </van-cell>
+                  <div></div>
+                </div>
+              </template>
+
               <van-cell clickable>
                 <template slot="title">
                   <span class="custom-title">备注</span>
                 </template>
                 <template slot="default">
-                  <p class="p5">{{r.lesseeComment}}</p>
+                  <p class="p5">{{$store.state.task.addEditTaskParams.visitComment}}</p>
                 </template>
               </van-cell>
-              <div></div>
+
             </div>
-          </template>
-
-          <van-cell clickable>
-            <template slot="title">
-              <span class="custom-title">竞对单量</span>
-            </template>
-            <template slot="default">
-              <p class="p5">{{$store.state.task.addEditTaskParams.competitorOrderCount}}</p>
-            </template>
-          </van-cell>
-
-          <template v-if="$store.state.task.addEditTaskParams.competitorList">
-            <div v-for="(r,i) in $store.state.task.addEditTaskParams.competitorList" :key="i+'aa'">
-              <van-cell clickable>
-                <template slot="title">
-                  <span class="custom-title">竞对名称</span>
-                </template>
-                <template slot="default">
-                    <p class="p5">{{r.competorName}}</p>
-                </template>
-              </van-cell>
-              <van-cell clickable>
-                <template slot="title">
-                  <span class="custom-title">竞对政策</span>
-                </template>
-                <template slot="default">
-                  <p class="p5">{{r.racePolicy}}</p>
-                </template>
-              </van-cell>
-              <div></div>
-            </div>
-          </template>
-
-          <van-cell clickable>
-            <template slot="title">
-              <span class="custom-title">备注</span>
-            </template>
-            <template slot="default">
-              <p class="p5">{{$store.state.task.addEditTaskParams.visitComment}}</p>
-            </template>
-          </van-cell>
-
-
 
           
       </div>
@@ -242,6 +254,8 @@ export default {
 
       taskId: '',
 
+      taskStatus: null
+
     }
   },
   mounted() {
@@ -270,20 +284,20 @@ export default {
         //回显 拜访人 mainUserNames
         // mainUserNames
 
-        this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
-          return {
+        this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
+          return r ? {
             id: r.modelGid,
             refRlNm: r.modelName
-          }
-        })
+          } : ''
+        }) : []
 
         //回显 协访人 otherUserNames
-        this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
-          return {
+        this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
+          return r ? {
             id: r.modelGid,
             refRlNm: r.modelName
-          }
-        })
+          } : ''
+        }) : []
 
         // 回显 visitAim
         this.visitAimTypes.some(r=>{
@@ -300,7 +314,7 @@ export default {
   },
   methods: {
     editorFun(){
-       this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+      this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
     },
     mainUserGidsFun(vals, key, userType){
       console.log(vals, key, userType)

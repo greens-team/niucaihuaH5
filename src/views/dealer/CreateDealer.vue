@@ -9,6 +9,7 @@
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto pr-4">
+
         <div class="relative formBar font-bold text-base p-3 pl-4">备案信息</div>
         <van-field
           v-model="$store.getters.NDparams.dealerName"
@@ -160,6 +161,56 @@
           label-width="130"
           show-word-limit
         />
+
+        <div v-if="id">
+          <div class="relative formBar font-bold text-base p-3 pl-4">法人信息</div>
+          <van-field
+            v-model="$store.state.newDealer.params.contactsName"
+            label="法人名称"
+            placeholder="请输入法人姓名"
+            label-width="130"
+          />
+          <van-field
+            v-model="$store.state.newDealer.params.contactsPhone"
+            label="法人电话"
+            placeholder="请输入法人电话"
+            label-width="130"
+          />
+          <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+            <div style="width:130px; color:#323233;">法人证件类型</div>
+            <div  class="flex-1" @click="certTypCdShow = true">{{$store.state.newDealer.params.certTypCd ? $store.state.record.certTypCd[$store.state.newDealer.params.certTypCd] : '请选择'}}</div>
+          </div>
+          <van-field
+            v-model="$store.state.newDealer.params.certNo"
+            label="法人证件号"
+            placeholder="请输入法人证件号"
+            label-width="130"
+          />
+
+          <van-popup
+            v-model="certTypCdShow"
+            position="bottom"
+            :style="{ height: '40%'}"
+          >
+            <van-nav-bar
+              title="请选择法人证件类型"
+              left-text="取消"
+              right-text="确定"
+              left-arrow
+              @click-left="certTypCdShow = false"
+              @click-right="certTypCdShow = false; $store.state.newDealer.params.certTypCd = certTypCdVal;"
+            />
+            <van-radio-group v-model="certTypCdVal">
+              <van-cell-group>
+                <van-cell v-for="(r,i) in $store.state.record.certTypCd" :key="i" :title="r" clickable @click="certTypCdVal = i">
+                  <van-radio slot="right-icon" :name="i" />
+                </van-cell>
+              </van-cell-group>
+            </van-radio-group>
+          </van-popup>
+          
+            
+        </div>
         
       </div>
     </div>
@@ -200,6 +251,11 @@ export default {
 
       getColleaguePageNum: 1,
       colleagueLastPage: false,
+
+      id: '',
+      certTypCdShow: false,
+      certTypCdVal: '',
+      existLegal: false, //法人是否存在
     }
   },
 
@@ -214,7 +270,7 @@ export default {
     ownerUserGidsFilter(data){
       let arr = [];
       data.map(r=>{
-        arr.push(r.refRlNm)
+        arr.push(r.ownerUserName || r.refRlNm)
       })
       return arr.length ? arr.toString() : '请选择负责人'
     }
@@ -222,25 +278,48 @@ export default {
   mounted () {
     // this.$store.commit('setNewDealerParams')
 
-
-
+    
     this.typeList = this.$store.state.newDealer.businessTypesValues || []
 
-    if(this.$route.query.editor){
-      this.typeList = this.$store.getters.NDbusinessTypes.filter(r=>{
-        return this.$store.state.newDealer.params.chkBusTypCdList.includes(r.value)
+    if(this.$route.query.id){
+      this.id = this.$route.query.id
+      this.$store.dispatch('getinfo', this.id).then(() => {
+
+        this.$store.commit('setNewDealerParams')
+        this.$store.commit('setParams', this.$store.state.dealerInfo.baseInfo)
+
+        this.existLegal = this.$store.state.newDealer.params.contactsName ? true : false
+
+        this.$store.commit('setParams', {
+            rgnPrCd: this.$store.state.newDealer.params.rgnPrCd,
+            province: this.$store.state.newDealer.params.province
+        })
+        if(this.$route.query.editor){ // 从详情页面 到 编辑信息时
+          this.initCount++
+          this.getCity(this.$store.state.newDealer.params.rgnPrCd)
+        }
+
+        this.typeList = this.$store.state.newDealer.businessTypesValues || []
+        this.typeList = this.$store.getters.NDbusinessTypes.filter(r=>{
+          return this.$store.state.newDealer.params.chkBusTypCdList.includes(r.value)
+        })
+
+        // 回显赋值
+        this.ownerUserGidsA =  this.$store.state.newDealer.params.ownerUserList 
+        this.ownerUserGidsB =  this.$store.state.newDealer.params.followerUserList 
+         
       })
     }
-    
+
+    //  this.typeList = this.$store.getters.NDbusinessTypes.filter(r=>{
+    //       return this.$store.state.newDealer.params.chkBusTypCdList.includes(r.value)
+    //     })
+
     
     this.$store.dispatch('getProvinces').then(data=>{
       this.$store.commit('setParams', {
         rgnPrCd: this.$store.state.newDealer.params.rgnPrCd || data[0].value,
         province: this.$store.state.newDealer.params.province || data[0].text})
-        if(this.$route.query.editor){ // 从详情页面 到 编辑信息时
-          this.initCount++
-          this.getCity(this.$store.state.newDealer.params.rgnPrCd)
-        }
     })
 
     
@@ -252,21 +331,7 @@ export default {
     })
 
 
-    // 回显赋值
-    // this.$store.state.newDealer.params.ownerUserGids && this.$store.state.newDealer.params.ownerUserGids.length && this.$store.state.newDealer.params.ownerUserGids.split(',').map(id=>{
-    //   this.$store.state.dealer.colleagueDataList.map(r=>{
-    //     if(id == r.id){
-    //       this.ownerUserGidsA.push(r);
-    //     }
-    //     })
-    // })
-    // this.$store.state.newDealer.params.followerUserGids && this.$store.state.newDealer.params.followerUserGids.length && this.$store.state.newDealer.params.followerUserGids.split(',').map(id=>{
-    //   this.$store.state.dealer.colleagueDataList.map(r=>{
-    //     if(id == r.id){
-    //       this.ownerUserGidsB.push(r);
-    //     }
-    //     })
-    // })
+    
 
 
   },
@@ -298,14 +363,14 @@ export default {
     ownerUserGidsA(data){
       let vals=[];
       data.map(r=>{
-        vals.push(r.id)
+        vals.push(r.ownerUserGid || r.id)
       })
       this.$store.state.newDealer.params.ownerUserGids = vals.toString()
     },
     ownerUserGidsB(data){
       let vals=[];
       data.map(r=>{
-        vals.push(r.id)
+        vals.push(r.ownerUserGid || r.id)
       })
       this.$store.state.newDealer.params.followerUserGids = vals.toString()
     },
@@ -394,9 +459,30 @@ export default {
       }
     },
     save(){
-      this.$store.dispatch('editDealer', this.$store.state.newDealer.params).then(r=>{
+      let legalParams = this.$store.state.newDealer.params
+      legalParams.dealerGid = this.id
+      if(legalParams.contactsName || legalParams.contactsPhone || legalParams.certTypCd || legalParams.certNo){
+        if(legalParams.contactsName && legalParams.contactsPhone && legalParams.certTypCd && legalParams.certNo){
+          this.$store.dispatch(this.existLegal ? 'editlegal' : 'addlegal', legalParams)
+        }else{
+          this.$dialog.alert({
+            message: '法人信息不全'
+          });
+          return
+        }
+      }
+      let pars = Object.assign({},this.$store.state.newDealer.params, {
+        ownerUserGids: this.$store.state.newDealer.params.ownerUserGids ? this.$store.state.newDealer.params.ownerUserGids.split(',').map(r=>{
+          return String(r)
+        }) : [],
+        followerUserGids: this.$store.state.newDealer.params.followerUserGids ? this.$store.state.newDealer.params.followerUserGids.split(',').map(r=>{
+          return String(r)
+        }) : []
+      })
+      this.$store.dispatch('editDealer', pars).then(r=>{
         this.$router.go(-1)
       })
+      
     }
   }
 }
