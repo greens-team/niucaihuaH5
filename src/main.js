@@ -4,9 +4,9 @@ import router from './router'
 import store from './store/index.js'
 import './plugins/vant.js'            // vant 按需加载
 import moment from './plugins/moment' // 时间统一处理
+import { Notify, Toast } from 'vant'
 
-import { Notify } from 'vant'
-
+require('./plugins/serveConf')
 
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
@@ -14,6 +14,7 @@ Vue.use(BaiduMap, {
 })
 
 Vue.config.productionTip = false
+
 
 // 统一数据请求
 import ajax from '@/plugins/axios'
@@ -57,12 +58,14 @@ Vue.prototype.formatter = (type, value) => {
   }
 }
 
+//填加埋点
 Vue.prototype.addRecentvisit = (data) => {
   store.dispatch('addRecentvisit', data).then(r=>{
     console.log(r)
   })
 }
 
+//滚动加载
 Vue.prototype.scrollLoad = (domBox, callback) => {
   let isSend = false
   domBox.onscroll = function(){
@@ -75,8 +78,24 @@ Vue.prototype.scrollLoad = (domBox, callback) => {
       })
     }
   }
-
 }
+
+//文件上传
+Vue.prototype.uploadFile = (file, checkOrCallback, uploadType) => {
+  if(typeof checkOrCallback == "boolean"){ // 上传文件前校验
+    console.log(file.type)
+    if (!file.type.includes('image/')) {
+      Toast('请上传 png 格式图片');
+      return false;
+    }
+    return true;
+  }
+  store.dispatch('fileUpload',{file: file.file, uploadType: uploadType}).then(res=>{
+    checkOrCallback(res.data[0].filePath)
+  })
+}
+
+
 new Vue({
   data(){
     return {

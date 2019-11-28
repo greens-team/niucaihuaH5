@@ -194,6 +194,25 @@ export default {
           }
         })
       })
-    }
+    },
+    addlegal ({state}, data) { // 经销商添加法人信息 
+      return new Promise(resolve => {
+        window.$ajax.dealer.addlegal(data).then(res => {
+          if(!res.code){
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+    editlegal ({state}, data) { // 经销商编辑法人信息
+      return new Promise(resolve => {
+        window.$ajax.dealer.editlegal(data).then(res => {
+          if(!res.code){
+            resolve(res.msg)
+          }
+        })
+      })
+    },
+    
   }
 }

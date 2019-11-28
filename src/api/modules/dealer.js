@@ -26,6 +26,9 @@ export default (m)=>{
       addNewslog: m.POST + '/newslog/add', // 添加动态记录列表
       listOperatelog: m.POST + '/operatelog/listpage', // 获取操作记录列表
 
+      addlegal: m.POST +'/dealer/addlegal', // 经销商添加法人信息 
+      editlegal: m.POST +'/dealer/editlegal', // 经销商编辑法人信息
+
     },
     upload: {
     }
