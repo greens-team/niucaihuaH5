@@ -9,17 +9,31 @@
       </div>
     </div>
     <div class="logOut" @click="logOut">退出登录</div>
+
+    <div class="p-5">
+      <p>测试数据</p>
+      {{testToken}}<br />
+      {{userInfo}}
+    </div>
+    
   </div>
 </template>
 <script>
 export default {
   name: "Setting",
   data() {
-    return {};
+    return {
+      testToken: '',
+      userInfo: {}
+    };
+  },
+  mounted() {
+     this.testToken = localStorage.Authorization
+     this.userInfo = JSON.parse(sessionStorage.userInfo)
   },
   methods: {
-    // this.$store.commit("setLoginState", false);
     // this.$router.go(-1);
+    // this.$store.commit("setLoginState", false);
     logOut() {
       this.userAgent(() => { // 返回原生页面
         let params = {"selector":"navigationGoBack","type":"LBHiOSApp"};

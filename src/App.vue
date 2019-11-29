@@ -18,8 +18,9 @@ export default {
   mounted() {
 
     let _this = this
-    window.setToken = function(token){
+    window.setToken = function(token, userInfo){
       localStorage.Authorization = token
+      userInfo && (sessionStorage.userInfo = JSON.stringify(userInfo))
       location.reload()
     }
 
@@ -27,22 +28,22 @@ export default {
     // localStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
 
     window.getUserInfoIosCallBack = (data) => {
-        alert(JSON.parse(data).datas.TOKEN)
-        sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
-        _this.setAuthorization(JSON.parse(data).datas.TOKEN)
+      // alert(JSON.parse(data).datas.TOKEN)
+      sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
+      _this.setAuthorization(JSON.parse(data).datas.TOKEN)
     }
 
     // 获取用户登录信息
     this.userAgent(() => { // 返回原生页面
       if(!localStorage.Authorization){
-          var params = {"selector": "getUserInfo", "type": "LBHiOSApp"};
-          var resultjson = prompt(JSON.stringify(params));
-          eval(resultjson)
+        var params = {"selector": "getUserInfo", "type": "LBHiOSApp"};
+        var resultjson = prompt(JSON.stringify(params));
+        eval(resultjson)
       }
     }, ()=>{
       if(!localStorage.Authorization){
         var userGsonStr = HelperNativeInterface.getUserInfo();
-        alert(JSON.parse(userGsonStr).TOKEN)
+        // alert(JSON.parse(userGsonStr).TOKEN)
         sessionStorage.userInfo = JSON.stringify(userGsonStr)
         localStorage.Authorization = JSON.parse(userGsonStr).TOKEN
         location.reload()
