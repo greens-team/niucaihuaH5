@@ -123,32 +123,16 @@
           </van-dropdown-menu>
         </div>
 
+
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;"> 负责人</div>
-          <div  class="flex-1" @click="ownerUserGidsShow = true; ownerUserGidsType = 1; ownerUserGidsValus=[]">{{ownerUserGidsA | ownerUserGidsFilter}}</div>
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList title="选择负责人" :paramsVal="ownerUserGidsA" @setParams="val=>ownerUserGidsA = val" class="flex-1" />
         </div>
+
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;"> 参与人</div>
-          <div  class="flex-1 " @click="ownerUserGidsShow = true; ownerUserGidsType = 2; ownerUserGidsValus=[]">{{ownerUserGidsB | ownerUserGidsFilter}}</div>
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList title="选择参与人" :paramsVal="ownerUserGidsB" @setParams="val=>ownerUserGidsB = val" class="flex-1" />
         </div>
-        <van-popup
-          v-model="ownerUserGidsShow"
-          position="bottom"
-          :style="{ height: '40%'}">
-          <van-nav-bar
-            :title="ownerUserGidsType == 1 ? '负责人' : '参与人'"
-            left-text="取消"
-            right-text="确定"
-            left-arrow
-            @click-left="ownerUserGidsShow = false;"
-            @click-right="ownerUserGidsType == 1 ? (ownerUserGidsA = ownerUserGidsValus) : (ownerUserGidsB = ownerUserGidsValus); ownerUserGidsShow = false;"
-          />
-          <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:46px;" ref="userListBox">
-            <van-checkbox-group v-model="ownerUserGidsValus">
-              <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
-            </van-checkbox-group>
-          </div>
-        </van-popup>
   
         <van-field
           v-model="$store.getters.NDparams.comment"
@@ -229,28 +213,25 @@
 </template>
 
 <script>
+import UserList from '@/components/UserList/index.vue'
 export default {
   name: 'CreateDealer',
+  components: {
+    UserList
+  },
   data() {
     return {
       showNext: false,
       businessTypesShow: false,
       typeList: [],
 
-      ownerUserGidsShow: false,
-      ownerUserGidsValus: [],
       ownerUserGidsA: [],
       ownerUserGidsB: [],
-      ownerUserGidsType: 1,
-
 
       currentDate: new Date(),
       establishTimeShow: false,
 
       initCount: 0,
-
-      getColleaguePageNum: 1,
-      colleagueLastPage: false,
 
       id: '',
       certTypCdShow: false,
@@ -266,13 +247,6 @@ export default {
         arr.push(r.text)
       })
       return arr.length ? arr.toString() : '请选择类型'
-    },
-    ownerUserGidsFilter(data){
-      let arr = [];
-      data.map(r=>{
-        arr.push(r.ownerUserName || r.refRlNm)
-      })
-      return arr.length ? arr.toString() : '请选择负责人'
     }
   },
   mounted () {
@@ -323,43 +297,10 @@ export default {
     })
 
     
-    this.$store.dispatch('getColleague',{
-      pageNum: this.getColleaguePageNum,
-      pageSize: 10,
-      usrNM: '',
-      rlNm: ''
-    })
-
-
-    
 
 
   },
   watch: {
-    ownerUserGidsShow(val){
-      if(val){
-        setTimeout(() => {
-          // 负责人 参与人 联系列表滚动加载
-          !this.$refs.userListBox.onscroll && this.scrollLoad(this.$refs.userListBox, resolve => {
-            if(!this.colleagueLastPage){
-              this.$store.dispatch('getColleague',{
-                pageNum: ++this.getColleaguePageNum,
-                pageSize: 10,
-                usrNM: '',
-                rlNm: ''
-              }).then(len=>{
-                if(len < 10){
-                  this.colleagueLastPage = true
-                }
-                resolve()
-              })
-            }else{
-              resolve()
-            }
-          })
-        }, 0);
-      }
-    },
     ownerUserGidsA(data){
       let vals=[];
       data.map(r=>{

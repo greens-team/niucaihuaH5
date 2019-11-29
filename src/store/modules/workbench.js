@@ -39,7 +39,7 @@ export default {
   mutations: {
     setLoginState (state, val) {
       // 变更登录状态
-      localStorage.loginState = val
+      localStorage.loginState = true
       state.currentModelActive = 0;
     },
 

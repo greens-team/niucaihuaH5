@@ -1,19 +1,65 @@
 <template>
   <div id="app" class="fixed inset-0 flex flex-col">
-    <router-view></router-view>
+
+    <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
+      <van-loading size="24px" vertical>加载中...</van-loading>
+    </div>
+    <router-view v-else></router-view>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'app',
-  components: {
-  },
   data() {
-    return {
+    return {}
+  },
+  mounted() {
+
+    let _this = this
+    window.setToken = function(token){
+      localStorage.Authorization = token
+      location.reload()
+    }
+
+    // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
+    // localStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
+
+    window.getUserInfoIosCallBack = (data) => {
+        alert(JSON.parse(data).datas.TOKEN)
+        sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
+        _this.setAuthorization(JSON.parse(data).datas.TOKEN)
+    }
+
+    // 获取用户登录信息
+    this.userAgent(() => { // 返回原生页面
+      if(!localStorage.Authorization){
+          var params = {"selector": "getUserInfo", "type": "LBHiOSApp"};
+          var resultjson = prompt(JSON.stringify(params));
+          eval(resultjson)
+      }
+    }, ()=>{
+      if(!localStorage.Authorization){
+        var userGsonStr = HelperNativeInterface.getUserInfo();
+        alert(JSON.parse(userGsonStr).TOKEN)
+        sessionStorage.userInfo = JSON.stringify(userGsonStr)
+        localStorage.Authorization = JSON.parse(userGsonStr).TOKEN
+        location.reload()
+      }
+    })
+
+  },
+  methods: {
+    setAuthorization(token){
+      localStorage.Authorization = token
+      location.reload()
     }
   },
   computed: {
+    loginStatus: function(){
+      return localStorage.Authorization ? true : false
+    }
   }
 }
 </script>

@@ -90,6 +90,15 @@
 
         <van-cell clickable>
           <template slot="title">
+            <span class="custom-title">图片</span>
+          </template>
+          <template slot="default">
+            <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>$store.state.task.addEditVisitlogParams.pics = fileUrl, 0)" :before-read="file => uploadFile(file,true)" v-model="picVal" :max-count="1"/>
+          </template>
+        </van-cell>
+
+        <van-cell clickable>
+          <template slot="title">
             <span class="custom-title">备注</span>
           </template>
           <template slot="default">
@@ -116,7 +125,8 @@ export default {
       competitorList: [
          { text: '请选择竞对名称', value: 0 },
       ],
-      ediotr: true
+      ediotr: true,
+      picVal: []
     }
   },
   mounted() {
@@ -136,9 +146,12 @@ export default {
           gid: this.$store.state.task.taskInfo.gid,
           lbPreOrderCount: this.$store.state.task.taskInfo.lbPreOrderCount,
           lesseeList: this.$store.state.task.taskInfo.lesseeList,
-          pics: this.$store.state.task.taskInfo.pic,
+          pics: this.$store.state.task.taskInfo.pics,
           visitComment: this.$store.state.task.taskInfo.visitComment
         }
+        console.log(this.$store.state.task.addEditVisitlogParams, 1111)
+
+        this.picVal = [{url: window.picServer + this.$store.state.task.taskInfo.pics}]
 
         this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList.map(r=>{
           return {
@@ -184,6 +197,7 @@ export default {
             message: '请认真填写'
         });
       }else{
+        console.log(this.$store.state.task.addEditVisitlogParams, 22222)
         this.$store.dispatch(this.$route.query.back ? 'addvisitlog' : 'editvisitlog', {gid: this.$route.query.id}).then((msg)=>{
           this.$dialog.alert({
               message: msg

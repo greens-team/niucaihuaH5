@@ -253,6 +253,7 @@ export default {
     }
   },
   mounted () {
+
     // 滚动加载
     this.scrollLoad(document.getElementById('taskListBox'), (resolve)=>{
         if(this.$store.state.workbench.workbenchTaskStatus){
@@ -309,8 +310,16 @@ export default {
       })
     },
     logout(){
-      this.$store.commit('setLoginState', false)
-      this.$router.go(0)
+      // this.$store.commit('setLoginState', false)
+      // this.$router.go(0)
+      this.userAgent(() => { // 返回原生页面
+        let params = {"selector":"navigationGoBack","type":"LBHiOSApp"};
+        let resultjson = prompt(JSON.stringify(params));
+        delete localStorage.Authorization
+      }, ()=>{
+        HelperNativeInterface.navigationGoBack()
+        delete localStorage.Authorization
+      })
     },
     TaskDetail(id){
       this.$store.dispatch('getTaskInfo',id).then(()=>{
