@@ -18,9 +18,17 @@ export default {
     return {};
   },
   methods: {
+    // this.$store.commit("setLoginState", false);
+    // this.$router.go(-1);
     logOut() {
-      this.$store.commit("setLoginState", false);
-      this.$router.go(-1);
+      this.userAgent(() => { // 返回原生页面
+        let params = {"selector":"navigationGoBack","type":"LBHiOSApp"};
+        let resultjson = prompt(JSON.stringify(params));
+        delete localStorage.Authorization
+      }, ()=>{
+        HelperNativeInterface.navigationGoBack()
+        delete localStorage.Authorization
+      })
     }
   }
 };

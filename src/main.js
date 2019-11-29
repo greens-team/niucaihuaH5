@@ -25,7 +25,7 @@ ajax(apiList,error=>{
   if(!error.response || error.response.status == 401){
     Notify({ type: 'warning', message: error.response.statusText })
     delete localStorage.Authorization
-    store.commit('setLoginState', false)
+    // store.commit('setLoginState', false)
     router.push('/')
   }
   if(error.response.status !== 401){
@@ -93,6 +93,16 @@ Vue.prototype.uploadFile = (file, checkOrCallback, uploadType) => {
   store.dispatch('fileUpload',{file: file.file, uploadType: uploadType}).then(res=>{
     checkOrCallback(res.data[0].filePath)
   })
+}
+
+Vue.prototype.userAgent = (iosCallback, androidCallback) => {
+  var  u = navigator.userAgent;
+  if(u.indexOf('lbh_app_ios') > -1 ){ //  助手iOS
+    iosCallback()
+  }
+  if(u.indexOf('lbh_app_android') > -1){ // 助手Android
+    androidCallback()
+  }
 }
 
 
