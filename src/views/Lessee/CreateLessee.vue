@@ -13,7 +13,7 @@
           label="承租人名称"
           placeholder="请填写信息"
           label-width="130"
-          maxlength="10"
+          maxlength="30"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">承租人名称不能为空</div>
@@ -177,6 +177,47 @@
           label-width="130"
         />
 
+        <div>
+          <div class="py-3 px-4 flex justify-between">
+            <span style="color:#484C55">照片</span>
+            <span style="color:#C4C6CC">{{pictureVal.length}}/4</span>
+          </div>
+
+          <div class="py-3 px-3 flex justify-between bg-white">
+            <van-uploader
+              :name="1"
+              :after-read="(file, name) => uploadFile(file, fileCallback, 0, true)"
+              :before-read="file => uploadFile(file,true)"
+              @delete="deleteFile"
+              v-model="pictureVal"
+              multiple
+              :max-count="4"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="py-3 px-4 flex justify-between">
+            <span style="color:#484C55">上传法人身份证件照片</span>
+          </div>
+
+          <div class="py-3 px-3 flex bg-white">
+            <van-uploader
+              :after-read="file => uploadFile(file, (fileUrl)=>$store.state.lessee.addParams.idcardFrontPic = fileUrl, 0)"
+              :before-read="file => uploadFile(file,true)"
+              v-model="idcardFrontPicVal"
+              @delete="file => $store.state.lessee.addParams.idcardFrontPic = ''"
+              :max-count="1"
+            />
+            <van-uploader
+              :after-read="file => uploadFile(file, (fileUrl)=>$store.state.lessee.addParams.idcardBackPic = fileUrl, 0)"
+              :before-read="file => uploadFile(file,true)"
+              v-model="idcardBackPicVal"
+              @delete="file => $store.state.lessee.addParams.idcardBackPic = ''"
+              :max-count="1"
+            />
+          </div>
+        </div>
+
         <van-field
           v-model="$store.state.lessee.addParams.comment"
           :rows="5"
@@ -221,7 +262,12 @@ export default {
       //校验
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
-      isShowErrorIdCardMsg: false
+      isShowErrorIdCardMsg: false,
+
+      idcardFrontPicVal: [],
+      idcardBackPicVal: [],
+      pictureVal: [],
+      userPicArr: []
     };
   },
   watch: {
@@ -241,6 +287,22 @@ export default {
     // this.setBirthday();
   },
   methods: {
+    deleteFile(file, detail) {
+      for (let i = 0; i < this.userPicArr.length; i++) {
+        if (file.file.name == this.userPicArr[i].name) {
+          this.$store.state.lessee.addParams.userPic = this.$store.state.lessee.addParams.userPic.replace(
+            this.userPicArr[i].path + ",",
+            ""
+          );
+          this.userPicArr.splice(i, 1);
+          break;
+        }
+      }
+    },
+    fileCallback(fileUrl) {
+      this.$store.state.lessee.addParams.userPic += fileUrl.path + ",";
+      this.userPicArr.push(fileUrl);
+    },
     setBirthday() {
       this.birthday = this.$root
         .moment(new Date().getTime())
@@ -256,6 +318,12 @@ export default {
         this.$root.timeStamp(this.currentDate) / 1000;
     },
     createLessee() {
+      let userPicStr = "";
+      userPicStr = this.$store.state.lessee.addParams.userPic;
+      userPicStr = userPicStr.substring(0, userPicStr.length - 1);
+      this.$store.state.lessee.addParams.userPic = userPicStr;
+
+      //保存前进行校验
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&
@@ -326,6 +394,9 @@ export default {
 .checkContent {
   background: #f7f8f9;
   padding: 10px 16px;
+  color: #f42929;
+}
+.CreateLessee /deep/ .van-uploader__preview-delete {
   color: #f42929;
 }
 </style>

@@ -181,8 +181,8 @@
                   v-for="(r,i) in operatelogList"
                   :key="i"
                 >
-                  <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span>
-                  <span class="text-gray-600">{{r.content}}</span>
+                  <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
+                  <span class="text-gray-600" style="padding-right:1rem;word-wrap:break-word;">{{r.content}}</span>
                 </div>
               </div>
             </div>

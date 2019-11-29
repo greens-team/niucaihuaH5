@@ -20,20 +20,20 @@ Vue.config.productionTip = false
 import ajax from '@/plugins/axios'
 import apiList from '@/api'
 
-ajax(apiList,error=>{
+ajax(apiList, error => {
   // 请求错误统一处理
-  if(!error.response || error.response.status == 401){
+  if (!error.response || error.response.status == 401) {
     Notify({ type: 'warning', message: error.response.statusText })
     delete localStorage.Authorization
     store.commit('setLoginState', false)
     router.push('/')
   }
-  if(error.response.status !== 401){
+  if (error.response.status !== 401) {
     Notify({ type: 'warning', message: error.response.data.msg || error.response.statusText })
   }
-},function(response){
+}, function (response) {
   // 请求成功统一处理
-  if(Number(response.data.code)){
+  if (Number(response.data.code)) {
     Notify({ type: 'warning', message: response.data.msg })
     return
   }
@@ -49,31 +49,30 @@ Vue.prototype.formatter = (type, value) => {
     return `${value}年`;
   } else if (type === 'month') {
     return `${value}月`
-  } else if (type == 'day'){
+  } else if (type == 'day') {
     return `${value}日`;
-  } else if (type == 'hour'){
+  } else if (type == 'hour') {
     return `${value}时`;
-  } else if (type == 'minute'){
+  } else if (type == 'minute') {
     return `${value}分`;
   }
 }
 
 //填加埋点
 Vue.prototype.addRecentvisit = (data) => {
-  store.dispatch('addRecentvisit', data).then(r=>{
-    console.log(r)
+  store.dispatch('addRecentvisit', data).then(r => {
   })
 }
 
 //滚动加载
 Vue.prototype.scrollLoad = (domBox, callback) => {
   let isSend = false
-  domBox.onscroll = function(){
-    if(domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend){
+  domBox.onscroll = function () {
+    if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
       isSend = true
-      new Promise(resolve=>{
+      new Promise(resolve => {
         callback(resolve)
-      }).then(()=>{
+      }).then(() => {
         isSend = false
       })
     }
@@ -81,23 +80,53 @@ Vue.prototype.scrollLoad = (domBox, callback) => {
 }
 
 //文件上传
-Vue.prototype.uploadFile = (file, checkOrCallback, uploadType) => {
-  if(typeof checkOrCallback == "boolean"){ // 上传文件前校验
-    console.log(file.type)
+Vue.prototype.uploadFile = (file, checkOrCallback, uploadType, objMap) => {
+  if (typeof checkOrCallback == "boolean" && file.name) { // 上传文件前校验
     if (!file.type.includes('image/')) {
       Toast('请上传 png 格式图片');
       return false;
     }
     return true;
   }
-  store.dispatch('fileUpload',{file: file.file, uploadType: uploadType}).then(res=>{
-    checkOrCallback(res.data[0].filePath)
-  })
+  if (typeof checkOrCallback == "boolean" && file instanceof Array) { // 上传文件前校验
+    let res = file.some(f => {
+      if (!f.type.includes('image/')) {
+        Toast('请上传 png 格式图片');
+        return true;
+      }
+    })
+    return !res;
+  }
+  if (file instanceof Array) {
+    file.map((f) => {
+      store.dispatch('fileUpload', { file: f.file, uploadType: uploadType }).then(res => {
+        if (objMap) {
+          checkOrCallback({
+            name: f.file.name,
+            path: res.data[0].filePath
+          })
+        } else {
+          checkOrCallback(res.data[0].filePath)
+        }
+      })
+    })
+  } else {
+    store.dispatch('fileUpload', { file: file.file, uploadType: uploadType }).then(res => {
+      if (objMap) {
+        checkOrCallback({
+          name: file.file.name,
+          path: res.data[0].filePath
+        })
+      } else {
+        checkOrCallback(res.data[0].filePath)
+      }
+    })
+  }
 }
 
 
 new Vue({
-  data(){
+  data() {
     return {
       moment
     }

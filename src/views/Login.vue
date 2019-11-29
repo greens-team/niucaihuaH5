@@ -68,12 +68,14 @@ export default {
         //   uuid: "3111c4fb663d41a580c0fffc39812a37"
         // }
         this.$ajax.auth.login(this.params).then(res=>{
+          console.log("00000")
           if (!res.code) {
             this.setLoginState(true);
             localStorage.Authorization = 'Bearer ' + res.data.token
             this.$router.go(0)
           }else{
             this.loginFailedText = res.msg;
+            
           }
         })
       }
