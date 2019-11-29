@@ -13,7 +13,7 @@
           label="合作竞对名称"
           placeholder="请填写信息"
           label-width="130"
-          maxlength="50"
+          maxlength="30"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">合作竞对名称不能为空</div>

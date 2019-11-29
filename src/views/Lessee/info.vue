@@ -1,16 +1,6 @@
  <!-- 承租人内容页 -->
 <template>
   <div class="LesseeInfo flex-1 flex flex-col bg-gray-100">
-    <!-- <van-nav-bar title="承租人" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <img
-        class="bar_icon edit_icon"
-        slot="right"
-        @click="editor"
-        src="../../assets/topBarIcon/edit_icon.png"
-        alt="编辑"
-      />
-    </van-nav-bar>-->
-
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
         <div
@@ -113,7 +103,7 @@
           <van-swipe-item v-for="(row,index) in $store.state.lessee.tabs" :key="index">
             <!-- 基本信息 经销商-->
             <div v-if="$store.state.lessee.currentTabsIndex === 0">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+              <div class="shadow-md rounded-lg m-3 pl-4 pr-4 bg-white">
                 <div class="flex items-center">
                   <div
                     class="flex flex-1 items-center font-bold border_line"
@@ -176,17 +166,23 @@
                     <p class="text-xs text_title">从业年限</p>
                     <p class="text_content text-sm">{{info.workingYears}}</p>
                   </div>
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                  <div class="border_line pt-2 pb-2">
                     <p class="text-xs text_title">照片</p>
-                    <img :src="info.userPic" width="130" alt="照片" />
-                  </div>
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">上传法人身份证件照片</p>
-                    <div class="flex">
-                      <img :src="info.idcardFrontPic" width="130" alt="身份证正面" />
-                      <img :src="info.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
+
+                    <div class="flex justify-space">
+                      <div v-for="(r,i) in userPicArr" :key="i">
+                        <img :src="picServer + r" width="78" alt="照片" />
+                      </div>
                     </div>
                   </div>
+                  <div class="border_line pt-2 pb-2">
+                    <p class="text-xs text_title">上传法人身份证件照片</p>
+                    <div class="flex">
+                      <img :src="picServer + info.idcardFrontPic" width="78" alt="身份证正面" />
+                      <img :src="picServer + info.idcardBackPic" width="78" alt="身份证反面" />
+                    </div>
+                  </div>
+
                   <div class="pt-2 pb-2">
                     <p class="text-xs text_title">备注</p>
                     <p class="text_content text-sm">{{info.comment ? info.comment : '—'}}</p>
@@ -268,8 +264,8 @@
                   v-for="(r,i) in operatelogList"
                   :key="i"
                 >
-                  <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span>
-                  <span class="text-gray-600">{{r.content}}</span>
+                  <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
+                  <div class="text-gray-600" style="padding-right:1rem;word-wrap:break-word;">{{r.content}}</div>
                 </div>
               </div>
             </div>
@@ -314,7 +310,10 @@ export default {
       showInfo1: true,
       isShowDealer: false,
       newslogList: [],
-      operatelogList: []
+      operatelogList: [],
+
+      picServer: window.picServer,
+      userPicArr: []
     };
   },
   created() {
@@ -323,7 +322,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
-    this.addRecentvisit({modelObjType:3, modelId:this.id})
+    this.addRecentvisit({ modelObjType: 3, modelId: this.id });
     if (this.$store.state.lessee.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);
@@ -341,6 +340,7 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
+          this.userPicArr = this.info.userPic.split(",");
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;

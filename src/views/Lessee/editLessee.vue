@@ -13,7 +13,7 @@
           label="承租人名称"
           placeholder="请填写信息"
           label-width="130"
-          maxlength="10"
+          maxlength="30"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">承租人名称不能为空</div>
@@ -175,6 +175,47 @@
           label-width="130"
         />
 
+        <div>
+          <div class="py-3 px-4 flex justify-between">
+            <span style="color:#484C55">照片</span>
+            <span style="color:#C4C6CC">{{pictureVal.length}}/4</span>
+          </div>
+
+          <div class="py-3 px-3 flex justify-between bg-white">
+            <van-uploader
+              :name="1"
+              :after-read="(file, name) => uploadFile(file, fileCallback, 0, true)"
+              :before-read="file => uploadFile(file,true)"
+              @delete="deleteFile"
+              v-model="pictureVal"
+              multiple
+              :max-count="4"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="py-3 px-4 flex justify-between">
+            <span style="color:#484C55">上传法人身份证件照片</span>
+          </div>
+
+          <div class="py-3 px-3 flex bg-white">
+            <van-uploader
+              :after-read="file => uploadFile(file, (fileUrl)=>$store.state.lessee.editParams.idcardFrontPic = fileUrl, 0)"
+              :before-read="file => uploadFile(file,true)"
+              v-model="idcardFrontPicVal"
+              @delete="file => $store.state.lessee.editParams.idcardFrontPic = ''"
+              :max-count="1"
+            />
+            <van-uploader
+              :after-read="file => uploadFile(file, (fileUrl)=>$store.state.lessee.editParams.idcardBackPic = fileUrl, 0)"
+              :before-read="file => uploadFile(file,true)"
+              v-model="idcardBackPicVal"
+              @delete="file => $store.state.lessee.editParams.idcardBackPic = ''"
+              :max-count="1"
+            />
+          </div>
+        </div>
+
         <van-field
           v-model="$store.state.lessee.editParams.comment"
           :rows="5"
@@ -218,7 +259,12 @@ export default {
       //校验
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
-      isShowErrorIdCardMsg: false
+      isShowErrorIdCardMsg: false,
+
+      idcardFrontPicVal: [],
+      idcardBackPicVal: [],
+      pictureVal: [],
+      userPicArr: []
     };
   },
   watch: {
@@ -237,7 +283,39 @@ export default {
   mounted() {
     this.getInitParams();
   },
+
   methods: {
+    deleteFile(file, detail) {
+      //编辑页面默认删除图片获取到的file和删除再上传获取的file不是同一个，所以需要分开判断
+      if (file.url) {
+        let currentPath = "";
+        if (file.url !== null || file.url !== "") {
+          const str = file.url.split("http://");
+          const index = str[1].indexOf("/") + 1;
+          currentPath = str[1].substring(index);
+        }
+        this.$store.state.lessee.editParams.userPic = this.$store.state.lessee.editParams.userPic.replace(
+          currentPath + ",",
+          ""
+        );
+      } else {
+        for (let i = 0; i < this.userPicArr.length; i++) {
+          console.log()
+          if (file.file.name == this.userPicArr[i].name) {
+            this.$store.state.lessee.editParams.userPic = this.$store.state.lessee.editParams.userPic.replace(
+              this.userPicArr[i].path + ",",
+              ""
+            );
+            this.userPicArr.splice(i, 1);
+            break;
+          }
+        }
+      }
+    },
+    fileCallback(fileUrl) {
+      this.$store.state.lessee.editParams.userPic += fileUrl.path + ",";
+      this.userPicArr.push(fileUrl);
+    },
     getInitParams() {
       let birthday = this.$store.state.lessee.info.birthday;
       if (birthday == null) {
@@ -263,6 +341,30 @@ export default {
       this.selectLesseeStatus = this.$store.state.lessee.status[
         this.lesseeStatusValus - 1
       ].text;
+
+      if (this.$store.state.lessee.info.idcardFrontPic) {
+        this.idcardFrontPicVal = [
+          {
+            url: window.picServer + this.$store.state.lessee.info.idcardFrontPic
+          }
+        ];
+      }
+      if (this.$store.state.lessee.info.idcardBackPic) {
+        this.idcardBackPicVal = [
+          {
+            url: window.picServer + this.$store.state.lessee.info.idcardBackPic
+          }
+        ];
+      }
+      if (this.$store.state.lessee.info.userPic) {
+        this.$store.state.lessee.editParams.userPic =
+          this.$store.state.lessee.info.userPic + ",";
+        let userPics = this.$store.state.lessee.info.userPic.split(",");
+        this.userPicArr = userPics;
+        for (let i = 0; i < userPics.length; i++) {
+          this.pictureVal.push({ url: window.picServer + userPics[i] });
+        }
+      }
     },
     getBirthdayTime() {
       this.birthdayTimeShow = false;
@@ -274,6 +376,10 @@ export default {
         this.$root.timeStamp(this.currentDate) / 1000;
     },
     editLessee() {
+      let userPicStr = "";
+      userPicStr = this.$store.state.lessee.editParams.userPic;
+      userPicStr = userPicStr.substring(0, userPicStr.length - 1);
+      this.$store.state.lessee.editParams.userPic = userPicStr;
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&
@@ -344,6 +450,9 @@ export default {
 .checkContent {
   background: #f7f8f9;
   padding: 10px 16px;
+  color: #f42929;
+}
+.editLessee /deep/ .van-uploader__preview-delete {
   color: #f42929;
 }
 </style>

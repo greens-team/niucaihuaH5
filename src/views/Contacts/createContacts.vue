@@ -13,7 +13,7 @@
           label="联系人名称"
           placeholder="请填写信息"
           label-width="130"
-          maxlength="10"
+          maxlength="30"
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">联系人名称不能为空</div>
         <van-field
