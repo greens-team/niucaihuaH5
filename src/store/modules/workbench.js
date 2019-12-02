@@ -28,7 +28,7 @@ export default {
     briefingDate: {
       text: '本月',
       startTime: moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-      endTime: moment().format('YYYY-MM-DD HH:mm:ss')
+      endTime: moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
     },
     myTaskList: [],
     colleaguesTaskList: [],

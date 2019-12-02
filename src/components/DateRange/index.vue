@@ -137,7 +137,7 @@ export default {
       this.$store.commit('setBriefingDate', {
         text: '本月',
         startTime: this.$root.moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-        endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+        endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
       })
       this.$router.go(-1)
     },
@@ -166,7 +166,7 @@ export default {
         case '今天':
           time = {
             startTime: this.$root.moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'),
-            endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+            endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
           }
           break;
         case '昨天':
@@ -178,7 +178,7 @@ export default {
         case '本周':
           time = {
             startTime: this.$root.moment().startOf('week').format('YYYY-MM-DD HH:mm:ss'),
-            endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+            endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
           }
           break;
         case '上周':
@@ -190,7 +190,7 @@ export default {
         case '本月':
           time = {
             startTime: this.$root.moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'),
-            endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+            endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
           }
           break;
         case '上月':
@@ -202,7 +202,7 @@ export default {
         case '本季度':
           time = {
             startTime: this.$root.moment().startOf('quarter').format('YYYY-MM-DD HH:mm:ss'),
-            endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+            endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
           }
           break;
         case '上一季度':
@@ -214,7 +214,7 @@ export default {
         case '本年度':
           time = {
             startTime: this.$root.moment().startOf('year').format('YYYY-MM-DD HH:mm:ss'),
-            endTime: this.$root.moment().format('YYYY-MM-DD HH:mm:ss')
+            endTime: this.$root.moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')
           }
           break;
         case '上一年度':
