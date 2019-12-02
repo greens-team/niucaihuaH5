@@ -108,7 +108,7 @@ export default {
   },
   mounted() {
     this.userInfo = JSON.parse(sessionStorage.userInfo);
-    console.log(this.userInfo)
+    // console.log(this.userInfo);
   },
   methods: {}
 };

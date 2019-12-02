@@ -278,11 +278,11 @@
     </div>
 
     <div class="flex bg-white footer-bar">
-      <i
+      <!-- <i
         class="iconfont iconjingxiaoshangbaifang mx-3"
         @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
         style="font-size: 2rem;"
-      ></i>
+      ></i> -->
       <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
 
       <form class="search-block" action="javascript:void 0">
@@ -296,7 +296,7 @@
           onblur="this.placeholder='请输入工作进展'"
         />
       </form>
-      <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
+      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
   </div>
 </template>
@@ -539,6 +539,7 @@ export default {
   height: 4rem;
   line-height: 4rem;
   align-items: center;
+  padding: .75rem;
 }
 .baseName {
   background: linear-gradient(
@@ -548,7 +549,7 @@ export default {
   );
 }
 .search-block {
-  width: 80%;
+  width: 90%;
 }
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
