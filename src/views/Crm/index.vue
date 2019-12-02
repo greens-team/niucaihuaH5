@@ -29,25 +29,25 @@
 
     <div  class="bg-gray-100">
 
-      <div class="pt-3 pb-3">
-        <van-cell is-link>
+      <div class="pt-3">
+        <!-- <van-cell is-link>
           <template slot="title">
             <div class="flex  items-center">
               <img src="../../assets/crm/icon4.png" class="w-5 mr-2" alt="">
               <span class="custom-title">项目管理</span>
             </div>
           </template>
-        </van-cell>
+        </van-cell> -->
       </div>
       <van-cell-group>
-        <van-cell is-link>
+        <!-- <van-cell is-link>
           <template slot="title">
             <div class="flex  items-center">
               <img src="../../assets/crm/icon5.png" class="w-5 mr-2" alt="">
               <span class="custom-title">厂商品牌</span>
             </div>
           </template>
-        </van-cell>
+        </van-cell> -->
         <van-cell is-link>
           <template slot="title">
             <div class="flex  items-center" @click="$router.push('/Competitor')">
@@ -56,14 +56,14 @@
             </div>
           </template>
         </van-cell>
-        <van-cell is-link>
+        <!-- <van-cell is-link>
           <template slot="title">
             <div class="flex  items-center">
               <img src="../../assets/crm/icon7.png" class="w-5 mr-2" alt="">
               <span class="custom-title">车型</span>
             </div>
           </template>
-        </van-cell>
+        </van-cell> -->
       </van-cell-group>
 
     </div>
