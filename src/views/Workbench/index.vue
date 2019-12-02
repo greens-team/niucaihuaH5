@@ -11,8 +11,9 @@
 
     <!-- 搜索 -->
     <div class="flex items-center pr-3 pl-3">
-      <i class="iconfont icontixing" style="font-size: 20px;"></i>
-      <van-search @focus="$router.push({name:'DealerManage',query:{search:true}})" class="flex-1 -ml-1 -mr-1" background="inherit" placeholder="请输入搜索内容" shape="round" />
+      <!-- <i class="iconfont icontixing" style="font-size: 20px;"></i> -->
+      <!-- <van-search @focus="$router.push({name:'DealerManage',query:{search:true}})" class="flex-1 -ml-1 -mr-1" background="inherit" placeholder="请输入搜索内容" shape="round" /> -->
+      <van-search @focus="goWorkbenchSearch" class="flex-1 -ml-1 -mr-1" background="inherit" placeholder="请输入搜索内容" shape="round" />
       <i @click="logout" class="iconfont icongongzuotai-tupianshangchuan-guanbi" style="font-size:20px;"></i>
     </div>
 
@@ -117,7 +118,7 @@
 
 
       <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change='changeWorkbenchTaskStatus'>
-        <van-swipe-item>
+        <van-swipe-item class="bg-white">
             <!-- 我的任务列表 -->
             <div>
               <!-- <CalendarControl /> -->
@@ -150,7 +151,7 @@
               </div>
             </div>
         </van-swipe-item>
-        <van-swipe-item>
+        <van-swipe-item class="bg-white">
            <!-- 同事任务列表 -->
             <div>
               <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
@@ -337,6 +338,10 @@ export default {
 
       })
       // $router.push({name:'TaskDetail',query:{id: row.gid}})
+    },
+    goWorkbenchSearch(){
+      delete sessionStorage.globalSearchVal;
+      this.$router.push({name:'WorkbenchSearch'})
     }
   }
 }

@@ -151,7 +151,8 @@
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">地理位置</p>
                           <div class="flex">
-                            {{info.province +' '+ info.city +' '+ info.area}}
+                            <!-- {{info.province +' '+ info.city +' '+ info.area}} -->
+                            {{info.longitude+','+info.latitude}}
                             <div class="flex-1"></div>
                             <i @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})" class="iconfont iconweizhibang text-orange-500"></i>
                           </div>
@@ -160,7 +161,18 @@
                           <p class="text-xs text-gray-500">经销商分级</p>
                           <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
                         </div>
-
+                        <div v-if="info.ownerUserList && info.ownerUserList.length" class="border-t border-gray-100 p-2 mt-2">
+                          <p class="text-xs text-gray-500">负责人</p>
+                          <p>{{info.ownerUserList.map(r=>r.ownerUserName).toString()}}</p>
+                        </div>
+                        <div v-if="info.followerUserList && info.followerUserList.length" class="border-t border-gray-100 p-2 mt-2">
+                          <p class="text-xs text-gray-500">参与人</p>
+                          <p>{{info.followerUserList.map(r=>r.ownerUserName).toString()}}</p>
+                        </div>
+                        <div class="border-t border-gray-100 p-2">
+                          <p class="text-xs text-gray-500">创建日期</p>
+                          <p>{{$root.moment(info.createTime*1000).format('YYYY-MM-DD')}}</p>
+                        </div>
                         <div class="border-t border-gray-100 p-2 mt-2">
                           <p class="text-xs text-gray-500">备注信息</p>
                           <p>{{info.comment}}</p>
@@ -406,7 +418,6 @@ export default {
     this.id = this.$route.query.id
 
     this.addRecentvisit({modelObjType:1, modelId:this.id})
-
     if(this.$store.state.dealerInfo.currentTabsIndex){
       this.getBaseInfo(0)
       this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex)
@@ -415,7 +426,7 @@ export default {
     }
 
     // 动态记录
-    this.scrollLoad(this.$refs.listBox, resolve => {
+    this.$refs.listBox && this.scrollLoad(this.$refs.listBox, resolve => {
       if(this.$store.state.dealerInfo.currentTabsIndex == 4 && !this.isNewslogLastPage){
           this.$store.dispatch( "listNewslog",{
               modelObjType: 1,

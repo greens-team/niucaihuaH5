@@ -10,9 +10,9 @@
         v-model="params.queryString"
         placeholder="请输入搜索关键词"
         show-action
-        @clear="onSearch"
+        @clear="initSend"
         shape="round">
-          <div slot="action" @click="onSearch(1)">搜索</div>
+          <div slot="action" @click="initSend">搜索</div>
       </van-search>
     </div>
     
@@ -22,13 +22,13 @@
     </van-tabs>
 
     <div class="flex-1 border-t border-gray-100 relative">
-      <div class="absolute inset-0 overflow-y-scroll">
+      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
 
-        <van-cell-group v-if="listData.length">
-          <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType">
+        <van-cell-group v-if="listData && listData.length">
+          <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType" @click="goDetail(row)">
             <template slot="title">
               <p class="leading-snug">{{row.someName}}<br />
-                <span class="text-gray-500">{{row.modelName}}</span>
+                <span v-if="!params.modelType" class="text-gray-500">{{row.modelName}}</span>
               </p>
             </template>
           </van-cell>
@@ -59,34 +59,69 @@ export default {
         queryString: '',
         modelType: 0,
         pageNum: 1,
-        pageSize: 20
+        pageSize: 13
       },
       listData: [],
+
+      isEnd: false
     }
   },
   watch: {
+    'params.queryString'(val){
+      sessionStorage.globalSearchVal = val
+    },
     'params.modelType'(){
-      this.listData = []
-      this.onSearch()
+      this.initSend()
     },
     'params.pageNum'(){
       this.onSearch()
     }
   },
   mounted() {
+    this.params.queryString = sessionStorage.globalSearchVal || ''
     this.onSearch()
+
+    // 滚动加载
+    this.$refs.listBox && this.scrollLoad(this.$refs.listBox, (resolve)=>{
+        this.params.pageNum++
+        resolve()
+    })
+
   },
   methods: {
+    goDetail(row){
+      switch (row.modelName) {
+        case '经销商':
+          this.$router.push({path:'/DealerInfo', query:{id:row.modelGid}})
+          break;
+        case '联系人':
+          this.$router.push({path:'/ContactsInfo', query:{gid:row.modelGid}})
+          break;
+        case '承租人':
+          this.$router.push({path:'/LesseeInfo', query:{id:row.modelGid}})
+          break;
+        case '竞争对手':
+          this.$router.push({path:'/CompetitorInfo', query:{id:row.modelGid}})
+          break;
+      }
+
+    },
+    initSend(){
+      this.isEnd = false
+      this.listData = []
+      this.params.pageNum == 1 ? this.onSearch() : (this.params.pageNum = 1)
+    },
     onSearch () {
-        // if(search){
-        // }
+      if(!this.isEnd){
        this.$ajax.workbench.workbenchSearch(this.params).then(res => {
-        if (!res.code) {
-          this.listData = res.data.list
-        }else {
-          this.listData = []
-        }
-      })
+          if (!res.code && res.data.list) {
+            this.listData = (this.params.pageNum == 1) ? res.data.list : this.listData.concat(res.data.list);
+            if(res.data.list.length < this.params.pageSize){this.isEnd = true}
+          }else {
+            this.listData = []
+          }
+        })
+      }
     }
   }
 }

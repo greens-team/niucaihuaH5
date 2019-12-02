@@ -12,7 +12,7 @@
 
           <van-checkbox-group v-model="$store.state.contacts.confirmUserGids" class="flex-1  ml-5"> 
             <van-checkbox v-for="(item, i) in $store.state.contacts.selectedUserGids" :key="i" icon-size="16px" 
-              class="border-b border-gray-200" style="padding: 0.86rem"
+              class="border-b border-gray-200 ellipsis" style="padding: 0.86rem"
               :name="item">{{item.split(',')[0]}}
             </van-checkbox>
           </van-checkbox-group>
@@ -98,4 +98,9 @@ export default {
 </script>
 
 <style scoped>
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
