@@ -265,7 +265,10 @@
                   :key="i"
                 >
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                  <div class="text-gray-600" style="padding-right:1rem;word-wrap:break-word;">{{r.content}}</div>
+                  <div
+                    class="text-gray-600"
+                    style="padding-right:1rem;word-wrap:break-word;"
+                  >{{r.content}}</div>
                 </div>
               </div>
             </div>
@@ -340,7 +343,9 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
-          this.userPicArr = this.info.userPic.split(",");
+          if (this.info.userPic) {
+            this.userPicArr = this.info.userPic.split(",");
+          }
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;

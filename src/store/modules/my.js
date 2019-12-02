@@ -9,7 +9,13 @@ export default {
 
     },
     mutations: {
-
+        setParamsEmpty(state) {
+            state.submitParams = {
+                phone: '',
+                pics: '',
+                content: ''
+            }
+        },
     },
     actions: {
         submitFeedBack({ state }, data = {}) {   // 提交反馈意见

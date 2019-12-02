@@ -11,7 +11,7 @@
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
-        <div class="flex-1 text-center text-lg font-medium">联系人</div>
+        <div class="flex-1 text-center font-medium bar_title">联系人</div>
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
           <!-- 搜索图标 -->

@@ -1,9 +1,25 @@
 <!-- 编辑联系人页面 -->
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
-    <van-nav-bar title="编辑联系人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
+    <!-- <van-nav-bar title="编辑联系人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
       <div slot="right" @click="editContacts">保存</div>
-    </van-nav-bar>
+    </van-nav-bar>-->
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">编辑联系人</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div slot="right" class="text-center text-base" @click="editContacts">保存</div>
+      </div>
+    </div>
+
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto">
         <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
@@ -111,5 +127,12 @@ export default {
   background: #f7f8f9;
   padding: 10px 16px;
   color: #f42929;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

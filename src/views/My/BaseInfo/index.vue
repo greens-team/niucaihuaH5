@@ -1,11 +1,26 @@
 <!-- 我的基本信息 -->
 <template>
   <div class="Base">
-    <van-nav-bar title="个人资料" left-text @click-left="$router.go(-1)" left-arrow>
-      <!-- <van-icon name="edit" size="18px" slot="right" /> -->
-      <!-- <img @click="$router.push('/MyBaseInfo')" slot="right"  src="../../../assets/my/icon_editor.png" class="w-5" alt=""> -->
-      <!-- <van-icon name="plus" size="20px" @click="$router.push('/CreateDealer')" slot="right" /> -->
-    </van-nav-bar>
+    <!-- <van-nav-bar title="个人资料" left-text @click-left="$router.go(-1)" left-arrow>
+      <van-icon name="edit" size="18px" slot="right" />
+      <img @click="$router.push('/MyBaseInfo')" slot="right"  src="../../../assets/my/icon_editor.png" class="w-5" alt="">
+      <van-icon name="plus" size="20px" @click="$router.push('/CreateDealer')" slot="right" /> 
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">个人资料</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+      </div>
+    </div>
 
     <div class="flex items-center p-5">
       <img
@@ -38,6 +53,10 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    console.log(sessionStorage.userInfo)
+  },
+
   methods: {}
 };
 </script>
@@ -48,5 +67,12 @@ export default {
 }
 .Base /deep/ .van-field__control:disabled {
   -webkit-text-fill-color: #323233;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

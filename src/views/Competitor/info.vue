@@ -76,8 +76,6 @@
                     基本信息
                     <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
                   </div>
-
-                  <!-- <div class="flex flex-1 items-center font-bold">基本信息</div> -->
                 </div>
                 <div v-show="showInfo1">
                   <div class="border_line pt-2 pb-2" style="height:4rem;">

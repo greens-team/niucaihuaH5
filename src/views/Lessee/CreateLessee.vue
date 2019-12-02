@@ -1,9 +1,26 @@
 <!-- 创建承租人页面 -->
 <template>
   <div class="CreateLessee flex-1 flex flex-col">
-    <van-nav-bar title="新建承租人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
+    <!-- <van-nav-bar title="新建承租人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
       <div slot="right" @click="createLessee">保存</div>
-    </van-nav-bar>
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">新建承租人</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div slot="right" class="text-center text-base" @click="createLessee">保存</div>
+      </div>
+    </div>
+
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto">
         <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
@@ -185,7 +202,6 @@
 
           <div class="py-3 px-3 flex justify-between bg-white">
             <van-uploader
-              :name="1"
               :after-read="(file, name) => uploadFile(file, fileCallback, 0, true)"
               :before-read="file => uploadFile(file,true)"
               @delete="deleteFile"
@@ -242,7 +258,7 @@ export default {
       birthdayTimeShow: false,
       currentDate: new Date(),
       birthday: "",
-      minDate: new Date(1989, 12, 1),
+      minDate: new Date(1899, 12, 1),
 
       genderShow: false,
       genderValus: 0,
@@ -289,7 +305,8 @@ export default {
   methods: {
     deleteFile(file, detail) {
       for (let i = 0; i < this.userPicArr.length; i++) {
-        if (file.file.name == this.userPicArr[i].name) {
+        console.log(detail.index);
+        if (file.file.name == this.userPicArr[i].name && detail.index == i) {
           this.$store.state.lessee.addParams.userPic = this.$store.state.lessee.addParams.userPic.replace(
             this.userPicArr[i].path + ",",
             ""
@@ -299,6 +316,7 @@ export default {
         }
       }
     },
+
     fileCallback(fileUrl) {
       this.$store.state.lessee.addParams.userPic += fileUrl.path + ",";
       this.userPicArr.push(fileUrl);
@@ -398,5 +416,12 @@ export default {
 }
 .CreateLessee /deep/ .van-uploader__preview-delete {
   color: #f42929;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

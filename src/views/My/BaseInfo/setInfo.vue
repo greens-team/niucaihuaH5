@@ -1,7 +1,23 @@
 <!-- 我的设置信息 -->
 <template>
   <div class="mySet">
-    <van-nav-bar title="设置" left-text @click-left="$router.go(-1)" left-arrow></van-nav-bar>
+    <!-- <van-nav-bar title="设置" left-text @click-left="$router.go(-1)" left-arrow></van-nav-bar> -->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-medium bar_title">设置</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+      </div>
+    </div>
+
     <div class="py-12 rounded-lg relative bg-white">
       <div class="flex-1 flex flex-col items-center relative">
         <img src="../../../assets/login/logo_set.png" alt class="w-24" />
@@ -21,14 +37,18 @@ export default {
     // this.$store.commit("setLoginState", false);
     // this.$router.go(-1);
     logOut() {
-      this.userAgent(() => { // 返回原生页面
-        let params = {"selector":"navigationGoBack","type":"LBHiOSApp"};
-        let resultjson = prompt(JSON.stringify(params));
-        delete localStorage.Authorization
-      }, ()=>{
-        HelperNativeInterface.navigationGoBack()
-        delete localStorage.Authorization
-      })
+      this.userAgent(
+        () => {
+          // 返回原生页面
+          let params = { selector: "navigationGoBack", type: "LBHiOSApp" };
+          let resultjson = prompt(JSON.stringify(params));
+          delete localStorage.Authorization;
+        },
+        () => {
+          HelperNativeInterface.navigationGoBack();
+          delete localStorage.Authorization;
+        }
+      );
     }
   }
 };
@@ -48,5 +68,12 @@ export default {
   height: 3.5rem;
   font-size: 1.2rem;
   color: #f42929;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>
