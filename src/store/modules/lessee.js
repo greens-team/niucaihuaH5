@@ -207,7 +207,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.lessee.addLessee(Object.assign(state.addParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -217,7 +217,7 @@ export default {
         window.$ajax.lessee.getLesseeInfo({ lesseeGid: id }).then(res => {
           if (!Number(res.code)) {
             state.info = res.data
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -226,7 +226,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.lessee.editLessee(Object.assign(state.editParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -247,7 +247,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -256,7 +256,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.lessee.associatedLessee(Object.assign(state.associatedParams, data)).then(res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -266,7 +266,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.history.addNewslog(Object.assign(state.addNewslogParams, data)).then(res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -288,7 +288,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -310,7 +310,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })

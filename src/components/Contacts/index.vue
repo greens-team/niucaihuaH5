@@ -18,8 +18,7 @@
     </van-search>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-auto">
-
+      <div class="absolute inset-0 overflow-y-auto" ref="listBox">
           <van-checkbox-group v-model="$store.state.contacts.selectedUserGids" class="bg-white"> 
             <van-checkbox v-for="(item, i) in $store.state.contacts.listContacts" :key="i" icon-size="16px" 
               class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
@@ -59,10 +58,23 @@ export default {
     }
   },
   mounted () {
+
+    this.$refs.listBox && this.scrollLoad(this.$refs.listBox, (resolve)=>{
+        this.$store.state.contacts.listContactsParams.pageNum++
+        this.$store.dispatch('listContacts', {pageNum: this.$store.state.contacts.listContactsParams.pageNum}).then(msg=>{
+          resolve(msg)
+        })
+    })
+
     this.$store.state.contacts.confirmUserGids=[];
     this.$store.state.contacts.jobsUser=[]; 
-    this.$store.state.contacts.selectedUserGids = [];
-    this.$store.dispatch('listContacts')
+    if(sessionStorage.selectedUserGids){
+      this.$store.state.contacts.selectedUserGids = JSON.parse(sessionStorage.selectedUserGids);
+      delete sessionStorage.selectedUserGids;
+    }else{
+      this.$store.state.contacts.selectedUserGids = [];
+    }
+    this.$store.dispatch('listContacts', {pageNum: 1})
   },
   methods: {
     selectedList(){

@@ -24,7 +24,7 @@ ajax(apiList, error => {
   // 请求错误统一处理
   if (!error.response || error.response.status == 401) {
     Notify({ type: 'warning', message: error.response.statusText })
-    delete localStorage.Authorization
+    delete sessionStorage.Authorization
     // store.commit('setLoginState', false)
     router.push('/')
   }

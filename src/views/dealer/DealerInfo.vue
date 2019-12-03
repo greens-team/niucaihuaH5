@@ -324,8 +324,9 @@
                               class="text-ms leading-relaxed"
                               style="color:#252525"
                             >{{r.content}}</p>
-                            <img v-if="r.pics != '' " :src="r.pics" alt />
+                            <img v-if="r.pics != '' " :src="r.pics" alt /><br />
                           </div>
+                          <p class="text-sm text-gray-500">{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm:ss')}}</p>
                         </div>
                         
                   </div>
@@ -358,7 +359,7 @@
     </div>
 
 
-  
+<!--   
     <div class="flex bg-white footer-bar border-t border-gray-300" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
       
       <van-uploader>
@@ -371,7 +372,7 @@
       
       <form class="search-block flex-1" action="javascript:void 0">
         <input
-          style="width:100%;text-align: center;"
+          style="width:100%;text-align: left;"
           type="text"
           placeholder="请输入工作进展"
           input-align="center"
@@ -381,7 +382,37 @@
         />
       </form>
       <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
+    </div> -->
+
+
+    <div class="flex bg-white footer-bar border-t border-gray-300 iteams-center" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
+      <i
+        class="iconfont iconjingxiaoshangbaifang ml-3 mr-3"
+        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
+        style="font-size: 2rem;height:90%"
+      ></i>
+
+      <van-uploader capture style="height:90%">
+        <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+      </van-uploader>
+
+      <form class="search-block" action="javascript:void 0">
+        <input
+          type="text"
+          style="text-align: left; height:70%"
+          placeholder="请输入工作进展"
+          input-align="center"
+          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3"
+          v-model="newsLogContent"
+          @keyup.13="tapToSearch"
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='请输入工作进展'"
+        />
+      </form>
+
+      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
+
 
   
   </div>
@@ -482,22 +513,24 @@ export default {
   },
   methods: {
     tapToSearch() {
-      this.$store.dispatch('addNewslog',{
-        modelObjType: 1,
-        modelId: this.id,
-        content: this.newsLogContent,
-        pics: ''
-      }).then((msg)=>{
-        this.isNewslogLastPage = false
-        this.listNewslogPageNum = 1
-        this.newsLogContent = ''
-        this.$store.dispatch('listNewslog', {
+      if(this.newsLogContent){
+        this.$store.dispatch('addNewslog',{
           modelObjType: 1,
           modelId: this.id,
-          pageNum: this.listNewslogPageNum,
-          pageSize: 10
+          content: this.newsLogContent,
+          pics: ''
+        }).then((msg)=>{
+          this.isNewslogLastPage = false
+          this.listNewslogPageNum = 1
+          this.newsLogContent = ''
+          this.$store.dispatch('listNewslog', {
+            modelObjType: 1,
+            modelId: this.id,
+            pageNum: this.listNewslogPageNum,
+            pageSize: 10
+          })
         })
-      })
+      }
     },
     recordSubmit(){
       if(!this.info.recordStatus){
@@ -637,4 +670,37 @@ export default {
 
 
 .DealerInfo /deep/ .van-collapse-item__content{padding-top:5px; padding-bottom:5px;}
+
+
+.footer-bar {
+  position: relative;
+  height: 4rem;
+  line-height: 4rem;
+  align-items: center;
+}
+
+.progress {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #f6f6f6;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  text-align: center;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  text-align: center;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+
 </style>

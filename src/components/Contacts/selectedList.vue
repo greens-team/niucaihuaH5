@@ -9,7 +9,6 @@
       <div class="absolute inset-0 overflow-y-auto">
 
         <div class="flex">
-
           <van-checkbox-group v-model="$store.state.contacts.confirmUserGids" class="flex-1  ml-5"> 
             <van-checkbox v-for="(item, i) in $store.state.contacts.selectedUserGids" :key="i" icon-size="16px" 
               class="border-b border-gray-200 ellipsis" style="padding: 0.86rem"

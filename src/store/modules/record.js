@@ -43,7 +43,7 @@ export default {
               state.dealerRecord = res.dealerRecord
               state.splRecord = res.splRecord
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -52,7 +52,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.record.recordSubmit(data).then( res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })

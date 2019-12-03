@@ -4,7 +4,7 @@
   <div class="CreateDealer flex-1 flex flex-col">
     <van-nav-bar :title="$route.query.editor ? $store.state.newDealer.params.dealerName : '新建经销商'" left-text="取消" @click-left="$router.go(-1)" left-arrow>
       <div v-if="$route.query.editor" slot="right" @click="save">保存</div>
-      <div v-else slot="right" @click="showNext = true">下一步</div>
+      <div v-else slot="right" @click="nextStep">下一步</div>
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -379,25 +379,22 @@ export default {
 
       })
     },
-    goContactsList(){
+    nextStep(){
       if(!this.$store.state.newDealer.params.dealerName){
         this.$dialog.alert({
             message: '经销商名称不能为空'
         });
       }else{
-        this.$router.push('/ContactsList')
+        this.showNext = true
       }
+    },
+    goContactsList(){
+        this.$router.push('/ContactsList')
     }, 
     createDealer () {
-      if(!this.$store.state.newDealer.params.dealerName){
-        this.$dialog.alert({
-            message: '经销商名称不能为空'
-        });
-      }else{
         this.$store.dispatch('addCreateDealer').then(r=>{
           this.$router.go(-1)
         })
-      }
     },
     save(){
       let legalParams = this.$store.state.newDealer.params

@@ -2,7 +2,7 @@
 <template>
   <div class="NewContacts flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="新建联系人" left-text="取消" @click-left="$router.go(-1)" @click-right="finish" left-arrow>
-      <div slot="right">新建</div>
+      <div slot="right">保存</div>
     </van-nav-bar>
       
     <div class="pr-4 mt-2 bg-white flex-1">
@@ -52,9 +52,11 @@ export default {
         });
       }else{
         if(this.$store.state.contacts.createContactsParams.contactsName){
-          this.$store.dispatch('createContacts').then(msg => {
-            this.$notify({ type: 'success', message: msg })
+          this.$store.dispatch('createContacts').then(res => {
+            this.$notify({ type: 'success', message: res.msg })
             this.$store.state.contacts.listContactsParams.queryString = ''
+            let selectedUserGids = this.$store.state.contacts.selectedUserGids.concat(this.$store.state.contacts.createContactsParams.contactsName+','+res.data)
+            sessionStorage.selectedUserGids = JSON.stringify(selectedUserGids)
             this.$router.go(-1)
           })
         }else{
