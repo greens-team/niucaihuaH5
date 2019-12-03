@@ -74,7 +74,7 @@
 
         <div class="flex emialUs mt-24">
           <p class="w-full text-center">
-            <span style="color:#80848D">邮件联系我们：</span>
+            <span style="color:#80848D">有问题也可发送邮件给我们：</span>
             <span style="color:#0885FF">liuyiwei@lionbridgecapital.cn</span>
           </p>
         </div>
