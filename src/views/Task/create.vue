@@ -56,7 +56,8 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
+          <p class="p5" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p class="p5" v-else @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
         </template>
       </van-cell>
 
@@ -215,45 +216,6 @@
     </van-popup>
 
 
-    <!-- 拜访人 -->
-    <!-- <van-popup
-      v-model=""
-      position="bottom"
-      class="flex flex-col"
-      :style="{ height: '50%',}"
-    >
-      <van-nav-bar
-        :title="!userType ? '选择拜访人' : '选择协访人'"
-        left-text="取消"
-        right-text="确定"
-        left-arrow
-        @click-left=" = false"
-        @click-right="clickRight"
-      />
-      <div class="flex-1 relative">
-        <div class="absolute inset-0 overflow-y-auto" ref="userListBox">
-          <van-checkbox-group v-model="">
-            <van-cell-group>
-              <van-cell
-                v-for="(item, index) in $store.state.dealer.colleagueDataList"
-                clickable
-                :key="item.id"
-                :title="`${item.refRlNm}`"
-                @click="toggle(index)"
-              >
-                <van-checkbox
-                  :name="item"
-                  ref="checkboxes"
-                  slot="right-icon"
-                />
-              </van-cell>
-            </van-cell-group>
-          </van-checkbox-group>
-
-        </div>
-      </div>
-    </van-popup> -->
-
     <!-- 拜访目的 -->
     <van-popup
       v-model="visitAimShow"
@@ -402,6 +364,8 @@ export default {
   },
   mounted() {
 
+    
+
     // sessionStorage.userInfo = JSON.stringify({
     //   EMPLOYEE_ID:'2121212',
     //   EMPLOYEE_NAME: '中华人民共和国'
@@ -462,8 +426,6 @@ export default {
           }
         }) : []
 
-        
-
 
         //回显 协访人 otherUserNames
         this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
@@ -482,6 +444,12 @@ export default {
         })
       })
     }
+
+    if(this.$route.query.dealerName && this.$route.query.dealerGid){
+      this.dealerName = this.$route.query.dealerName
+      this.$store.state.task.addEditTaskParams.dealerGid  = this.$route.query.dealerGid
+    }
+    //dealerName = dealerRow.dealerName; $store.state.task.addEditTaskParams.dealerGid 
     
   },
   methods: {
