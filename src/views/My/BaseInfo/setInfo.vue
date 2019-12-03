@@ -44,8 +44,8 @@ export default {
     };
   },
   mounted() {
-     this.testToken = localStorage.Authorization
-     this.userInfo = JSON.parse(sessionStorage.userInfo)
+     this.testToken = sessionStorage.Authorization
+     this.userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
   },
   methods: {
     // this.$router.go(-1);
@@ -54,13 +54,15 @@ export default {
       this.userAgent(
         () => {
           // 返回原生页面
+          delete sessionStorage.Authorization;
+          delete sessionStorage.userInfo;
           let params = { selector: "navigationGoBack", type: "LBHiOSApp" };
           let resultjson = prompt(JSON.stringify(params));
-          delete localStorage.Authorization;
         },
         () => {
+          delete sessionStorage.Authorization;
+          delete sessionStorage.userInfo;
           HelperNativeInterface.navigationGoBack();
-          delete localStorage.Authorization;
         }
       );
     }

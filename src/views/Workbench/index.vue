@@ -7,7 +7,7 @@
 
 <!-- 工作台模块首页 -->
 <template>
-  <div class="Workbench bg-gray-100 overflow-hidden">
+  <div class="Workbench bg-white overflow-hidden">
 
     <!-- 搜索 -->
     <div class="flex items-center pr-3 pl-3">
@@ -18,7 +18,7 @@
     </div>
 
     <!-- 销售简报 -->
-    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadow">
+    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       
       <div class="flex p-1 items-center justify-center">
         <div class="font-bold">销售简报</div>
@@ -74,7 +74,7 @@
     <!-- <van-uploader :after-read="afterRead" /> -->
 
     <!-- 快速入口 -->
-    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadow">
+    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       
       <div class="flex p-1">
         <div class="font-bold">快速入口</div>
@@ -101,15 +101,15 @@
     </div>
 
     <!-- 我的任务 同事任务 -->
-    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 pt-2 pb-2 rounded-lg shadow">
+    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 pt-2 pb-2 rounded-lg shadowaa">
 
       <div class="flex p-1 border-b border-gray-200 pl-2 pr-2" swipeable>
         <div :class="['font-bold text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]" @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);">我的任务</div>
         <div :class="['font-bold relative ml-4 text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"  @click="$refs.swipe.swipeTo(1);$store.commit('setWorkbenchTaskStatus', 1);">
           同事任务
-          <div  class="absolute" style="top: 0.1rem; right:-1.3rem">
+          <!-- <div  class="absolute" style="top: 0.1rem; right:-1.3rem">
             <van-icon name="arrow-down" />
-          </div>
+          </div> -->
         </div>
         <div class="flex-1"></div>
         <van-icon size="20px" name="plus"  @click="newTask = true"/>
@@ -316,10 +316,10 @@ export default {
       this.userAgent(() => { // 返回原生页面
         let params = {"selector":"navigationGoBack","type":"LBHiOSApp"};
         let resultjson = prompt(JSON.stringify(params));
-        delete localStorage.Authorization
+        delete sessionStorage.Authorization
       }, ()=>{
         HelperNativeInterface.navigationGoBack()
-        delete localStorage.Authorization
+        delete sessionStorage.Authorization
       })
     },
     TaskDetail(id){
@@ -348,12 +348,15 @@ export default {
 </script>
 
 <style scoped>
+.shadowaa{
+  box-shadow: 0 0px 12px 0px rgba(0,0,0,.1)!important;
+}
 .Workbench{
   padding-bottom: 1000px;
   margin-bottom: -1000px;
 }
 .Workbench .van-search__content{
-  background-color: #fff;
+  background-color: #f5f5f5;
 }
 .tabCustomize::after{
   display: flex;

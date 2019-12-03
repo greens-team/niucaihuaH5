@@ -120,7 +120,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.editTask(Object.assign(state.addEditTaskParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -138,7 +138,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.clockin(Object.assign(state.clockinParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -147,7 +147,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.addvisitlog(Object.assign(state.addEditVisitlogParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -156,7 +156,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.editvisitlog(Object.assign(state.addEditVisitlogParams, data)).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -165,7 +165,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.task.finishTask({taskGid: id}).then( res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })

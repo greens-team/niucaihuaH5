@@ -9,7 +9,7 @@ export default {
       "city": "",                 // 城市
       "dealerName": "",           // 经销商名称
       "endTime": 0,               // 结束时间 时间戳 秒
-      "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 意向跟进  3  备案准入 4 达成合作   5 放弃）
+      "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
       "followerUserGids": [],     // 跟进人gid 集合
       "level": 0,                 // 经销商分级（1 一级 2 二级）
       "notVisitDays": 0,          // 没有拜访的天数
@@ -31,7 +31,7 @@ export default {
     followStatus: [
       { name: '全部', id: 0 },
       { name: '线索入库', id: 1 },
-      { name: '意向跟进', id: 2 },
+      { name: '合作中', id: 2 },
       // {name:'备案准入',id:3},
       // {name:'达成合作',id:4},
       // {name:'放弃',id:5}
@@ -39,7 +39,7 @@ export default {
     orderType: [
       { text: '默认排序', value: 0 },
       { text: '按拜访时间排序', value: 1 },
-      { text: '按创建时间排序', value: 2 },
+      // { text: '按创建时间排序', value: 2 },
       { text: '按名称排序', value: 3 }
     ],
     relationHealth: [
@@ -90,7 +90,7 @@ export default {
         "city": "",                 // 城市
         "dealerName": "",           // 经销商名称
         "endTime": 0,               // 结束时间 时间戳 秒
-        "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 意向跟进  3  备案准入 4 达成合作   5 放弃）
+        "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
         "followerUserGids": [],     // 跟进人gid 集合
         "level": 0,                 // 经销商分级（1 一级 2 二级）
         "notVisitDays": 0,          // 没有拜访的天数
@@ -124,6 +124,13 @@ export default {
         window.$ajax.auth.colleague(data).then(res => {
           if (!res.code) {
             state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
+            if(data.pageNum == 1){
+              let userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
+              state.colleagueDataList.unshift({
+                id: userInfo.EMPLOYEE_ID, 
+                refRlNm:userInfo.EMPLOYEE_NAME
+              })
+            }
             resolve(res.data.resultList.length)
           }
         })
@@ -203,7 +210,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.addlegal(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -212,7 +219,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.editlegal(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })

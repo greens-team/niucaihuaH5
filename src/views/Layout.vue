@@ -9,35 +9,39 @@
     </div>
 
     <div>
-      <van-tabbar v-model="$store.state.workbench.currentModelActive">
+      <van-tabbar v-model="$store.state.workbench.currentModelActive" style="height:3.57rem!important;">
         <van-tabbar-item>
-          <span class="text-sm">工作台</span>
+          <span style="font-size:0.643rem; transform: scale(1)">工作台</span>
           <img
+            style="width:1.57rem!important; height:1.57rem!important;"
             v-if="$store.state.workbench.currentModelActive == 0"
             slot="icon"
             src="../assets/tabsIcon/icon1_1.png"
           >
           <img
+            style="width:1.57rem!important; height:1.57rem!important;"
             v-else
             slot="icon"
             src="../assets/tabsIcon/icon1_0.png"
           >
         </van-tabbar-item>
         <van-tabbar-item>
-          <span class="text-sm">CRM</span>
+          <span style="font-size:0.643rem; transform: scale(1)">CRM</span>
           <img
+            style="width:1.57rem!important; height:1.57rem!important;"
             v-if="$store.state.workbench.currentModelActive == 1"
             slot="icon"
             src="../assets/tabsIcon/icon2_1.png"
           >
           <img
+            style="width:1.57rem!important; height:1.57rem!important;"
             v-else
             slot="icon"
             src="../assets/tabsIcon/icon2_0.png"
           >
         </van-tabbar-item>
         <!-- <van-tabbar-item>
-          <span class="text-sm">统计</span>
+          <span style="font-size:0.643rem; transform: scale(1)">统计</span>
           <img
             v-if="$store.state.workbench.currentModelActive == 2"
             slot="icon"
@@ -50,14 +54,16 @@
           >
         </van-tabbar-item> -->
         <van-tabbar-item>
-          <span class="text-sm">我</span>
+          <span style="font-size:0.643rem; transform: scale(1)">我</span>
           <img
+            style="width:1.57rem!important; height:1.57rem!important;"
             v-if="$store.state.workbench.currentModelActive == 2"
             slot="icon"
             src="../assets/tabsIcon/icon4_1.png"
           >
           <img
             v-else
+            style="width:1.57rem!important; height:1.57rem!important;"
             slot="icon"
             src="../assets/tabsIcon/icon4_0.png"
           >
@@ -115,3 +121,7 @@ export default {
   },
 }
 </script>
+<style scoped>
+.tabbar /deep/ .van-tabbar-item__icon{margin-bottom:2px!important;}
+.tabbar /deep/ .van-tabbar-item--active{ color: #252525}
+</style>

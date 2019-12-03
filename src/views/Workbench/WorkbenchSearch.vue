@@ -3,16 +3,14 @@
   <div class="WorkbenchSearch flex-1 flex flex-col">
     
     <!-- 搜索 -->
-    <div class="flex items-center pr-3 pl-3">
+    <div class="flex items-center pr-2 pl-3">
       <van-icon name="arrow-left" class="text-blue-500" style="font-size: 18px;" @click="$router.go(-1)" />
       <van-search
         class="flex-1"
         v-model="params.queryString"
         placeholder="请输入搜索关键词"
-        show-action
         @clear="initSend"
         shape="round">
-          <div slot="action" @click="initSend">搜索</div>
       </van-search>
     </div>
     
@@ -75,6 +73,9 @@ export default {
     },
     'params.pageNum'(){
       this.onSearch()
+    },
+    'params.queryString'(keyword){
+      this.initSend()
     }
   },
   mounted() {

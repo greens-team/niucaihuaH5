@@ -70,7 +70,7 @@ export default {
         this.$ajax.auth.login(this.params).then(res=>{
           if (!res.code) {
             this.setLoginState(true);
-            localStorage.Authorization = 'Bearer ' + res.data.token
+            sessionStorage.Authorization = 'Bearer ' + res.data.token
             this.$router.go(0)
           }else{
             this.loginFailedText = res.msg;

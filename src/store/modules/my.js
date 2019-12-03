@@ -22,7 +22,7 @@ export default {
             return new Promise(resolve => {
                 window.$ajax.my.submitFeedBack(Object.assign(state.submitParams, data)).then(res => {
                     if (!Number(res.code)) {
-                        resolve(res.msg)
+                        resolve('操作成功')
                     }
                 })
             })

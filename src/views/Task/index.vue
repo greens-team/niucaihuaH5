@@ -240,13 +240,14 @@ export default {
 
       alarmTimeText: '',
       alarmTimeOption: [
-        { text: '5分钟', value: 5*60*1000},
-        { text: '10分钟', value: 10*60*1000},
-        { text: '15分钟', value: 15*60*1000},
-        { text: '30分钟', value: 30*60*1000},
-        { text: '1小时', value: 60*60*1000},
-        { text: '1天前', value: 24*60*60*1000},
-        { text: '2天前', value: 2*24*60*60*1000},
+        { text: '准时', value: 0},
+        // { text: '不提醒', value: ''},
+        { text: '提前15分钟', value: 15*60*1000},
+        { text: '提前30分钟', value: 30*60*1000},
+        { text: '提前1小时', value: 60*60*1000},
+        { text: '提前2小时', value: 60*60*1000*2},
+        { text: '提前6小时', value: 60*60*1000*6},
+        { text: '1天前', value: 24*60*60*1000}
       ],
 
       dealerName: '',

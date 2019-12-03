@@ -19,13 +19,14 @@ export default {
 
     let _this = this
     window.setToken = function(token, userInfo){
-      localStorage.Authorization = token
+      sessionStorage.Authorization = token
       userInfo && (sessionStorage.userInfo = JSON.stringify(userInfo))
       location.reload()
     }
 
     // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
-    // localStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
+    // sessionStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
+
 
     window.getUserInfoIosCallBack = (data) => {
       // alert(JSON.parse(data).datas.TOKEN)
@@ -35,17 +36,16 @@ export default {
 
     // 获取用户登录信息
     this.userAgent(() => { // 返回原生页面
-      if(!localStorage.Authorization){
+      if(!sessionStorage.Authorization){
         var params = {"selector": "getUserInfo", "type": "LBHiOSApp"};
         var resultjson = prompt(JSON.stringify(params));
         eval(resultjson)
       }
     }, ()=>{
-      if(!localStorage.Authorization){
+      if(!sessionStorage.Authorization){
         var userGsonStr = HelperNativeInterface.getUserInfo();
-        // alert(JSON.parse(userGsonStr).TOKEN)
-        sessionStorage.userInfo = JSON.stringify(userGsonStr)
-        localStorage.Authorization = JSON.parse(userGsonStr).TOKEN
+        sessionStorage.userInfo = userGsonStr
+        sessionStorage.Authorization = JSON.parse(userGsonStr).TOKEN
         location.reload()
       }
     })
@@ -53,13 +53,13 @@ export default {
   },
   methods: {
     setAuthorization(token){
-      localStorage.Authorization = token
+      sessionStorage.Authorization = token
       location.reload()
     }
   },
   computed: {
     loginStatus: function(){
-      return localStorage.Authorization ? true : false
+      return sessionStorage.Authorization ? true : false
     }
   }
 }

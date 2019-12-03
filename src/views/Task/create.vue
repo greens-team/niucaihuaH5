@@ -200,8 +200,9 @@
         @click-left="dealerShow = false"
         @click-right="dealerShow = false; dealerName = dealerRow.dealerName; $store.state.task.addEditTaskParams.dealerGid = dealerRow.gid"
       />
+      <van-search shape="round" placeholder="请输入经销商名称"  clearable v-model="$store.state.dealer.listParams.queryString" />
       <div class="flex-1 relative">
-        <div class="absolute inset-0 overflow-y-auto">
+        <div class="absolute inset-0 overflow-y-auto" ref="dealerListsBox">
           <van-radio-group v-model="dealerRow">
             <van-cell-group>
               <van-cell v-for="(r,i) in $store.state.dealer.listData" :key="i" :title="r.dealerName" clickable @click="dealerRow = r">
@@ -316,6 +317,7 @@ export default {
   },
   data() {
     return {
+      searchKeyword: '',
       newTask: false,
 
       value: '',
@@ -333,13 +335,14 @@ export default {
       alarmTimeVal:  { text: '30分钟', value: 30*60*1000},
       alarmTimeText: '30分钟',
       alarmTimeOption: [
-        { text: '5分钟', value: 5*60*1000},
-        { text: '10分钟', value: 10*60*1000},
-        { text: '15分钟', value: 15*60*1000},
-        { text: '30分钟', value: 30*60*1000},
-        { text: '1小时', value: 60*60*1000},
-        { text: '1天前', value: 24*60*60*1000},
-        { text: '2天前', value: 2*24*60*60*1000},
+        { text: '准时', value: 0},
+        // { text: '不提醒', value: ''},
+        { text: '提前15分钟', value: 15*60*1000},
+        { text: '提前30分钟', value: 30*60*1000},
+        { text: '提前1小时', value: 60*60*1000},
+        { text: '提前2小时', value: 60*60*1000*2},
+        { text: '提前6小时', value: 60*60*1000*6},
+        { text: '1天前', value: 24*60*60*1000}
       ],
 
       dealerShow: false,
@@ -380,18 +383,46 @@ export default {
     otherUserGids(val){
       this.$store.state.task.addEditTaskParams.otherUserNames = val;
       this.$store.state.task.addEditTaskParams.otherUserGids = this.mainUserGidsFun(val, 'id', 1)
+    },
+    dealerShow(val){
+      setTimeout(() => {
+        val && this.scrollLoad(this.$refs.dealerListsBox, (resolve)=>{
+          this.$store.dispatch('getListData', {
+            pageNum: this.$store.state.dealer.listParams.pageNum+1
+          }).then(msg=>{
+            resolve(msg)
+          })
+          console.log(222)
+        })
+      }, 0);
+    },
+    '$store.state.dealer.listParams.queryString'(keyword){
+      this.$store.dispatch('getListData', {pageNum: 1})
     }
   },
   mounted() {
 
-    this.$store.commit('setAddEditTaskParams')
+    // sessionStorage.userInfo = JSON.stringify({
+    //   EMPLOYEE_ID:'2121212',
+    //   EMPLOYEE_NAME: '中华人民共和国'
+    // })
+
+    let userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
+    this.mainUserGids = [{
+      id: userInfo.EMPLOYEE_ID, 
+      refRlNm:userInfo.EMPLOYEE_NAME
+    }];
+    this.$store.commit('setAddEditTaskParams',{ mainUserNames: this.mainUserGids })
+    this.$store.state.task.addEditTaskParams.mainUserGids = this.mainUserGidsFun(this.$store.state.task.addEditTaskParams.mainUserNames, 'id', 0)
+
 
     this.$route.query.taskType && (this.taskType = this.$route.query.taskType)
     this.$route.query.gid && (this.taskId = this.$route.query.gid)
 
     this.editor = this.$route.query.editor
 
-    this.$store.dispatch('getListData')
+    this.$store.dispatch('getListData', {pageNum: 1})
+
 
     if(sessionStorage.localMap){
       this.taskId = JSON.parse(sessionStorage.localMap).gid
@@ -419,12 +450,21 @@ export default {
         //回显 拜访人 mainUserNames
         // mainUserNames
 
+        // this.$store.state.task.addEditTaskParams.mainUserNames.unshift([{
+        //   modelGid: userInfo.EMPLOYEE_ID, 
+        //   modelName:userInfo.EMPLOYEE_NAME}]
+        // )
+
         this.mainUserGids = this.$store.state.task.addEditTaskParams.mainUserNames ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r=>{
           return {
             id: r.modelGid,
             refRlNm: r.modelName
           }
         }) : []
+
+        
+
+
         //回显 协访人 otherUserNames
         this.otherUserGids = this.$store.state.task.addEditTaskParams.otherUserNames ? this.$store.state.task.addEditTaskParams.otherUserNames.map(r=>{
           return {
@@ -574,7 +614,7 @@ export default {
       this.taskTimeShow=false; 
       this.$store.state.task.addEditTaskParams.taskTime = Math.floor(this.timeStamp(this.currentDate) / 1000); 
     
-      if(this.$store.state.task.addEditTaskParams.alarmTime && this.alarmTimeVal.value){
+      if(this.$store.state.task.addEditTaskParams.alarmTime && !isNaN(this.alarmTimeVal.value)){
         this.$store.state.task.addEditTaskParams.alarmTime = Math.floor((this.timeStamp(this.currentDate) - this.alarmTimeVal.value)/1000)
       }
     } 

@@ -160,7 +160,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.competitor.addCompetitor(Object.assign(state.addParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -170,7 +170,7 @@ export default {
         window.$ajax.competitor.getCompetitorInfo({ competitorGid: id }).then(res => {
           if (!Number(res.code)) {
             state.info = res.data
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -179,7 +179,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.competitor.editCompetitor(Object.assign(state.editParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -199,7 +199,7 @@ export default {
             state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
             if (res.data.list.length < params.pageSize)
               state.isLastPage = true
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -208,7 +208,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.competitor.associatedCompetitor(Object.assign(state.associatedParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -218,7 +218,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.history.addNewslog(Object.assign(state.addNewslogParams, data)).then(res => {
           if (!res.code) {
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -242,7 +242,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -264,7 +264,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })

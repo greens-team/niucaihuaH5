@@ -32,13 +32,15 @@
           <div class="absolute z-30 text-xl round" @click="$store.state.task.addEditVisitlogParams.lesseeList.push({lesseeName: '',lesseeComment: ''})">+</div>
 
           <div v-for="(r,i) in $store.state.task.addEditVisitlogParams.lesseeList" :key="i">
-            <van-cell clickable>
+            <van-cell clickable class="relative">
               <template slot="title">
                 <span class="custom-title">意向承租人</span>
+                <span v-if="i" class="absolute z-30 text-xl round" style="top:10px; opacity: .5" @click="$store.state.task.addEditVisitlogParams.lesseeList.splice(i, 1)">-</span>
               </template>
               <template slot="default">
                   <van-field v-model="r.lesseeName" placeholder="请输入姓名" />
               </template>
+
             </van-cell>
             <van-cell clickable>
               <template slot="title">
@@ -50,9 +52,7 @@
             </van-cell>
             <div></div>
           </div>
-
         </div>
-
 
         <van-cell clickable>
           <template slot="title">
@@ -66,9 +66,10 @@
         <div class="bg-gray-100 pt-3 pb-3 relative">
           <div class="absolute z-30 text-xl round" @click="$store.state.task.addEditVisitlogParams.competitorList.push({modelGid:0,modelAttr:''})">+</div>
           <div v-for="(r,i) in $store.state.task.addEditVisitlogParams.competitorList" :key="i">
-            <van-cell clickable>
+            <van-cell clickable class="relative">
               <template slot="title">
                 <span class="custom-title">竞对名称</span>
+                <span v-if="i" class="absolute z-30 text-xl round" style="top:10px; opacity: .5" @click="$store.state.task.addEditVisitlogParams.competitorList.splice(i, 1)">-</span>
               </template>
               <template slot="default">
                 <van-dropdown-menu>

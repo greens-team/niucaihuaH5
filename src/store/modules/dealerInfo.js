@@ -44,7 +44,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.editDealer(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -93,7 +93,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.associatedcontacts(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -102,7 +102,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.associatedlessee(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -111,7 +111,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.associatedcompetitor(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
@@ -130,7 +130,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.dealer.addNewslog(data).then(res => {
           if(!res.code){
-            resolve(res.msg)
+            resolve('操作成功')
           }
         })
       })
