@@ -21,12 +21,15 @@
           
           <van-swipe-item>
             <van-cell  clickable>
+              <!-- disabled
+               v-if="splRecord.dealerName != dealerRecord.dealerName" -->
               <van-radio-group slot="title" v-model="resultVal.dealerName">
-                <van-radio :name="dealerRecord.dealerName" checked-color="#07c160">
+                <van-radio  :name="dealerRecord.dealerName" checked-color="#07c160">
                     <div class="text-xs text-gray-500">经销商名称</div>
                     <div>{{dealerRecord.dealerName || '无'}}</div>
                 </van-radio>
               </van-radio-group>
+
             </van-cell>
             <van-cell  clickable>
               <van-radio-group slot="title" v-model="resultVal.creditCode">

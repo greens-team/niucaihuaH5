@@ -523,11 +523,19 @@ export default {
             licensePic:  this.info.licensePic
         })
         if(this.info.dealerName && this.info.creditCode && this.info.gid){
-          this.$router.push({name:'recordCheck', query: {
+
+          this.$store.dispatch('checkRecord', {
             dealerGid: this.info.gid,
             dealerName: this.info.dealerName,
             creditCode: this.info.creditCode
-          }})
+          }).then(()=>{
+            this.$router.push({name:'recordCheck', query: {
+              dealerGid: this.info.gid,
+              dealerName: this.info.dealerName,
+              creditCode: this.info.creditCode
+            }})
+          })
+          
         }else{
           this.$dialog.alert({
             message: '经销商名称、统一社会信用代码不能为空，完善信息后，重新提交备案'
