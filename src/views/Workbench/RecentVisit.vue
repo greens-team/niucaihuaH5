@@ -12,7 +12,7 @@
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll">
           <van-cell-group v-if="listData.length">
-            <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType"  @click="$router.push({name: 'DealerInfo', query: {id: row.modelGid}})">
+            <van-cell is-link v-for="(row,i) in listData" :key="i" :ss="row.modelGid" :ssd="row.modelObjType"  @click="goDetails(row)">
               <template slot="title">
                 <p class="leading-snug">{{row.someName}}<br />
                   <span class="text-gray-500">{{row.modelName}}</span>
@@ -47,6 +47,22 @@ export default {
     })
   },
   methods: {
+    goDetails(row){
+      switch (row.modelObjType) {
+        case 1:
+          this.$router.push({name: 'DealerInfo', query: {id: row.modelGid}})
+          break;
+        case 2:
+          this.$router.push({name: 'ContactsInfo', query: {gid: row.modelGid}})
+          break;
+        case 3:
+          this.$router.push({name: 'LesseeInfo', query: {id: row.modelGid}})
+          break;
+        case 4:
+          this.$router.push({name: 'CompetitorInfo', query: {id: row.modelGid}})
+          break;
+      }
+    },
     onClickLeft() {
       this.$router.go(-1)
     },

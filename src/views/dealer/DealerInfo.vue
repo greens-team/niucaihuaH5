@@ -360,32 +360,30 @@
     </div>
 
 
+
     <div class="flex bg-white footer-bar border-t border-gray-300 iteams-center" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
       <i
         class="iconfont iconjingxiaoshangbaifang ml-3 mr-3"
         @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true, dealerName:info.dealerName, dealerGid:info.gid}})"
         style="font-size: 2rem;height:90%"
       ></i>
-
+      
       <van-uploader  :after-read="logPic" :before-read="file => uploadFile(file,true)" :max-count="1" style="height:90%">
         <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
       </van-uploader>
 
-      <!-- <form  action="javascript:void 0"> -->
+      <form class="flex-1 mr-3 flex" action="javascript:void 0" style="height:70%">
         <input
           type="text"
-          style="text-align: left; height:70%"
           placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3"
+          class="rounded-lg progress"
           v-model="newsLogContent"
           @keyup.13="tapToSearch"
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
-      <!-- </form> -->
+      </form>
 
-      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
 
 

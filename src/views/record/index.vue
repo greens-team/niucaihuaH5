@@ -21,9 +21,14 @@
           
           <van-swipe-item>
             <van-cell  clickable>
-              <!-- disabled
-               v-if="splRecord.dealerName != dealerRecord.dealerName" -->
-              <van-radio-group slot="title" v-model="resultVal.dealerName">
+
+              <van-radio-group v-if="!dealerRecord.dealerName || splRecord.dealerName == dealerRecord.dealerName" disabled slot="title">
+                <van-radio  :name="dealerRecord.dealerName" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">经销商名称</div>
+                    <div>{{dealerRecord.dealerName || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.dealerName">
                 <van-radio  :name="dealerRecord.dealerName" checked-color="#07c160">
                     <div class="text-xs text-gray-500">经销商名称</div>
                     <div>{{dealerRecord.dealerName || '无'}}</div>
@@ -32,7 +37,13 @@
 
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.creditCode">
+              <van-radio-group v-if="!dealerRecord.creditCode || splRecord.creditCode == dealerRecord.creditCode" disabled slot="title">
+                <van-radio :name="dealerRecord.creditCode" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">统一社会信用代码</div>
+                    <div>{{dealerRecord.creditCode || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.creditCode">
                 <van-radio :name="dealerRecord.creditCode" checked-color="#07c160">
                     <div class="text-xs text-gray-500">统一社会信用代码</div>
                     <div>{{dealerRecord.creditCode || '无'}}</div>
@@ -40,7 +51,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.ownerCd">
+              <van-radio-group slot="title" v-if="!dealerRecord.ownerCd || splRecord.ownerCd == dealerRecord.ownerCd" disabled>
+                <van-radio :name="dealerRecord.ownerCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">公司归属</div>
+                    <div>{{dealerRecord.ownerCd != '' ? $store.state.newDealer.ownerCdTypes[dealerRecord.ownerCd-1].text : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.ownerCd">
                 <van-radio :name="dealerRecord.ownerCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">公司归属</div>
                     <div>{{dealerRecord.ownerCd != '' ? $store.state.newDealer.ownerCdTypes[dealerRecord.ownerCd-1].text : '无'}}</div>
@@ -49,7 +66,13 @@
             </van-cell>
             
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.geoLocation">
+              <van-radio-group slot="title" v-if="!dealerRecord.province && splRecord.province+''+splRecord.city+''+splRecord.area == dealerRecord.province+''+dealerRecord.city+''+dealerRecord.area" disabled>
+                <van-radio :name="dealerRecord.province ? (dealerRecord.province+''+dealerRecord.city+''+dealerRecord.area) : ''" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">省市区</div>
+                    <div>{{dealerRecord.province ? (dealerRecord.province+''+dealerRecord.city+''+dealerRecord.area) : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.geoLocation">
                 <van-radio :name="dealerRecord.province ? (dealerRecord.province+''+dealerRecord.city+''+dealerRecord.area) : ''" checked-color="#07c160">
                     <div class="text-xs text-gray-500">省市区</div>
                     <div>{{dealerRecord.province ? (dealerRecord.province+''+dealerRecord.city+''+dealerRecord.area) : '无'}}</div>
@@ -60,7 +83,13 @@
           </van-swipe-item>
           <van-swipe-item>
             <van-cell  clickable>  
-              <van-radio-group slot="title" v-model="resultVal.address">
+              <van-radio-group slot="title" v-if="!dealerRecord.address || splRecord.address == dealerRecord.address" disabled>
+                <van-radio :name="dealerRecord.address" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">注册地址</div>
+                    <div>{{dealerRecord.address || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.address">
                 <van-radio :name="dealerRecord.address" checked-color="#07c160">
                     <div class="text-xs text-gray-500">注册地址</div>
                     <div>{{dealerRecord.address || '无'}}</div>
@@ -68,7 +97,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.chkBusTypCdList">
+              <van-radio-group slot="title" v-if="!dealerRecord.chkBusTypCdList || businessTypes(splRecord.chkBusTypCdList) == businessTypes(dealerRecord.chkBusTypCdList)" disabled>
+                <van-radio :name="dealerRecord.chkBusTypCdList" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">业务类型</div>
+                    <div>{{businessTypes(dealerRecord.chkBusTypCdList)}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.chkBusTypCdList">
                 <van-radio :name="dealerRecord.chkBusTypCdList" checked-color="#07c160">
                     <div class="text-xs text-gray-500">业务类型</div>
                     <div>{{businessTypes(dealerRecord.chkBusTypCdList)}}</div>
@@ -76,7 +111,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.establishTime">
+              <van-radio-group slot="title" v-if="!dealerRecord.establishTime || splRecord.establishTime == dealerRecord.establishTime" disabled>
+                <van-radio :name="dealerRecord.establishTime" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">成立时间</div>
+                    <div>{{dealerRecord.establishTime ? $root.moment(dealerRecord.establishTime*1000).format('YYYY-MM-DD') : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.establishTime">
                 <van-radio :name="dealerRecord.establishTime" checked-color="#07c160">
                     <div class="text-xs text-gray-500">成立时间</div>
                     <div>{{dealerRecord.establishTime ? $root.moment(dealerRecord.establishTime*1000).format('YYYY-MM-DD') : '无'}}</div>
@@ -84,7 +125,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.splAttrCd">
+              <van-radio-group slot="title" v-if="!dealerRecord.splAttrCd || splRecord.splAttrCd == dealerRecord.splAttrCd" disabled>
+                <van-radio :name="dealerRecord.splAttrCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">供应商属性</div>
+                    <div>{{dealerRecord.splAttrCd != '' ? $store.state.newDealer.splAttrCd[dealerRecord.splAttrCd -1 ].text : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.splAttrCd">
                 <van-radio :name="dealerRecord.splAttrCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">供应商属性</div>
                     <div>{{dealerRecord.splAttrCd != '' ? $store.state.newDealer.splAttrCd[dealerRecord.splAttrCd -1 ].text : '无'}}</div>
@@ -94,7 +141,13 @@
           </van-swipe-item>
           <van-swipe-item>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.contactsName">
+              <van-radio-group slot="title" v-if="!dealerRecord.contactsName || splRecord.contactsName == dealerRecord.contactsName" disabled>
+                <van-radio :name="dealerRecord.contactsName" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">法人姓名</div>
+                    <div>{{dealerRecord.contactsName || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.contactsName">
                 <van-radio :name="dealerRecord.contactsName" checked-color="#07c160">
                     <div class="text-xs text-gray-500">法人姓名</div>
                     <div>{{dealerRecord.contactsName || '无'}}</div>
@@ -102,7 +155,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.contactsPhone">
+              <van-radio-group slot="title" v-if="!dealerRecord.contactsPhone || splRecord.contactsPhone == dealerRecord.contactsPhone" disabled>
+                <van-radio :name="dealerRecord.contactsPhone" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">手机号码</div>
+                    <div>{{dealerRecord.contactsPhone || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.contactsPhone">
                 <van-radio :name="dealerRecord.contactsPhone" checked-color="#07c160">
                     <div class="text-xs text-gray-500">手机号码</div>
                     <div>{{dealerRecord.contactsPhone || '无'}}</div>
@@ -111,7 +170,13 @@
             </van-cell>
 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.certTypCd">
+              <van-radio-group slot="title" v-if="!dealerRecord.certTypCd || splRecord.certTypCd == dealerRecord.certTypCd" disabled>
+                <van-radio :name="dealerRecord.certTypCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">证件类型</div>
+                    <div>{{dealerRecord.certTypCd != '' ? $store.state.record.certTypCd[dealerRecord.certTypCd] : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.certTypCd">
                 <van-radio :name="dealerRecord.certTypCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">证件类型</div>
                     <div>{{dealerRecord.certTypCd != '' ? $store.state.record.certTypCd[dealerRecord.certTypCd] : '无'}}</div>
@@ -120,7 +185,13 @@
             </van-cell>
 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.certNo">
+              <van-radio-group slot="title" v-if="!dealerRecord.certNo || splRecord.certNo == dealerRecord.certNo" disabled>
+                <van-radio :name="dealerRecord.certNo" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">证件号码</div>
+                    <div>{{dealerRecord.certNo || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.certNo">
                 <van-radio :name="dealerRecord.certNo" checked-color="#07c160">
                     <div class="text-xs text-gray-500">证件号码</div>
                     <div>{{dealerRecord.certNo || '无'}}</div>
@@ -141,7 +212,13 @@
           
           <van-swipe-item>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.dealerName">
+              <van-radio-group slot="title" v-if="!splRecord.dealerName" disabled>
+                <van-radio :name="splRecord.dealerName" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">经销商名称</div>
+                    <div>{{splRecord.dealerName || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.dealerName">
                 <van-radio :name="splRecord.dealerName" checked-color="#07c160">
                     <div class="text-xs text-gray-500">经销商名称</div>
                     <div>{{splRecord.dealerName || '无'}}</div>
@@ -149,7 +226,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.creditCode">
+              <van-radio-group slot="title"  v-if="!splRecord.creditCode" disabled>
+                <van-radio :name="splRecord.creditCode" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">统一社会信用代码</div>
+                    <div>{{splRecord.creditCode || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.creditCode">
                 <van-radio :name="splRecord.creditCode" checked-color="#07c160">
                     <div class="text-xs text-gray-500">统一社会信用代码</div>
                     <div>{{splRecord.creditCode || '无'}}</div>
@@ -158,7 +241,13 @@
             </van-cell>
 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.ownerCd">
+              <van-radio-group slot="title" v-if="!splRecord.ownerCd" disabled>
+                <van-radio :name="splRecord.ownerCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">公司归属</div>
+                    <div>{{splRecord.ownerCd != '' ? $store.state.newDealer.ownerCdTypes[splRecord.ownerCd-1].text : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.ownerCd">
                 <van-radio :name="splRecord.ownerCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">公司归属</div>
                     <div>{{splRecord.ownerCd != '' ? $store.state.newDealer.ownerCdTypes[splRecord.ownerCd-1].text : '无'}}</div>
@@ -166,7 +255,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.geoLocation">
+              <van-radio-group slot="title" v-if="!splRecord.province" disabled>
+                <van-radio :name="splRecord.province? (splRecord.province+''+splRecord.city+''+splRecord.area) : ''" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">省市区</div>
+                    <div>{{splRecord.province ? (splRecord.province+''+splRecord.city+''+splRecord.area) : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.geoLocation">
                 <van-radio :name="splRecord.province? (splRecord.province+''+splRecord.city+''+splRecord.area) : ''" checked-color="#07c160">
                     <div class="text-xs text-gray-500">省市区</div>
                     <div>{{splRecord.province ? (splRecord.province+''+splRecord.city+''+splRecord.area) : '无'}}</div>
@@ -178,7 +273,13 @@
           </van-swipe-item>
           <van-swipe-item>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.address">
+              <van-radio-group slot="title" v-if="!splRecord.address" disabled>
+                <van-radio :name="splRecord.address" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">注册地址</div>
+                    <div>{{splRecord.address || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.address">
                 <van-radio :name="splRecord.address" checked-color="#07c160">
                     <div class="text-xs text-gray-500">注册地址</div>
                     <div>{{splRecord.address || '无'}}</div>
@@ -186,7 +287,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.chkBusTypCdList">
+              <van-radio-group slot="title" v-if="!splRecord.chkBusTypCdList" disabled>
+                <van-radio :name="splRecord.chkBusTypCdList" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">业务类型</div>
+                    <div>{{businessTypes(splRecord.chkBusTypCdList)}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.chkBusTypCdList">
                 <van-radio :name="splRecord.chkBusTypCdList" checked-color="#07c160">
                     <div class="text-xs text-gray-500">业务类型</div>
                     <div>{{businessTypes(splRecord.chkBusTypCdList)}}</div>
@@ -194,7 +301,13 @@
               </van-radio-group>
             </van-cell> 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.establishTime">
+              <van-radio-group slot="title" v-if="!splRecord.establishTime" disabled>
+                <van-radio :name="splRecord.establishTime" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">成立时间</div>
+                    <div>{{splRecord.establishTime ? $root.moment(splRecord.establishTime*1000).format('YYYY-MM-DD') : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.establishTime">
                 <van-radio :name="splRecord.establishTime" checked-color="#07c160">
                     <div class="text-xs text-gray-500">成立时间</div>
                     <div>{{splRecord.establishTime ? $root.moment(splRecord.establishTime*1000).format('YYYY-MM-DD') : '无'}}</div>
@@ -202,7 +315,13 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.splAttrCd">
+              <van-radio-group slot="title" v-if="!splRecord.splAttrCd" disabled>
+                <van-radio :name="splRecord.splAttrCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">供应商属性</div>
+                    <div>{{splRecord.splAttrCd != '' ? $store.state.newDealer.splAttrCd[splRecord.splAttrCd -1 ].text : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.splAttrCd">
                 <van-radio :name="splRecord.splAttrCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">供应商属性</div>
                     <div>{{splRecord.splAttrCd != '' ? $store.state.newDealer.splAttrCd[splRecord.splAttrCd -1 ].text : '无'}}</div>
@@ -213,7 +332,14 @@
           </van-swipe-item>
           <van-swipe-item>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.contactsName">
+              
+              <van-radio-group slot="title" v-if="!splRecord.contactsName" disabled>
+                <van-radio :name="splRecord.contactsName" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">法人姓名</div>
+                    <div>{{splRecord.contactsName || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.contactsName">
                 <van-radio :name="splRecord.contactsName" checked-color="#07c160">
                     <div class="text-xs text-gray-500">法人姓名</div>
                     <div>{{splRecord.contactsName || '无'}}</div>
@@ -221,7 +347,14 @@
               </van-radio-group>
             </van-cell>
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.contactsPhone">
+              
+              <van-radio-group slot="title" v-if="!splRecord.contactsPhone" disabled>
+                <van-radio :name="splRecord.contactsPhone" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">手机号码</div>
+                    <div>{{splRecord.contactsPhone || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.contactsPhone">
                 <van-radio :name="splRecord.contactsPhone" checked-color="#07c160">
                     <div class="text-xs text-gray-500">手机号码</div>
                     <div>{{splRecord.contactsPhone || '无'}}</div>
@@ -230,7 +363,13 @@
             </van-cell>
 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.certTypCd">
+              <van-radio-group slot="title" v-if="!splRecord.certTypCd" disabled>
+                <van-radio :name="splRecord.certTypCd" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">证件类型</div>
+                    <div>{{splRecord.certTypCd != '' ? $store.state.record.certTypCd[splRecord.certTypCd] : '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.certTypCd">
                 <van-radio :name="splRecord.certTypCd" checked-color="#07c160">
                     <div class="text-xs text-gray-500">证件类型</div>
                     <div>{{splRecord.certTypCd != '' ? $store.state.record.certTypCd[splRecord.certTypCd] : '无'}}</div>
@@ -239,7 +378,14 @@
             </van-cell>
 
             <van-cell  clickable>
-              <van-radio-group slot="title" v-model="resultVal.certNo">
+              
+              <van-radio-group v-if="!splRecord.certNo" disabled slot="title">
+                <van-radio :name="splRecord.certNo" checked-color="#07c160">
+                    <div class="text-xs text-gray-500">证件号码</div>
+                    <div>{{splRecord.certNo || '无'}}</div>
+                </van-radio>
+              </van-radio-group>
+              <van-radio-group v-else slot="title" v-model="resultVal.certNo">
                 <van-radio :name="splRecord.certNo" checked-color="#07c160">
                     <div class="text-xs text-gray-500">证件号码</div>
                     <div>{{splRecord.certNo || '无'}}</div>
@@ -322,8 +468,15 @@ export default {
       creditCode: this.$route.query.creditCode
     }).then(()=>{
       Object.assign(this.dealerRecord, this.$store.state.record.dealerRecord)
-      Object.assign(this.splRecord,  this.$store.state.record.splRecord || {})
+      Object.assign(this.dealerRecord, {geoLocation:  this.dealerRecord.province ? (this.dealerRecord.province+''+this.dealerRecord.city+''+this.dealerRecord.area) : ''})
+
+    Object.assign(this.splRecord,  this.$store.state.record.splRecord || {})
       this.resultVal = Object.assign({}, this.splRecord, {geoLocation:  this.splRecord.province ? (this.splRecord.province+''+this.splRecord.city+''+this.splRecord.area) : ''}, sessionStorage.record ? JSON.parse(sessionStorage.record) : {})
+      for(let k in this.resultVal){
+        if(!this.resultVal[k] && !'area,city,province'.includes(k) && this.dealerRecord[k]){
+          this.resultVal[k] = this.dealerRecord[k]
+        }
+      }
     })
   },
   methods: {
