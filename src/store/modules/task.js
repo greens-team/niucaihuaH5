@@ -4,6 +4,18 @@ export default {
   state: {
     // visitType followerUserGids ownerUserGids
     addEditTaskParams: {
+        comment: '',
+        dealerGid: '',
+        followerUserGids: [],
+        mainUserGids: [],
+        otherUserGids: [],
+        ownerUserGids: [],
+        taskName: '',
+        taskTime: new Date().getTime()/1000,
+        alarmTime: Math.floor((new Date().getTime() - 30*60*1000)/1000),
+        taskType: 1,
+        visitAim: 0,
+        visitType: 0
     },
 
     taskInfo: {},

@@ -9,6 +9,11 @@
       <div  @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
     </van-nav-bar>
 
+    <!-- {{mainUserGids}} - {{userInfo.EMPLOYEE_ID}} - {{userInfo.EMPLOYEE_NAME}}
+    {{$route.query.dealerName}}
+    {{$route.query.dealerGid}}
+    {{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime*1000).format('YYYY-MM-DD HH:mm') : '请选择时间'}} -->
+
     <div class="taskCreateRow">
       <van-cell clickable>
         <template slot="title">
@@ -311,7 +316,10 @@ export default {
       dealerName: '',
       dealerRow: {},
 
-      mainUserGids: [],
+      mainUserGids: [{
+        id: '', 
+        refRlNm:''
+      }],
       otherUserGids: [],
       
       visitAimTypes: [
@@ -332,6 +340,11 @@ export default {
       visitType: '',
 
       taskStatus: 0,
+
+      userInfo: {
+        EMPLOYEE_ID:'',
+        EMPLOYEE_NAME:''
+      }
 
     }
   },
@@ -370,11 +383,13 @@ export default {
     //   EMPLOYEE_ID:'2121212',
     //   EMPLOYEE_NAME: '中华人民共和国'
     // })
-
-    let userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
+    // alert(sessionStorage.userInfo)
+    // alert(JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID)
+    // alert(JSON.parse(JSON.parse(sessionStorage.userInfo)).EMPLOYEE_ID)
+    this.userInfo = JSON.parse(sessionStorage.userInfo)
     this.mainUserGids = [{
-      id: userInfo.EMPLOYEE_ID, 
-      refRlNm:userInfo.EMPLOYEE_NAME
+      id: this.userInfo.EMPLOYEE_ID, 
+      refRlNm:this.userInfo.EMPLOYEE_NAME
     }];
     this.$store.commit('setAddEditTaskParams',{ mainUserNames: this.mainUserGids })
     this.$store.state.task.addEditTaskParams.mainUserGids = this.mainUserGidsFun(this.$store.state.task.addEditTaskParams.mainUserNames, 'id', 0)

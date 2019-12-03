@@ -324,7 +324,8 @@
                               class="text-ms leading-relaxed"
                               style="color:#252525"
                             >{{r.content}}</p>
-                            <img v-if="r.pics != '' " :src="r.pics" alt /><br />
+                            
+                            <img v-if="r.pics != '' " :src="picServer+r.pics" alt /><br />
                           </div>
                           <p class="text-sm text-gray-500">{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm:ss')}}</p>
                         </div>
@@ -359,32 +360,6 @@
     </div>
 
 
-<!--   
-    <div class="flex bg-white footer-bar border-t border-gray-300" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
-      
-      <van-uploader>
-        <i class="iconfont iconjingxiaoshangbaifang mx-3" style="font-size: 2rem;"></i>
-      </van-uploader>
-      <van-uploader capture>
-        <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
-      </van-uploader>
-
-      
-      <form class="search-block flex-1" action="javascript:void 0">
-        <input
-          style="width:100%;text-align: left;"
-          type="text"
-          placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg h-12"
-          v-model="newsLogContent"
-          @keyup.13="tapToSearch"
-        />
-      </form>
-      <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i>
-    </div> -->
-
-
     <div class="flex bg-white footer-bar border-t border-gray-300 iteams-center" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
       <i
         class="iconfont iconjingxiaoshangbaifang ml-3 mr-3"
@@ -392,7 +367,7 @@
         style="font-size: 2rem;height:90%"
       ></i>
 
-      <van-uploader capture style="height:90%">
+      <van-uploader  :after-read="logPic" :before-read="file => uploadFile(file,true)" :max-count="1" style="height:90%">
         <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
       </van-uploader>
 
@@ -445,6 +420,7 @@ export default {
     }
   },
   mounted() {
+
     this.picServer = window.picServer
     this.id = this.$route.query.id
 
@@ -512,14 +488,20 @@ export default {
     }
   },
   methods: {
-    tapToSearch() {
-      if(this.newsLogContent){
+    logPic(file){
+      this.uploadFile(file, (fileUrl)=>{
+        this.tapToSearch(fileUrl)
+      }, 0)
+    },
+    tapToSearch(picUrl) {
+      if(this.newsLogContent || typeof picUrl == 'string'){
         this.$store.dispatch('addNewslog',{
           modelObjType: 1,
           modelId: this.id,
-          content: this.newsLogContent,
-          pics: ''
+          content: this.newsLogContent || '',
+          pics: typeof picUrl == 'string' ? picUrl : ''
         }).then((msg)=>{
+          this.$store.state.dealerInfo.currentTabsIndex = 4
           this.isNewslogLastPage = false
           this.listNewslogPageNum = 1
           this.newsLogContent = ''

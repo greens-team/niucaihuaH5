@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
      this.testToken = sessionStorage.Authorization
-     this.userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
+     this.userInfo = JSON.parse(sessionStorage.userInfo)
   },
   methods: {
     // this.$router.go(-1);
