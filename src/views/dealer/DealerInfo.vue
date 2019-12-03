@@ -365,14 +365,16 @@
       <i
         class="iconfont iconjingxiaoshangbaifang ml-3 mr-3"
         @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true, dealerName:info.dealerName, dealerGid:info.gid}})"
-        style="font-size: 2rem;height:90%"
+        style="font-size: 2rem;height:105%"
       ></i>
       
-      <van-uploader  :after-read="logPic" :before-read="file => uploadFile(file,true)" :max-count="1" style="height:90%">
-        <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+      <van-uploader  :after-read="logPic" :before-read="file => uploadFile(file,true)" :max-count="1" style="height:105%">
+        <i class="iconfont iconzhaopianhover" style="font-size: 2rem;"></i>
       </van-uploader>
 
-      <form class="flex-1 mr-3 flex" action="javascript:void 0" style="height:70%">
+      <van-field v-model="newsLogContent" class="rounded-lg m-3" style="background:#f6f6f6;height:70%" placeholder="请输入工作进展" @keyup.13="tapToSearch" />
+
+      <!-- <form class="flex-1 mr-3 flex" action="javascript:void 0" style="height:70%">
         <input
           type="text"
           placeholder="请输入工作进展"
@@ -382,7 +384,7 @@
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
-      </form>
+      </form> -->
 
     </div>
 
@@ -674,19 +676,19 @@ export default {
   background-color: #f6f6f6;
 }
 
-::-webkit-input-placeholder {
+.DealerInfo /deep/ ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   text-align: center;
 }
-::-moz-placeholder {
+.DealerInfo /deep/ ::-moz-placeholder {
   /* Firefox 19+ */
   text-align: center;
 }
-:-ms-input-placeholder {
+.DealerInfo /deep/ :-ms-input-placeholder {
   /* IE 10+ */
   text-align: center;
 }
-:-moz-placeholder {
+.DealerInfo /deep/ :-moz-placeholder {
   /* Firefox 18- */
   text-align: center;
 }

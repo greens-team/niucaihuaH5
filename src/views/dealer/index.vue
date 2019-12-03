@@ -61,7 +61,7 @@
     <div class="flex-1 relative" >
       <div class="absolute inset-0 overflow-y-scroll" ref="dealerListBox">
         <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change="(num)=>$store.dispatch('getListData',{followStatus: num, pageNum: 1})">
-          <van-swipe-item v-for="(row,index) in $store.state.dealer.followStatus" :key="index" > <ListRow /> </van-swipe-item>
+          <van-swipe-item class="bg-white" v-for="(row,index) in $store.state.dealer.followStatus" :key="index" > <ListRow /> </van-swipe-item>
         </van-swipe>
       </div>
     </div>

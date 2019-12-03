@@ -58,6 +58,15 @@
 
           <van-cell clickable>
             <template slot="title">
+              <span class="custom-title">创建人</span>
+            </template>
+            <template slot="default">
+              <p class="p5">{{$store.state.task.addEditTaskParams.createUserName}}</p>
+            </template>
+          </van-cell>
+
+          <van-cell clickable>
+            <template slot="title">
               <span class="custom-title">拜访人</span>
             </template>
             <template slot="default">
@@ -241,7 +250,7 @@ export default {
       alarmTimeText: '',
       alarmTimeOption: [
         { text: '准时', value: 0},
-        // { text: '不提醒', value: ''},
+        { text: '不提醒', value: ''},
         { text: '提前15分钟', value: 15*60*1000},
         { text: '提前30分钟', value: 30*60*1000},
         { text: '提前1小时', value: 60*60*1000},
@@ -284,13 +293,17 @@ export default {
         this.taskStatus = this.$store.state.task.taskInfo.taskStatus
 
         // 回显 提醒分钟的值 
-        let ms = this.$store.state.task.addEditTaskParams.taskTime * 1000 - this.$store.state.task.addEditTaskParams.alarmTime * 1000
-        this.alarmTimeOption.some(r=>{
-          if(r.value == ms){
-            this.alarmTimeText = r.text
-            return true
-          }
-        })
+        if(this.$store.state.task.addEditTaskParams.alarmTime == null){
+          this.alarmTimeText = this.alarmTimeOption[1].text
+        }else{
+          let ms = this.$store.state.task.addEditTaskParams.taskTime * 1000 - this.$store.state.task.addEditTaskParams.alarmTime * 1000
+          this.alarmTimeOption.some(r=>{
+            if(r.value == ms){
+              this.alarmTimeText = r.text
+              return true
+            }
+          })
+        }
 
         this.picUrl = window.picServer + this.$store.state.task.addEditTaskParams.pics;
 

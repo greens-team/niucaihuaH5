@@ -65,6 +65,16 @@
           <p class="p5" v-else @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
         </template>
       </van-cell>
+      
+      <van-cell clickable v-if="$route.query.gid">
+        <template slot="title">
+          <span class="text-white">*</span>
+          <span class="custom-title">创建人</span>
+        </template>
+        <template slot="default">
+          <div class="p5">{{$store.state.task.addEditTaskParams.createUserName}}</div>
+        </template>
+      </van-cell>
 
       <van-cell clickable>
         <template slot="title">
@@ -303,7 +313,7 @@ export default {
       alarmTimeText: '30分钟',
       alarmTimeOption: [
         { text: '准时', value: 0},
-        // { text: '不提醒', value: ''},
+        { text: '不提醒', value: ''},
         { text: '提前15分钟', value: 15*60*1000},
         { text: '提前30分钟', value: 30*60*1000},
         { text: '提前1小时', value: 60*60*1000},
@@ -344,7 +354,8 @@ export default {
       userInfo: {
         EMPLOYEE_ID:'',
         EMPLOYEE_NAME:''
-      }
+      },
+
 
     }
   },
@@ -416,13 +427,17 @@ export default {
         this.taskStatus = this.$store.state.task.taskInfo.taskStatus
 
         // 回显 提醒分钟的值 
-        let ms = this.$store.state.task.addEditTaskParams.taskTime * 1000 - this.$store.state.task.addEditTaskParams.alarmTime * 1000
-        this.alarmTimeOption.some(r=>{
-          if(r.value == ms){
-            this.alarmTimeText = r.text
-            return true
-          }
-        })
+        if(this.$store.state.task.addEditTaskParams.alarmTime == null){
+          this.alarmTimeText = this.alarmTimeOption[1].text
+        }else{
+          let ms = this.$store.state.task.addEditTaskParams.taskTime * 1000 - this.$store.state.task.addEditTaskParams.alarmTime * 1000
+          this.alarmTimeOption.some(r=>{
+            if(r.value == ms){
+              this.alarmTimeText = r.text
+              return true
+            }
+          })
+        }
         // 回显 相关经销商的值 
         this.dealerName = this.$store.state.task.addEditTaskParams.dealerName
 
@@ -511,6 +526,9 @@ export default {
         this.newTask = true
       }else{
         //直接保存
+        if(this.alarmTimeText == this.alarmTimeOption[1].text){
+          this.$store.state.task.addEditTaskParams.alarmTime = ''
+        }
         this.editor = false
         this.$store.dispatch('addTask', {taskType: this.taskType}).then(res=>{
           this.$dialog.alert({
