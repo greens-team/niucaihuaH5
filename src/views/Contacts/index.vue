@@ -79,7 +79,7 @@
             class="p-2 border-b border-gray-200 flex ml-5 mr-5 items-center"
             @click="$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
-            <div class="circleBg font-bold mr-6 text-xl">M</div>
+            <div class="circleBg font-bold mr-6 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
             <div class="text-base contactsDetail">{{r.contactsName}}</div>
           </div>
         </div>
@@ -94,7 +94,8 @@ export default {
   data() {
     return {
       searchBar: false,
-      homeSearch: false
+      homeSearch: false,
+      firstName:''
     };
   },
 
@@ -111,7 +112,6 @@ export default {
           resolve(msg);
         });
     });
-
     this.$store.dispatch("listContacts", { pageNum: 1 });
   },
 

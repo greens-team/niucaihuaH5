@@ -252,10 +252,10 @@
                           <p class="text-xs text-gray-500">出生日期</p>
                           <p class="text-gray-900 text-sm">{{r.birthday}}</p>
                         </div>
-                        <div class="border-b border-gray-100 pt-2 pb-2">
+                        <!-- <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">婚姻情况</p>
                           <p class="text-gray-900 text-sm">{{r.marry ? '已婚' : '未婚'}}</p>
-                        </div>
+                        </div> -->
                         <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">性别</p>
                           <p class="text-gray-900 text-sm">{{r.gender ? '女' : '男'}}</p>

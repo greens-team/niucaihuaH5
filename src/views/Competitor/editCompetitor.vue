@@ -78,7 +78,7 @@ export default {
     },
     checkErrorMsg() {
       //名称不能为空
-      let competitorName = this.$store.state.competitor.editParams.competorName;
+      let competitorName = this.$store.state.competitor.editParams.competorName.trim();
       if (competitorName == "") {
         this.isShowErrorNameMsg = true;
       } else {

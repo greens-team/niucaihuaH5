@@ -93,7 +93,7 @@ export default {
     checkErrorMsg() {
       //名称不能为空
       let contactsName = this.$store.state.contacts.editContactsParams
-        .contactsName;
+        .contactsName.trim();
       if (contactsName == "") {
         this.isShowErrorNameMsg = true;
       } else {
@@ -114,10 +114,12 @@ export default {
 
     //用于判断正则和非空
     check(value, reg) {
-      if (value.length > 0 && !reg.test(value)) {
-        return true;
+      if (value != null) {
+        if (value.length > 0 && !reg.test(value)) {
+          return true;
+        }
+        return false;
       }
-      return false;
     }
   }
 };

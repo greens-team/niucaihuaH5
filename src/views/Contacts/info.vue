@@ -26,7 +26,10 @@
     </div>
     <div>
       <div class="shadow-md rounded-lg m-3 flex p-4 bg-white pt-6 pb-6" style="line-height:3rem;">
-        <div class="circleBg font-bold mr-3 text-xl" style="color:#252525">M</div>
+        <div
+          class="circleBg font-bold mr-3 text-xl"
+          style="color:#252525"
+        >{{info.contactsName && info.contactsName.trim().substring(0,1).toUpperCase()}}</div>
         <p class="flex-1 text-xl font-bold">{{info.contactsName}}</p>
         <div>
           <img

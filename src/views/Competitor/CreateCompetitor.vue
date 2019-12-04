@@ -116,7 +116,7 @@ export default {
     },
     checkErrorMsg() {
       //名称不能为空
-      let competitorName = this.$store.state.competitor.addParams.competorName;
+      let competitorName = this.$store.state.competitor.addParams.competorName.trim();
       if (competitorName == "") {
         this.isShowErrorNameMsg = true;
       } else {

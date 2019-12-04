@@ -104,7 +104,7 @@
               @click="goInfo(r.gid)"
             >
               <div class="flex items-center">
-                <div class="w-12 h-12 text-center rounded-full mr-4 text-3xl baseName">z</div>
+                <div class="w-12 h-12 text-center rounded-full mr-4 text-xl font-bold baseName">{{r.lesseeName.trim().substring(0,1).toUpperCase()}}</div>
                 <div style="flex:1">
                   <div class="flex items-center">
                     <div class="flex-1 text-base font-bold">{{r.lesseeName}}</div>
@@ -206,6 +206,7 @@ export default {
     rgba(255, 205, 43, 1) 100%
   );
   color: #252525;
+  line-height: 3rem;
 }
 .search_icon {
   margin-right: 1.143rem;
