@@ -1,7 +1,7 @@
  <!-- 新建拜访任务 -->
 <template>
   <div class="taskCreate">
-    <van-nav-bar :title="taskId ? $store.state.task.addEditTaskParams.taskName : ($route.query.taskType == 1 ?'经销商拜访' : '任务事项')" left-text="返回" 
+    <van-nav-bar :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow 
          >
       <div  @click="save" v-if="editor && !taskId" slot="right">{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>

@@ -1,7 +1,7 @@
  <!-- 拜访任务详情 -->
 <template>
   <div class="taskDetails  flex flex-1 flex-col">
-    <van-nav-bar :title="$store.state.task.addEditTaskParams.taskName" left-text="返回" 
+    <van-nav-bar :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'" left-text="返回" 
           @click-left="$router.go(-1)" left-arrow>
       <div @click="editorFun" v-if="taskStatus == 2 && $store.state.task.addEditTaskParams.taskType == 1" slot="right">编辑</div>
     </van-nav-bar>
@@ -131,7 +131,7 @@
 
             <div v-if="$store.state.task.addEditTaskParams.dealerDes">
 
-              <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录</div>
+              <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录11</div>
 
               <van-cell clickable>
                 <template slot="title">
@@ -166,7 +166,7 @@
                       <span class="custom-title">备注</span>
                     </template>
                     <template slot="default">
-                      <p class="p5">{{r.lesseeComment}}</p>
+                      <p class="p5">{{r.lesseeComment ? r.lesseeComment : '—'}}</p>
                     </template>
                   </van-cell>
                   <div></div>

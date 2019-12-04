@@ -331,7 +331,7 @@ export default {
         
         //跳转到详情
         if(taskStatus == 2){
-          this.$router.push({name:'TaskDetail',query:{gid: id}})
+          this.$router.push({name:'TaskDetail',query:{gid: id,taskType:taskType}})
         }else{
           this.$router.push({name:'CreateTask',query:{taskType:taskType,editor: true,gid: gid}})
         }
