@@ -257,12 +257,12 @@ export default {
       minDate: new Date(1899, 12, 1),
 
       genderShow: false,
-      genderValus: 0,
+      genderValus: null,
       defultGender: "男",
       selectGender: "",
 
       lesseeTypeShow: false,
-      lesseeTypeValus: 0,
+      lesseeTypeValus: null,
       defultLesseeType: "自然人",
       selectLesseeType: "",
 

@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       competorTypeShow: false,
-      competorStatusValus: 1,
+      competorStatusValus: null,
       defultCompetorType: "第三方",
       selectCompetorType: "",
 

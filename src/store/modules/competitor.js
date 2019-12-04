@@ -5,7 +5,7 @@ export default {
     isLastPage: false,
     addParams: {
       competorName: '',
-      competorType: 1,
+      competorType: null,
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
@@ -24,7 +24,7 @@ export default {
     listParams: {
       queryString: '',
       orderType: 1,
-      competorType: 0,
+      competorType: 1,
       pageNum: 1,
       pageSize: 10
     },

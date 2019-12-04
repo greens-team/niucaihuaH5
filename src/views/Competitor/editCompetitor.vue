@@ -34,7 +34,7 @@
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">合作竞对名称不能为空</div>
 
-        <div class="flex border-b border-gray-200 ml-4 items-center">
+        <!-- <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">竞对类型</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
@@ -42,7 +42,40 @@
               :options="$store.state.competitor.competorStatus"
             />
           </van-dropdown-menu>
+        </div>-->
+
+        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+          <div style="width:130px; color:#323233;">竞对类型</div>
+          <div
+            class="flex-1"
+            @click="competorTypeShow = true;"
+          >{{selectCompetorType ? selectCompetorType : '请选择类型'}}</div>
         </div>
+        <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}">
+          <van-nav-bar
+            title="竞对类型"
+            left-text="取消"
+            right-text="确定"
+            left-arrow
+            @click-left="competorTypeShow = false;"
+            @click-right="competorTypeShow = false;selectCompetorType = defultCompetorType"
+          />
+          <div
+            class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200"
+            style="top:46px;"
+          >
+            <van-radio-group v-model="competorStatusValus">
+              <van-radio
+                icon-size="16px"
+                class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3"
+                v-for="(r,i) in $store.state.competitor.competorStatus"
+                :key="i"
+                :name="r.value"
+              >{{r.text}}</van-radio>
+            </van-radio-group>
+          </div>
+        </van-popup>
+
         <van-field
           v-model="$store.state.competitor.editParams.comment"
           :rows="5"
@@ -63,15 +96,38 @@ export default {
   name: "editCompetitor",
   data() {
     return {
-      isShowErrorNameMsg: false
+      isShowErrorNameMsg: false,
+
+      competorTypeShow: false,
+      competorStatusValus: 1,
+      defultCompetorType: "第三方",
+      selectCompetorType: ""
     };
   },
-  mounted() {},
+  watch: {
+    competorStatusValus(type) {
+      if (type != 0) {
+        this.defultCompetorType = this.$store.state.competitor.competorStatus[
+          type - 1
+        ].text;
+      }
+    }
+  },
+  mounted() {
+    //竞对类型默认显示
+    this.competorStatusValus = this.$store.state.competitor.info.competorType;
+    console.log()
+    if (this.competorStatusValus != 0) {
+      this.selectCompetorType = this.$store.state.competitor.competorStatus[
+        this.competorStatusValus -1
+      ].text;
+    }
+  },
   methods: {
     editCompetitor() {
       this.checkErrorMsg();
       if (!this.isShowErrorNameMsg) {
-        this.$store.dispatch("editCompetitor").then(r => {
+        this.$store.dispatch("editCompetitor",{competorType: this.competorStatusValus}).then(r => {
           this.$router.go(-1);
         });
       }

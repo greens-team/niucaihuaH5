@@ -21,7 +21,7 @@
           <span class="custom-title">主题</span>
         </template>
         <template slot="default">
-          <van-field v-if="editor" v-model="$store.state.task.addEditTaskParams.taskName" placeholder="请输入任务主题" />
+          <van-field v-if="editor" maxlength="15" v-model="$store.state.task.addEditTaskParams.taskName" placeholder="请输入任务主题" />
           <p v-else class="p5">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
@@ -37,7 +37,7 @@
 
       <van-cell clickable>
         <template slot="title">
-          <span class="text-red-400">*</span>
+          <!-- <span class="text-red-400">*</span> -->
           <span class="custom-title">时间</span>
         </template>
         <template slot="default">
@@ -47,7 +47,7 @@
 
       <van-cell clickable>
         <template slot="title">
-          <span class="text-red-400">*</span>
+          <!-- <span class="text-red-400">*</span> -->
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
@@ -509,7 +509,7 @@ export default {
     save(){
 
       let params = this.$store.state.task.addEditTaskParams
-      if(params.taskName === '' || params.alarmTime === '' || params.taskTime === '' || params.mainUserGids === ''){
+      if(params.taskName.trim() === '' || params.alarmTime === '' || params.taskTime === '' || params.mainUserGids === ''){
         this.$dialog.alert({
           message: '请认真填写'
         });
