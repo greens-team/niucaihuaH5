@@ -149,6 +149,8 @@ export default {
         level: 1,               // 经销商分级（1 一级  2 二级）
         ownerUserGids: [],      // [1,2,3]负责人gid 集合
         followerUserGids: [],   // 跟进人gid集合
+
+        locationName: '',
   
         comment: '',            // 备注
         

@@ -2,6 +2,7 @@
 // 经销商列表及筛选的数据
 export default {
   state: {
+    oftenuselist: [],
     isLastPage: false,
     // 获取经营商列表的请求参数
     listParams: {
@@ -109,6 +110,16 @@ export default {
     }
   },
   actions: {
+    getOftenuselist ({state}, data={}) {
+      return new Promise(resolve => {
+        window.$ajax.auth.getOftenuselist(data).then( res => {
+          if (!res.code) {
+            state.oftenuselist = res.data
+            resolve()
+          }
+        })
+      })
+    },
     getDept ({state}, data={}) {
       return new Promise(resolve => {
         window.$ajax.auth.dept(data).then( res => {
@@ -125,7 +136,7 @@ export default {
           if (!res.code) {
             state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
             if(data.pageNum == 1){
-              let userInfo = JSON.parse(JSON.parse(sessionStorage.userInfo))
+              let userInfo = JSON.parse(sessionStorage.userInfo)
               state.colleagueDataList.unshift({
                 id: userInfo.EMPLOYEE_ID, 
                 refRlNm:userInfo.EMPLOYEE_NAME
@@ -149,10 +160,14 @@ export default {
           resolve()
           return
         }
-        window.$ajax.dealer.listData(params).then(res => {
+        let timevals ={
+          startTime: String(params.startTime).length == 13 ? params.startTime/1000 : params.startTime,
+          endTime: String(params.endTime).length == 13 ? params.endTime/1000 : params.endTime
+        }  
+        window.$ajax.dealer.listData(Object.assign({},params,timevals)).then(res => {
           if (!res.code) {
-            state.listData = params.pageNum == 1 ? res.data.list : state.listData.concat(res.data.list)
-            if (res.data.list.length < params.pageSize) {
+            state.listData = params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
+            if (res.data.list && res.data.list.length < params.pageSize) {
               state.isLastPage = true
             }
             resolve(state.listData)

@@ -91,7 +91,7 @@
                           <p>{{info.province}}{{info.city}}{{info.area}}</p>
                         </div>
                         <div class="border-t border-gray-100 p-2">
-                          <p class="text-xs text-gray-500">详情地址</p>
+                          <p class="text-xs text-gray-500">注册地址</p>
                           <p>{{info.address}}</p>
                         </div>
                         <div class="border-t border-gray-100 p-2">
@@ -152,7 +152,7 @@
                           <p class="text-xs text-gray-500">地理位置</p>
                           <div class="flex">
                             <!-- {{info.province +' '+ info.city +' '+ info.area}} -->
-                            {{info.longitude+','+info.latitude}}
+                            {{info.locationName}}
                             <div class="flex-1"></div>
                             <i @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})" class="iconfont iconweizhibang text-orange-500"></i>
                           </div>

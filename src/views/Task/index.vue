@@ -120,8 +120,8 @@
             <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">经销商位置</div>
             <div class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white">
               <div class="flex-1">
-                <span class="text-blue-500">{{$store.state.task.addEditTaskParams.address}}</span><br />
-                <span>{{$store.state.task.addEditTaskParams.address}}</span>
+                <span class="text-blue-500">{{$store.state.task.addEditTaskParams.locationName}}</span>
+                <!-- <br /><span>{{$store.state.task.addEditTaskParams.address}}</span> -->
               </div>
               <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" class="iconfont iconweizhibang text-orange-500"></i></div>
             </div>

@@ -43,13 +43,13 @@
             <div class="text-gray-700 font-bold  mt-5">所属区域</div>
             <div class="flex flex-wrap text-center text-gray-600">
               <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
-                <van-dropdown-item v-model="params.province" :options="$store.state.dealer.provincesList" />
+                <van-dropdown-item v-model="params.provinceVal" :options="$store.state.dealer.provincesList" />
               </van-dropdown-menu>
               <van-dropdown-menu v-if="$store.state.dealer.citysList.length" class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
-                <van-dropdown-item v-model="params.city" :options="$store.state.dealer.citysList" />
+                <van-dropdown-item v-model="params.cityVal" :options="$store.state.dealer.citysList" />
               </van-dropdown-menu>
               <van-dropdown-menu v-if="$store.state.dealer.areasList.length" class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
-                <van-dropdown-item v-model="params.area" :options="$store.state.dealer.areasList" />
+                <van-dropdown-item v-model="params.areaVal" :options="$store.state.dealer.areasList" />
               </van-dropdown-menu>
             </div>
 
@@ -83,7 +83,7 @@
                 <van-dropdown-item v-model="params.notVisitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.notVisitDays" @input="val=>!/^[1-9]+$/.test(val) && (this.params.notVisitDays = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.notVisitDays" @input="val=>!/^[0-9]+$/.test(val) && (this.params.notVisitDays = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
             
@@ -94,7 +94,7 @@
                 <van-dropdown-item v-model="params.visitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.visitCount" @input="val=>!/^[1-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.visitCount" @input="val=>!/^[0-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
 
@@ -144,8 +144,11 @@ export default {
         level: '',
         ownerUserGids: [],
         area: '',
+        areaVal: '',
         city: '',
+        cityVal: '',
         province: '',
+        provinceVal: '',
       },
       value1: 0,
       option1: [
@@ -176,44 +179,87 @@ export default {
   watch: {
     screeningShow (val) {
       if(val){
-        !this.params.province && this.$store.dispatch('getProvinces').then(data=>{
-          console.log()
+        !this.params.provinceVal && this.$store.dispatch('getProvinces').then(data=>{
           this.$store.state.dealer.provincesList.unshift({
             text: '请选择省份',
             value: ''
           })
+          this.$store.state.dealer.citysList = []
+          this.$store.state.dealer.areasList = []
+          this.params.area = ''
+          this.params.city = '' 
+          this.params.areaVal = ''
+          this.params.cityVal = '' 
         })
       }
     },
-    'params.province' (val) {
+    'params.provinceVal' (val) {
       if (val) {
         this.$store.dispatch('getCitys', val).then(data=>{
-          this.params.city = data[0].value
+          this.$store.state.dealer.citysList && this.$store.state.dealer.citysList.unshift({
+            text: '请选择市区',
+            value: ''
+          })
+        })
+        this.$store.state.dealer.provincesList.some(r=>{
+          if(r.value == val){
+            this.params.province = r.text
+            return true
+          }
         })
       }else{
         this.$store.state.dealer.citysList = []
-        this.$store.state.dealer.areasList = []
-        this.params.area = ''
-        this.params.city = '' 
       }
+      this.$store.state.dealer.areasList = []
+      this.params.city = '' 
+      this.params.cityVal = '' 
+      this.params.area = ''
+      this.params.areaVal = ''
     },
-    'params.city' (val) {
+    'params.cityVal' (val) {
       if (val) {
         this.$store.dispatch('getAreas', val).then(data=>{
-          this.params.area = data.length ? data[0].value : ''
+          this.$store.state.dealer.areasList.length && this.$store.state.dealer.areasList.unshift({
+            text: '请选择县',
+            value: ''
+          })
         })
+        this.$store.state.dealer.citysList.some(r=>{
+          if(r.value == val){
+            this.params.city = r.text
+            return true
+          }
+        })
+      }else{
+        this.$store.state.dealer.areasList = []
+      }
+      this.params.area = ''
+      this.params.areaVal = ''
+    },
+    'params.areaVal'(val) {
+      if(val){
+        this.$store.state.dealer.areasList.some(r=>{
+          if(r.value == val){
+            this.params.area = r.text
+            return true
+          }
+        })
+      }else{
+        this.params.area = ''
       }
     }
   },
   methods: {
-    setParams(val){console.log(val);this.params.ownerUserGids = val},
+    setParams(val){this.params.ownerUserGids = val},
     finish () {
       this.screeningShow = false
       this.$emit('onSearch', this.params)
     },
     // 确定时间
     confirmTaskTime(){
-      let timeStr = new Date(this.timeStr).getTime()
+      let timeStr = !this.timeType ? new Date(this.$root.moment(this.timeStr).format('YYYY-MM-DD 00:00:00')).getTime() : new Date(this.$root.moment(this.timeStr).format('YYYY-MM-DD 23:59:59')).getTime()
+
+      !this.timeType ? new Date(this.$root.moment(timeStr).format('YYYY-MM-DD 00:00:00')).getTime() : new Date(this.$root.moment(timeStr).format('YYYY-MM-DD 23:59:59')).getTime()
       if (!this.timeType && this.params.endTime && timeStr > this.params.endTime ) {
         this.$notify({ type: 'warning', message: '开始时间要小于结束时间' })
         return
@@ -239,8 +285,11 @@ export default {
         level: '',
         ownerUserGids: [],
         area: '',
+        areaVal: '',
         city: '',
+        cityVal: '',
         province: '',
+        provinceVal: '',
       }
       this.finish()
     }

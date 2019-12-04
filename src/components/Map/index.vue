@@ -57,12 +57,12 @@ export default {
         console.log(lngLatText)
         _this.addressList = []
         _this.addressList.push({
-          text: lngLatText,
+          text: lngLatText.replace(/,|\s/g, ''),
           value: JSON.stringify(point)
         })
         rs.surroundingPois.map(r=>{
           _this.addressList.push({
-            text: r.title+' '+r.address,
+            text:( r.title+' '+r.address).replace(/,|\s/g, ''),
             value: JSON.stringify(r.point)
           })
         })
@@ -74,6 +74,14 @@ export default {
         this.$store.getters.NDparams.longitude =  String(o.lng).split('.')[1].length > 6 ? o.lng.toFixed(6) : o.lng
         this.$store.getters.NDparams.latitude = String(o.lat).split('.')[1].length > 6 ? o.lat.toFixed(6) : o.lat
 
+        let address = ''
+        this.addressList.some(r=>{
+          if(r.value == this.addressValue){
+            address = r.text
+          }
+        })
+        this.$store.getters.NDparams.locationName = address
+
         if(this.$route.query.id && this.$route.query.clockIn){
           this.$store.dispatch('clockincheck',{
             gid: this.$route.query.id,
@@ -84,12 +92,12 @@ export default {
               message: res.data ? '你在打卡范围内' : '你不在打卡范围内',
               confirmButtonText: '打卡'
             }).then(() => {
-              let address = ''
-              this.addressList.some(r=>{
-                if(r.value == this.addressValue){
-                  address = r.text
-                }
-              })
+              // let address = ''
+              // this.addressList.some(r=>{
+              //   if(r.value == this.addressValue){
+              //     address = r.text
+              //   }
+              // })
               // 确认打卡
               let paras = {
                 gid: this.$route.query.id,

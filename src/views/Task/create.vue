@@ -532,7 +532,7 @@ export default {
         this.editor = false
         this.$store.dispatch('addTask', {taskType: this.taskType}).then(res=>{
           this.$dialog.alert({
-            message: res.msg
+            message: '操作成功'
           }).then(() => {
             this.taskId = res.data
             this.$router.go(-1)
@@ -553,7 +553,7 @@ export default {
       this.$store.dispatch('addTask', {taskType: this.taskType, visitType: 0}).then(res=>{
         this.newTask = false
         this.$dialog.alert({
-          message: res.msg
+          message: '操作成功'
         }).then(() => {
            this.taskId = res.data
            this.$router.go(-1)
@@ -571,7 +571,7 @@ export default {
           this.$store.dispatch('addTask', {taskType: this.taskType, visitType: visitType}).then(res=>{
             this.newTask = false
             this.$dialog.alert({
-              message: res.msg
+              message: '操作成功'
             }).then(() => {
               this.taskId = res.data
               this.$router.go(-1)
@@ -588,7 +588,7 @@ export default {
     finishTask(){
       this.$store.dispatch('finishTask', this.taskId).then(res=>{
         this.$dialog.alert({
-          message: res.msg
+          message: '操作成功'
         }).then(() => {
           this.$router.go(-1)
         });
