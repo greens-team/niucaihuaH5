@@ -1,14 +1,6 @@
  <!-- 联系人 内容页 -->
 <template>
   <div class="ContactsInfo flex-1 flex flex-col bg-gray-100">
-    <!-- <van-nav-bar title="联系人详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-      <i
-        class="iconfont iconqipaocaidanbianji-bang"
-        @click="editor"
-        slot="right"
-        style="font-size: 1.6rem;"
-      ></i>
-    </van-nav-bar>-->
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
         <div
@@ -147,7 +139,7 @@
                 <div
                   class="border-b"
                   style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in newslogList"
+                  v-for="(r,i) in $store.state.contacts.listNewslog"
                   :key="i"
                 >
                   <div class="flex">
@@ -164,8 +156,11 @@
                       class="text-ms leading-relaxed"
                       style="color:#252525"
                     >{{r.content}}</p>
-                    <img v-if="r.pics != '' " :src="r.pics" alt />
+                    <img v-if="r.pics != '' " :src="picServer+r.pics" alt />
                   </div>
+                  <p
+                    class="text-sm text-gray-500"
+                  >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                 </div>
               </div>
             </div>
@@ -177,11 +172,14 @@
                 <div
                   class="border-b"
                   style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in operatelogList"
+                  v-for="(r,i) in $store.state.contacts.listOperatelog"
                   :key="i"
                 >
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                  <div class="text-gray-600" style="padding-right:1rem;word-wrap:break-word;">{{r.content}}</div>
+                  <div
+                    class="text-gray-600"
+                    style="padding-right:1rem;word-wrap:break-word;"
+                  >{{r.content}}</div>
                 </div>
               </div>
             </div>
@@ -190,27 +188,31 @@
       </div>
     </div>
 
-    <div class="flex bg-white footer-bar">
-      <!-- <i
-        class="iconfont iconjingxiaoshangbaifang mx-3"
-        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
-        style="font-size: 2rem;"
-      ></i> -->
-      <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+    <div
+      class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+    >
+      <van-uploader
+        :after-read="logPic"
+        :before-read="file => uploadFile(file,true)"
+        :max-count="1"
+        style="height:90%"
+      >
+        <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
+      </van-uploader>
 
       <form class="search-block" action="javascript:void 0">
         <input
           type="text"
           placeholder="请输入工作进展"
-          class="rounded-lg h-12 progress"
-          v-model="$store.state.contacts.addNewslogParams.content"
+          input-align="center"
+          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3 h-12 progress"
+          v-model="newsLogContent"
           @keyup.13="tapToSearch"
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
       </form>
-
-      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
   </div>
 </template>
@@ -226,8 +228,15 @@ export default {
       currentContacts: [],
       showInfo1: true,
       isShowDealer: false,
-      newslogList: [],
-      operatelogList: []
+
+      listNewslogPageNum: 1,
+      listOperatelogNum: 1,
+      isNewslogLastPage: false,
+      isOperatelogLastPage: false,
+
+      newsLogContent: "",
+
+      picServer: ""
     };
   },
   watch: {
@@ -241,7 +250,8 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.gid;
-    this.addRecentvisit({modelObjType:2, modelId:this.id})
+    this.picServer = window.picServer;
+    this.addRecentvisit({ modelObjType: 2, modelId: this.id });
     if (this.$store.state.contacts.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.contacts.currentTabsIndex);
@@ -249,9 +259,47 @@ export default {
       this.getBaseInfo(0);
     }
 
-    // this.$store.dispatch("getContactsInfo", this.$route.query.gid).then(() => {
-    //   this.info = this.$store.state.contacts.contactsInfo;
-    // });
+    // 动态记录
+    this.$refs.listBox &&
+      this.scrollLoad(this.$refs.listBox, resolve => {
+        if (
+          this.$store.state.contacts.currentTabsIndex == 1 &&
+          !this.isNewslogLastPage
+        ) {
+          this.$store
+            .dispatch("listNewslogContacts", {
+              modelObjType: 2,
+              modelId: this.id,
+              pageNum: ++this.listNewslogPageNum,
+              pageSize: 10
+            })
+            .then(len => {
+              if (len < 10) {
+                this.isNewslogLastPage = true;
+              }
+              resolve();
+            });
+        }
+        if (
+          this.$store.state.contacts.currentTabsIndex == 2 &&
+          !this.isOperatelogLastPage
+        ) {
+          this.$store
+            .dispatch("listOperatelogCompetitor", {
+              modelObjType: 2,
+              modelId: this.id,
+              pageNum: ++this.listOperatelogNum,
+              pageSize: 10
+            })
+            .then(len => {
+              if (len < 10) {
+                this.isOperatelogLastPage = true;
+              }
+              resolve();
+            });
+        }
+        resolve();
+      });
   },
   methods: {
     getBaseInfo(num) {
@@ -269,76 +317,55 @@ export default {
       }
       if (num === 1) {
         // 动态记录
-        this.scrollLoad(this.$refs.listBox, resolve => {
-          this.$store
-            .dispatch(
-              "listNewslogContacts",
-              Object.assign({
-                pageNum: this.$store.state.contacts.newslogParams.pageNum + 1,
-                modelId: this.id,
-                modelObjType: 2
-              })
-            )
-            .then(msg => {
-              this.newslogList = this.$store.state.contacts.listNewslog;
-            });
+        this.$store.dispatch("listNewslogContacts", {
+          modelObjType: 2,
+          modelId: this.id,
+          pageNum: this.listNewslogPageNum,
+          pageSize: 10
         });
-
-        this.$store
-          .dispatch(
-            "listNewslogContacts",
-            Object.assign({ modelId: this.id, modelObjType: 2, pageNum: 1 })
-          )
-          .then(msg => {
-            this.newslogList = this.$store.state.contacts.listNewslog;
-          });
       }
       if (num === 2) {
-        this.scrollLoad(this.$refs.listBox, resolve => {
-          this.$store
-            .dispatch(
-              "listOperatelogContacts",
-              Object.assign({
-                pageNum:
-                  this.$store.state.contacts.operatelogParams.pageNum + 1,
-                modelId: this.id,
-                modelObjType: 2
-              })
-            )
-            .then(msg => {
-              this.operatelogList = this.$store.state.contacts.listOperatelog;
-            });
+        //操作历史
+        this.$store.dispatch("listOperatelogContacts", {
+          modelObjType: 2,
+          modelId: this.id,
+          pageNum: this.listOperatelogNum,
+          pageSize: 10
         });
-
-        this.$store
-          .dispatch(
-            "listOperatelogContacts",
-            Object.assign({ modelId: this.id, modelObjType: 2, pageNum: 1 })
-          )
-          .then(res => {
-            this.operatelogList = this.$store.state.contacts.listOperatelog;
-          });
       }
     },
 
-    tapToSearch() {
-      //
-      this.$store
-        .dispatch(
-          "addNewslogContacts",
-          Object.assign({ modelId: this.id, modelObjType: 2 })
-        )
-        .then(msg => {
-          this.$store
-            .dispatch(
-              "listNewslogContacts",
-              Object.assign({ modelId: this.id, modelObjType: 2, pageNum: 1 })
-            )
-            .then(res => {
-              this.newslogList = this.$store.state.contacts.listNewslog;
-              this.$store.state.contacts.addNewslogParams.content = "";
+    logPic(file) {
+      this.uploadFile(
+        file,
+        fileUrl => {
+          this.tapToSearch(fileUrl);
+        },
+        0
+      );
+    },
+    tapToSearch(picUrl) {
+      if (this.newsLogContent || typeof picUrl == "string") {
+        this.$store
+          .dispatch("addNewslogContacts", {
+            modelObjType: 2,
+            modelId: this.id,
+            content: this.newsLogContent || "",
+            pics: typeof picUrl == "string" ? picUrl : ""
+          })
+          .then(msg => {
+            this.$store.state.contacts.currentTabsIndex = 1;
+            this.isNewslogLastPage = false;
+            this.listNewslogPageNum = 1;
+            this.newsLogContent = "";
+            this.$store.dispatch("listNewslogContacts", {
+              modelObjType: 2,
+              modelId: this.id,
+              pageNum: this.listNewslogPageNum,
+              pageSize: 10
             });
-        });
+          });
+      }
     },
 
     editor() {
@@ -394,7 +421,6 @@ export default {
   height: 4rem;
   line-height: 4rem;
   align-items: center;
-  padding: .75rem;
 }
 .search-block {
   width: 90%;
@@ -416,7 +442,7 @@ export default {
   text-align: center;
 }
 .progress {
-  width: 100%;
+  width: 97%;
   padding-left: 1rem;
   padding-right: 1rem;
   background-color: #f6f6f6;

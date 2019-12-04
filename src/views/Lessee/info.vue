@@ -229,7 +229,7 @@
                 <div
                   class="border-b"
                   style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in newslogList"
+                  v-for="(r,i) in $store.state.lessee.listNewslog"
                   :key="i"
                 >
                   <div class="flex">
@@ -248,8 +248,11 @@
                       class="text-ms leading-relaxed"
                       style="color:#252525"
                     >{{r.content}}</p>
-                    <img v-if="r.pics != '' " :src="r.pics" alt />
+                    <img v-if="r.pics != '' " :src="picServer+r.pics" alt />
                   </div>
+                  <p
+                    class="text-sm text-gray-500"
+                  >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                 </div>
               </div>
             </div>
@@ -261,7 +264,7 @@
                 <div
                   class="border-b"
                   style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in operatelogList"
+                  v-for="(r,i) in $store.state.lessee.listOperatelog"
                   :key="i"
                 >
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
@@ -277,26 +280,31 @@
       </div>
     </div>
 
-    <div class="flex bg-white footer-bar">
-      <!-- <i
-        class="iconfont iconjingxiaoshangbaifang mx-3"
-        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
-        style="font-size: 2rem;"
-      ></i> -->
-      <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+    <div
+      class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+    >
+      <van-uploader
+        :after-read="logPic"
+        :before-read="file => uploadFile(file,true)"
+        :max-count="1"
+        style="height:90%"
+      >
+        <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
+      </van-uploader>
 
       <form class="search-block" action="javascript:void 0">
         <input
           type="text"
           placeholder="请输入工作进展"
-          class="rounded-lg h-12 progress"
-          v-model="$store.state.lessee.addNewslogParams.content"
+          input-align="center"
+          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3 h-12 progress"
+          v-model="newsLogContent"
           @keyup.13="tapToSearch"
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
       </form>
-      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
   </div>
 </template>
@@ -316,7 +324,14 @@ export default {
       operatelogList: [],
 
       picServer: window.picServer,
-      userPicArr: []
+      userPicArr: [],
+
+      listNewslogPageNum: 1,
+      listOperatelogNum: 1,
+      isNewslogLastPage: false,
+      isOperatelogLastPage: false,
+
+      newsLogContent: ""
     };
   },
   created() {
@@ -332,6 +347,47 @@ export default {
     } else {
       this.getBaseInfo(0);
     }
+
+    this.$refs.listBox &&
+      this.scrollLoad(this.$refs.listBox, resolve => {
+        if (
+          this.$store.state.lessee.currentTabsIndex == 2 &&
+          !this.isNewslogLastPage
+        ) {
+          this.$store
+            .dispatch("listNewslogLessee", {
+              modelObjType: 3,
+              modelId: this.id,
+              pageNum: ++this.listNewslogPageNum,
+              pageSize: 10
+            })
+            .then(len => {
+              if (len < 10) {
+                this.isNewslogLastPage = true;
+              }
+              resolve();
+            });
+        }
+        if (
+          this.$store.state.lessee.currentTabsIndex == 3 &&
+          !this.isOperatelogLastPage
+        ) {
+          this.$store
+            .dispatch("listOperatelogLessee", {
+              modelObjType: 3,
+              modelId: this.id,
+              pageNum: ++this.listOperatelogNum,
+              pageSize: 10
+            })
+            .then(len => {
+              if (len < 10) {
+                this.isOperatelogLastPage = true;
+              }
+              resolve();
+            });
+        }
+        resolve();
+      });
   },
   watch: {
     "$store.state.lessee.currentTabsIndex"(num) {
@@ -377,54 +433,20 @@ export default {
       }
       if (num === 2) {
         // 动态记录
-        this.scrollLoad(this.$refs.listBox, resolve => {
-          this.$store
-            .dispatch(
-              "listNewslogLessee",
-              Object.assign({
-                pageNum: this.$store.state.lessee.newslogParams.pageNum + 1,
-                modelId: this.id,
-                modelObjType: 3
-              })
-            )
-            .then(msg => {
-              this.newslogList = this.$store.state.lessee.listNewslog;
-            });
+        this.$store.dispatch("listNewslogLessee", {
+          modelObjType: 3,
+          modelId: this.id,
+          pageNum: this.listNewslogPageNum,
+          pageSize: 10
         });
-
-        this.$store
-          .dispatch(
-            "listNewslogLessee",
-            Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
-          )
-          .then(msg => {
-            this.newslogList = this.$store.state.lessee.listNewslog;
-          });
       }
       if (num === 3) {
-        this.scrollLoad(this.$refs.listBox, resolve => {
-          this.$store
-            .dispatch(
-              "listOperatelogLessee",
-              Object.assign({
-                pageNum: this.$store.state.lessee.operatelogParams.pageNum + 1,
-                modelId: this.id,
-                modelObjType: 3
-              })
-            )
-            .then(msg => {
-              this.operatelogList = this.$store.state.lessee.listOperatelog;
-            });
+        this.$store.dispatch("listOperatelogLessee", {
+          modelObjType: 3,
+          modelId: this.id,
+          pageNum: this.listOperatelogNum,
+          pageSize: 10
         });
-
-        this.$store
-          .dispatch(
-            "listOperatelogLessee",
-            Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
-          )
-          .then(res => {
-            this.operatelogList = this.$store.state.lessee.listOperatelog;
-          });
       }
     },
     changeFollowStatus(i) {
@@ -449,23 +471,37 @@ export default {
       this.$store.commit("setParamsLessee", Object.assign(this.info));
       this.$router.push("/EditLessee");
     },
-    tapToSearch() {
-      this.$store
-        .dispatch(
-          "addNewslogLessee",
-          Object.assign({ modelId: this.id, modelObjType: 3 })
-        )
-        .then(msg => {
-          this.$store
-            .dispatch(
-              "listNewslogLessee",
-              Object.assign({ modelId: this.id, modelObjType: 3, pageNum: 1 })
-            )
-            .then(res => {
-              this.newslogList = this.$store.state.lessee.listNewslog;
-              this.$store.state.lessee.addNewslogParams.content = "";
+        logPic(file) {
+      this.uploadFile(
+        file,
+        fileUrl => {
+          this.tapToSearch(fileUrl);
+        },
+        0
+      );
+    },
+    tapToSearch(picUrl) {
+      if (this.newsLogContent || typeof picUrl == "string") {
+        this.$store
+          .dispatch("addNewslogLessee", {
+            modelObjType: 3,
+            modelId: this.id,
+            content: this.newsLogContent || "",
+            pics: typeof picUrl == "string" ? picUrl : ""
+          })
+          .then(msg => {
+            this.$store.state.lessee.currentTabsIndex = 2;
+            this.isNewslogLastPage = false;
+            this.listNewslogPageNum = 1;
+            this.newsLogContent = "";
+            this.$store.dispatch("listNewslogLessee", {
+              modelObjType: 3,
+              modelId: this.id,
+              pageNum: this.listNewslogPageNum,
+              pageSize: 10
             });
-        });
+          });
+      }
     }
   }
 };
@@ -539,7 +575,6 @@ export default {
   height: 4rem;
   line-height: 4rem;
   align-items: center;
-  padding: .75rem;
 }
 .baseName {
   background: linear-gradient(
@@ -568,7 +603,7 @@ export default {
   text-align: center;
 }
 .progress {
-  width: 100%;
+  width: 97%;
   padding-left: 1rem;
   padding-right: 1rem;
   background-color: #f6f6f6;

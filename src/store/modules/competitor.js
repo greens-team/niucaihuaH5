@@ -88,29 +88,10 @@ export default {
     }],
     currentTabsIndex: 0,
 
-    // 添加动态记录
-    addNewslogParams: {
-      modelObjType: 4,  //1 经销商 2 联系人 3 承租人 4 竞争对手
-      modelId: "",
-      content: '',
-      pics: ''
-    },
     // 获取动态记录
-    newslogParams: {
-      modelObjType: 4,
-      modelId: "",
-      pageNum: 1,
-      pageSize: 10
-    },
     listNewslog: [],
 
     // 获取操作记录
-    operatelogParams: {
-      modelObjType: 4,
-      modelId: "",
-      pageNum: 1,
-      pageSize: 10
-    },
     listOperatelog: []
 
   },
@@ -216,8 +197,8 @@ export default {
 
     addNewslogCompetitor({ state }, data = {}) {   // 添加动态记录
       return new Promise(resolve => {
-        window.$ajax.history.addNewslog(Object.assign(state.addNewslogParams, data)).then(res => {
-          if (!res.code) {
+        window.$ajax.history.addNewslog(data).then(res => {
+          if(!res.code){
             resolve('操作成功')
           }
         })
@@ -225,46 +206,22 @@ export default {
     },
 
     listNewslogCompetitor({ state }, data = {}) {   // 获取动态记录列表
-      let params = Object.assign(state.newslogParams, data)
-
-      if (params.pageNum == 1) {
-        state.isLastPage = false;
-      }
       return new Promise(resolve => {
-        if (state.isLastPage) {
-          resolve();
-          return;
-        }
-        window.$ajax.history.listNewslog(params).then(res => {
-          if (!res.code) {
-
-            state.listNewslog = params.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list);
-            if (res.data.list.length < params.pageSize) {
-              state.isLastPage = true;
-            }
-            resolve('操作成功')
+        window.$ajax.history.listNewslog(data).then(res => {
+          if(!res.code){
+            state.listNewslog = data.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list)
+            resolve(res.data.list.length)
           }
         })
       })
     },
 
     listOperatelogCompetitor({ state }, data = {}) {   // 操作历史
-      let params = Object.assign(state.operatelogParams, data)
-      if (params.pageNum == 1) {
-        state.isLastPage = false;
-      }
       return new Promise(resolve => {
-        if (state.isLastPage) {
-          resolve();
-          return;
-        }
-        window.$ajax.history.listOperatelog(params).then(res => {
-          if (!res.code) {
-            state.listOperatelog = params.pageNum == 1 ? res.data.list : state.listOperatelog.concat(res.data.list);
-            if (res.data.list.length < params.pageSize) {
-              state.isLastPage = true;
-            }
-            resolve('操作成功')
+        window.$ajax.history.listOperatelog(data).then(res => {
+          if(!res.code){
+            state.listOperatelog = data.pageNum == 1 ? res.data.list :  state.listOperatelog.concat(res.data.list)
+            resolve(res.data.list.length)
           }
         })
       })
