@@ -45,7 +45,7 @@
               <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
                 <van-dropdown-item v-model="params.province" :options="$store.state.dealer.provincesList" />
               </van-dropdown-menu>
-              <van-dropdown-menu class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
+              <van-dropdown-menu v-if="$store.state.dealer.citysList.length" class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
                 <van-dropdown-item v-model="params.city" :options="$store.state.dealer.citysList" />
               </van-dropdown-menu>
               <van-dropdown-menu v-if="$store.state.dealer.areasList.length" class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1" style="background-color: #edf2f7;  height: inherit; text-align:right;">
@@ -64,9 +64,9 @@
 
             <div class="text-gray-700 font-bold  mt-5">经销商分级</div>
             <div class="flex flex-wrap text-center text-gray-600">
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]" @click="params.level = 1">一级经销商</div>
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]" @click="params.level = 2">二级经销商</div>
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = 3">三级经销商</div>
+              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]" @click="params.level = params.level == 1 ? '' : 1">一级经销商</div>
+              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]" @click="params.level = params.level == 2 ? '' : 2">二级经销商</div>
+              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div>
             </div>
 
        
@@ -83,7 +83,7 @@
                 <van-dropdown-item v-model="params.notVisitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.notVisitDays" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.notVisitDays" @input="val=>!/^[1-9]+$/.test(val) && (this.params.notVisitDays = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
             
@@ -94,14 +94,14 @@
                 <van-dropdown-item v-model="params.visitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.visitCount" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.visitCount" @input="val=>!/^[1-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
 
             <div class="text-gray-700 font-bold  mt-5">关系健康度</div>
             <div class="flex flex-wrap justify-start text-center text-gray-600">
               <div v-for="(r,i) in $store.state.dealer.relationHealth" :key="i" 
-                @click="params.relationHealth = r.id"
+                @click="params.relationHealth = params.relationHealth == r.id ? '' : r.id"
                 :class="['p-2 cursor-pointer bg-gray-200 w-24 mr-1 mb-1', {cardStatus: r.id == params.relationHealth}]">
                 {{r.text}}
               </div>
@@ -136,12 +136,12 @@ export default {
         dealerName: '',
         startTime: '',
         endTime: '',
-        relationHealth: 1,
+        relationHealth: '',
         notVisitDays: '',
         visitCount: '',
         notVisitConditions: 1,
         visitConditions: 1,
-        level: 1,
+        level: '',
         ownerUserGids: [],
         area: '',
         city: '',
@@ -177,7 +177,11 @@ export default {
     screeningShow (val) {
       if(val){
         !this.params.province && this.$store.dispatch('getProvinces').then(data=>{
-          this.params.province = data[0].value
+          console.log()
+          this.$store.state.dealer.provincesList.unshift({
+            text: '请选择省份',
+            value: ''
+          })
         })
       }
     },
@@ -186,6 +190,11 @@ export default {
         this.$store.dispatch('getCitys', val).then(data=>{
           this.params.city = data[0].value
         })
+      }else{
+        this.$store.state.dealer.citysList = []
+        this.$store.state.dealer.areasList = []
+        this.params.area = ''
+        this.params.city = '' 
       }
     },
     'params.city' (val) {
@@ -222,12 +231,12 @@ export default {
         dealerName: '',
         startTime: '',
         endTime: '',
-        relationHealth: 1,
+        relationHealth: '',
         notVisitDays: '',
         visitCount: '',
         notVisitConditions: 1,
         visitConditions: 1,
-        level: 1,
+        level: '',
         ownerUserGids: [],
         area: '',
         city: '',

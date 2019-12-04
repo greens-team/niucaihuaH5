@@ -79,7 +79,7 @@
       <van-cell clickable>
         <template slot="title">
           <span class="text-red-400">*</span>
-          <span class="custom-title">拜访人</span>
+          <span class="custom-title">{{$route.query.taskType == 2 ? '负责人' : '拜访人'}}</span>
         </template>
         <template slot="default">
           <UserList title="选择负责人" :paramsVal="mainUserGids" @setParams="val=>mainUserGids = val" soltCon="true" class="p5">
@@ -91,7 +91,7 @@
       <van-cell clickable>
         <template slot="title">
           <span class="text-white">*</span>
-          <span class="custom-title">协访人</span>
+          <span class="custom-title">{{$route.query.taskType == 2 ? '参与人' : '协访人'}}</span>
         </template>
         <template slot="default">
           <UserList title="选择负责人" :paramsVal="otherUserGids" @setParams="val=>otherUserGids = val" soltCon="true" class="p5">
