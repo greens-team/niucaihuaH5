@@ -123,20 +123,20 @@
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">身份证号码</p>
-                    <p class="text_content text-sm">{{info.idcardNum}}</p>
+                    <p class="text_content text-sm">{{ info.idcardNum ? info.idcardNum : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">出生日期</p>
                     <p
                       class="text_content text-sm"
-                    >{{info.birthday == null ? null : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
+                    >{{info.birthday == null ? '—' : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
                   </div>
                   <!-- <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">婚姻状况</p>
                     <p class="text_content text-sm">{{info.marry ? '已婚' : '未婚'}}</p>
                   </div>-->
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">性别</p>
+                    <p class="text-xs text_title">性别{{info.gender}}</p>
                     <p class="text_content text-sm">{{info.gender ? '女' : '男'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -146,7 +146,10 @@
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>
-                    <p class="text_content text-sm" style="color:#0885FF;">{{info.lesseePhone}}</p>
+                    <p
+                      class="text_content text-sm"
+                      style="color:#0885FF;"
+                    >{{info.lesseePhone ? info.lesseePhone : '—'}}</p>
                   </div>
                   <!-- <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text_title">年龄</p>
@@ -156,15 +159,20 @@
                   </div>-->
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">户口所在地</p>
-                    <p class="text_content text-sm">{{info.domicilePlace}}</p>
+                    <p
+                      class="text_content text-sm"
+                    >{{info.domicilePlace ? info.domicilePlace : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">家庭住址</p>
-                    <p class="text_content text-sm" style="color:#0885FF;">{{info.homeAddress}}</p>
+                    <p
+                      class="text_content text-sm"
+                      style="color:#0885FF;"
+                    >{{info.homeAddress ? info.homeAddress : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">从业年限</p>
-                    <p class="text_content text-sm">{{info.workingYears}}</p>
+                    <p class="text_content text-sm">{{info.workingYears ? info.workingYears : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2">
                     <p class="text-xs text_title">照片</p>
@@ -176,10 +184,22 @@
                     </div>
                   </div>
                   <div class="border_line pt-2 pb-2">
-                    <p class="text-xs text_title">上传法人身份证件照片</p>
-                    <div class="flex">
-                      <img :src="picServer + info.idcardFrontPic" width="78" alt="身份证正面" />
-                      <img :src="picServer + info.idcardBackPic" width="78" alt="身份证反面" />
+                    <p class="text-xs text_title">上传承租人身份证件照片</p>
+                    <div class="flex justify-space">
+                      <div class="flex" v-if="info.idcardFrontPic">
+                        <img
+                          :src="info.idcardFrontPic ? picServer + info.idcardFrontPic : info.idcardFrontPic"
+                          width="78"
+                          alt="身份证正面"
+                        />
+                      </div>
+                      <div class="flex" v-if="info.idcardBackPic">
+                        <img
+                          :src="info.idcardBackPic ? picServer + info.idcardBackPic : info.idcardBackPic"
+                          width="78"
+                          alt="身份证反面"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -471,7 +491,7 @@ export default {
       this.$store.commit("setParamsLessee", Object.assign(this.info));
       this.$router.push("/EditLessee");
     },
-        logPic(file) {
+    logPic(file) {
       this.uploadFile(
         file,
         fileUrl => {
