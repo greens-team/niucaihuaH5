@@ -254,8 +254,8 @@
                 >
                   <div class="flex">
                     <div
-                      class="w-12 h-12 text-center rounded-full mr-4 text-3xl text-gray-700 baseName"
-                    >z</div>
+                      class="w-12 h-12 text-center rounded-full mr-4 text-xl baseName"
+                    >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
                     <div>
                       <div class="text-ms font-bold">{{r.userName}}</div>
                       <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
@@ -597,11 +597,12 @@ export default {
   align-items: center;
 }
 .baseName {
-  background: linear-gradient(
+   background: linear-gradient(
     245deg,
-    rgba(255, 191, 42, 1) 0%,
-    rgba(254, 233, 124, 1) 100%
+    rgba(255, 164, 0, 1) 0%,
+    rgba(255, 205, 43, 1) 100%
   );
+  line-height: 3rem;
 }
 .search-block {
   width: 90%;

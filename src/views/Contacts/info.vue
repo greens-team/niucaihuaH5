@@ -146,7 +146,11 @@
                   :key="i"
                 >
                   <div class="flex">
-                    <div class="w-12 h-12 text-center rounded-full mr-4 text-2xl circleBg">z</div>
+                    <div
+                      class="w-12 h-12 text-center rounded-full mr-4 text-xl circleBg"
+                    >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
+
+                    
                     <div>
                       <div class="text-ms font-bold">{{r.userName}}</div>
                       <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
@@ -389,7 +393,7 @@ export default {
 
 <style scoped>
 .circleBg {
-  background: linear-gradient(
+   background: linear-gradient(
     245deg,
     rgba(255, 164, 0, 1) 0%,
     rgba(255, 205, 43, 1) 100%
