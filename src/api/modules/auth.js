@@ -11,6 +11,7 @@ export default (m)=>{
       getUsersList: m.GET + '/api/users/list'
     },
     postJSON: {
+      getOftenuselist: m.POST + '/common/oftenuselist',
       login: TEST_URL + '/auth/login', // '/lbccrm/system/user/login', //m.GET + 
       testtest: TEST_URL    // 无用接口
     }

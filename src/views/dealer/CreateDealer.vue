@@ -78,8 +78,8 @@
 
         <van-field
           v-model="$store.state.newDealer.params.address"
-          label="详情地址"
-          placeholder="请填写街道号码信息"
+          label="注册地址"
+          placeholder="请填写注册地址"
           label-width="130"
         />
         <div class="flex border-b border-gray-200 ml-4 items-center">
@@ -134,11 +134,8 @@
         />-->
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;">地理位置</div>
-          <div
-            class="flex-1"
-            @click="$router.push('/map')"
-          >{{$store.getters.NDparams.latitude && $store.getters.NDparams.longitude ? ($store.getters.NDparams.longitude +','+ $store.getters.NDparams.latitude) : '选择地图位置'}}</div>
+          <div style="width:130px; color:#323233;"> 地理位置</div>
+          <div  class="flex-1" @click="$router.push('/map')">{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
         </div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center">

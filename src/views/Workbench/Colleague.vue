@@ -13,7 +13,7 @@
     <van-search shape="round" placeholder="请输入搜索关键词"  v-model="searchKeyword" />
     
     <van-tabs v-model="active" title-active-color="#FF9B02" color="#FF9B02" @click="()=>{$refs.swipe.swipeTo(active)}">
-      <!-- <van-tab title="常用"></van-tab> -->
+      <van-tab title="常用"></van-tab>
       <van-tab title="同事"></van-tab>
       <van-tab title="部门"></van-tab>
     </van-tabs>
@@ -28,6 +28,16 @@
           </div> -->
           
           <van-swipe ref='swipe' :loop="false" :show-indicators="false" @change='(num)=>{active=num}'>
+            <van-swipe-item>
+              <van-checkbox-group v-model="oftenuseValues" class="bg-white">
+                  <div class="h-1"></div>
+                  <van-checkbox v-for="(item, i) in $store.state.dealer.oftenuselist" :key="i" icon-size="16px" 
+                    class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
+                    :name="item.type+'-'+item.modelnName+','+item.modelGid">
+                      {{item.modelnName}}
+                  </van-checkbox>
+                </van-checkbox-group>
+            </van-swipe-item>
             <van-swipe-item >
                 <van-checkbox-group v-model="colleagues.userGids" class="bg-white"> 
                   <!-- <van-checkbox icon-size="16px" class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" name="a">全选</van-checkbox> -->
@@ -86,31 +96,55 @@ export default {
         deptGids: [],
         userType: 1
       },
+      oftenuseValues:[],
 
       getColleaguePageNum: 1,
       colleagueLastPage: false,
     }
   },
   watch:{
+    oftenuseValues(val){
+      if(val.length){
+        let v = val[val.length-1].split('-')
+        v[0] == 1 ? this.colleagues.userGids.push(v[1]) : this.colleagues.deptGids.push(v[1]) 
+      }
+    },
     searchKeyword(){
-      this.active ? this.getDept() : this.getColleague()
+      // active ? this.getDept() : this.getColleague()
+      switch (this.active) {
+        case 0:
+          this.getOftenuselist()
+          break;
+        case 1:
+          this.getColleague()
+          break;
+        case 2:
+          this.getDept()
+          break;
+      }
     },
     active(num){
       this.searchKeyword = ''
-      num ? this.getDept() : this.getColleague()
+      switch (num) {
+        case 0:
+          this.getOftenuselist()
+          break;
+        case 1:
+          this.getColleague()
+          break;
+        case 2:
+          this.getDept()
+          break;
+      }
     }
   },
   components: {
     NestedDept
   },
   created(){
-    this.getColleague()
+    this.getOftenuselist()
   },
-  mounted() {
-
-    
-
-  },
+  mounted() {},
   methods: {
     getDept(keyword){
       this.$store.dispatch('getDept',{
@@ -119,6 +153,9 @@ export default {
       }).then(()=>{
         this.$store.state.dealer.colleagueDataList = []
       })
+    },
+    getOftenuselist(){
+      this.$store.dispatch('getOftenuselist',{queryString: this.searchKeyword})
     },
     getColleague(){
       this.colleagueLastPage = false
