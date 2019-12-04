@@ -94,7 +94,6 @@
                     <p class="text-xs text-gray-500">备注</p>
                     <p>{{info.comment ? info.comment : '—'}}</p>
                   </div>
-
                 </div>
               </div>
 
@@ -180,7 +179,10 @@
                   :key="i"
                 >
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                  <span class="text-gray-600" style="padding-right:1rem;word-wrap:break-word;">{{r.content}}</span>
+                  <span
+                    class="text-gray-600"
+                    style="padding-right:1rem;word-wrap:break-word;"
+                  >{{r.content}}</span>
                 </div>
               </div>
             </div>
@@ -189,19 +191,18 @@
       </div>
     </div>
 
-    <div class="flex bg-white footer-bar">
-      <!-- <i
-        class="iconfont iconjingxiaoshangbaifang mx-3"
-        @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
-        style="font-size: 2rem;"
-      ></i> -->
-      <i class="iconfont iconzhaopianhover mr-3" style="font-size: 2rem;"></i>
+    <div class="flex bg-white footer-bar border-t border-gray-300 iteams-center" style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;">
 
-      <form class="search-block" action="javascript:void 0">
+      <van-uploader  :after-read="logPic" :before-read="file => uploadFile(file,true)" :max-count="1" style="height:90%">
+        <i class="iconfont iconzhaopianhover mr-3 ml-3 " style="font-size: 2rem;"></i>
+      </van-uploader>
+
+      <form  class="search-block" action="javascript:void 0">
         <input
           type="text"
           placeholder="请输入工作进展"
-          class="rounded-lg h-12 progress"
+          input-align="center"
+          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3 h-12 progress"
           v-model="$store.state.competitor.addNewslogParams.content"
           @keyup.13="tapToSearch"
           onfocus="this.placeholder=''"
@@ -209,8 +210,9 @@
         />
       </form>
 
-      <!-- <i class="iconfont iconyuyinhover mx-3" style="font-size: 2rem;"></i> -->
     </div>
+
+
   </div>
 </template>
 
@@ -232,7 +234,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
-    this.addRecentvisit({modelObjType:4, modelId:this.id})
+    this.addRecentvisit({ modelObjType: 4, modelId: this.id });
     if (this.$store.state.competitor.currentTabsIndex) {
       this.getBaseInfo(0);
       this.getBaseInfo(this.$store.state.competitor.currentTabsIndex);
@@ -384,7 +386,6 @@ export default {
   height: 4rem;
   line-height: 4rem;
   align-items: center;
-  padding: .75rem;
 }
 .search-block {
   width: 90%;
@@ -407,7 +408,7 @@ export default {
   text-align: center;
 }
 .progress {
-  width: 100%;
+  width: 95%;
   padding-left: 1rem;
   padding-right: 1rem;
   background-color: #f6f6f6;
