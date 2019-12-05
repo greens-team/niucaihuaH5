@@ -190,8 +190,8 @@ export default {
 }
 .contactsDetail {
   width: 80%;
-  overflow: hidden;
+  /* overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
 }
 </style>

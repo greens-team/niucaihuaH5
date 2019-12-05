@@ -131,7 +131,7 @@
 
             <div v-if="$store.state.task.addEditTaskParams.dealerDes">
 
-              <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录11</div>
+              <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录</div>
 
               <van-cell clickable>
                 <template slot="title">
@@ -147,7 +147,7 @@
                   <span class="custom-title">狮桥意向单量</span>
                 </template>
                 <template slot="default">
-                  <p class="p5">{{$store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
+                  <p class="p5">{{$store.state.task.addEditTaskParams.lbPreOrderCount == null ? '未填写' : $store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
                 </template>
               </van-cell>
 
@@ -178,7 +178,7 @@
                   <span class="custom-title">竞对单量</span>
                 </template>
                 <template slot="default">
-                  <p class="p5">{{$store.state.task.addEditTaskParams.competitorOrderCount}}</p>
+                  <p class="p5">{{$store.state.task.addEditTaskParams.competitorOrderCount == null ? '未填写' : $store.state.task.addEditTaskParams.competitorOrderCount}}</p>
                 </template>
               </van-cell>
 
@@ -197,7 +197,7 @@
                       <span class="custom-title">竞对政策</span>
                     </template>
                     <template slot="default">
-                      <p class="p5">{{r.racePolicy}}</p>
+                      <p class="p5">{{r.racePolicy ? r.racePolicy : '—'}}</p>
                     </template>
                   </van-cell>
                   <div></div>

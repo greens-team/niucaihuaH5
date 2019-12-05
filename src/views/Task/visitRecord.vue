@@ -186,7 +186,6 @@ export default {
           pics: this.$store.state.task.taskInfo.pics,
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
-        console.log(this.$store.state.task.addEditVisitlogParams, 1111);
 
         this.picVal = [
           { url: window.picServer + this.$store.state.task.taskInfo.pics }
@@ -224,18 +223,24 @@ export default {
           return false;
         }
       });
-      console.log(this.competitorList);
     }, 2000);
   },
   watch: {},
   methods: {
-    finishTask() {
+    finishTask() {      
       if (!this.$store.state.task.addEditVisitlogParams.dealerDes) {
         this.$dialog.alert({
           message: "请认真填写"
         });
       } else {
-        console.log(this.$store.state.task.addEditVisitlogParams, 22222);
+        
+        let competitorList = this.$store.state.task.addEditVisitlogParams.competitorList;
+        for (let i = 0; i < competitorList.length; i++) {
+          if (Number(competitorList[i].modelGid) == 0) {
+            competitorList.splice(i, 1); //删除下标为i的元素
+          }
+        }
+        this.$store.state.task.addEditVisitlogParams.competitorList = competitorList;
         this.$store
           .dispatch(this.$route.query.back ? "addvisitlog" : "editvisitlog", {
             gid: this.$route.query.id

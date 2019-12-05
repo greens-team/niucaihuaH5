@@ -41,10 +41,10 @@ export default {
           modelAttr: ''
         }
       ],
-      competitorOrderCount: 1,
+      competitorOrderCount: null,
       dealerDes: '',
       gid: '',
-      lbPreOrderCount: 1,
+      lbPreOrderCount: null,
       lesseeList: [
         {
           lesseeName: '',
@@ -67,10 +67,10 @@ export default {
             modelAttr: ''
           }
         ],
-        competitorOrderCount: 1,
+        competitorOrderCount: null,
         dealerDes: '',
         gid: '',
-        lbPreOrderCount: 1,
+        lbPreOrderCount: null,
         lesseeList: [
           {
             lesseeName: '',

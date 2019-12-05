@@ -210,7 +210,7 @@
         </div>
         <div>
           <div class="py-3 px-4 flex justify-between">
-            <span style="color:#484C55">上传法人身份证件照片</span>
+            <span style="color:#484C55">上传承租人身份证件照片</span>
           </div>
 
           <div class="py-3 px-3 flex bg-white">
