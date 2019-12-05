@@ -22,9 +22,9 @@ export default {
       "queryString": "",          // 查询输入值
       "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
       "startTime": 0,             // 开始时间 时间戳 秒
-      "visitCount": 0,            // 拜访次数
-      "notVisitConditions": 1,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-      "visitConditions": 1       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      "visitCount": '',            // 拜访次数
+      "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      "visitConditions": 0       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
     },
     status: [
       '稳定型', '已终止', '合作中', '深入沟通', '进行中'
@@ -51,6 +51,7 @@ export default {
       { id: 5, text: '很好' }
     ],
     conditions: [
+      { text: '选择条件', value: 0 },
       { text: '大于', value: 1 },
       { text: '等于', value: 2 },
       { text: '小于', value: 3 },
@@ -103,9 +104,9 @@ export default {
         "queryString": "",          // 查询输入值
         "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
         "startTime": 0,             // 开始时间 时间戳 秒
-        "visitCount": 0,            // 拜访次数
-        "notVisitConditions": 1,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-        "visitConditions": 1       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitCount": '',            // 拜访次数
+        "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitConditions": 0        // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
       }
     }
   },

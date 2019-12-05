@@ -44,6 +44,7 @@
 
       <van-cell clickable>
         <template slot="title">
+          <span class="text-white">*</span>
           <span class="custom-title">任务类型</span>
         </template>
         <template slot="default">
@@ -53,7 +54,7 @@
 
       <van-cell clickable>
         <template slot="title">
-          <!-- <span class="text-red-400">*</span> -->
+          <span class="text-white">*</span>
           <span class="custom-title">时间</span>
         </template>
         <template slot="default">
@@ -66,7 +67,7 @@
 
       <van-cell clickable>
         <template slot="title">
-          <!-- <span class="text-red-400">*</span> -->
+          <span class="text-white">*</span>
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
