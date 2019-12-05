@@ -28,7 +28,7 @@
             <van-field
               v-model="$store.state.task.addEditVisitlogParams.lbPreOrderCount"
               type="number"
-              pattern='[0-9]*'
+              pattern="[0-9]*"
               placeholder="请输入单量"
               @input="$store.state.task.addEditVisitlogParams.lbPreOrderCount=$store.state.task.addEditVisitlogParams.lbPreOrderCount.replace(/\D/g,'')"
             />
@@ -76,7 +76,7 @@
             <van-field
               v-model="$store.state.task.addEditVisitlogParams.competitorOrderCount"
               type="number"
-              pattern='[0-9]*'
+              pattern="[0-9]*"
               placeholder="请输入竞对单量"
               @input="$store.state.task.addEditVisitlogParams.competitorOrderCount=$store.state.task.addEditVisitlogParams.competitorOrderCount.replace(/\D/g,'')"
             />
@@ -189,10 +189,13 @@ export default {
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
 
-        this.picVal = [
-          { url: window.picServer + this.$store.state.task.taskInfo.pics }
-        ];
+        if (this.$store.state.task.taskInfo.pics) {
+          this.picVal = [
+            { url: window.picServer + this.$store.state.task.taskInfo.pics }
+          ];
+        }
 
+        // console.log(this.$store.state.task.taskInfo.pics)
         // this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList ? this.$store.state.task.taskInfo.competitorList.map(r=>{
         //   return {
         //     text: r.competorName,
@@ -229,14 +232,14 @@ export default {
   },
   watch: {},
   methods: {
-    finishTask() {      
+    finishTask() {
       if (!this.$store.state.task.addEditVisitlogParams.dealerDes) {
         this.$dialog.alert({
           message: "请认真填写"
         });
       } else {
-        
-        let competitorList = this.$store.state.task.addEditVisitlogParams.competitorList;
+        let competitorList = this.$store.state.task.addEditVisitlogParams
+          .competitorList;
         for (let i = 0; i < competitorList.length; i++) {
           if (Number(competitorList[i].modelGid) == 0) {
             competitorList.splice(i, 1); //删除下标为i的元素

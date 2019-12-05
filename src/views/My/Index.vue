@@ -20,11 +20,15 @@
             <!-- 广州城市经理 -->
           </p>
 
-          <img
+          <div
+            class="circleBg font-bold mr-6 text-xl"
+          >{{this.userInfo.realname && this.userInfo.realname.trim().substring(0,1).toUpperCase()}}</div>
+
+          <!-- <img
             src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1624240531,2195794812&fm=26&gp=0.jpg"
             class="border border-white w-20 h-20 rounded-full"
             alt
-          />
+          />-->
         </div>
         <p class="text-xs mt-3">
           电话 {{this.userInfo.phone}}
@@ -114,8 +118,8 @@ export default {
   },
   methods: {
     getAuth() {
-      this.$store.dispatch("getAuthInfo").then(res=>{
-        this.userInfo = res
+      this.$store.dispatch("getAuthInfo").then(res => {
+        this.userInfo = res;
       });
     }
   }
@@ -137,5 +141,15 @@ export default {
 }
 .My .van-cell:not(:last-child)::after {
   right: 16px;
+}
+.circleBg {
+  background: #fcfdff;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 3rem;
+  text-align: center;
+  line-height: 4.5rem;
+  color: #252525;
+  font-size: 1.3rem;
 }
 </style>
