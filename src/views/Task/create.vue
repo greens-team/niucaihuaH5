@@ -25,7 +25,7 @@
       <van-cell clickable>
         <template slot="title">
           <span class="text-red-400">*</span>
-          <span class="custom-title">主题111</span>
+          <span class="custom-title">主题</span>
         </template>
         <template slot="default">
           <van-field
