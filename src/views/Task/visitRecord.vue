@@ -189,9 +189,9 @@ export default {
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
 
-        this.picVal = [
+        this.$store.state.task.taskInfo.pics && (this.picVal = [
           { url: window.picServer + this.$store.state.task.taskInfo.pics }
-        ];
+        ]);
 
         // this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList ? this.$store.state.task.taskInfo.competitorList.map(r=>{
         //   return {
