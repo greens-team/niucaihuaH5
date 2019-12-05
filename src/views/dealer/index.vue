@@ -55,7 +55,7 @@
           v-model="$store.state.dealer.listParams.orderType" 
           :options="$store.state.dealer.orderType" />
       </van-dropdown-menu>
-      <Screening @onSearch="data => $store.dispatch('getListData', data)" />
+      <Screening @onSearch="searchAll" />
     </div>
 
     <div class="flex-1 relative" >
@@ -100,7 +100,6 @@ export default {
           resolve(msg)
         })
     })
-
     this.$store.dispatch('getListData', {pageNum: 1})
   },
   methods: {
@@ -109,6 +108,9 @@ export default {
         mask: true,
         message: '加载中...'
       })
+    },
+    searchAll(data){
+      this.$store.dispatch('getListData', Object.assign(data, {pageNum: 1}))
     }
   }
 }

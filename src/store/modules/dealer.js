@@ -135,7 +135,7 @@ export default {
         window.$ajax.auth.colleague(data).then(res => {
           if (!res.code) {
             state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
-            if(data.pageNum == 1){
+            if(data.pageNum == 1 && !data.rlNm){
               let userInfo = JSON.parse(sessionStorage.userInfo)
               state.colleagueDataList.unshift({
                 id: userInfo.EMPLOYEE_ID, 

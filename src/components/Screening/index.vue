@@ -53,23 +53,12 @@
               </van-dropdown-menu>
             </div>
 
-            <!-- <div class="text-gray-700 font-bold  mt-5">经营品牌</div>
-            <div class="flex flex-wrap justify-between text-center text-gray-600">
-              <div class="p-2 bg-gray-200 w-20 mr-3 mb-1 mt-1">红岩</div>
-              <div class="p-2 bg-gray-200 w-20 mr-3 mb-1 mt-1">红岩</div>
-              <div class="p-2 bg-gray-200 w-20 mr-3 mb-1 mt-1">红岩</div>
-              <div class="p-2 bg-gray-200 w-20 mr-3 mb-1 mt-1">红岩</div>
-              <div class="p-2 bg-gray-200 w-20 mr-3 mb-1 mt-1">红岩</div>
-            </div> -->
-
-            <div class="text-gray-700 font-bold  mt-5">经销商分级</div>
+            <!-- <div class="text-gray-700 font-bold  mt-5">经销商分级</div>
             <div class="flex flex-wrap text-center text-gray-600">
               <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]" @click="params.level = params.level == 1 ? '' : 1">一级经销商</div>
               <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]" @click="params.level = params.level == 2 ? '' : 2">二级经销商</div>
               <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div>
-            </div>
-
-       
+            </div> -->
 
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
@@ -83,29 +72,29 @@
                 <van-dropdown-item v-model="params.notVisitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.notVisitDays" @input="val=>!/^[0-9]+$/.test(val) && (this.params.notVisitDays = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.notVisitDays" pattern='[0-9]*' @input="val=>!/^[0-9]+$/.test(val) && (this.params.notVisitDays = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
             </div>
             
-            <div class="flex items-center mt-5">
+            <!-- <div class="flex items-center mt-5">
               <div class="text-gray-700 font-bold">拜访次数</div>
               <div class="flex-1"></div>
               <van-dropdown-menu class="text-gray-600 ml-3 p-3 w-32" style="background-color: #edf2f7; height: inherit; text-align:right;">
                 <van-dropdown-item v-model="params.visitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.visitCount" @input="val=>!/^[0-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+                <van-field type="number" v-model="params.visitCount" pattern='[0-9]*' @input="val=>!/^[0-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
               </div>
-            </div>
+            </div> -->
 
-            <div class="text-gray-700 font-bold  mt-5">关系健康度</div>
+            <!-- <div class="text-gray-700 font-bold  mt-5">关系健康度</div>
             <div class="flex flex-wrap justify-start text-center text-gray-600">
               <div v-for="(r,i) in $store.state.dealer.relationHealth" :key="i" 
                 @click="params.relationHealth = params.relationHealth == r.id ? '' : r.id"
                 :class="['p-2 cursor-pointer bg-gray-200 w-24 mr-1 mb-1', {cardStatus: r.id == params.relationHealth}]">
                 {{r.text}}
               </div>
-            </div>
+            </div> -->
 
           </div>
         </div>
@@ -257,8 +246,7 @@ export default {
     },
     // 确定时间
     confirmTaskTime(){
-      let timeStr = !this.timeType ? new Date(this.$root.moment(this.timeStr).format('YYYY-MM-DD 00:00:00')).getTime() : new Date(this.$root.moment(this.timeStr).format('YYYY-MM-DD 23:59:59')).getTime()
-
+      let timeStr = (!this.timeType ? this.$root.moment(this.timeStr).startOf('day').valueOf() : this.$root.moment(this.timeStr).endOf('day').valueOf());
       !this.timeType ? new Date(this.$root.moment(timeStr).format('YYYY-MM-DD 00:00:00')).getTime() : new Date(this.$root.moment(timeStr).format('YYYY-MM-DD 23:59:59')).getTime()
       if (!this.timeType && this.params.endTime && timeStr > this.params.endTime ) {
         this.$notify({ type: 'warning', message: '开始时间要小于结束时间' })

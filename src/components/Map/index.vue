@@ -80,8 +80,10 @@ export default {
             address = r.text
           }
         })
+
         this.$store.getters.NDparams.locationName = address
 
+        //打卡
         if(this.$route.query.id && this.$route.query.clockIn){
           this.$store.dispatch('clockincheck',{
             gid: this.$route.query.id,

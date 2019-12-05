@@ -12,7 +12,7 @@
       <div class="text-sm text-gray-500">{{r.province + '' + r.city + '' + r.area + '' + r.address}}</div>
       <div class="flex items-center pt-1">
         <span class="text-sm mr-2">{{r.ownerNames.toString()}}</span>
-        <van-tag type="primary" round class="text-sm">{{$store.state.dealer.status[r.status]}}</van-tag>
+        <!-- <van-tag type="primary" round class="text-sm">{{$store.state.dealer.status[r.status]}}</van-tag> -->
       </div>
     </div>
   </div>

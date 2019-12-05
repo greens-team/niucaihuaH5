@@ -11,40 +11,50 @@ export default {
     // }, 
     params: {
 
-      // dealerName: '',         // 名称
-      // creditCode: '',         // 统一社会社会信用代码
-      // establishTime: '',      // 成立日期时间戳
-      // splAttrCd: 2,           // 不展示 默认值为2； 供应商属性（1自然人  2法人）
-      // rgnPrCd: '',            // 省 代码
-      // rgnCyCd: '',            // 市 代码
-      // rgnArCd: '',            // 区 代码
-      // ownerCd: 1,             // 公司归属（ 1自有 2 第三方）
-      // chkBusTypCdList: '',    // 多选 业务类型 查征信的业务类型List 代码逗号隔开 
+      dealerName: '',         // 名称
+        creditCode: '',         // 统一社会社会信用代码
+        establishTime: '',      // 成立日期时间戳
+        splAttrCd: 2,           // 不展示 默认值为2； 供应商属性（1自然人  2法人）
+        rgnPrCd: '',            // 省 代码
+        rgnCyCd: '',            // 市 代码
+        rgnArCd: '',            // 区 代码
+        ownerCd: 1,             // 公司归属（ 1自有 2 第三方）
+        chkBusTypCdList: '',    // 多选 业务类型 查征信的业务类型List 代码逗号隔开 
+  
+        // idcardFrontPic: '',  // 身份证正面照片地址
+        // idcardBackPic: '',   // 身份证背面照片地址
+        // licensePic: '',      // 营业执照照片地址
+  
+        address: '',            // 详细地址
+  
+        area: '',               // 区
+        city: '',               // 城市
+        province: '',           // 省
+  
+        addType: 0,             // 0 直接新建经销商  1 新建经销商并添加联系人
+        dealerContactsList: [{
+          contactsGid: '',      // 联系人gid
+          jobTitle: ''          // 职称
+        }],
+  
+        latitude: '',           // 纬度  double
+        longitude: '',          // 纬度  double
+        
+        level: 1,               // 经销商分级（1 一级  2 二级）
+        ownerUserGids: [],      // [1,2,3]负责人gid 集合
+        followerUserGids: [],   // 跟进人gid集合
 
-      // // idcardFrontPic: '',  // 身份证正面照片地址
-      // // idcardBackPic: '',   // 身份证背面照片地址
-      // // licensePic: '',      // 营业执照照片地址
+        locationName: '',
+  
+        comment: '',            // 备注
+        
 
-      // address: '',            // 详细地址
 
-      // area: '',               // 区
-      // city: '',               // 城市
-      // province: '',           // 省
-
-      // addType: 0,             // 0 直接新建经销商  1 新建经销商并添加联系人
-      // dealerContactsList: [{
-      //   contactsGid: '',      // 联系人gid
-      //   jobTitle: ''          // 职称
-      // }],
-
-      // latitude: '',           // 纬度  double
-      // longitude: '',          // 纬度  double
-      
-      // level: 1,               // 经销商分级（1 一级  2 二级）
-      // ownerUserGids: [],      // [1,2,3]负责人gid 集合
-      // followerUserGids: [],   // 跟进人gid集合
-
-      // comment: '',            // 备注
+        dealerGid: '',
+        contactsName: '',
+        contactsPhone: '',
+        certTypCd: '',
+        certNo: ''
 
     },
     levelList: [{             // 经销商分级
