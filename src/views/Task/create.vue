@@ -140,7 +140,7 @@
       <van-cell clickable>
         <template slot="title">
           <span class="text-white">*</span>
-          <span class="custom-title">备注</span>
+          <span class="custom-title">备注111</span>
         </template>
         <template slot="default">
           <van-field
