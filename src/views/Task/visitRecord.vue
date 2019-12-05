@@ -27,9 +27,9 @@
           <template slot="default">
             <van-field
               v-model="$store.state.task.addEditVisitlogParams.lbPreOrderCount"
-              @input="$store.state.task.addEditVisitlogParams.lbPreOrderCount=$store.state.task.addEditVisitlogParams.lbPreOrderCount.replace(/\D/g,'')"
               type="number"
               placeholder="请输入单量"
+              @input="$store.state.task.addEditVisitlogParams.lbPreOrderCount=$store.state.task.addEditVisitlogParams.lbPreOrderCount.replace(/\D/g,'')"
             />
           </template>
         </van-cell>
@@ -80,12 +80,12 @@
             />
           </template>
         </van-cell>
-
         <div class="bg-gray-100 pt-3 pb-3 relative">
           <div
             class="absolute z-30 text-xl round"
             @click="$store.state.task.addEditVisitlogParams.competitorList.push({modelGid:0,modelAttr:''})"
           >+</div>
+
           <div v-for="(r,i) in $store.state.task.addEditVisitlogParams.competitorList" :key="i">
             <van-cell clickable class="relative">
               <template slot="title">
@@ -167,20 +167,22 @@ export default {
       if (this.$store.state.task.taskInfo.dealerDes) {
         // 回显数据
         this.$store.state.task.addEditVisitlogParams = {
-          competitorList: this.$store.state.task.taskInfo.competitorList.map(
-            r => {
-              return {
-                modelGid: r.competitorGid,
-                modelAttr: r.racePolicy
-              };
-            }
-          ),
+          competitorList: this.$store.state.task.taskInfo.competitorList
+            ? this.$store.state.task.taskInfo.competitorList.map(r => {
+                return {
+                  modelGid: r.competitorGid,
+                  modelAttr: r.racePolicy
+                };
+              })
+            : [{ modelGid: "", modelAttr: "" }],
           competitorOrderCount: this.$store.state.task.taskInfo
             .competitorOrderCount,
           dealerDes: this.$store.state.task.taskInfo.dealerDes,
           gid: this.$store.state.task.taskInfo.gid,
           lbPreOrderCount: this.$store.state.task.taskInfo.lbPreOrderCount,
-          lesseeList: this.$store.state.task.taskInfo.lesseeList,
+          lesseeList: this.$store.state.task.taskInfo.lesseeList || [
+            { lesseeComment: "", lesseeName: "" }
+          ],
           pics: this.$store.state.task.taskInfo.pics,
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
@@ -190,14 +192,12 @@ export default {
           { url: window.picServer + this.$store.state.task.taskInfo.pics }
         ];
 
-        this.competitorList = this.competitorList.concat(
-          this.$store.state.task.taskInfo.competitorList.map(r => {
-            return {
-              text: r.competorName,
-              value: r.competitorGid
-            };
-          })
-        );
+        // this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList ? this.$store.state.task.taskInfo.competitorList.map(r=>{
+        //   return {
+        //     text: r.competorName,
+        //     value: r.competitorGid,
+        //   }
+        // }) : [])
       }
     });
 
@@ -224,6 +224,7 @@ export default {
           return false;
         }
       });
+      console.log(this.competitorList);
     }, 2000);
   },
   watch: {},

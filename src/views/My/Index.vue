@@ -28,7 +28,8 @@
         </div>
         <p class="text-xs mt-3">
           <!-- 电话 15110289222 -->
-          <br />工号 {{userInfo.EMPLOYEE_ID}}
+          <br />
+          工号 {{userInfo.EMPLOYEE_ID}}
         </p>
       </div>
 
@@ -39,7 +40,7 @@
           class="w-5 m-1"
           alt
         />
-      </div> -->
+      </div>-->
     </div>
 
     <div class="bg-gray-100 mt-8">
@@ -103,14 +104,19 @@ export default {
   name: "My",
   data() {
     return {
-      userInfo: {}
+      userInfo: {},
+      testToken: ""
     };
   },
   mounted() {
     this.userInfo = JSON.parse(sessionStorage.userInfo);
-    // console.log(this.userInfo);
+    this.getAuth();
   },
-  methods: {}
+  methods: {
+    getAuth() {
+      this.$store.dispatch("getAuthInfo");
+    }
+  }
 };
 </script>
 

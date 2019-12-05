@@ -27,5 +27,14 @@ export default {
                 })
             })
         },
+        getAuthInfo() {   
+            return new Promise(resolve => {
+                window.$ajax.my.getAuthInfo().then(res => {
+                    if (!Number(res.code)) {
+                        resolve('操作成功')
+                    }
+                })
+            })
+        }
     }
 }
