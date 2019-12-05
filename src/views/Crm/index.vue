@@ -5,30 +5,22 @@
  <!-- Crm模块首页 -->
 <template>
   <div class="Crm">
-
-    <div class="flex justify-around pt-8 pb-6 ">
+    <div class="flex justify-around pt-8 pb-6">
       <div @click="$router.push('/DealerManage')">
-        <img src="../../assets/crm/icon1.png" class="w-16" alt="">
-        <p class="leading-loose text-center text-gray-700 text-sm">
-          经销商
-        </p>
+        <img src="../../assets/crm/icon1.png" class="w-16" alt />
+        <p class="leading-loose text-center text-gray-700 text-sm">经销商</p>
       </div>
       <div @click="$router.push('/Contacts')">
-        <img src="../../assets/crm/icon2.png" class="w-16" alt="">
-        <p class="leading-loose text-center text-gray-700 text-sm">
-          联系人
-        </p>
+        <img src="../../assets/crm/icon2.png" class="w-16" alt />
+        <p class="leading-loose text-center text-gray-700 text-sm">联系人</p>
       </div>
       <div @click="$router.push('/Lessee')">
-        <img src="../../assets/crm/icon3.png" class="w-16" alt="">
-        <p class="leading-loose text-center text-gray-700 text-sm">
-          承租人
-        </p>
+        <img src="../../assets/crm/icon3.png" class="w-16" alt />
+        <p class="leading-loose text-center text-gray-700 text-sm">承租人</p>
       </div>
     </div>
 
-    <div  class="bg-gray-100">
-
+    <div class="bg-gray-100">
       <div class="pt-3">
         <!-- <van-cell is-link>
           <template slot="title">
@@ -37,7 +29,7 @@
               <span class="custom-title">项目管理</span>
             </div>
           </template>
-        </van-cell> -->
+        </van-cell>-->
       </div>
       <van-cell-group>
         <!-- <van-cell is-link>
@@ -47,12 +39,18 @@
               <span class="custom-title">厂商品牌</span>
             </div>
           </template>
-        </van-cell> -->
+        </van-cell>-->
         <van-cell is-link>
           <template slot="title">
-            <div class="flex  items-center" @click="$router.push('/Competitor')">
-              <img src="../../assets/crm/icon6.png" class="w-5 mr-2" alt="">
-              <span class="custom-title">竞争对手</span>
+            <div
+              class="flex items-center justify-between"
+              @click="$router.push('/Competitor')"
+            >
+              <div class="flex-1 flex items-center">
+                <img style="width:1.57rem;height:1.57rem;" class="mr-1" src="../../assets/crm/icon6.png" alt />
+                <p style="font-size:1.143rem;">竞争对手</p>
+              </div>
+              
             </div>
           </template>
         </van-cell>
@@ -63,24 +61,20 @@
               <span class="custom-title">车型</span>
             </div>
           </template>
-        </van-cell> -->
+        </van-cell>-->
       </van-cell-group>
-
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Crm',
+  name: "Crm",
   data() {
-    return {
-    }
+    return {};
   },
-  methods: {
-  }
-}
+  methods: {}
+};
 </script>
 
 <style scoped>
