@@ -38,7 +38,7 @@
             v-if="editor"
             v-model="$store.state.task.addEditTaskParams.taskName"
           />
-          <p v-else class="p5">{{$store.state.task.addEditTaskParams.taskName}}</p>
+          <p v-else class="p5  text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
 
@@ -47,7 +47,7 @@
           <span class="custom-title">任务类型</span>
         </template>
         <template slot="default">
-          <p class="p5">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p>
+          <p class="p5  text-gray-800">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p>
         </template>
       </van-cell>
 
@@ -58,7 +58,7 @@
         </template>
         <template slot="default">
           <p
-            class="p5"
+            class="p5  text-gray-800"
             @click="editor && (taskTimeShow = true)"
           >{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime*1000).format('YYYY-MM-DD HH:mm') : '请选择时间'}}</p>
         </template>
@@ -70,7 +70,7 @@
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && changeAlarmTime()">{{alarmTimeText || '请选择提醒时间'}}</p>
+          <p class="p5  text-gray-800" @click="editor && changeAlarmTime()">{{alarmTimeText || '请选择提醒时间'}}</p>
         </template>
       </van-cell>
 
@@ -80,8 +80,8 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
-          <p class="p5" v-else @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
+          <p class="p5  text-gray-800" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p :class="['p5  ',{'text-gray-800': !!dealerName}]" v-else @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
         </template>
       </van-cell>
 
@@ -91,7 +91,7 @@
           <span class="custom-title">创建人</span>
         </template>
         <template slot="default">
-          <div class="p5">{{$store.state.task.addEditTaskParams.createUserName}}</div>
+          <div class="p5  text-gray-800">{{$store.state.task.addEditTaskParams.createUserName}}</div>
         </template>
       </van-cell>
 
@@ -106,7 +106,7 @@
             :paramsVal="mainUserGids"
             @setParams="val=>mainUserGids = val"
             soltCon="true"
-            class="p5"
+            :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
           >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</UserList>
         </template>
       </van-cell>
@@ -122,7 +122,7 @@
             :paramsVal="otherUserGids"
             @setParams="val=>otherUserGids = val"
             soltCon="true"
-            class="p5"
+            :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
           >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</UserList>
         </template>
       </van-cell>
@@ -133,7 +133,7 @@
           <span class="custom-title">拜访目的</span>
         </template>
         <template slot="default">
-          <p class="p5" @click="editor && (visitAimShow = true)">{{visitAimText || '请选择拜访目的'}}</p>
+          <p :class="['p5  ',{'text-gray-800': visitAimText}]" @click="editor && (visitAimShow = true)">{{visitAimText || '请选择拜访目的'}}</p>
         </template>
       </van-cell>
 
@@ -150,22 +150,23 @@
             rows="5"
             placeholder="请输入任务描述"
           />
-          <p class="p5" v-else>{{$store.state.task.addEditTaskParams.comment}}</p>
+          <p :class="['p5  ',{'text-gray-800': $store.state.task.addEditTaskParams.comment}]" v-else>{{$store.state.task.addEditTaskParams.comment || '未备注'}}</p>
         </template>
       </van-cell>
+      <div></div>
 
       <div
         v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
         class="bg-gray-100 pt-3 pb-2"
       >
         <div class="pl-5">打卡位置</div>
-        <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2">
+        <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2" @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})">
           <div class="flex-1">
             <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
             <!-- <br /> <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span> -->
           </div>
           <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
-          <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" class="iconfont iconweizhibang"></i></div>
+          <!-- <div><i  class="iconfont iconweizhibang"></i></div> -->
         </div>
       </div>
     </div>
@@ -376,8 +377,8 @@ export default {
       currentDate: new Date(),
 
       alarmTimeShow: false,
-      alarmTimeVal: { text: "30分钟", value: 30 * 60 * 1000 },
-      alarmTimeText: "30分钟",
+      alarmTimeVal: { text: "提前30分钟", value: 30 * 60 * 1000 },
+      alarmTimeText: "提前30分钟",
       alarmTimeOption: [
         { text: "准时", value: 0 },
         { text: "不提醒", value: "" },

@@ -189,11 +189,9 @@ export default {
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
 
-        if (this.$store.state.task.taskInfo.pics) {
-          this.picVal = [
-            { url: window.picServer + this.$store.state.task.taskInfo.pics }
-          ];
-        }
+        this.$store.state.task.taskInfo.pics && (this.picVal = [
+          { url: window.picServer + this.$store.state.task.taskInfo.pics }
+        ]);
 
         // console.log(this.$store.state.task.taskInfo.pics)
         // this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList ? this.$store.state.task.taskInfo.competitorList.map(r=>{
