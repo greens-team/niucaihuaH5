@@ -29,7 +29,7 @@
         </template>
         <template slot="default">
           <van-field
-            :rows="3"
+            style="height:36px;"
             autosize
             type="textarea"
             maxlength="50"
@@ -38,17 +38,19 @@
             v-if="editor"
             v-model="$store.state.task.addEditTaskParams.taskName"
           />
-          <p v-else class="p5  text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
+          
+          <p v-else class="p5 text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
 
       <van-cell clickable>
         <template slot="title">
           <span class="text-white">*</span>
-          <span class="custom-title">任务类型</span>
+          <span class="custom-title">类型</span>
         </template>
         <template slot="default">
-          <p class="p5  text-gray-800">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p>
+          <!-- <p class="p5 text-gray-800">{{taskTypeOption[$store.state.task.addEditTaskParams.taskType-1].text}}</p> -->
+          <p class="p5 text-gray-800">{{$route.query.taskType == 1 ?'经销商拜访' : '任务事项'}}</p>
         </template>
       </van-cell>
 

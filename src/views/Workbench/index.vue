@@ -325,6 +325,7 @@ export default {
     TaskDetail(id){
       this.$store.dispatch('getTaskInfo',id).then(()=>{
         let taskType = this.$store.state.task.taskInfo.taskType  // 1 经销商拜访 2 任务事项
+        // console.log(taskType,"type")
         let visitType = this.$store.state.task.taskInfo.visitType // 0 正常流程 1 直接完成
         let taskStatus = this.$store.state.task.taskInfo.taskStatus // 0 创建完成 1 打卡完成或者手动标记完成 2 记录完成即任务结束完成
         let gid = this.$store.state.task.taskInfo.gid
