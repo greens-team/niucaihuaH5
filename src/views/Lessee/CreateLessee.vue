@@ -48,6 +48,7 @@
           <div
             style="color:#252525"
             class="flex-1"
+            :style="{color:birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
             @click="birthdayTimeShow = true;"
           >{{ birthday ? birthday : '请选择日期'}}</div>
         </div>
@@ -71,7 +72,7 @@
           <div style="width:130px; color:#252525;">承租人状态</div>
           <div
             class="flex-1"
-            style="color:#252525"
+            :style="{color:selectLesseeStatus?'#252525':'rgba(69, 90, 100, 0.6)'}"
             @click="lesseeStatusShow = true;"
           >{{selectLesseeStatus ? selectLesseeStatus : '请选择状态'}}</div>
         </div>
@@ -106,6 +107,7 @@
             class="flex-1"
             style="color:#252525"
             @click="lesseeTypeShow = true;"
+            :style="{color:selectLesseeType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectLesseeType ? selectLesseeType : '请选择类型'}}</div>
         </div>
         <van-popup v-model="lesseeTypeShow" position="bottom" :style="{ height: '40%'}">
@@ -139,6 +141,7 @@
             style="color:#252525"
             class="flex-1"
             @click="genderShow = true;"
+            :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
         <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}">
@@ -172,6 +175,7 @@
           placeholder="请填写信息"
           label-width="130"
           type="number"
+          pattern="[0-9]*"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
@@ -301,6 +305,7 @@ export default {
   },
   mounted() {
     // this.setBirthday();
+    console.log(this.selectLesseeType);
   },
   methods: {
     deleteFile(file, detail) {

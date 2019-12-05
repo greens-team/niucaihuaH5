@@ -87,12 +87,16 @@
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">竞对类型</p>
-                    <p>{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
+                    <p
+                      :style="{color:info.competorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '—'}}</p>
                   </div>
 
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">备注</p>
-                    <p>{{info.comment ? info.comment : '—'}}</p>
+                    <p
+                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.comment ? info.comment : '—'}}</p>
                   </div>
                 </div>
               </div>
@@ -410,7 +414,7 @@ export default {
   background-color: #f6f6f6;
 }
 .baseName {
-   background: linear-gradient(
+  background: linear-gradient(
     245deg,
     rgba(255, 164, 0, 1) 0%,
     rgba(255, 205, 43, 1) 100%
@@ -491,5 +495,8 @@ export default {
 .CompetitorInfo /deep/ .van-hairline--top-bottom::after,
 .CompetitorInfo /deep/ .van-hairline-unset--top-bottom::after {
   border-width: 0px;
+}
+.CompetitorInfo /deep/ .van-tabs__nav {
+  background: transparent;
 }
 </style>

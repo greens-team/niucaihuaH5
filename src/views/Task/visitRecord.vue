@@ -28,6 +28,7 @@
             <van-field
               v-model="$store.state.task.addEditVisitlogParams.lbPreOrderCount"
               type="number"
+              pattern='[0-9]*'
               placeholder="请输入单量"
               @input="$store.state.task.addEditVisitlogParams.lbPreOrderCount=$store.state.task.addEditVisitlogParams.lbPreOrderCount.replace(/\D/g,'')"
             />
@@ -75,6 +76,7 @@
             <van-field
               v-model="$store.state.task.addEditVisitlogParams.competitorOrderCount"
               type="number"
+              pattern='[0-9]*'
               placeholder="请输入竞对单量"
               @input="$store.state.task.addEditVisitlogParams.competitorOrderCount=$store.state.task.addEditVisitlogParams.competitorOrderCount.replace(/\D/g,'')"
             />

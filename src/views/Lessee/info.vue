@@ -123,12 +123,16 @@
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">身份证号码</p>
-                    <p class="text_content text-sm">{{ info.idcardNum ? info.idcardNum : '—'}}</p>
+                    <p
+                      class="text_content text-sm"
+                      :style="{color:info.idcardNum?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{ info.idcardNum ? info.idcardNum : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">出生日期</p>
                     <p
                       class="text_content text-sm"
+                      :style="{color:info.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.birthday == null ? '—' : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
                   </div>
                   <!-- <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -136,7 +140,7 @@
                     <p class="text_content text-sm">{{info.marry ? '已婚' : '未婚'}}</p>
                   </div>-->
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">性别{{info.gender}}</p>
+                    <p class="text-xs text_title">性别</p>
                     <p class="text_content text-sm">{{info.gender ? '女' : '男'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -148,7 +152,7 @@
                     <p class="text-xs text_title">手机号</p>
                     <p
                       class="text_content text-sm"
-                      style="color:#0885FF;"
+                      :style="{color:info.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.lesseePhone ? info.lesseePhone : '—'}}</p>
                   </div>
                   <!-- <div class="border-b border-gray-100 pt-2 pb-2">
@@ -161,18 +165,22 @@
                     <p class="text-xs text_title">户口所在地</p>
                     <p
                       class="text_content text-sm"
+                      :style="{color:info.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.domicilePlace ? info.domicilePlace : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">家庭住址</p>
                     <p
                       class="text_content text-sm"
-                      style="color:#0885FF;"
+                      :style="{color:info.homeAddress?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.homeAddress ? info.homeAddress : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">从业年限</p>
-                    <p class="text_content text-sm">{{info.workingYears ? info.workingYears : '—'}}</p>
+                    <p
+                      class="text_content text-sm"
+                      :style="{color:info.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.workingYears ? info.workingYears : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2">
                     <p class="text-xs text_title">照片</p>
@@ -205,7 +213,10 @@
 
                   <div class="pt-2 pb-2">
                     <p class="text-xs text_title">备注</p>
-                    <p class="text_content text-sm">{{info.comment ? info.comment : '—'}}</p>
+                    <p
+                      class="text_content text-sm"
+                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.comment ? info.comment : '—'}}</p>
                   </div>
                 </div>
               </div>
@@ -597,7 +608,7 @@ export default {
   align-items: center;
 }
 .baseName {
-   background: linear-gradient(
+  background: linear-gradient(
     245deg,
     rgba(255, 164, 0, 1) 0%,
     rgba(255, 205, 43, 1) 100%

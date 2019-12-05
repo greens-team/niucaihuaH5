@@ -182,8 +182,8 @@
               <div class="flex flex-col p-2 relative rowBox" v-for="(row, i) in $store.state.workbench.colleaguesTaskList" :key="'c'+i"
                 @click="TaskDetail(row.gid)">
                 <div class="flex">
-                  <span class="text-base font-bold text-gray-900">{{row.taskName}}</span>
-                  <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span>
+                  <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                  <!-- <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span> -->
                   <div class="flex-1"></div>
                   <span class="text-xs  text-gray-600">{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
                 </div>

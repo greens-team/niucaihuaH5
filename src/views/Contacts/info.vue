@@ -87,15 +87,22 @@
                     <p class="text-xs text-gray-500">电话</p>
                     <p
                       class="text-gray-900 text-sm"
+                      :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.contactsPhone ? info.contactsPhone : '—'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">微信号</p>
-                    <p class="text-gray-900 text-sm">{{info.weichatNum ? info.weichatNum : '—'}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:info.weichatNum?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.weichatNum ? info.weichatNum : '—'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">备注</p>
-                    <p class="text-gray-900 text-sm">{{info.comment ? info.comment : '—'}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.comment ? info.comment : '—'}}</p>
                   </div>
                 </div>
               </div>
@@ -127,7 +134,11 @@
                     </div>
                     <div class="pt-2 pb-2">
                       <p class="text-xs text-gray-500">职务</p>
-                      <p class="text-base">{{r.jobTitle ? r.jobTitle : '—'}}</p>
+
+                      <p
+                        class="text-base"
+                        :style="{color:r.jobTitle?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{r.jobTitle ? r.jobTitle : '—'}}</p>
                     </div>
                   </van-collapse-item>
                 </van-collapse>
@@ -150,7 +161,6 @@
                       class="w-12 h-12 text-center rounded-full mr-4 text-xl circleBg"
                     >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
 
-                    
                     <div>
                       <div class="text-ms font-bold">{{r.userName}}</div>
                       <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
@@ -393,7 +403,7 @@ export default {
 
 <style scoped>
 .circleBg {
-   background: linear-gradient(
+  background: linear-gradient(
     245deg,
     rgba(255, 164, 0, 1) 0%,
     rgba(255, 205, 43, 1) 100%
@@ -408,7 +418,7 @@ export default {
 
 .ContactsInfo .tabs /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 4px;
+  height: 5px;
 }
 .ContactsInfo .tabs /deep/ .van-hairline--top-bottom::after,
 .ContactsInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
@@ -496,5 +506,8 @@ export default {
 .ContactsInfo /deep/ .van-hairline--top-bottom::after,
 .ContactsInfo /deep/ .van-hairline-unset--top-bottom::after {
   border-width: 0px;
+}
+.ContactsInfo /deep/ .van-tabs__nav {
+  background: transparent;
 }
 </style>

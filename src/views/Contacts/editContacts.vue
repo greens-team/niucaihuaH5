@@ -39,6 +39,7 @@
           placeholder="请填写信息"
           label-width="130"
           type="number"
+          pattern='[0-9]*'
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>

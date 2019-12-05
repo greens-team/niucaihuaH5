@@ -6,7 +6,6 @@ export default {
             pics: '',
             content: ''
         }
-
     },
     mutations: {
         setParamsEmpty(state) {
@@ -27,11 +26,11 @@ export default {
                 })
             })
         },
-        getAuthInfo() {   
+        getAuthInfo() {
             return new Promise(resolve => {
                 window.$ajax.my.getAuthInfo().then(res => {
                     if (!Number(res.code)) {
-                        resolve('操作成功')
+                        resolve(res.data)
                     }
                 })
             })

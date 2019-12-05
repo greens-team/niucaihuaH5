@@ -169,6 +169,7 @@
           placeholder="请填写信息"
           label-width="130"
           type="number"
+          pattern='[0-9]*'
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
@@ -332,10 +333,15 @@ export default {
     },
     getInitParams() {
       let birthday = this.$store.state.lessee.info.birthday;
+      let workingYears = this.$store.state.lessee.info.workingYears;
       if (birthday == null) {
         this.birthday = birthday;
       } else {
         this.birthday = this.$root.moment(birthday * 1000).format("YYYY-MM-DD");
+      }
+
+      if(!workingYears) {
+        this.$store.state.lessee.editParams.workingYears = null;
       }
 
       //性别的默认显示

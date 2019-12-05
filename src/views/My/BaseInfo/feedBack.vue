@@ -67,6 +67,7 @@
           placeholder="请输入手机号"
           label-width="130"
           type="number"
+          pattern='[0-9]*'
           clearable
           @blur="checkErrorMsg"
         />

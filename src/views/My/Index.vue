@@ -12,11 +12,11 @@
           <p>
             <span class="text-xl font-bold">
               <!-- 王成阔 -->
-              {{userInfo.EMPLOYEE_NAME}}
+              {{this.userInfo.realname}}
             </span>
 
             <br />
-            {{userInfo.funauth && userInfo.funauth[0].rolename}}
+            {{this.userInfo.job}}
             <!-- 广州城市经理 -->
           </p>
 
@@ -27,9 +27,9 @@
           />
         </div>
         <p class="text-xs mt-3">
-          <!-- 电话 15110289222 -->
+          电话 {{this.userInfo.phone}}
           <br />
-          工号 {{userInfo.EMPLOYEE_ID}}
+          工号 {{this.userInfo.username}}
         </p>
       </div>
 
@@ -114,7 +114,9 @@ export default {
   },
   methods: {
     getAuth() {
-      this.$store.dispatch("getAuthInfo");
+      this.$store.dispatch("getAuthInfo").then(res=>{
+        this.userInfo = res
+      });
     }
   }
 };
