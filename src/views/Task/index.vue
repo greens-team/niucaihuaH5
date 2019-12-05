@@ -109,8 +109,8 @@
             <div class="pl-5">打卡位置</div>
             <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2">
               <div class="flex-1">
-                <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span><br />
-                <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span>
+                <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
+                <!-- <br /><span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span> -->
               </div>
               <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.longitude, lat:$store.state.task.addEditTaskParams.latitude}})" class="iconfont iconweizhibang text-orange-500"></i></div>
             </div>

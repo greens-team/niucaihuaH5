@@ -297,10 +297,28 @@ export default {
 
     this.typeList = this.$store.state.newDealer.businessTypesValues || [];
 
+    // 从地图页面回来时 回显地理位置
+    let mapInfo = {
+      locationName: '',
+      longitude: '',
+      latitude: ''
+    }
+    
+    if(this.$store.getters.NDparams.locationName){
+      mapInfo.locationName = this.$store.getters.NDparams.locationName
+      mapInfo.longitude = this.$store.getters.NDparams.longitude
+      mapInfo.latitude = this.$store.getters.NDparams.latitude
+    }
+
     if (this.$route.query.id) {
       this.id = this.$route.query.id;
       this.$store.dispatch("getinfo", this.id).then(() => {
         this.$store.commit("setNewDealerParams");
+
+        mapInfo.locationName && (this.$store.state.dealerInfo.baseInfo.locationName = mapInfo.locationName)
+        mapInfo.longitude && (this.$store.state.dealerInfo.baseInfo.longitude = mapInfo.longitude)
+        mapInfo.latitude && (this.$store.state.dealerInfo.baseInfo.latitude = mapInfo.latitude)
+
         this.$store.commit("setParams", this.$store.state.dealerInfo.baseInfo);
 
         this.existLegal = this.$store.state.newDealer.params.contactsName

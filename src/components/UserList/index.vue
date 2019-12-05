@@ -68,7 +68,7 @@ export default {
                 pageNum: ++this.getColleaguePageNum,
                 pageSize: 10,
                 usrNM: '',
-                rlNm: ''
+                rlNm: this.searchKeyword
               }).then(len=>{
                 if(len < 10){
                   this.colleagueLastPage = true

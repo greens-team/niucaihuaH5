@@ -162,16 +162,10 @@
         <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2">
           <div class="flex-1">
             <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
-            <br />
-            <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span>
+            <!-- <br /> <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span> -->
           </div>
-          <i class="iconfont iconweizhi text-orange-500"></i>
-          <div>
-            <i
-              @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})"
-              class="iconfont iconweizhibang"
-            ></i>
-          </div>
+          <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
+          <div><i @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" class="iconfont iconweizhibang"></i></div>
         </div>
       </div>
     </div>
