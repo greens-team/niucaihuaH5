@@ -10,7 +10,7 @@
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
       </div>
-      <span class="text-center font-medium bar_title">联系人详情</span>
+      <span class="text-center font-bold bar_title">联系人详情</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
 
@@ -218,7 +218,7 @@
         <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
       </van-uploader>
 
-      <form class="search-block" action="javascript:void 0">
+      <!-- <form class="search-block" action="javascript:void 0">
         <input
           type="text"
           placeholder="请输入工作进展"
@@ -229,7 +229,8 @@
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
-      </form>
+      </form> -->
+      <van-field v-model="newsLogContent" class="rounded-lg m-3" style="background:#f6f6f6;height:70%" placeholder="请输入工作进展" @keyup.13="tapToSearch" />
     </div>
   </div>
 </template>
@@ -356,6 +357,7 @@ export default {
       this.uploadFile(
         file,
         fileUrl => {
+          this.newsLogContent = ''
           this.tapToSearch(fileUrl);
         },
         0
@@ -442,19 +444,19 @@ export default {
 .search-block {
   width: 90%;
 }
-::-webkit-input-placeholder {
+.ContactsInfo /deep/ ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   text-align: center;
 }
-::-moz-placeholder {
+.ContactsInfo /deep/ ::-moz-placeholder {
   /* Firefox 19+ */
   text-align: center;
 }
-:-ms-input-placeholder {
+.ContactsInfo /deep/ :-ms-input-placeholder {
   /* IE 10+ */
   text-align: center;
 }
-:-moz-placeholder {
+.ContactsInfo /deep/ :-moz-placeholder {
   /* Firefox 18- */
   text-align: center;
 }

@@ -14,7 +14,7 @@
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
       </div>
-      <span class="text-center font-medium bar_title">新建联系人</span>
+      <span class="text-center font-bold bar_title">新建联系人</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
         <div slot="right" class="text-center text-base" @click="createContacts">保存</div>

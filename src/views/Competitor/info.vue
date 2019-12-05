@@ -19,7 +19,7 @@
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
       </div>
-      <span class="text-center font-medium bar_title">竞争对手详情</span>
+      <span class="text-center font-bold bar_title">竞争对手详情</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
 
@@ -206,12 +206,12 @@
         :after-read="logPic"
         :before-read="file => uploadFile(file,true)"
         :max-count="1"
-        style="height:90%"
+        style="height:105%"
       >
         <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
       </van-uploader>
 
-      <form class="search-block" action="javascript:void 0">
+      <!-- <form class="search-block" action="javascript:void 0">
         <input
           type="text"
           placeholder="请输入工作进展"
@@ -222,7 +222,15 @@
           onfocus="this.placeholder=''"
           onblur="this.placeholder='请输入工作进展'"
         />
-      </form>
+      </form>-->
+
+      <van-field
+        v-model="newsLogContent"
+        class="rounded-lg m-3"
+        style="background:#f6f6f6;height:70%"
+        placeholder="请输入工作进展"
+        @keyup.13="tapToSearch"
+      />
     </div>
   </div>
 </template>
@@ -353,6 +361,7 @@ export default {
       this.uploadFile(
         file,
         fileUrl => {
+          this.newsLogContent = ''
           this.tapToSearch(fileUrl);
         },
         0
@@ -409,10 +418,10 @@ export default {
   align-items: center;
 }
 
-.CompetitorInfo /deep/ .van-field {
-  width: 70%;
+/* .CompetitorInfo /deep/ .van-field {
+  width: 90%;
   background-color: #f6f6f6;
-}
+} */
 .baseName {
   background: linear-gradient(
     245deg,
@@ -431,19 +440,19 @@ export default {
   width: 90%;
 }
 
-::-webkit-input-placeholder {
+.CompetitorInfo /deep/ ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   text-align: center;
 }
-::-moz-placeholder {
+.CompetitorInfo /deep/ ::-moz-placeholder {
   /* Firefox 19+ */
   text-align: center;
 }
-:-ms-input-placeholder {
+.CompetitorInfo /deep/ :-ms-input-placeholder {
   /* IE 10+ */
   text-align: center;
 }
-:-moz-placeholder {
+.CompetitorInfo /deep/ :-moz-placeholder {
   /* Firefox 18- */
   text-align: center;
 }
