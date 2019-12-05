@@ -13,7 +13,7 @@ export default {
       "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
       "followerUserGids": [],     // 跟进人gid 集合
       "level": 0,                 // 经销商分级（1 一级 2 二级）
-      "notVisitDays": 0,          // 没有拜访的天数
+      "notVisitDays": '',          // 没有拜访的天数
       "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
       "ownerUserGids": [],        // 负责人gid 集合
       "pageNum": 1,               // 当前页数 1开始
@@ -22,9 +22,9 @@ export default {
       "queryString": "",          // 查询输入值
       "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
       "startTime": 0,             // 开始时间 时间戳 秒
-      "visitCount": 0,            // 拜访次数
-      "notVisitConditions": 1,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-      "visitConditions": 1       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      "visitCount": '',            // 拜访次数
+      "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      "visitConditions": 0       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
     },
     status: [
       '稳定型', '已终止', '合作中', '深入沟通', '进行中'
@@ -51,6 +51,7 @@ export default {
       { id: 5, text: '很好' }
     ],
     conditions: [
+      { text: '选择条件', value: 0 },
       { text: '大于', value: 1 },
       { text: '等于', value: 2 },
       { text: '小于', value: 3 },
@@ -94,7 +95,7 @@ export default {
         "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
         "followerUserGids": [],     // 跟进人gid 集合
         "level": 0,                 // 经销商分级（1 一级 2 二级）
-        "notVisitDays": 0,          // 没有拜访的天数
+        "notVisitDays": '',          // 没有拜访的天数
         "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
         "ownerUserGids": [],        // 负责人gid 集合
         "pageNum": 1,               // 当前页数 1开始
@@ -103,9 +104,9 @@ export default {
         "queryString": "",          // 查询输入值
         "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
         "startTime": 0,             // 开始时间 时间戳 秒
-        "visitCount": 0,            // 拜访次数
-        "notVisitConditions": 1,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-        "visitConditions": 1       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitCount": '',            // 拜访次数
+        "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitConditions": 0        // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
       }
     }
   },
