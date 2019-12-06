@@ -1,7 +1,7 @@
  <!-- 拜访任务详情 -->
 <template>
   <div class="taskDetails flex flex-1 flex-col">
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'"
       left-text="返回"
       @click-left="$router.go(-1)"
@@ -13,11 +13,36 @@
         v-if="taskStatus == 2 && $store.state.task.addEditTaskParams.taskType == 1"
         slot="right"
       >编辑</div>
-    </van-nav-bar>
+    </van-nav-bar> -->
+
+     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">{{$route.query.taskType == 1 ?'经销商拜访' : '任务事项'}}</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          @click="editorFun"
+          v-if="taskStatus == 2 && $store.state.task.addEditTaskParams.taskType == 1"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+      </div>
+    </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
-        <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访安排</div>
+        <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">
+          {{$route.query.taskType == 1 ?'拜访安排' : '任务'}}
+        </div>
 
         <van-cell clickable>
           <template slot="title">
@@ -398,5 +423,16 @@ export default {
 }
 .taskDetails /deep/ .van-cell__value {
   text-align: inherit;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

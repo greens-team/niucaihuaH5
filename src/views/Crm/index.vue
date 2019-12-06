@@ -8,15 +8,15 @@
     <div class="flex justify-around pt-8 pb-6">
       <div @click="$router.push('/DealerManage')">
         <img src="../../assets/crm/icon1.png" class="w-16" alt />
-        <p class="leading-loose text-center text-gray-700" style="font-size:1rem;">经销商</p>
+        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">经销商</p>
       </div>
       <div @click="$router.push('/Contacts')">
         <img src="../../assets/crm/icon2.png" class="w-16" alt />
-        <p class="leading-loose text-center text-gray-700" style="font-size:1rem;">联系人</p>
+        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">联系人</p>
       </div>
       <div @click="$router.push('/Lessee')">
         <img src="../../assets/crm/icon3.png" class="w-16" alt />
-        <p class="leading-loose text-center text-gray-700" style="font-size:1rem;">承租人</p>
+        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">承租人</p>
       </div>
     </div>
 

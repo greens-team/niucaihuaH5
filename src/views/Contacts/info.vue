@@ -74,7 +74,7 @@
                     @click="showInfo1 = !showInfo1"
                   >
                     基本信息
-                    <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
+                    <i class="iconfont iconweizhankai ml-2 icon_toggle" style="color:#80848D" :class="{ active: showInfo1}"></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
@@ -569,5 +569,9 @@ export default {
 }
 .ContactsInfo /deep/ .van-tabs__nav {
   background: transparent;
+}
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
 }
 </style>

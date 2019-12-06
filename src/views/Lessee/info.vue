@@ -70,10 +70,10 @@
             >
               <div
                 v-if="i"
-                :class="['flex flex-1 items-center relative', {gray: i <= info.lesseeStatus}]"
+                :class="['flex flex-1 relative items-center', {gray: i <= info.lesseeStatus}]"
               >
                 <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
-                <div class="status-correct"></div>
+                <div class="status_correct"></div>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
                     @click="showInfo1 = !showInfo1"
                   >
                     承租人基本信息
-                    <i class="iconfont iconweizhankai ml-2" style="color:#80848D"></i>
+                   <i class="iconfont iconweizhankai ml-2 icon_toggle" style="color:#80848D" :class="{ active: showInfo1}"></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
@@ -627,7 +627,7 @@ export default {
   flex: 1;
   color: #222;
 }
-.gray .status-correct {
+.gray .status_correct {
   position: absolute;
   display: inline-block;
   width: 1rem;
@@ -637,7 +637,7 @@ export default {
   right: 1.2rem;
   bottom: 0.2rem;
 }
-.gray .status-correct::after {
+.gray .status_correct::after {
   content: "";
   position: absolute;
   left: 4px;
@@ -752,5 +752,9 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
 }
 </style>

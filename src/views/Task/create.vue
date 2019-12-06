@@ -1,7 +1,7 @@
  <!-- 新建拜访任务 -->
 <template>
   <div class="taskCreate">
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="$route.query.taskType == 1 ?'经销商拜访' : '任务事项'"
       left-text="返回"
       @click-left="$router.go(-1)"
@@ -13,11 +13,41 @@
         slot="right"
       >{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
       
-        
-
       <div slot="right" v-if="!editor && taskId && !taskStatus " v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>editor = !editor)">编辑</div>
       <div @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
-    </van-nav-bar>
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">{{$route.query.taskType == 1 ?'经销商拜访' : '任务事项'}}</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div
+          @click="save"
+          v-if="editor && !taskId"
+          slot="right"
+        >{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
+
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          v-if="!editor && taskId && !taskStatus "
+          v-show="$root.checkRole('TASK_EDIT')"
+          @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>editor = !editor)"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+
+        <div @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
+      </div>
+    </div>
 
     <!-- {{mainUserGids}} - {{userInfo.EMPLOYEE_ID}} - {{userInfo.EMPLOYEE_NAME}}
     {{$route.query.dealerName}}
@@ -41,7 +71,7 @@
             v-if="editor"
             v-model="$store.state.task.addEditTaskParams.taskName"
           />
-          
+
           <p v-else class="p5 text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
@@ -64,7 +94,7 @@
         </template>
         <template slot="default">
           <p
-            class="p5  text-gray-800"
+            class="p5 text-gray-800"
             @click="editor && (taskTimeShow = true)"
           >{{$store.state.task.addEditTaskParams.taskTime ? $root.moment($store.state.task.addEditTaskParams.taskTime*1000).format('YYYY-MM-DD HH:mm') : '请选择时间'}}</p>
         </template>
@@ -76,7 +106,10 @@
           <span class="custom-title">提醒</span>
         </template>
         <template slot="default">
-          <p class="p5  text-gray-800" @click="editor && changeAlarmTime()">{{alarmTimeText || '请选择提醒时间'}}</p>
+          <p
+            class="p5 text-gray-800"
+            @click="editor && changeAlarmTime()"
+          >{{alarmTimeText || '请选择提醒时间'}}</p>
         </template>
       </van-cell>
 
@@ -86,8 +119,12 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5  text-gray-800" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
-          <p :class="['p5  ',{'text-gray-800': !!dealerName}]" v-else @click="editor && (dealerShow = true)">{{dealerName || '请选择相关经销商'}}</p>
+          <p class="p5 text-gray-800" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p
+            :class="['p5  ',{'text-gray-800': !!dealerName}]"
+            v-else
+            @click="editor && (dealerShow = true)"
+          >{{dealerName || '请选择相关经销商'}}</p>
         </template>
       </van-cell>
 
@@ -97,7 +134,7 @@
           <span class="custom-title">创建人</span>
         </template>
         <template slot="default">
-          <div class="p5  text-gray-800">{{$store.state.task.addEditTaskParams.createUserName}}</div>
+          <div class="p5 text-gray-800">{{$store.state.task.addEditTaskParams.createUserName}}</div>
         </template>
       </van-cell>
 
@@ -139,7 +176,10 @@
           <span class="custom-title">拜访目的</span>
         </template>
         <template slot="default">
-          <p :class="['p5  ',{'text-gray-800': visitAimText}]" @click="editor && (visitAimShow = true)">{{visitAimText || '请选择拜访目的'}}</p>
+          <p
+            :class="['p5  ',{'text-gray-800': visitAimText}]"
+            @click="editor && (visitAimShow = true)"
+          >{{visitAimText || '请选择拜访目的'}}</p>
         </template>
       </van-cell>
 
@@ -156,7 +196,10 @@
             rows="15"
             placeholder="请输入任务描述"
           />
-          <p :class="['p5  ',{'text-gray-800': $store.state.task.addEditTaskParams.comment}]" v-else>{{$store.state.task.addEditTaskParams.comment || '未备注'}}</p>
+          <p
+            :class="['p5  ',{'text-gray-800': $store.state.task.addEditTaskParams.comment}]"
+            v-else
+          >{{$store.state.task.addEditTaskParams.comment || '未备注'}}</p>
         </template>
       </van-cell>
       <div></div>
@@ -166,7 +209,10 @@
         class="bg-gray-100 pt-3 pb-2"
       >
         <div class="pl-5">打卡位置</div>
-        <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2" @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})">
+        <div
+          class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2"
+          @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})"
+        >
           <div class="flex-1">
             <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
             <!-- <br /> <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span> -->
@@ -332,24 +378,28 @@
     </van-popup>
 
     <div
-      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, finishTask)"
+      v-show="$root.checkRole('TASK_EDIT')"
+      @click="$root.dataCheck({modelObjType:5, modelId: taskId}, finishTask)"
       v-if="!editor && $route.query.taskType == 2 && taskId"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >完成任务</div>
 
     <div
-      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, clockIn)"
+      v-show="$root.checkRole('TASK_EDIT')"
+      @click="$root.dataCheck({modelObjType:5, modelId: taskId}, clockIn)"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 0"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >签到打卡</div>
     <div
-      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
+      v-show="$root.checkRole('TASK_EDIT')"
+      @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 1"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <div
-      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
+      v-show="$root.checkRole('TASK_EDIT')"
+      @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==1"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
@@ -795,5 +845,16 @@ export default {
 }
 .taskCreate .taskCreateRow /deep/ .van-cell__value {
   text-align: inherit;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

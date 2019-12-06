@@ -1,7 +1,22 @@
  <!-- 拜访记录表单 -->
 <template>
   <div class="VisitRecord flex flex-1 flex-col">
-    <van-nav-bar title="填写拜访记录" left-text="返回" @click-left="$router.go(-1)" left-arrow></van-nav-bar>
+    <!-- <van-nav-bar title="填写拜访记录" left-text="返回" @click-left="$router.go(-1)" left-arrow></van-nav-bar> -->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">填写拜访记录</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+      </div>
+    </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
@@ -189,9 +204,10 @@ export default {
           visitComment: this.$store.state.task.taskInfo.visitComment
         };
 
-        this.$store.state.task.taskInfo.pics && (this.picVal = [
-          { url: window.picServer + this.$store.state.task.taskInfo.pics }
-        ]);
+        this.$store.state.task.taskInfo.pics &&
+          (this.picVal = [
+            { url: window.picServer + this.$store.state.task.taskInfo.pics }
+          ]);
 
         // console.log(this.$store.state.task.taskInfo.pics)
         // this.competitorList = this.competitorList.concat(this.$store.state.task.taskInfo.competitorList ? this.$store.state.task.taskInfo.competitorList.map(r=>{
@@ -302,5 +318,16 @@ export default {
 .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after {
   border: 0;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

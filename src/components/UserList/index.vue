@@ -46,7 +46,7 @@ export default {
       data.map(r=>{
         arr.push(r.ownerUserName || r.refRlNm)
       })
-      return arr.length ? arr.toString() : '请选择负责人'
+      return arr.length ? arr.toString() : '请选择'
     }
   },
   mounted() {

@@ -1,7 +1,7 @@
 <!-- 创建经销商页面 -->
 <template>
   <div class="CreateDealer flex-1 flex flex-col">
-    <van-nav-bar
+    <!-- <van-nav-bar
       :title="$route.query.editor ? '编辑经销商' : '新建经销商'"
       left-text="取消"
       @click-left="$router.go(-1)"
@@ -9,7 +9,24 @@
     >
       <div v-if="$route.query.editor" slot="right" @click="save">保存</div>
       <div v-else slot="right" @click="nextStep">下一步</div>
-    </van-nav-bar>
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">{{$route.query.editor ? '编辑经销商' : '新建经销商'}}</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div v-if="$route.query.editor" class="text-center text-base" slot="right" @click="save">保存</div>
+        <div v-else slot="right" class="text-center text-base" @click="nextStep">下一步</div>
+      </div>
+    </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto">
@@ -43,6 +60,7 @@
           <div
             class="flex-1"
             @click="establishTimeShow = true"
+            :style="{color:$store.getters.NDparams.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{$store.getters.NDparams.establishTime ? $root.moment($store.getters.NDparams.establishTime * 1000).format('YYYY-MM-DD') : '请选择时间'}}</div>
         </div>
 
@@ -94,7 +112,7 @@
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">业务类型</div>
-          <div class="flex-1" @click="businessTypesShow = true">{{typeList | typeListFilter}}</div>
+          <div class="flex-1" :style="{color:$store.state.newDealer.businessTypesValues.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"  @click="businessTypesShow = true">{{typeList | typeListFilter}}</div>
         </div>
 
         <van-popup v-model="businessTypesShow" position="bottom" :style="{ height: '40%'}">
@@ -134,8 +152,12 @@
         />-->
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;"> 地理位置</div>
-          <div  class="flex-1" @click="$router.push('/map')">{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
+          <div style="width:130px; color:#323233;">地理位置</div>
+          <div
+            class="flex-1"
+            @click="$router.push('/map')"
+            :style="{color:$store.getters.NDparams.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
         </div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
@@ -299,15 +321,15 @@ export default {
 
     // 从地图页面回来时 回显地理位置
     let mapInfo = {
-      locationName: '',
-      longitude: '',
-      latitude: ''
-    }
-    
-    if(this.$store.getters.NDparams.locationName){
-      mapInfo.locationName = this.$store.getters.NDparams.locationName
-      mapInfo.longitude = this.$store.getters.NDparams.longitude
-      mapInfo.latitude = this.$store.getters.NDparams.latitude
+      locationName: "",
+      longitude: "",
+      latitude: ""
+    };
+
+    if (this.$store.getters.NDparams.locationName) {
+      mapInfo.locationName = this.$store.getters.NDparams.locationName;
+      mapInfo.longitude = this.$store.getters.NDparams.longitude;
+      mapInfo.latitude = this.$store.getters.NDparams.latitude;
     }
 
     if (this.$route.query.id) {
@@ -315,9 +337,13 @@ export default {
       this.$store.dispatch("getinfo", this.id).then(() => {
         this.$store.commit("setNewDealerParams");
 
-        mapInfo.locationName && (this.$store.state.dealerInfo.baseInfo.locationName = mapInfo.locationName)
-        mapInfo.longitude && (this.$store.state.dealerInfo.baseInfo.longitude = mapInfo.longitude)
-        mapInfo.latitude && (this.$store.state.dealerInfo.baseInfo.latitude = mapInfo.latitude)
+        mapInfo.locationName &&
+          (this.$store.state.dealerInfo.baseInfo.locationName =
+            mapInfo.locationName);
+        mapInfo.longitude &&
+          (this.$store.state.dealerInfo.baseInfo.longitude = mapInfo.longitude);
+        mapInfo.latitude &&
+          (this.$store.state.dealerInfo.baseInfo.latitude = mapInfo.latitude);
 
         this.$store.commit("setParams", this.$store.state.dealerInfo.baseInfo);
 
@@ -546,5 +572,12 @@ export default {
   background: #f7f8f9;
   padding: 10px 16px;
   color: #f42929;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

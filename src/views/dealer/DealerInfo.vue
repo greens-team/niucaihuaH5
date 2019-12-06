@@ -2,8 +2,7 @@
 <template>
   <!--  -->
   <div class="DealerInfo flex-1 flex flex-col bg-gray-100">
-    <van-nav-bar title="经销商详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
-
+    <!-- <van-nav-bar title="经销商详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
         v-show="$root.checkRole('DEALER_EDIT')"
@@ -11,8 +10,30 @@
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-
-    </van-nav-bar>
+      <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> 
+    </van-nav-bar>-->
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">经销商详情</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <img
+          class="bar_icon edit_icon"
+          slot="right"
+          v-show="$root.checkRole('DEALER_EDIT')"
+          @click="$root.dataCheck({modelObjType:1, modelId: id}, editor)"
+          src="../../assets/topBarIcon/edit_icon.png"
+          alt="编辑"
+        />
+      </div>
+    </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
@@ -48,7 +69,7 @@
             <div class="flex-1 font-bold">业务状态</div>
             <!-- <p class="text-sm text-orange-500">放弃</p> -->
           </div>
-          <div class="flex mt-2">
+          <!-- <div class="flex mt-2">
             <div
               @click="changeFollowStatus(i)"
               v-for="(row,i) in $store.state.dealer.followStatus"
@@ -59,6 +80,24 @@
               <div class="rounded bg-line p-2 text-center text-sm shadow">{{row.name}}</div>
               <div class="triangle-line"></div>
             </div>
+          </div> -->
+
+          <div>
+            <div class="flex mt-2">
+              <div
+                @click="changeFollowStatus(i)"
+                v-for="(row,i) in $store.state.dealer.followStatus"
+                :key="i"
+              >
+                <div
+                  v-if="i"
+                  :class="['flex flex-1 relative items-center', {gray: i <= info.followStatus}]"
+                >
+                  <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
+                  <div class="status_correct"></div>
+                </div>
+              </div>
+            </div> 
           </div>
         </div>
 
@@ -85,10 +124,14 @@
             <!-- 备案信息 基本信息 -->
             <div v-if="$store.state.dealerInfo.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex items-center">
+                <div class="flex items-center relative">
                   <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
                     备案信息
-                    <i class="iconfont iconweizhankai ml-2"></i>
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo1}"
+                    ></i>
                   </div>
                   <div
                     class="text-sm text-orange-500"
@@ -168,7 +211,11 @@
                 <div class="flex items-center">
                   <div class="flex flex-1 items-center font-bold" @click="showInfo2 = !showInfo2">
                     基本信息
-                    <i class="iconfont iconweizhankai ml-2"></i>
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo2}"
+                    ></i>
                   </div>
                 </div>
                 <div v-show="showInfo2">
@@ -843,12 +890,15 @@ export default {
 </script>
 
 <style scoped>
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
+}
+
 .bg-line {
-  background: #d4d4d4;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  background: #f4f4f4;
   flex: 1;
-  color: #555;
+  color: #252525;
 }
 .triangle-line {
   border-width: 8px;
@@ -860,8 +910,6 @@ export default {
 }
 .gray .bg-line {
   background: linear-gradient(#ffad00, #ffd844);
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
   flex: 1;
   color: #222;
 }
@@ -871,12 +919,38 @@ export default {
   border-bottom-width: 16px;
   border-style: solid;
   border-color: transparent orange transparent transparent;
-  transform: rotate(180deg); /*顺时针旋转90°*/
+  transform: rotate(180deg);
+}
+
+.gray .status_correct {
+  position: absolute;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  background: #fff;
+  right: 1.2rem;
+  bottom: 0.2rem;
+}
+.gray .status_correct::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  width: 50%;
+  height: 30%;
+  border: 2px solid #ffbc42;
+  border-radius: 1px;
+  border-top: none;
+  border-right: none;
+  background: transparent;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 .DealerInfo .tabs /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 4px;
+  height: 6px;
 }
 .DealerInfo .tabs /deep/ .van-hairline--top-bottom::after,
 .DealerInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
@@ -942,5 +1016,16 @@ export default {
 .DealerInfo /deep/ .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after {
   border-width: 0px;
+}
+.edit_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>
