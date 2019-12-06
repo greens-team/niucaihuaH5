@@ -156,7 +156,7 @@ new Vue({
     async dataCheck(data, callback){
       let result = false
       await this.$store.dispatch('dataprivilegecheck', data).then((res)=>{
-        res.data && Toast('没有权限');
+        !res.data && Toast('没有权限');
         result = res.data
       })
       result && callback()
