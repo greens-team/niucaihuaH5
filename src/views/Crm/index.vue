@@ -6,17 +6,17 @@
 <template>
   <div class="Crm">
     <div class="flex justify-around pt-8 pb-6">
-      <div @click="$router.push('/DealerManage')">
+      <div @click="$root.checkRole('DEALER_SELECT', 'tipText') && $router.push('/DealerManage')">
         <img src="../../assets/crm/icon1.png" class="w-16" alt />
-        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">经销商</p>
+        <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">经销商</p>
       </div>
-      <div @click="$router.push('/Contacts')">
+      <div @click="$root.checkRole('CONTACTS_SELECT', 'tipText') && $router.push('/Contacts')">
         <img src="../../assets/crm/icon2.png" class="w-16" alt />
-        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">联系人</p>
+        <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">联系人</p>
       </div>
-      <div @click="$router.push('/Lessee')">
+      <div @click="$root.checkRole('LESSEE_SELECT', 'tipText') && $router.push('/Lessee')">
         <img src="../../assets/crm/icon3.png" class="w-16" alt />
-        <p class="text-center text-gray-700" style="font-size:1rem;line-height:3rem;">承租人</p>
+        <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">承租人</p>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
           <template slot="title">
             <div
               class="flex items-center justify-between"
-              @click="$router.push('/Competitor')"
+              @click="$root.checkRole('COMPETITOR_SELECT', 'tipText') && $router.push('/Competitor')"
             >
               <div class="flex-1 flex items-center">
                 <img style="width:1.57rem;height:1.57rem;" class="mr-1" src="../../assets/crm/icon6.png" alt />

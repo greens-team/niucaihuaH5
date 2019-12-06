@@ -149,11 +149,17 @@
                     ></i>
                   </div>
                   <div
+                    v-if="info.recordStatus"
                     style="color:#FF9B02"
                     class="text-base"
-                    v-show="!info.recordStatus && $root.checkRole('DEALER_EDIT')"
+                  >{{$store.state.record.recordStatus[info.recordStatus]}}</div>
+                  <div
+                    v-else
+                    style="color:#FF9B02"
+                    class="text-base"
+                    v-show="$root.checkRole('DEALER_EDIT')"
                     @click="$root.dataCheck({modelObjType:1, modelId: id}, recordSubmit)"
-                  >{{info.recordStatus ? $store.state.record.recordStatus[info.recordStatus] : '提交备案'}}</div>
+                  >提交备案</div>
                 </div>
 
                 <div v-show="showInfo1">
