@@ -82,26 +82,26 @@
                     <p class="text-xs text-gray-500">
                       <span class="text-red-500">*</span>姓名
                     </p>
-                    <p class="text-gray-900 text-sm">{{info.contactsName}}</p>
+                    <p class="text-gray-900 text-base">{{info.contactsName}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">电话</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.contactsPhone ? info.contactsPhone : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text-gray-500">微信号</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:info.weichatNum?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.weichatNum ? info.weichatNum : '-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">备注</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.comment ? info.comment : '-'}}</p>
                   </div>
@@ -109,14 +109,14 @@
               </div>
 
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3" style="height:3.143rem;line-height:3.143rem;">
+                <div class="flex pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
-                    class="text-sm"
+                    class="text-base"
                     style="color:#FF9B02"
                     v-show="$root.checkRole('CONTACTS_EDIT')" 
                     @click="$root.dataCheck({modelObjType:2, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:3}}))"
-                  >关联</div>
+                  >添加</div>
                 </div>
                 <van-collapse v-model="currentContacts" v-show="isShowDealer">
                   <van-collapse-item
@@ -573,5 +573,20 @@ export default {
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.ContactsInfo /deep/ .van-cell {
+  padding: 10px 0px;
+}
+.ContactsInfo /deep/ .van-collapse-item__content {
+  padding: 16px 0px;
+}
+.ContactsInfo /deep/ .van-cell:not(:last-child)::after {
+  position: absolute;
+  box-sizing: border-box;
+  content: " ";
+  pointer-events: none;
+  right: 0;
+  bottom: 0;
+  left: 0px;
 }
 </style>

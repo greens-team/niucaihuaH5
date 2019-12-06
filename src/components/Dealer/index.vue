@@ -1,15 +1,29 @@
 <!-- 关联经销商列表 c -->
 <template>
   <div class="LesseeList flex flex-1 flex-col">
-    <van-nav-bar
+    <!-- <van-nav-bar
       title="关联经销商"
       left-text="取消"
       @click-left="$store.state.dealer.confirmUserGids=[];$store.state.dealer.jobsUser=[]; $store.state.dealer.selectedUserGids = [];$router.go(-1)"
       left-arrow
     >
-      <!-- <div slot="right" @click="$router.push('/newDealer')">新建</div> -->
+     <div slot="right" @click="$router.push('/newDealer')">新建</div>
     </van-nav-bar>
-
+    -->
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$store.state.dealer.confirmUserGids=[];$store.state.dealer.jobsUser=[]; $store.state.dealer.selectedUserGids = [];$router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">关联经销商</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+      </div>
+    </div>
     <van-search
       v-model="$store.state.dealer.listParams.queryString"
       placeholder="请输入搜索内容"
@@ -125,5 +139,12 @@ export default {
 }
 .nextPage {
   background: linear-gradient(to right, #fec43a, #ff9505);
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

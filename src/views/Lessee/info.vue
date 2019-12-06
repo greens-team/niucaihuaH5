@@ -18,7 +18,7 @@
         <img
           class="bar_icon edit_icon"
           slot="right"
-          v-show="$root.checkRole('LESSEE_EDIT')" 
+          v-show="$root.checkRole('LESSEE_EDIT')"
           @click="$root.dataCheck({modelObjType:3, modelId: id}, editor)"
           src="../../assets/topBarIcon/edit_icon.png"
           alt="编辑"
@@ -30,7 +30,7 @@
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3 flex justify-between">
           <span class="text-xl font-bold lessee_name">{{info.lesseeName}}</span>
-          <div>
+          <!-- <div>
             <img
               src="../../assets/lessee/iphone.png"
               class="inline-block float-left mt-2 mr-6"
@@ -43,7 +43,7 @@
               class="inline-block float-left mt-2 mr-5"
               alt
             />
-          </div>
+          </div>-->
         </div>
         <div class="flex mt-4 justify-between">
           <p class="text-sm">{{info.homeAddress}}</p>
@@ -112,7 +112,11 @@
                     @click="showInfo1 = !showInfo1"
                   >
                     承租人基本信息
-                   <i class="iconfont iconweizhankai ml-2 icon_toggle" style="color:#80848D" :class="{ active: showInfo1}"></i>
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo1}"
+                    ></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
@@ -120,19 +124,19 @@
                     <p class="text-xs text_title">
                       <span class="text-red-500">*</span>承租人姓名
                     </p>
-                    <p class="text_content text-sm">{{info.lesseeName}}</p>
+                    <p class="text_content text-base">{{info.lesseeName}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">身份证号码</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.idcardNum?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{ info.idcardNum ? info.idcardNum : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">出生日期</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.birthday == null ? '-' : $root.moment(info.birthday*1000).format('YYYY-MM-DD')}}</p>
                   </div>
@@ -142,17 +146,17 @@
                   </div>-->
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">性别</p>
-                    <p class="text_content text-sm">{{info.gender ? '女' : '男'}}</p>
+                    <p class="text_content text-base">{{info.gender ? '女' : '男'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text_content text-sm">{{info.lesseeType ? '法人' : '自然人'}}</p>
+                    <p class="text_content text-base">{{info.lesseeType ? '法人' : '自然人'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.lesseePhone ? info.lesseePhone : '-'}}</p>
                   </div>
@@ -165,21 +169,21 @@
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">户口所在地</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.domicilePlace ? info.domicilePlace : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">家庭住址</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.homeAddress?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.homeAddress ? info.homeAddress : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">从业年限</p>
                     <p
-                      class="text_content text-sm"
+                      class="text_content text-base"
                       :style="{color:info.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.workingYears ? info.workingYears : '-'}}</p>
                   </div>
@@ -187,9 +191,13 @@
                     <p class="text-xs text_title">照片</p>
 
                     <div class="flex justify-space">
-                      <div v-for="(r,i) in userPicArr" :key="i">
-                        <img :src="picServer + r" width="78" alt="照片" />
+                      <div v-if="userPicArr.length">
+                        <div v-for="(r,i) in userPicArr" :key="i">
+                          <img :src="picServer + r" width="78" alt="照片" />
+                        </div>
                       </div>
+
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
                     </div>
                   </div>
                   <div class="border_line pt-2 pb-2">
@@ -202,6 +210,8 @@
                           alt="身份证正面"
                         />
                       </div>
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
+
                       <div class="flex" v-if="info.idcardBackPic">
                         <img
                           :src="info.idcardBackPic ? picServer + info.idcardBackPic : info.idcardBackPic"
@@ -209,6 +219,7 @@
                           alt="身份证反面"
                         />
                       </div>
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
                     </div>
                   </div>
 
@@ -224,14 +235,14 @@
             </div>
             <div v-if="$store.state.lessee.currentTabsIndex === 1">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3" style="height:3.143rem;line-height:3.143rem;">
+                <div class="flex pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
-                    class="text-sm"
+                    class="text-base"
                     style="color:#FF9B02"
-                    v-show="$root.checkRole('LESSEE_EDIT')" 
+                    v-show="$root.checkRole('LESSEE_EDIT')"
                     @click="$root.dataCheck({modelObjType:3, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:1}}))"
-                  >关联</div>
+                  >添加</div>
                 </div>
                 <van-collapse v-model="currentLessee" v-show="isShowDealer">
                   <van-collapse-item
@@ -756,5 +767,15 @@ export default {
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.LesseeInfo /deep/ .van-cell {
+  padding: 10px 0px;
+}
+.LesseeInfo /deep/ .van-collapse-item__content {
+  padding: 16px 0px;
+}
+.LesseeInfo /deep/ .van-cell:not(:last-child)::after {
+  position: absolute;
+  left: 0px;
 }
 </style>

@@ -100,7 +100,7 @@ export default {
       // { name: '放弃', id: 3 }
     ],
     orderType: [
-      { text: '按创建时间排序', value: 1 },
+      { text: '默认排序', value: 1 },
       { text: '按名称排序', value: 2 }
     ],
     status: [

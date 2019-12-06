@@ -1,14 +1,30 @@
 <!-- 联系人 关联选中 的经销商 c-->
 <template>
   <div class="selectedListCompetitor flex flex-1 flex-col">
-    <van-nav-bar
+    <!-- <van-nav-bar
       title="已选择经销商"
       left-text="返回"
       @click-left="$store.state.dealer.selectedUserGids = $store.state.dealer.confirmUserGids; $router.go(-1)"
       left-arrow
     >
       <div slot="right" @click="finish">确定</div>
-    </van-nav-bar>
+    </van-nav-bar>-->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div
+          @click="$store.state.dealer.selectedUserGids = $store.state.dealer.confirmUserGids; $router.go(-1)"
+          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+        >
+          <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">已选择经销商</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div @click="finish()">确定</div>
+      </div>
+    </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto selectedList">
@@ -45,8 +61,8 @@ export default {
       this.$store.state.dealer.selectedUserGids.filter((r, i) => {
         let obj = {
           contactsGid: "",
-          jobTitle: "",
-        //   jobTitle1: ""
+          jobTitle: ""
+          //   jobTitle1: ""
         };
         this.$store.state.dealer.confirmUserGids.some(x => {
           if (x == r) {
@@ -56,7 +72,7 @@ export default {
         });
         if (obj.contactsGid) {
           obj.jobTitle = this.$store.state.dealer.jobsUser[i];
-        //   obj.jobTitle1 = this.$store.state.dealer.jobsUser1[i];
+          //   obj.jobTitle1 = this.$store.state.dealer.jobsUser1[i];
           arr.push(obj);
         }
       });
@@ -69,11 +85,12 @@ export default {
           associatedAttr: arr.map(r => {
             return {
               modelGid: r.contactsGid,
-              modelAttr: r.jobTitle,
-            //   modelAttr2: r.jobTitle1
+              modelAttr: r.jobTitle
+              //   modelAttr2: r.jobTitle1
             };
           })
-        }).then(msg => {
+        })
+        .then(msg => {
           this.$notify({ type: "success", message: msg });
           this.$router.go(-2);
         });
@@ -91,5 +108,12 @@ export default {
 } */
 .selectedList /deep/ .van-cell {
   padding: 10px 28px;
+}
+.bar_icon {
+  width: 1.57rem;
+  height: 1.57rem;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

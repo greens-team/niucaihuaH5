@@ -41,8 +41,23 @@
           <div class="flex">
             <p class="flex-1 text-xl font-bold">{{info.dealerName}}</p>
             <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
+<!-- 
+            <div>
+              <img
+                src="../../assets/lessee/iphone.png"
+                class="inline-block float-left mr-6"
+                style="width:1.57rem;"
+                alt
+              />
+              <img
+                src="../../assets/lessee/map.png"
+                style="width:1.57rem;"
+                class="inline-block float-left mr-5"
+                alt
+              />
+            </div> -->
           </div>
-          <div class="flex mt-4 justify-between">
+          <div class="flex mt-8 justify-between">
             <div class="text-center text-xs" @click="$refs.swipe.swipeTo(1)">
               {{info.contactsCount}}
               <br />联系人
@@ -80,7 +95,7 @@
               <div class="rounded bg-line p-2 text-center text-sm shadow">{{row.name}}</div>
               <div class="triangle-line"></div>
             </div>
-          </div> -->
+          </div>-->
 
           <div>
             <div class="flex mt-2">
@@ -97,7 +112,7 @@
                   <div class="status_correct"></div>
                 </div>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
 
@@ -134,7 +149,8 @@
                     ></i>
                   </div>
                   <div
-                    class="text-sm text-orange-500"
+                    style="color:#FF9B02"
+                    class="text-base"
                     v-show="!info.recordStatus && $root.checkRole('DEALER_EDIT')"
                     @click="$root.dataCheck({modelObjType:1, modelId: id}, recordSubmit)"
                   >{{info.recordStatus ? $store.state.record.recordStatus[info.recordStatus] : '提交备案'}}</div>
@@ -149,11 +165,16 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500">统一社会信用代码</p>
-                    <p>{{info.creditCode}}</p>
+                    <p
+                      :style="{color:info.creditCode?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.creditCode?info.creditCode:'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500">成立日期</p>
-                    <p>{{$root.moment(info.establishTime*1000).format('YYYY-MM-DD')}}</p>
+
+                    <p
+                      :style="{color:info.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.establishTime?$root.moment(info.establishTime*1000).format('YYYY-MM-DD'):'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500">所属地区</p>
@@ -161,7 +182,9 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500">注册地址</p>
-                    <p>{{info.address}}</p>
+                    <p
+                      :style="{color:info.address?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.address?info.address:'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500">公司归属</p>
@@ -175,7 +198,9 @@
                   <div v-if="info.contactsName">
                     <div class="border-t border-gray-100 p-2 mt-2">
                       <p class="text-xs text-gray-500">法人姓名</p>
-                      <p>{{info.contactsName}}</p>
+                      <p
+                        :style="{color:info.contactsName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.contactsName?info.contactsName:'-'}}</p>
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
                       <p class="text-xs text-gray-500">证件类型</p>
@@ -183,11 +208,15 @@
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
                       <p class="text-xs text-gray-500">证件号码</p>
-                      <p>{{info.certNo}}</p>
+                      <p
+                        :style="{color:info.certNo?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.certNo?info.certNo:'-'}}</p>
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
                       <p class="text-xs text-gray-500">手机号码</p>
-                      <p>{{info.contactsPhone}}</p>
+                      <p
+                        :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.contactsPhone?info.contactsPhone:'-'}}</p>
                     </div>
                   </div>
 
@@ -221,13 +250,17 @@
                 <div v-show="showInfo2">
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">地理位置</p>
-                    <div class="flex">
+                    <div
+                      class="flex"
+                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >
                       <!-- {{info.province +' '+ info.city +' '+ info.area}} -->
-                      {{info.locationName}}
+                      {{info.locationName?info.locationName:'-'}}
                       <div class="flex-1"></div>
                       <i
+                        style="color:rgb(255, 155, 2)"
                         @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
-                        class="iconfont iconweizhibang text-orange-500"
+                        class="iconfont iconweizhibang"
                       ></i>
                     </div>
                   </div>
@@ -255,7 +288,9 @@
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">备注信息</p>
-                    <p>{{info.comment}}</p>
+                    <p
+                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.comment?info.comment:'-'}}</p>
                   </div>
                 </div>
               </div>
@@ -269,10 +304,11 @@
               <div class="flex pl-3 pr-3 pb-3">
                 <div class="flex-1 font-bold">联系人</div>
                 <div
-                  class="text-sm text-blue-500"
+                  class="text-base text-blue-500"
+                  style="color:#FF9B02"
                   v-show="$root.checkRole('DEALER_EDIT')"
                   @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id}}))"
-                >关联</div>
+                >添加</div>
               </div>
               <div
                 class="flex justify-center items-center text-center"
@@ -305,15 +341,24 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">职务</p>
-                    <p class="text-gray-900 text-sm">{{r.jobTitle}}</p>
+                    <p
+                      :style="{color:r.jobTitle?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      class="text-gray-900 text-sm"
+                    >{{r.jobTitle?r.jobTitle:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">电话</p>
-                    <p class="text-gray-900 text-sm">{{r.contactsPhone}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.contactsPhone?r.contactsPhone:'-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">微信</p>
-                    <p class="text-gray-900 text-sm">{{r.weichatNum}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.weichatNum?r.weichatNum:'-'}}</p>
                   </div>
                 </van-collapse-item>
               </van-collapse>
@@ -326,10 +371,11 @@
               <div class="flex pl-3 pr-3 pb-3">
                 <div class="flex-1 font-bold">竞争对手</div>
                 <div
-                  class="text-sm text-blue-500"
+                  style="color:#FF9B02"
+                  class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
                   @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id}}))"
-                >关联</div>
+                >添加</div>
               </div>
               <div
                 class="flex justify-center items-center text-center"
@@ -362,11 +408,17 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">竞对政策</p>
-                    <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.racePolicy?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.racePolicy?r.racePolicy:'-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">应对策略</p>
-                    <p class="text-gray-900 text-sm">{{r.tactics}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.tactics?r.tactics:'-'}}</p>
                   </div>
                 </van-collapse-item>
               </van-collapse>
@@ -379,10 +431,11 @@
               <div class="flex pl-3 pr-3 pb-3">
                 <div class="flex-1 font-bold">承租人</div>
                 <div
-                  class="text-sm text-blue-500"
+                  style="color:#FF9B02"
+                  class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
                   @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id}}))"
-                >关联</div>
+                >添加</div>
               </div>
               <div
                 class="flex justify-center items-center text-center"
@@ -415,11 +468,17 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">证件号码</p>
-                    <p class="text-gray-900 text-sm">{{r.idcardNum}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.idcardNum?r.idcardNum:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">出生日期</p>
-                    <p class="text-gray-900 text-sm">{{r.birthday}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.birthday?r.birthday:'-'}}</p>
                   </div>
                   <!-- <div class="border-b border-gray-100 pt-2 pb-2">
                           <p class="text-xs text-gray-500">婚姻情况</p>
@@ -436,15 +495,24 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">手机号</p>
-                    <p class="text-gray-900 text-sm">{{r.lesseePhone}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.lesseePhone?r.lesseePhone:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">户口所在地</p>
-                    <p class="text-gray-900 text-sm">{{r.domicilePlace}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.domicilePlace?r.domicilePlace:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">从业年限</p>
-                    <p class="text-gray-900 text-sm">{{r.workingYears}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                      :style="{color:r.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.workingYears?r.workingYears:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">本人照片</p>
@@ -877,7 +945,6 @@ export default {
       }
     },
     editor() {
-      
       this.$store.commit("setNewDealerParams");
       this.$store.commit("setParams", this.$store.state.dealerInfo.baseInfo);
       this.$router.push({

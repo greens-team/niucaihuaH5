@@ -26,7 +26,7 @@
         <!-- 添加图标 -->
         <img
           class="bar_icon edit_icon"
-          v-show="$root.checkRole('COMPETITOR_EDIT')" 
+          v-show="$root.checkRole('COMPETITOR_EDIT')"
           @click="$root.dataCheck({modelObjType:4, modelId: id}, editor)"
           slot="right"
           src="../../assets/topBarIcon/edit_icon.png"
@@ -75,7 +75,11 @@
                     @click="showInfo1 = !showInfo1"
                   >
                     基本信息
-                    <i class="iconfont iconweizhankai ml-2 icon_toggle" style="color:#80848D" :class="{ active: showInfo1}"></i>
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo1}"
+                    ></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
@@ -106,11 +110,11 @@
                 <div class="flex">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
-                    class="text-sm"
+                    class="text-base"
                     style="color:#FF9B02"
-                    v-show="$root.checkRole('COMPETITOR_EDIT')" 
+                    v-show="$root.checkRole('COMPETITOR_EDIT')"
                     @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2}}))"
-                  >关联</div>
+                  >添加</div>
                 </div>
                 <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">
                   <van-collapse-item
@@ -394,18 +398,20 @@ export default {
       }
       if (num === 2) {
         //操作历史
-        this.$store.dispatch("listOperatelogCompetitor", {
-          modelObjType: 4,
-          modelId: this.id,
-          pageNum: this.listOperatelogNum,
-          pageSize: 10
-        }).then(len=>{
-           if (len > 0) {
+        this.$store
+          .dispatch("listOperatelogCompetitor", {
+            modelObjType: 4,
+            modelId: this.id,
+            pageNum: this.listOperatelogNum,
+            pageSize: 10
+          })
+          .then(len => {
+            if (len > 0) {
               this.isShowNoData_1 = false;
             } else {
               this.isShowNoData_1 = true;
             }
-        })
+          });
       }
     },
     editor() {
@@ -567,5 +573,20 @@ export default {
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.CompetitorInfo /deep/ .van-cell {
+  padding: 10px 0px;
+}
+.CompetitorInfo /deep/ .van-collapse-item__content {
+  padding: 16px 0px;
+}
+.CompetitorInfo /deep/ .van-cell:not(:last-child)::after {
+  position: absolute;
+  box-sizing: border-box;
+  content: " ";
+  pointer-events: none;
+  right: 0;
+  bottom: 0;
+  left: 0px;
 }
 </style>
