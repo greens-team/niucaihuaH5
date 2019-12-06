@@ -124,4 +124,7 @@ export default {
 <style scoped>
 .tabbar /deep/ .van-tabbar-item__icon{margin-bottom:2px!important;}
 .tabbar /deep/ .van-tabbar-item--active{ color: #252525}
+.tabbar /deep/ .van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after {
+  border-width: 0px;
+}
 </style>
