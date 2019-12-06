@@ -112,22 +112,24 @@
           </template>
         </van-cell>
 
-        <div
-          v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
-          class="bg-gray-100 pt-3 pb-2"
-        >
-          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">签到打卡</div>
-          <div class="pl-5">打卡位置</div>
-          <div class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2" @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.longitude, lat:$store.state.task.addEditTaskParams.latitude}})">
+
+        <div v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress" class="bg-gray-100 pt-2 pb-1">
+          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">打卡位置</div>
+          <div class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white" @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.longitude, lat:$store.state.task.addEditTaskParams.latitude}})">
             <div class="flex-1">
-              <span
-                class="text-blue-500"
-              >{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
+              <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
             </div>
           </div>
         </div>
 
-        <div v-if="$store.state.task.addEditTaskParams.address" class="bg-gray-100 pt-3 pb-2">
+        <div
+          v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && !$store.state.task.addEditTaskParams.isInClockinRange"
+          class="bg-gray-100 text-red-500 pl-5 pt-1 text-sm"
+        >
+          打卡点不在经销商附近
+        </div>
+
+        <div v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && $store.state.task.addEditTaskParams.locationName" class="bg-gray-100 pt-1 pb-4">
           <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">经销商位置</div>
           <div class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white" @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})">
             <div class="flex-1">

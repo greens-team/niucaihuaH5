@@ -5,7 +5,8 @@ export default {
             phone: '',
             pics: '',
             content: ''
-        }
+        },
+        userInfo: {}
     },
     mutations: {
         setParamsEmpty(state) {
@@ -17,6 +18,16 @@ export default {
         },
     },
     actions: {
+        getUserInfo({state}){
+            return new Promise(resolve => {
+                window.$ajax.auth.getUserInfo().then(res => {
+                    if (!Number(res.code)) {
+                        state.userInfo = res.data
+                        resolve()
+                    }
+                })
+            })
+        },
         submitFeedBack({ state }, data = {}) {   // 提交反馈意见
             return new Promise(resolve => {
                 window.$ajax.my.submitFeedBack(Object.assign(state.submitParams, data)).then(res => {
