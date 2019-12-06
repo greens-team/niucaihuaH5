@@ -17,9 +17,6 @@ export default {
   },
   mounted() {
 
-    this.$store.dispatch('getUserInfo')
-    
-
     let _this = this
     window.setToken = function(token, userInfo){
       sessionStorage.Authorization = token

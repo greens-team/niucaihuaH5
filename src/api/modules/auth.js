@@ -10,6 +10,7 @@ export default (m)=>{
       colleague:  m.GET + '/api/user/list',
       getUsersList: m.GET + '/api/users/list',
       getUserInfo: m.GET + 'auth/info',
+      dataprivilegecheck: m.GET + '/common/dataprivilegecheck'
     },
     postJSON: {
       getOftenuselist: m.POST + '/common/oftenuselist',

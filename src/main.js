@@ -138,10 +138,27 @@ Vue.prototype.userAgent = (iosCallback, androidCallback) => {
 new Vue({
   data() {
     return {
-      moment
+      moment,
+      userInfo: {
+        roles: []
+      }
     }
   },
   router,
   store,
+  methods: {
+    checkRole(key){
+      return this.userInfo.roles.includes(key)
+    },
+  },
+  created() {
+    this.$store.dispatch('getUserInfo').then((data)=>{
+      this.userInfo = data
+    })
+  },
+  mounted() {
+    
+    
+  },
   render: h => h(App)
 }).$mount('#app')

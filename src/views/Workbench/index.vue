@@ -7,7 +7,7 @@
 
 <!-- 工作台模块首页 -->
 <template>
-  <div class="Workbench bg-white overflow-hidden">
+  <div class="Workbench bg-white overflow-hidden" >
     <!-- 搜索 -->
     <div class="flex items-center pr-3 pl-3">
       <!-- <i class="iconfont icontixing" style="font-size: 20px;"></i> -->
@@ -150,7 +150,7 @@
           </div>-->
         </div>
         <div class="flex-1"></div>
-        <van-icon size="20px" name="plus" @click="newTask = true" />
+        <van-icon v-show="$root.checkRole('TASK_CREATE')" size="20px" name="plus" @click="newTask = true" />
       </div>
 
       <van-swipe

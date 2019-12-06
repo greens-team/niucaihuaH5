@@ -6,7 +6,6 @@ export default {
             pics: '',
             content: ''
         },
-        userInfo: {}
     },
     mutations: {
         setParamsEmpty(state) {
@@ -18,12 +17,20 @@ export default {
         },
     },
     actions: {
-        getUserInfo({state}){
+        dataprivilegecheck({state}, data = {}){
+            return new Promise(resolve => {
+                window.$ajax.auth.dataprivilegecheck(data).then(res => {
+                    if (!Number(res.code)) {
+                        resolve(res)
+                    }
+                })
+            })
+        },
+        getUserInfo(){
             return new Promise(resolve => {
                 window.$ajax.auth.getUserInfo().then(res => {
                     if (!Number(res.code)) {
-                        state.userInfo = res.data
-                        resolve()
+                        resolve(res.data)
                     }
                 })
             })
