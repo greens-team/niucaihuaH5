@@ -189,7 +189,6 @@
             >
               <div class="flex">
                 <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                <!-- <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span> -->
                 <div class="flex-1"></div>
                 <span
                   class="text-xs text-gray-600"
@@ -261,7 +260,6 @@
             >
               <div class="flex">
                 <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                <!-- <span class="text-xs text-gray-500 pl-2">{{visitAim[row.visitAim]}}</span> -->
                 <div class="flex-1"></div>
                 <span
                   class="text-xs text-gray-600"
@@ -333,7 +331,6 @@ export default {
         dealerChangeStateCount: 0
       },
 
-      visitAim: ["客情维护", "首次拜访", "沟通需求", "签单", "贷后跟进"],
 
       newTask: false
     };

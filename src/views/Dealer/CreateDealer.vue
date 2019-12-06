@@ -67,6 +67,7 @@
         <!-- 开始时间 -->
         <van-popup v-model="establishTimeShow" position="bottom">
           <van-datetime-picker
+            :min-date="new Date('1890-01-01')"
             @cancel="establishTimeShow=false"
             @confirm="establishTimeShow=false;$store.commit('setParams', {establishTime: timeStamp(currentDate) / 1000})"
             v-model="currentDate"

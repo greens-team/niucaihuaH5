@@ -119,12 +119,15 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5 text-gray-800" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:taskId}})" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
           <p
             :class="['p5  ',{'text-gray-800': !!dealerName}]"
             v-else
             @click="editor && (dealerShow = true)"
-          >{{dealerName || '请选择相关经销商'}}</p>
+          >
+            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:taskId}})">{{dealerName}}</span>
+            <span v-else>{{dealerName || '请选择相关经销商'}}</span>
+          </p>
         </template>
       </van-cell>
 
@@ -146,11 +149,13 @@
         <template slot="default">
           <UserList
             title="选择负责人"
+            v-if="editor"
             :paramsVal="mainUserGids"
             @setParams="val=>mainUserGids = val"
             soltCon="true"
             :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
           >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</UserList>
+          <div v-else :class="['p5  ',{'text-gray-800': mainUserGids.length}]">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
         </template>
       </van-cell>
 
@@ -161,12 +166,14 @@
         </template>
         <template slot="default">
           <UserList
+            v-if="editor"
             title="选择负责人"
             :paramsVal="otherUserGids"
             @setParams="val=>otherUserGids = val"
             soltCon="true"
             :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
           >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</UserList>
+          <div v-else :class="['p5  ',{'text-gray-800': otherUserGids.length}]">{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
         </template>
       </van-cell>
 
@@ -463,7 +470,8 @@ export default {
         { text: "首次拜访", id: 1 },
         { text: "沟通需求", id: 2 },
         { text: "签单", id: 3 },
-        { text: "贷后跟进", id: 4 }
+        { text: "贷后跟进", id: 4 },
+        { text: "其它", id: 10 }
       ],
       visitAimShow: false,
       visitAimObj: {},
