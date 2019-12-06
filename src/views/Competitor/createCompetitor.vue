@@ -33,7 +33,7 @@
           maxlength="30"
           @blur="checkErrorMsg"
         />
-        <div class="checkContent" v-show="isShowErrorNameMsg">合作竞对名称不能为空</div>
+        <div class="checkContent" v-show="isShowErrorNameMsg">竞争对手名称不能为空</div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">竞对类型</div>
@@ -110,8 +110,14 @@ export default {
       if (!this.isShowErrorNameMsg) {
         this.$store
           .dispatch("addCompetitor", { competorType: this.competorStatusValus })
-          .then(r => {
-            this.$router.go(-1);
+          .then(res => {
+            this.$dialog
+              .alert({
+                message: "操作成功"
+              })
+              .then(() => {
+                this.$router.go(-1);
+              });
           });
       }
     },

@@ -359,8 +359,14 @@ export default {
             lesseeType: this.lesseeTypeValus,
             lesseeStatus: this.lesseeStatusValus
           })
-          .then(r => {
-            this.$router.go(-1);
+          .then(res => {
+            this.$dialog
+              .alert({
+                message: "操作成功"
+              })
+              .then(() => {
+                this.$router.go(-1);
+              });
           });
       }
     },

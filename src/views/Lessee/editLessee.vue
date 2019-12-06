@@ -169,7 +169,7 @@
           placeholder="请填写信息"
           label-width="130"
           type="number"
-          pattern='[0-9]*'
+          pattern="[0-9]*"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
@@ -340,7 +340,7 @@ export default {
         this.birthday = this.$root.moment(birthday * 1000).format("YYYY-MM-DD");
       }
 
-      if(!workingYears) {
+      if (!workingYears) {
         this.$store.state.lessee.editParams.workingYears = null;
       }
 
@@ -415,8 +415,14 @@ export default {
             lesseeType: this.lesseeTypeValus,
             lesseeStatus: this.lesseeStatusValus
           })
-          .then(r => {
-            this.$router.go(-1);
+          .then(res => {
+            this.$dialog
+              .alert({
+                message: "操作成功"
+              })
+              .then(() => {
+                this.$router.go(-1);
+              });
           });
       }
     },

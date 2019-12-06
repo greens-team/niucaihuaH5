@@ -2,7 +2,7 @@
 <template>
   <div class="CreateDealer flex-1 flex flex-col">
     <van-nav-bar
-      :title="$route.query.editor ? $store.state.newDealer.params.dealerName : '新建经销商'"
+      :title="$route.query.editor ? '编辑经销商' : '新建经销商'"
       left-text="取消"
       @click-left="$router.go(-1)"
       left-arrow

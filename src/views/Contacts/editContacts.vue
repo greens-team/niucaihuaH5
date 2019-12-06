@@ -39,7 +39,7 @@
           placeholder="请填写信息"
           label-width="130"
           type="number"
-          pattern='[0-9]*'
+          pattern="[0-9]*"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
@@ -85,16 +85,21 @@ export default {
         !this.isShowErrorNameMsg &&
         !this.isShowErrorChatMsg
       ) {
-        this.$store.dispatch("editContacts").then(r => {
-          this.$router.go(-1);
+        this.$store.dispatch("editContacts").then(res => {
+          this.$dialog
+            .alert({
+              message: "操作成功"
+            })
+            .then(() => {
+              this.$router.go(-1);
+            });
         });
       }
     },
 
     checkErrorMsg() {
       //名称不能为空
-      let contactsName = this.$store.state.contacts.editContactsParams
-        .contactsName.trim();
+      let contactsName = this.$store.state.contacts.editContactsParams.contactsName.trim();
       if (contactsName == "") {
         this.isShowErrorNameMsg = true;
       } else {

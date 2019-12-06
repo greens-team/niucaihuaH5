@@ -89,20 +89,20 @@
                     <p class="text-xs text-gray-500">竞对类型</p>
                     <p
                       :style="{color:info.competorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '—'}}</p>
+                    >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '-'}}</p>
                   </div>
 
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">备注</p>
                     <p
                       :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.comment ? info.comment : '—'}}</p>
+                    >{{info.comment ? info.comment : '-'}}</p>
                   </div>
                 </div>
               </div>
 
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
                     class="text-sm"
@@ -128,11 +128,17 @@
                     </div>
                     <div class="border_line pt-2 pb-2">
                       <p class="text-xs text-gray-500">竞对政策</p>
-                      <p class="text-gray-900 text-sm">{{r.racePolicy}}</p>
+                      <p
+                        class="text-gray-900 text-sm"
+                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{r.racePolicy ? r.racePolicy : '-'}}</p>
                     </div>
                     <div class="pt-2 pb-2">
                       <p class="text-xs text-gray-500">狮桥应对策略</p>
-                      <p class="text-gray-900 text-sm">{{r.tactics}}</p>
+                      <p
+                        class="text-gray-900 text-sm"
+                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{r.tactics ? r.tactics : '-'}}</p>
                     </div>
                   </van-collapse-item>
                 </van-collapse>
@@ -141,8 +147,23 @@
 
             <div v-if="$store.state.competitor.currentTabsIndex === 1">
               <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-                <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
+                <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">动态记录</div>
+                </div>
+                <div
+                  class="flex justify-center items-center text-center"
+                  style="height:20rem;margin-top:-4rem;"
+                  v-show="isShowNoData"
+                >
+                  <div>
+                    <img
+                      src="../../assets/workbench/no_data.png"
+                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                      alt="暂无数据"
+                    />
+                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                    <p style="color:#80848D">暂时还没有数据呢～</p>
+                  </div>
                 </div>
                 <div
                   class="border-b"
@@ -166,7 +187,7 @@
                       class="text-ms leading-relaxed"
                       style="color:#252525"
                     >{{r.content}}</p>
-                    <img v-if="r.pics != '' " :src="picServer+r.pics" alt />
+                    <img v-if="r.pics != null " :src="picServer+r.pics" alt />
                   </div>
                   <p
                     class="text-sm text-gray-500"
@@ -176,8 +197,23 @@
             </div>
             <div v-if="$store.state.competitor.currentTabsIndex === 2">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3" style="border-bottom:1px solid #EDEDEE;">
+                <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">操作历史</div>
+                </div>
+                <div
+                  class="flex justify-center items-center text-center"
+                  style="height:20rem;margin-top:-4rem;"
+                  v-show="isShowNoData_1"
+                >
+                  <div>
+                    <img
+                      src="../../assets/workbench/no_data.png"
+                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                      alt="暂无数据"
+                    />
+                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                    <p style="color:#80848D">暂时还没有数据呢～</p>
+                  </div>
                 </div>
                 <div
                   class="border-b"
@@ -255,7 +291,10 @@ export default {
 
       newsLogContent: "",
 
-      picServer: ""
+      picServer: "",
+
+      isShowNoData: false,
+      isShowNoData_1: false
     };
   },
   mounted() {
@@ -336,12 +375,20 @@ export default {
       }
       if (num === 1) {
         // 动态记录
-        this.$store.dispatch("listNewslogCompetitor", {
-          modelObjType: 4,
-          modelId: this.id,
-          pageNum: this.listNewslogPageNum,
-          pageSize: 10
-        });
+        this.$store
+          .dispatch("listNewslogCompetitor", {
+            modelObjType: 4,
+            modelId: this.id,
+            pageNum: this.listNewslogPageNum,
+            pageSize: 10
+          })
+          .then(len => {
+            if (len > 0) {
+              this.isShowNoData = false;
+            } else {
+              this.isShowNoData = true;
+            }
+          });
       }
       if (num === 2) {
         //操作历史
@@ -350,7 +397,13 @@ export default {
           modelId: this.id,
           pageNum: this.listOperatelogNum,
           pageSize: 10
-        });
+        }).then(len=>{
+           if (len > 0) {
+              this.isShowNoData_1 = false;
+            } else {
+              this.isShowNoData_1 = true;
+            }
+        })
       }
     },
     editor() {
@@ -361,7 +414,7 @@ export default {
       this.uploadFile(
         file,
         fileUrl => {
-          this.newsLogContent = ''
+          this.newsLogContent = "";
           this.tapToSearch(fileUrl);
         },
         0
@@ -381,6 +434,7 @@ export default {
             this.isNewslogLastPage = false;
             this.listNewslogPageNum = 1;
             this.newsLogContent = "";
+            this.isShowNoData = false;
             this.$store.dispatch("listNewslogCompetitor", {
               modelObjType: 4,
               modelId: this.id,
@@ -397,7 +451,7 @@ export default {
 <style scoped>
 .CompetitorInfo /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 4px;
+  height: 6px;
 }
 .CompetitorInfo /deep/ .van-hairline--top-bottom::after,
 .CompetitorInfo /deep/ .van-hairline-unset--top-bottom::after {

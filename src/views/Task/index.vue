@@ -108,7 +108,7 @@
             <span class="custom-title">备注</span>
           </template>
           <template slot="default">
-            <p :class="['p5',{'text-gray-800':$store.state.task.addEditTaskParams.comment}]">{{$store.state.task.addEditTaskParams.comment || '—'}}</p>
+            <p :class="['p5',{'text-gray-800':$store.state.task.addEditTaskParams.comment}]">{{$store.state.task.addEditTaskParams.comment || '-'}}</p>
           </template>
         </van-cell>
 
@@ -174,7 +174,7 @@
                   <span class="custom-title">备注</span>
                 </template>
                 <template slot="default">
-                  <p :class="['p5',  {'text-gray-800': r.lesseeComment}]">{{r.lesseeComment ? r.lesseeComment : '—'}}</p>
+                  <p :class="['p5',  {'text-gray-800': r.lesseeComment}]">{{r.lesseeComment ? r.lesseeComment : '-'}}</p>
                 </template>
               </van-cell>
               <div></div>
@@ -207,7 +207,7 @@
                   <span class="custom-title">竞对政策</span>
                 </template>
                 <template slot="default">
-                  <p :class="['p5', {'text-gray-800' : r.racePolicy}]">{{r.racePolicy ? r.racePolicy : '—'}}</p>
+                  <p :class="['p5', {'text-gray-800' : r.racePolicy}]">{{r.racePolicy ? r.racePolicy : '-'}}</p>
                 </template>
               </van-cell>
               <div></div>
@@ -232,7 +232,7 @@
             <template slot="default">
               <p
                 :class="['p5',{'text-gray-800': $store.state.task.addEditTaskParams.visitComment}]"
-              >{{$store.state.task.addEditTaskParams.visitComment ? $store.state.task.addEditTaskParams.visitComment : '—'}}</p>
+              >{{$store.state.task.addEditTaskParams.visitComment ? $store.state.task.addEditTaskParams.visitComment : '-'}}</p>
             </template>
           </van-cell>
         </div>
