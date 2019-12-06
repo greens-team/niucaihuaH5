@@ -67,12 +67,7 @@
     <div class="flex bg-gray-100 mt-1 p-3 h-14 items-center">
       <div class="flex-1 ellipsis">
         <span class="text-gray-600 text-xs">已选择：</span>
-        <span class="text-xs" v-for="(r,i) in colleagues.userGids" :key="i">
-          <span v-if="i">,</span>
-          {{r.split(',')[0]}}
-        </span>
-        <span class="text-xs" v-for="(r,i) in colleagues.deptGids" :key="'a'+i">
-          <span v-if="!i && colleagues.userGids.length">,</span>
+        <span class="text-xs" v-for="(r,i) in distinct(colleagues.oftenuse,colleagues.userGids,colleagues.deptGids)" :key="i">
           <span v-if="i">,</span>
           {{r.split(',')[0]}}
         </span>
@@ -94,6 +89,7 @@ export default {
       colleagues: {
         userGids: [],
         deptGids: [],
+        oftenuse: [],
         userType: 1
       },
       oftenuseValues:[],
@@ -104,10 +100,13 @@ export default {
   },
   watch:{
     oftenuseValues(val){
-      if(val.length){
-        let v = val[val.length-1].split('-')
-        v[0] == 1 ? this.colleagues.userGids.push(v[1]) : this.colleagues.deptGids.push(v[1]) 
-      }
+      this.colleagues.oftenuse = val.map(r=>{
+        return r.split('-')[1]
+      })
+      // if(val.length){
+      //   let v = val[val.length-1].split('-')
+      //   v[0] == 1 ? this.colleagues.userGids.push(v[1]) : this.colleagues.deptGids.push(v[1]) 
+      // }
     },
     searchKeyword(){
       // active ? this.getDept() : this.getColleague()
@@ -146,6 +145,12 @@ export default {
   },
   mounted() {},
   methods: {
+    distinct(a, b, c=[]) {
+        let arr = a.concat(b,c);
+        return arr.filter((item, index)=> {
+            return arr.indexOf(item) === index
+        })
+    },
     getDept(keyword){
       this.$store.dispatch('getDept',{
           name: this.searchKeyword,
@@ -195,6 +200,18 @@ export default {
 
     },
     selectColleague() {
+      let userGids = []
+      let deptGids = []
+      this.oftenuseValues.map(r=>{
+        let v = r.split('-')
+        v[0] == 1 ? userGids.push(v[1]) : deptGids.push(v[1]) 
+      })
+
+      Object.assign(this.colleagues, {
+        userGids: this.distinct(userGids,this.colleagues.userGids),
+        deptGids: this.distinct(deptGids,this.colleagues.deptGids),
+      })
+      
       if (this.colleagues.userGids.concat(this.colleagues.deptGids).length) {
         if(this.$route.params.type == 'briefing'){
           this.$store.commit('setBriefingColleagues', this.colleagues)
