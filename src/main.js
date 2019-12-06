@@ -147,9 +147,20 @@ new Vue({
   router,
   store,
   methods: {
-    checkRole(key){
-      return this.userInfo.roles.includes(key)
+    checkRole(key, tip = false){
+      console.log(this.userInfo.roles)
+      let res = this.userInfo.roles.includes(key)
+      !res && tip && Toast('没有权限');
+      return res
     },
+    async dataCheck(data, callback){
+      let result = false
+      await this.$store.dispatch('dataprivilegecheck', data).then((res)=>{
+        res.data && Toast('没有权限');
+        result = res.data
+      })
+      result && callback()
+    }
   },
   created() {
     this.$store.dispatch('getUserInfo').then((data)=>{

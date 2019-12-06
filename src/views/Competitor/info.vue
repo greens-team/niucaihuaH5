@@ -26,8 +26,9 @@
         <!-- 添加图标 -->
         <img
           class="bar_icon edit_icon"
+          v-show="$root.checkRole('COMPETITOR_EDIT')" 
+          @click="$root.dataCheck({modelObjType:4, modelId: id}, editor)"
           slot="right"
-          @click="editor"
           src="../../assets/topBarIcon/edit_icon.png"
           alt="编辑"
         />
@@ -107,7 +108,8 @@
                   <div
                     class="text-sm"
                     style="color:#FF9B02"
-                    @click="$router.push({path:'/DealerList', query: {modelGid: id,flag:2}})"
+                    v-show="$root.checkRole('COMPETITOR_EDIT')" 
+                    @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2}}))"
                   >关联</div>
                 </div>
                 <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">

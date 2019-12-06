@@ -17,7 +17,7 @@ export default {
         },
     },
     actions: {
-        dataprivilegecheck({state}, data = {}){
+        dataprivilegecheck({}, data = {}){
             return new Promise(resolve => {
                 window.$ajax.auth.dataprivilegecheck(data).then(res => {
                     if (!Number(res.code)) {

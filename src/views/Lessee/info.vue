@@ -18,7 +18,8 @@
         <img
           class="bar_icon edit_icon"
           slot="right"
-          @click="editor"
+          v-show="$root.checkRole('LESSEE_EDIT')" 
+          @click="$root.dataCheck({modelObjType:3, modelId: id}, editor)"
           src="../../assets/topBarIcon/edit_icon.png"
           alt="编辑"
         />
@@ -228,7 +229,8 @@
                   <div
                     class="text-sm"
                     style="color:#FF9B02"
-                    @click="$router.push({path:'/DealerList', query: {modelGid: id,flag:1}})"
+                    v-show="$root.checkRole('LESSEE_EDIT')" 
+                    @click="$root.dataCheck({modelObjType:3, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:1}}))"
                   >关联</div>
                 </div>
                 <van-collapse v-model="currentLessee" v-show="isShowDealer">

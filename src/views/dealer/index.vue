@@ -21,7 +21,7 @@
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
           <van-icon name="search"  @click="searchBar = true" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600" />
-          <van-icon name="plus" @click="$store.commit('setNewDealerParams'); $router.push('/CreateDealer')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
+          <van-icon name="plus" v-show="$root.checkRole('DEALER_CREATE')" @click="$store.commit('setNewDealerParams'); $router.push('/CreateDealer')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>
         </div>
       </div>
        <div v-show="searchBar" :class="['flex items-center pl-3 pr-3 flex border-b border-gray-200', {'pr-0': homeSearch }]">

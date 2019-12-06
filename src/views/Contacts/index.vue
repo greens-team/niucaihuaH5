@@ -24,6 +24,7 @@
 
           <!-- 添加图标 -->
           <img
+            v-show="$root.checkRole('CONTACTS_CREATE')" 
             class="bar_icon plus_icon"
             @click="$store.commit('setCreateContactsParamsEmpty');$router.push('/CreateContacts')"
             src="../../assets/topBarIcon/add_icon.png"

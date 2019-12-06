@@ -16,9 +16,10 @@
 
         <!-- 添加图标 -->
         <img
+          v-show="$root.checkRole('CONTACTS_EDIT')" 
+          @click="$root.dataCheck({modelObjType:2, modelId: id}, editor)"
           class="bar_icon edit_icon"
           slot="right"
-          @click="editor"
           src="../../assets/topBarIcon/edit_icon.png"
           alt="编辑"
         />
@@ -113,7 +114,8 @@
                   <div
                     class="text-sm"
                     style="color:#FF9B02"
-                    @click="$router.push({path:'/DealerList', query: {modelGid: id,flag:3}})"
+                    v-show="$root.checkRole('CONTACTS_EDIT')" 
+                    @click="$root.dataCheck({modelObjType:2, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:3}}))"
                   >关联</div>
                 </div>
                 <van-collapse v-model="currentContacts" v-show="isShowDealer">

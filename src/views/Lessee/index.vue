@@ -26,6 +26,7 @@
           <!-- 添加图标 -->
           <img
             class="bar_icon plus_icon"
+            v-show="$root.checkRole('LESSEE_CREATE')" 
             @click="$store.commit('setInitAddParams');$router.push('/CreateLessee')"
             src="../../assets/topBarIcon/add_icon.png"
             alt="添加"

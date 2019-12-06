@@ -25,6 +25,7 @@
 
           <!-- 添加图标 -->
           <img
+            v-show="$root.checkRole('COMPETITOR_CREATE')" 
             class="bar_icon plus_icon"
             @click="$store.commit('setInitAddParams');$router.push('/CreateCompetitor')"
             src="../../assets/topBarIcon/add_icon.png"

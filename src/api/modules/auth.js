@@ -10,12 +10,12 @@ export default (m)=>{
       colleague:  m.GET + '/api/user/list',
       getUsersList: m.GET + '/api/users/list',
       getUserInfo: m.GET + 'auth/info',
-      dataprivilegecheck: m.GET + '/common/dataprivilegecheck'
     },
     postJSON: {
       getOftenuselist: m.POST + '/common/oftenuselist',
       login: TEST_URL + '/auth/login', // '/lbccrm/system/user/login', //m.GET + 
-      testtest: TEST_URL    // 无用接口
+      testtest: TEST_URL,    // 无用接口
+      dataprivilegecheck: m.POST + '/common/dataprivilegecheck'
     }
   }
 };

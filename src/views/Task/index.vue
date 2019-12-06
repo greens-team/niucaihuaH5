@@ -8,7 +8,8 @@
       left-arrow
     >
       <div
-        @click="editorFun"
+        v-show="$root.checkRole('TASK_EDIT')"
+        @click="$root.dataCheck({modelObjType:5, modelId: taskId}, editorFun)"
         v-if="taskStatus == 2 && $store.state.task.addEditTaskParams.taskType == 1"
         slot="right"
       >编辑</div>

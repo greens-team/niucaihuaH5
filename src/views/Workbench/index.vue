@@ -108,20 +108,20 @@
       </div>
 
       <div class="flex p-1 pt-2 justify-between">
-        <div class="text-center text-gray-800" @click="$router.push('/DealerManage')">
+        <div class="text-center text-gray-800" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push('/DealerManage')">
           <img src="../../assets/workbench/icon1.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">经销商管理</div>
         </div>
         <div
           class="text-center text-gray-800"
-          @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
+          @click="$root.checkRole('TASK_CREATE','tipText') && $router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
         >
           <img src="../../assets/workbench/icon2.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">新建拜访</div>
         </div>
         <div
           class="text-center text-gray-800"
-          @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})"
+          @click="$root.checkRole('TASK_CREATE','tipText') && $router.push({name:'CreateTask',query:{taskType:2,editor: true}})"
         >
           <img src="../../assets/workbench/icon3.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">新建任务</div>

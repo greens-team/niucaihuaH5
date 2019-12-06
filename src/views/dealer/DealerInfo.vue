@@ -3,13 +3,15 @@
   <!--  -->
   <div class="DealerInfo flex-1 flex flex-col bg-gray-100">
     <van-nav-bar title="经销商详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
+
       <i
         class="iconfont iconqipaocaidanbianji-bang"
-        @click="editor"
+        v-show="$root.checkRole('DEALER_EDIT')"
+        @click="$root.dataCheck({modelObjType:1, modelId: id}, editor)"
         slot="right"
         style="font-size: 1.6rem;"
       ></i>
-      <!-- <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> -->
+
     </van-nav-bar>
 
     <div class="flex-1 relative">
@@ -90,7 +92,8 @@
                   </div>
                   <div
                     class="text-sm text-orange-500"
-                    @click="recordSubmit"
+                    v-show="!info.recordStatus && $root.checkRole('DEALER_EDIT')"
+                    @click="$root.dataCheck({modelObjType:1, modelId: id}, recordSubmit)"
                   >{{info.recordStatus ? $store.state.record.recordStatus[info.recordStatus] : '提交备案'}}</div>
                 </div>
 
@@ -220,7 +223,8 @@
                 <div class="flex-1 font-bold">联系人</div>
                 <div
                   class="text-sm text-blue-500"
-                  @click="$router.push({path:'/ContactsList', query: {modelGid: id}})"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id}}))"
                 >关联</div>
               </div>
               <div
@@ -276,7 +280,8 @@
                 <div class="flex-1 font-bold">竞争对手</div>
                 <div
                   class="text-sm text-blue-500"
-                  @click="$router.push({path:'/CompetitorList', query: {modelGid: id}})"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id}}))"
                 >关联</div>
               </div>
               <div
@@ -328,7 +333,8 @@
                 <div class="flex-1 font-bold">承租人</div>
                 <div
                   class="text-sm text-blue-500"
-                  @click="$router.push({path:'/LesseeList', query: {modelGid: id}})"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id}}))"
                 >关联</div>
               </div>
               <div
@@ -824,6 +830,7 @@ export default {
       }
     },
     editor() {
+      
       this.$store.commit("setNewDealerParams");
       this.$store.commit("setParams", this.$store.state.dealerInfo.baseInfo);
       this.$router.push({

@@ -12,7 +12,10 @@
         v-if="editor && !taskId"
         slot="right"
       >{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
-      <div slot="right" v-if="!editor && taskId && !taskStatus " @click="editor = !editor">编辑</div>
+      
+        
+
+      <div slot="right" v-if="!editor && taskId && !taskStatus " v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>editor = !editor)">编辑</div>
       <div @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
     </van-nav-bar>
 
@@ -329,24 +332,24 @@
     </van-popup>
 
     <div
-      @click="finishTask"
+      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, finishTask)"
       v-if="!editor && $route.query.taskType == 2 && taskId"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >完成任务</div>
 
     <div
-      @click="clockIn"
+      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, clockIn)"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 0"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >签到打卡</div>
     <div
-      @click="createTaskLog(0)"
+      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 1"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <div
-      @click="createTaskLog(0)"
+      v-show="$root.checkRole('TASK_EDIT')" @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==1"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
