@@ -539,7 +539,7 @@
               v-if="$store.state.dealerInfo.currentTabsIndex === 4"
               class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
             >
-              <div class="flex pl-3 pr-3 pb-3 border-b">
+              <div class="flex pl-3 pr-3 pb-3">
                 <div class="flex-1 font-bold">动态记录</div>
                 <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
               </div>
