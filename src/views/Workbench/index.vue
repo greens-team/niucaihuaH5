@@ -144,7 +144,7 @@
           :class="['font-bold relative ml-4 text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(1);$store.commit('setWorkbenchTaskStatus', 1);"
         >
-          同事任务
+          全部任务
           <!-- <div  class="absolute" style="top: 0.1rem; right:-1.3rem">
             <van-icon name="arrow-down" />
           </div>-->

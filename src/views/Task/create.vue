@@ -119,13 +119,13 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:taskId}})" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}})" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
           <p
             :class="['p5  ',{'text-gray-800': !!dealerName}]"
             v-else
             @click="editor && (dealerShow = true)"
           >
-            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:taskId}})">{{dealerName}}</span>
+            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}})">{{dealerName}}</span>
             <span v-else>{{dealerName || '请选择相关经销商'}}</span>
           </p>
         </template>
@@ -754,15 +754,15 @@ export default {
               })
               .then(() => {
                 this.taskId = res.data;
-                this.$router.go(-1);
+                // this.$router.go(-1);
                 // 跳转到填写拜访记录页面
-                // this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+                this.$router.push({name:'VisitRecord',query:{id: this.taskId, back: "home"}})
               });
           });
       } else {
         this.$router.push({
           name: "VisitRecord",
-          query: { id: this.taskId, back: "home" }
+          query: { id: this.taskId }
         });
       }
     },

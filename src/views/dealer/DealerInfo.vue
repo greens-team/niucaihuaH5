@@ -260,14 +260,10 @@
                       class="flex"
                       :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >
-                      <!-- {{info.province +' '+ info.city +' '+ info.area}} -->
-                      {{info.locationName?info.locationName:'-'}}
-                      <div class="flex-1"></div>
-                      <i
-                        style="color:rgb(255, 155, 2)"
-                        @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
-                        class="iconfont iconweizhibang"
-                      ></i>
+                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
+                        {{info.locationName}}
+                      </span>
+                      <span v-else>-</span>
                     </div>
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2">

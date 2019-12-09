@@ -88,6 +88,7 @@ export default {
       })
 
       let params = {}
+      let apiUrlKey = '';
       if(state.workbenchTaskStatus){
         params = {
           startTime:this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 00:00:00'))/1000,
@@ -98,16 +99,18 @@ export default {
           pageNum: state.colleaguesTaskPageNum,
           pageSize: 20
         }
+        apiUrlKey = 'tasklistpage'
       }else{
         params = {
           startTime:this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 00:00:00'))/1000,
           endTime:this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 23:59:59'))/1000,
-          userGids: [],
+          userGids: [String(JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID)],
           deptGids: [],
           userType: 0,
           pageNum: state.myTaskPageNum,
           pageSize: 20
         }
+        apiUrlKey = 'taskmylistpage'
       }
       Object.assign(params, data)
 
@@ -119,7 +122,10 @@ export default {
         return
       }
       
-      window.$ajax.workbench.taskList(params).then(res => {
+      
+      
+
+      window.$ajax.workbench[apiUrlKey](params).then(res => {
         if(!res.code){
           if (state.workbenchTaskStatus) {
             state.myTaskList = []
