@@ -296,14 +296,14 @@
       <div class="bg-gray-200">
         <div
           @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
-          class="text-center text-orange-500 font-bold text-xl border-b border-gray-300 bg-white h-16 flex items-center justify-center cursor-pointer"
+          class="text-center font-bold text-xl border-b border-gray-300 bg-white h-16 flex items-center justify-center cursor-pointer" style="color:#FF9B02"
         >经销商拜访</div>
         <div
-          class="text-center border-b border-gray-300 text-orange-500 font-bold text-xl bg-white h-16 flex items-center justify-center cursor-pointer"
+          class="text-center border-b border-gray-300 font-bold text-xl bg-white h-16 flex items-center justify-center cursor-pointer" style="color:#FF9B02"
           @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})"
         >任务事项</div>
         <div
-          class="text-center border-b border-gray-300 bg-white h-16 text-xl flex items-center justify-center cursor-pointer mt-3"
+          class="text-center border-gray-300 bg-white h-16 text-xl flex items-center justify-center cursor-pointer mt-3"
           @click="newTask=false"
         >取 消</div>
       </div>
