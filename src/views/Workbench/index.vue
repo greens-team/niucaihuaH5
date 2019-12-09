@@ -266,9 +266,10 @@
                 >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
               </div>
               <span class="text-base text-gray-900">{{row.dealerName}}</span>
+              <!-- {{row.positionName}} >  -->
               <div
                 class="text-sm text-gray-600 mt-1"
-              >{{row.deptName}} > {{row.positionName}} > {{row.userName}}</div>
+              >{{row.deptName}} > {{row.userName}}</div>
               <img
                 v-show="row.isFinish"
                 class="absolute bottom-0 right-0 mr-2 w-16"

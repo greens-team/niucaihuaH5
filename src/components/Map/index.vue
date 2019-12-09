@@ -20,7 +20,9 @@
 
     </div>
 
+      <label>地址：<input v-model="keyword"></label>
     <baidu-map class="flex-1  map" :center="center" :zoom="zoom"  @ready="handler"> 
+      <bm-local-search :keyword="keyword" :auto-viewport="true"  zoom="30"></bm-local-search>
       <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
       <bm-marker :position="center" :dragging="true" @dragend="dragend"></bm-marker>
     </baidu-map>
@@ -38,7 +40,13 @@ export default {
       zoom: 18,
       addressList: [],
       addressValue: '',
-      BMap: ''
+      BMap: '',
+      keyword:'',
+    }
+  },
+  watch: {
+    keyword(){
+      console.log(this.center)
     }
   },
   components: {

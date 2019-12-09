@@ -6,7 +6,7 @@
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
         <div
-          @click="$route.query.back ? $router.go(-1) : $router.replace('/')"
+          @click="isAdd ? ($route.query.back ? $router.replace({path:'/TaskDetail',query:{gid: $route.query.gid}}) : $router.replace('/')) : $router.go(-1)"
           class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
@@ -176,12 +176,14 @@ export default {
     return {
       competitorList: [{ text: "请选择竞对名称", value: 0 }],
       ediotr: true,
-      picVal: []
+      picVal: [],
+      isAdd: true
     };
   },
   mounted() {
     this.$store.dispatch("getTaskInfo", this.$route.query.id).then(() => {
       if (this.$store.state.task.taskInfo.dealerDes) {
+        this.isAdd = !this.$store.state.task.addEditVisitlogParams.dealerDes
         // 回显数据
         this.$store.state.task.addEditVisitlogParams = {
           competitorList: this.$store.state.task.taskInfo.competitorList
@@ -260,8 +262,11 @@ export default {
           }
         }
         this.$store.state.task.addEditVisitlogParams.competitorList = competitorList;
+
+
+        // this.$store.state.task.addEditVisitlogParams.dealerDes
         this.$store
-          .dispatch(this.$route.query.back ? "addvisitlog" : "editvisitlog", {
+          .dispatch(this.isAdd ? "addvisitlog" : "editvisitlog" , {
             gid: this.$route.query.id
           })
           .then(msg => {
@@ -270,8 +275,8 @@ export default {
                 message: msg
               })
               .then(() => {
-                this.$route.query.back
-                  ? this.$router.replace("/")
+                this.isAdd
+                  ? (this.$route.query.back ? this.$router.replace({path:'/TaskDetail',query:{gid: this.$route.query.id}}) : this.$router.replace("/"))
                   : this.$router.go(-1);
               });
           });
