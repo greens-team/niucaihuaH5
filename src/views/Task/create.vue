@@ -748,21 +748,14 @@ export default {
           })
           .then(res => {
             this.newTask = false;
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.taskId = res.data;
-                // this.$router.go(-1);
-                // 跳转到填写拜访记录页面
-                this.$router.push({name:'VisitRecord',query:{id: this.taskId, back: "home"}})
-              });
+            this.taskId = res.data;
+            // 跳转到填写拜访记录页面
+            this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
           });
       } else {
         this.$router.push({
           name: "VisitRecord",
-          query: { id: this.taskId }
+          query: { id: this.taskId, back: "home"}
         });
       }
     },
