@@ -53,6 +53,20 @@
           >{{ birthday ? birthday : '请选择日期'}}</div>
         </div>
 
+
+        <div class="flex ml-4 items-center pt-3 pb-3">
+          <div style="width:130px; color:#323233;">负责人</div>
+
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :class="['p5  ',{'text-gray-800':ownerUserGids.length}]"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+
+        </div>
+
         <div
           class="date-time-input-wrap"
           style="border-bottom:1px solid #ededee; margin-left:1rem;"
@@ -254,8 +268,13 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
+
 export default {
   name: "CreateLessee",
+  components: {
+    UserList
+  },
   data() {
     return {
       showNext: false,
@@ -287,7 +306,10 @@ export default {
       idcardFrontPicVal: [],
       idcardBackPicVal: [],
       pictureVal: [],
-      userPicArr: []
+      userPicArr: [],
+
+      ownerUserGids: [
+      ]
     };
   },
   watch: {
@@ -304,10 +326,29 @@ export default {
     }
   },
   mounted() {
-    // this.setBirthday();
-    console.log(this.selectLesseeType);
+
+    // 获取当前用户为负责人
+    this.userInfo = JSON.parse(sessionStorage.userInfo);
+    this.ownerUserGids = [
+      {
+        id: this.userInfo.EMPLOYEE_ID,
+        refRlNm: this.userInfo.EMPLOYEE_NAME
+      }
+    ];
+
   },
   methods: {
+
+    // 过滤负责信息 展示负责人姓名 及 给参数赋值
+    mainUserGidsFun(vals) {
+      console.log(vals, 4444) // 赋值
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
+
     deleteFile(file, detail) {
       for (let i = 0; i < this.userPicArr.length; i++) {
         console.log(detail.index);
