@@ -54,9 +54,9 @@
         </div>
 
 
+
         <div class="flex ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">负责人</div>
-
           <UserList
             title="选择负责人"
             :paramsVal="ownerUserGids"
@@ -64,8 +64,11 @@
             soltCon="true"
             :class="['p5  ',{'text-gray-800':ownerUserGids.length}]"
           >{{mainUserGidsFun(ownerUserGids)}}</UserList>
-
         </div>
+
+        
+
+
 
         <div
           class="date-time-input-wrap"
@@ -308,8 +311,7 @@ export default {
       pictureVal: [],
       userPicArr: [],
 
-      ownerUserGids: [
-      ]
+      ownerUserGids: []
     };
   },
   watch: {
