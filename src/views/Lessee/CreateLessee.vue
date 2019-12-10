@@ -53,23 +53,6 @@
           >{{ birthday ? birthday : '请选择日期'}}</div>
         </div>
 
-
-
-        <div class="flex ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;">负责人</div>
-          <UserList
-            title="选择负责人"
-            :paramsVal="ownerUserGids"
-            @setParams="val=>ownerUserGids = val"
-            soltCon="true"
-            :class="['p5  ',{'text-gray-800':ownerUserGids.length}]"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
-        </div>
-
-        
-
-
-
         <div
           class="date-time-input-wrap"
           style="border-bottom:1px solid #ededee; margin-left:1rem;"
@@ -85,13 +68,41 @@
           </van-popup>
         </div>
 
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <div class="border_line flex ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#252525;">承租人状态</div>
           <div
             class="flex-1"
             :style="{color:selectLesseeStatus?'#252525':'rgba(69, 90, 100, 0.6)'}"
             @click="lesseeStatusShow = true;"
-          >{{selectLesseeStatus ? selectLesseeStatus : '请选择状态'}}</div>
+          >{{selectLesseeStatus}}</div>
         </div>
         <van-popup v-model="lesseeStatusShow" position="bottom" :style="{ height: '40%'}">
           <van-nav-bar
@@ -216,7 +227,7 @@
         />
 
         <div>
-          <div class="py-3 px-4 flex justify-between">
+          <div class="py-5 px-5 flex justify-between">
             <span style="color:#484C55">照片</span>
             <span style="color:#C4C6CC">{{pictureVal.length}}/4</span>
           </div>
@@ -287,19 +298,19 @@ export default {
       minDate: new Date(1899, 12, 1),
 
       genderShow: false,
-      genderValus: null,
-      defultGender: "男",
+      genderValus: "",
+      defultGender: "",
       selectGender: "",
 
       lesseeTypeShow: false,
-      lesseeTypeValus: null,
-      defultLesseeType: "自然人",
+      lesseeTypeValus: "",
+      defultLesseeType: "",
       selectLesseeType: "",
 
       lesseeStatusShow: false,
       lesseeStatusValus: 1,
       defultLesseeStatus: "线索承租人",
-      selectLesseeStatus: "",
+      selectLesseeStatus: "线索承租人",
 
       //校验
       isShowErrorPhoneMsg: false,
@@ -311,7 +322,8 @@ export default {
       pictureVal: [],
       userPicArr: [],
 
-      ownerUserGids: []
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   watch: {
@@ -328,7 +340,6 @@ export default {
     }
   },
   mounted() {
-
     // 获取当前用户为负责人
     this.userInfo = JSON.parse(sessionStorage.userInfo);
     this.ownerUserGids = [
@@ -338,12 +349,34 @@ export default {
       }
     ];
 
+    this.followerUserGids = [
+      {
+        refRlNm: "请选择参与人"
+      }
+    ];
   },
   methods: {
-
     // 过滤负责信息 展示负责人姓名 及 给参数赋值
     mainUserGidsFun(vals) {
-      console.log(vals, 4444) // 赋值
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.lessee.addParams.ownerUserGids = data.toString();
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
+
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.lessee.addParams.followerUserGids = data.toString();
       return vals
         .map(r => {
           return String(r.refRlNm);
@@ -353,7 +386,6 @@ export default {
 
     deleteFile(file, detail) {
       for (let i = 0; i < this.userPicArr.length; i++) {
-        console.log(detail.index);
         if (file.file.name == this.userPicArr[i].name && detail.index == i) {
           this.$store.state.lessee.addParams.userPic = this.$store.state.lessee.addParams.userPic.replace(
             this.userPicArr[i].path + ",",
@@ -388,6 +420,18 @@ export default {
       userPicStr = this.$store.state.lessee.addParams.userPic;
       userPicStr = userPicStr.substring(0, userPicStr.length - 1);
       this.$store.state.lessee.addParams.userPic = userPicStr;
+      this.$store.state.lessee.addParams.ownerUserGids = this.$store.state.lessee.addParams.ownerUserGids.split(
+        ","
+      );
+
+      this.$store.state.lessee.addParams.followerUserGids = this.$store.state.lessee.addParams.followerUserGids.split(
+        ","
+      );
+      if(this.$store.state.lessee.addParams.followerUserGids[0] == '') {
+        this.$store.state.lessee.addParams.followerUserGids = []
+      }
+      console.log(this.$store.state.lessee.addParams.ownerUserGids);
+      console.log(this.$store.state.lessee.addParams.followerUserGids);
 
       //保存前进行校验
       this.checkErrorMsg();

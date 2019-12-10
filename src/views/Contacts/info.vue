@@ -16,7 +16,7 @@
 
         <!-- 添加图标 -->
         <img
-          v-show="$root.checkRole('CONTACTS_EDIT')" 
+          v-show="$root.checkRole('CONTACTS_EDIT')"
           @click="$root.dataCheck({modelObjType:2, modelId: id}, editor)"
           class="bar_icon edit_icon"
           slot="right"
@@ -74,7 +74,11 @@
                     @click="showInfo1 = !showInfo1"
                   >
                     基本信息
-                    <i class="iconfont iconweizhankai ml-2 icon_toggle" style="color:#80848D" :class="{ active: showInfo1}"></i>
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo1}"
+                    ></i>
                   </div>
                 </div>
                 <div v-show="showInfo1">
@@ -84,8 +88,25 @@
                     </p>
                     <p class="text-gray-900 text-base">{{info.contactsName}}</p>
                   </div>
+
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text-gray-500">电话</p>
+                    <p class="text-xs text_title">负责人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                  </div>
+
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">参与人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
+                  </div>
+
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text-gray-500">手机号</p>
                     <p
                       class="text-gray-900 text-base"
                       :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
@@ -114,7 +135,7 @@
                   <div
                     class="text-base"
                     style="color:#FF9B02"
-                    v-show="$root.checkRole('CONTACTS_EDIT')" 
+                    v-show="$root.checkRole('CONTACTS_EDIT')"
                     @click="$root.dataCheck({modelObjType:2, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:3}}))"
                   >添加</div>
                 </div>
@@ -295,7 +316,9 @@ export default {
       picServer: "",
 
       isShowNoData: false,
-      isShowNoData_1: false
+      isShowNoData_1: false,
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   watch: {
@@ -372,6 +395,14 @@ export default {
           } else {
             this.isShowDealer = false;
           }
+
+          this.info.followerUserList.map(r => {
+            this.followerUserGids.push(r.ownerUserName);
+          });
+
+          this.info.ownerUserList.map(r => {
+            this.ownerUserGids.push(r.ownerUserName);
+          });
         });
       }
       if (num === 1) {

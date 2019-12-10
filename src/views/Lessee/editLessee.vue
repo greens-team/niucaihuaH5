@@ -44,7 +44,7 @@
         <div class="flex ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">出生日期</div>
           <div
-            style="color:#252525"
+            :style="{color:birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
             class="flex-1"
             @click="birthdayTimeShow = true;"
           >{{ birthday ? birthday : '请选择日期'}}</div>
@@ -70,7 +70,7 @@
             class="flex-1"
             style="color:#252525"
             @click="lesseeStatusShow = true;"
-          >{{selectLesseeStatus ? selectLesseeStatus : '请选择状态'}}</div>
+          >{{selectLesseeStatus}}</div>
         </div>
         <van-popup v-model="lesseeStatusShow" position="bottom" :style="{ height: '40%'}">
           <van-nav-bar
@@ -101,7 +101,7 @@
           <div style="width:130px; color:#252525;">客户类型</div>
           <div
             class="flex-1"
-            style="color:#252525"
+            :style="{color:selectLesseeType?'#252525':'rgba(69, 90, 100, 0.6)'}"
             @click="lesseeTypeShow = true;"
           >{{selectLesseeType ? selectLesseeType : '请选择类型'}}</div>
         </div>
@@ -136,6 +136,7 @@
             style="color:#252525"
             class="flex-1"
             @click="genderShow = true;"
+            :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
         <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}">
@@ -193,7 +194,7 @@
         />
 
         <div>
-          <div class="py-3 px-4 flex justify-between">
+          <div class="py-5 px-5 flex justify-between">
             <span style="color:#484C55">照片</span>
             <span style="color:#C4C6CC">{{pictureVal.length}}/4</span>
           </div>
@@ -259,18 +260,18 @@ export default {
 
       genderShow: false,
       genderValus: null,
-      defultGender: "男",
+      defultGender: "",
       selectGender: "",
 
       lesseeTypeShow: false,
       lesseeTypeValus: null,
-      defultLesseeType: "自然人",
+      defultLesseeType: "",
       selectLesseeType: "",
 
       lesseeStatusShow: false,
       lesseeStatusValus: 1,
       defultLesseeStatus: "线索承租人",
-      selectLesseeStatus: "",
+      selectLesseeStatus: "线索承租人",
 
       //校验
       isShowErrorPhoneMsg: false,

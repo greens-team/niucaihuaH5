@@ -23,7 +23,6 @@ export default {
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
-
     },
 
 

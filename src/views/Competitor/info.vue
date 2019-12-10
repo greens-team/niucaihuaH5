@@ -97,6 +97,22 @@
                     >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '-'}}</p>
                   </div>
 
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">负责人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                  </div>
+
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">参与人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
+                  </div>
+
                   <div class="pt-2 pb-2">
                     <p class="text-xs text-gray-500">备注</p>
                     <p
@@ -300,7 +316,9 @@ export default {
       picServer: "",
 
       isShowNoData: false,
-      isShowNoData_1: false
+      isShowNoData_1: false,
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   mounted() {
@@ -377,6 +395,14 @@ export default {
           } else {
             this.isShowCompetitor = false;
           }
+
+          this.info.followerUserList.map(r => {
+            this.followerUserGids.push(r.ownerUserName);
+          });
+
+          this.info.ownerUserList.map(r => {
+            this.ownerUserGids.push(r.ownerUserName);
+          });
         });
       }
       if (num === 1) {

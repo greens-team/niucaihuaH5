@@ -68,6 +68,34 @@
           </div>
         </van-popup>
 
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <van-field
           v-model="$store.state.competitor.addParams.comment"
           :rows="5"
@@ -84,17 +112,24 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
 export default {
   name: "CreateCompetitor",
+  components: {
+    UserList
+  },
   data() {
     return {
       competorTypeShow: false,
       competorStatusValus: null,
-      defultCompetorType: "第三方",
+      defultCompetorType: "",
       selectCompetorType: "",
 
       //校验
-      isShowErrorNameMsg: false
+      isShowErrorNameMsg: false,
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   watch: {
@@ -104,8 +139,62 @@ export default {
       ].text;
     }
   },
+  mounted() {
+    // 获取当前用户为负责人
+    this.userInfo = JSON.parse(sessionStorage.userInfo);
+    this.ownerUserGids = [
+      {
+        id: this.userInfo.EMPLOYEE_ID,
+        refRlNm: this.userInfo.EMPLOYEE_NAME
+      }
+    ];
+
+    this.followerUserGids = [
+      {
+        refRlNm: "请选择参与人"
+      }
+    ];
+  },
   methods: {
+    // 过滤负责信息 展示负责人姓名 及 给参数赋值
+    mainUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.competitor.addParams.ownerUserGids = data.toString();
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
+
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.competitor.addParams.followerUserGids = data.toString();
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
     createCompetitor() {
+      this.$store.state.competitor.addParams.ownerUserGids = this.$store.state.competitor.addParams.ownerUserGids.split(
+        ","
+      );
+      this.$store.state.competitor.addParams.followerUserGids = this.$store.state.competitor.addParams.followerUserGids.split(
+        ","
+      );
+      if (this.$store.state.competitor.addParams.followerUserGids[0] == "") {
+        this.$store.state.competitor.addParams.followerUserGids = [];
+      }
+      console.log(this.$store.state.competitor.addParams.ownerUserGids);
+      console.log(this.$store.state.competitor.addParams.followerUserGids);
       this.checkErrorMsg();
       if (!this.isShowErrorNameMsg) {
         this.$store

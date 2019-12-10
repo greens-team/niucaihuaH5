@@ -49,6 +49,7 @@
           <div
             class="flex-1"
             @click="competorTypeShow = true;"
+            :style="{color:selectCompetorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectCompetorType ? selectCompetorType : '请选择类型'}}</div>
         </div>
         <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}">

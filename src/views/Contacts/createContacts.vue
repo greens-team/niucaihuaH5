@@ -43,6 +43,35 @@
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <van-field
           v-model="$store.state.contacts.createContactsParams.weichatNum"
           label="微信号"
@@ -67,17 +96,79 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
 export default {
   name: "CreateContacts",
+  components: {
+    UserList
+  },
   data() {
     return {
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
-      isShowErrorChatMsg: false
+      isShowErrorChatMsg: false,
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
+  mounted() {
+    // 获取当前用户为负责人
+    this.userInfo = JSON.parse(sessionStorage.userInfo);
+    this.ownerUserGids = [
+      {
+        id: this.userInfo.EMPLOYEE_ID,
+        refRlNm: this.userInfo.EMPLOYEE_NAME
+      }
+    ];
+
+    this.followerUserGids = [
+      {
+        refRlNm: "请选择参与人"
+      }
+    ];
+  },
   methods: {
+    // 过滤负责信息 展示负责人姓名 及 给参数赋值
+    mainUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.contacts.createContactsParams.ownerUserGids = data.toString();
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
+
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.contacts.createContactsParams.followerUserGids = data.toString();
+      return vals
+        .map(r => {
+          return String(r.refRlNm);
+        })
+        .toString();
+    },
     createContacts() {
+      this.$store.state.contacts.createContactsParams.ownerUserGids = this.$store.state.contacts.createContactsParams.ownerUserGids.split(
+        ","
+      );
+
+      this.$store.state.contacts.createContactsParams.followerUserGids = this.$store.state.contacts.createContactsParams.followerUserGids.split(
+        ","
+      );
+      if(this.$store.state.contacts.createContactsParams.followerUserGids[0] == '') {
+        this.$store.state.contacts.createContactsParams.followerUserGids = []
+      }
+      console.log(this.$store.state.contacts.createContactsParams.ownerUserGids);
+      console.log(this.$store.state.contacts.createContactsParams.followerUserGids);
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&

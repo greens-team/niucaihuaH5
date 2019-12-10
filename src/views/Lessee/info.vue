@@ -146,12 +146,35 @@
                   </div>-->
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">性别</p>
-                    <p class="text_content text-base">{{info.gender ? '女' : '男'}}</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:info.gender != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.gender == null ? '-' : (info.gender ? '男' : '女')}}</p>
                   </div>
+
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">负责人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                  </div>
+
+                  <div class="border_line pt-2 pb-2" style="height:4rem;">
+                    <p class="text-xs text_title">参与人</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
+                  </div>
+
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text_content text-base">{{info.lesseeType ? '法人' : '自然人'}}</p>
+                    <p
+                      class="text_content text-base"
+                      :style="{color:info.lesseeType != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.lesseeType == null ? '-' : (info.gender ? '自然人' : '法人')}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>
@@ -415,7 +438,10 @@ export default {
       newsLogContent: "",
 
       isShowNoData: false,
-      isShowNoData_1: false
+      isShowNoData_1: false,
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   created() {
@@ -486,6 +512,14 @@ export default {
           if (this.info.userPic) {
             this.userPicArr = this.info.userPic.split(",");
           }
+
+          this.$store.state.lessee.info.followerUserList.map(r => {
+            this.followerUserGids.push(r.ownerUserName);
+          });
+
+          this.$store.state.lessee.info.ownerUserList.map(r => {
+            this.ownerUserGids.push(r.ownerUserName);
+          });
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;
