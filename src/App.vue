@@ -25,7 +25,7 @@ export default {
       userInfo && (sessionStorage.userInfo = JSON.stringify(userInfo))
       
       _this.loginStatus = true;
-      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',0)
+      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
       // location.reload()
     }
 
@@ -52,7 +52,7 @@ export default {
         sessionStorage.userInfo = userGsonStr
         sessionStorage.Authorization = JSON.parse(userGsonStr).TOKEN
         _this.loginStatus = true;
-        setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',0)
+        setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
         // location.reload()
       }
     })
@@ -62,7 +62,7 @@ export default {
     setAuthorization(token){
       sessionStorage.Authorization = token
       this.loginStatus = true;
-      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',0)
+      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
       // location.reload()
     }
   },
