@@ -163,6 +163,14 @@ new Vue({
         result = res.data
       })
       result && callback()
+    },
+    async selectdpcheck(data, callback){
+      let result = false
+      await this.$store.dispatch('selectdpcheck', data).then((res)=>{
+        !res.data && Toast('没有权限');
+        result = res.data
+      })
+      result && callback()
     }
   },
   created() {

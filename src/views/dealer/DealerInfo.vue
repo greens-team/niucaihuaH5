@@ -340,7 +340,7 @@
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/ContactsInfo',query:{gid:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
                     >{{r.contactsName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -407,7 +407,7 @@
                     <p class="text-xs text-gray-500">竞对名称</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/CompetitorInfo',query:{id:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
                     >{{r.competorName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -467,7 +467,7 @@
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/LesseeInfo',query:{id:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
                     >{{r.lesseeName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">

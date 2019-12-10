@@ -374,7 +374,6 @@ export default {
       
       this.$store.dispatch("getinfo", this.id).then(() => {
 
-        debugger
         this.$store.commit("setNewDealerParams");
 
         mapInfo.locationName &&

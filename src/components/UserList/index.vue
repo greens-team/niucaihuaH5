@@ -2,7 +2,7 @@
 <template>
 <div>
   <div  @click="userListValues = []; userListShow = true">
-    <span v-if="!soltCon">{{paramsVal | fiterUser}}</span>
+    <span v-if="!soltCon" :class="[{'text-gray-500':!paramsVal.length}]">{{paramsVal | fiterUser}}</span>
     <slot></slot>
   </div>
   <van-popup
