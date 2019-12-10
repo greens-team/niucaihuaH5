@@ -5,8 +5,9 @@
 
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
+          <!-- @click="isAdd ? ($route.query.back ? $router.replace({path:'/TaskDetail',query:{gid: $route.query.id,taskType:1}}) : $router.replace('/')) : $router.go(-1)" -->
         <div
-          @click="isAdd ? ($route.query.back ? $router.replace({path:'/TaskDetail',query:{gid: $route.query.gid}}) : $router.replace('/')) : $router.go(-1)"
+          @click="isAdd ? ($route.query.back ? $router.go(-1) : $router.replace('/')) : $router.go(-1)"
           class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
@@ -17,6 +18,8 @@
         <div class="flex-1"></div>
       </div>
     </div>
+
+
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
@@ -284,14 +287,19 @@ export default {
                 message: msg
               })
               .then(() => {
-                this.isAdd
-                  ? this.$route.query.back
-                    ? this.$router.replace({
+                this.$router.replace({
                         path: "/TaskDetail",
-                        query: { gid: this.$route.query.id }
+                        query: { gid: this.$route.query.id,taskType:1 }
                       })
-                    : this.$router.replace("/")
-                  : this.$router.go(-1);
+
+                // this.isAdd
+                //   ? this.$route.query.back
+                //     ? this.$router.replace({
+                //         path: "/TaskDetail",
+                //         query: { gid: this.$route.query.id }
+                //       })
+                //     : this.$router.replace("/")
+                //   : this.$router.go(-1);
               });
           });
       }

@@ -561,7 +561,7 @@ export default {
           legalParams.certTypCd &&
           legalParams.certNo
         ) {
-          this.$store.dispatch(
+          !this.recordStatus && this.$store.dispatch(
             this.existLegal ? "editlegal" : "addlegal",
             legalParams
           );
