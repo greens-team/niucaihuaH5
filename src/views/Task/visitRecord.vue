@@ -114,7 +114,12 @@
                   @click="$store.state.task.addEditVisitlogParams.competitorList.splice(i, 1)"
                 >-</span>
               </template>
-              <template slot="default">
+              <span
+                style="position: absolute;z-index: 1;top: 50%;margin-top: -12px;left:11px;"
+                v-if="r.modelGid == ''"
+              >请选择竞对名称</span>
+
+              <template slot="default" class="relative">
                 <van-dropdown-menu>
                   <van-dropdown-item v-model="r.modelGid" :options="competitorList" />
                 </van-dropdown-menu>
@@ -174,7 +179,8 @@ export default {
   name: "VisitRecord",
   data() {
     return {
-      competitorList: [{ text: "请选择竞对名称", value: 0 }],
+      competitorList: [{ text: "无", value: "0" }],
+      value: 0,
       ediotr: true,
       picVal: [],
       isAdd: true
@@ -182,9 +188,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getTaskInfo", this.$route.query.id).then(() => {
+      console.log(this.$store.state.task.taskInfo.dealerDes);
       if (this.$store.state.task.taskInfo.dealerDes) {
-        this.isAdd = !this.$store.state.task.addEditVisitlogParams.dealerDes
+        this.isAdd = !this.$store.state.task.addEditVisitlogParams.dealerDes;
         // 回显数据
+        console.log(this.$store.state.task.taskInfo.competitorList);
         this.$store.state.task.addEditVisitlogParams = {
           competitorList: this.$store.state.task.taskInfo.competitorList
             ? this.$store.state.task.taskInfo.competitorList.map(r => {
@@ -263,10 +271,9 @@ export default {
         }
         this.$store.state.task.addEditVisitlogParams.competitorList = competitorList;
 
-
         // this.$store.state.task.addEditVisitlogParams.dealerDes
         this.$store
-          .dispatch(this.isAdd ? "addvisitlog" : "editvisitlog" , {
+          .dispatch(this.isAdd ? "addvisitlog" : "editvisitlog", {
             gid: this.$route.query.id
           })
           .then(msg => {
@@ -276,7 +283,12 @@ export default {
               })
               .then(() => {
                 this.isAdd
-                  ? (this.$route.query.back ? this.$router.replace({path:'/TaskDetail',query:{gid: this.$route.query.id}}) : this.$router.replace("/"))
+                  ? this.$route.query.back
+                    ? this.$router.replace({
+                        path: "/TaskDetail",
+                        query: { gid: this.$route.query.id }
+                      })
+                    : this.$router.replace("/")
                   : this.$router.go(-1);
               });
           });
@@ -305,14 +317,14 @@ export default {
   text-align: inherit;
 }
 .round {
-  border-radius: 10px;
+  border-radius: 12px;
   background: #ddd;
   text-align: center;
-  line-height: 20px;
+  line-height: 23px;
   font-size: 22px;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 23px;
+  height: 23px;
   top: 20px;
   right: 10px;
 }
@@ -334,5 +346,29 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.VisitRecord /deep/ .van-dropdown-menu__item {
+  z-index: 2;
+}
+.VisitRecord /deep/ .van-dropdown-menu__title {
+  width: 96%;
+}
+.VisitRecord /deep/ .van-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 82%;
+}
+.VisitRecord /deep/ .van-dropdown-menu__title::after {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  margin-top: -5px;
+  border: 3px solid;
+  border-color: transparent transparent currentColor currentColor;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  opacity: 0.8;
+  content: "";
 }
 </style>
