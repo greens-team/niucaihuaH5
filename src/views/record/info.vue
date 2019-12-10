@@ -10,12 +10,20 @@
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
         <div class="bg-white">
-          <div class="relative formBar font-bold text-base p-3 pl-4">请上传身份证件及营业执照图片</div>
+          <div class="relative formBar font-bold text-base p-2 pl-4">请上传身份证件及营业执照图片</div>
           <div class="p-10 flex items-center justify-between">
-
-            <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.idcardFrontPic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="idcardFrontPicVal" :max-count="1"/>
-            <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.idcardBackPic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="idcardBackPicVal" :max-count="1"/>
-            <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.licensePic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="licensePicVal" :max-count="1"/>
+            <div class="items-center flex flex-col justify-center">
+              <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.idcardFrontPic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="idcardFrontPicVal" :max-count="1"/>
+              <p class="text-sm text-gray-500 mr-3">身份证正面</p>
+            </div>
+            <div class="items-center flex flex-col justify-center">
+              <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.idcardBackPic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="idcardBackPicVal" :max-count="1"/>
+              <p class="text-sm text-gray-500 mr-3">身份证反面</p>
+            </div>
+            <div class="items-center flex flex-col justify-center">
+              <van-uploader :after-read="file => uploadFile(file, (fileUrl)=>info.licensePic = fileUrl, 1)" :before-read="file => uploadFile(file,true)" v-model="licensePicVal" :max-count="1"/>
+              <p class="text-sm text-gray-500 mr-3">营业执照</p>
+            </div>
 
           </div>
         </div>
