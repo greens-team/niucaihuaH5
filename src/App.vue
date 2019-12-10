@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="fixed inset-0 flex flex-col">
 
-    <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
+    <!-- <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
       <van-loading size="24px" vertical>加载中...</van-loading>
-    </div>
-    <router-view v-else></router-view>
+    </div> -->
+    <router-view v-if="loginStatus"></router-view>
 
   </div>
 </template>
@@ -13,7 +13,9 @@
 export default {
   name: 'app',
   data() {
-    return {}
+    return {
+      loginStatus: false
+    }
   },
   mounted() {
 
@@ -21,7 +23,10 @@ export default {
     window.setToken = function(token, userInfo){
       sessionStorage.Authorization = token
       userInfo && (sessionStorage.userInfo = JSON.stringify(userInfo))
-      location.reload()
+      
+      _this.loginStatus = true;
+      document.getElementById('loadingPage').style.display = 'none'
+      // location.reload()
     }
 
     // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
@@ -46,7 +51,9 @@ export default {
         var userGsonStr = HelperNativeInterface.getUserInfo();
         sessionStorage.userInfo = userGsonStr
         sessionStorage.Authorization = JSON.parse(userGsonStr).TOKEN
-        location.reload()
+        _this.loginStatus = true;
+        document.getElementById('loadingPage').style.display = 'none'
+        // location.reload()
       }
     })
 
@@ -54,13 +61,15 @@ export default {
   methods: {
     setAuthorization(token){
       sessionStorage.Authorization = token
-      location.reload()
+      _this.loginStatus = true;
+      document.getElementById('loadingPage').style.display = 'none'
+      // location.reload()
     }
   },
   computed: {
-    loginStatus: function(){
-      return sessionStorage.Authorization ? true : false
-    }
+    // loginStatus: function(){
+    //   return sessionStorage.Authorization ? true : false
+    // }
   }
 }
 </script>
