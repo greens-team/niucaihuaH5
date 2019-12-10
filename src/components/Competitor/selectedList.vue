@@ -29,29 +29,23 @@
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
-        <div class="flex">
-          <van-checkbox-group v-model="$store.state.competitor.confirmUserGids" class="flex-1 ml-5">
-            <van-checkbox
-              v-for="(item, i) in $store.state.competitor.selectedUserGids"
-              :key="i"
-              icon-size="16px"
-              class="border-b border-gray-200"
-              style="padding: 0.86rem"
-              :name="item"
-            >{{item.split(',')[0]}}</van-checkbox>
-          </van-checkbox-group>
 
-          <div class="mr-5 flex-1 flex">
-            <div
-              v-for="(item, i) in $store.state.competitor.selectedUserGids"
-              :key="i"
-              class="border-b border-gray-200 flex flex-1"
-            >
-              <van-field v-model="$store.state.competitor.jobsUser[i]" placeholder="应对策略" />
-              <van-field v-model="$store.state.competitor.jobsUser1[i]" placeholder="竞对政策" />
+          <van-checkbox-group class="flex flex-col" v-model="$store.state.competitor.confirmUserGids" >
+            <div v-for="(item, i) in $store.state.competitor.selectedUserGids" :key="i" class="flex border-b border-gray-200 ml-4 mr-4">
+              <van-checkbox
+                icon-size="16px"
+                class="w-2/5"
+                :name="item"
+              >
+                {{item.split(',')[0]}}
+              </van-checkbox>
+              <div class="w-3/5 flex flex-col">
+                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize class="w-full" v-model="$store.state.competitor.jobsUser[i]" placeholder="请输入应对策略" />
+                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize class="w-full" v-model="$store.state.competitor.jobsUser1[i]" placeholder="请输入竞对政策" />
+              </div>
             </div>
-          </div>
-        </div>
+          </van-checkbox-group>
+          
       </div>
     </div>
   </div>
@@ -64,7 +58,10 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.$store.state.competitor.jobsUser = []
+    this.$store.state.competitor.jobsUser1 = []
+  },
   methods: {
     finish() {
       let arr = [];

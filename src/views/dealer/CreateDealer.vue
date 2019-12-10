@@ -14,7 +14,7 @@
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
         <div
-          @click="$router.go(-1)"
+          @click="delmapsource(),$router.go(-1)"
           class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
@@ -23,7 +23,7 @@
       <span class="text-center font-bold bar_title">{{$route.query.editor ? '编辑经销商' : '新建经销商'}}</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div v-if="$route.query.editor" class="text-center text-base" slot="right" @click="save">保存</div>
+        <div v-if="$route.query.editor" class="text-center text-base" slot="right" @click="()=>{delmapsource(),save()}">保存</div>
         <div v-else slot="right" class="text-center text-base" @click="nextStep">下一步</div>
       </div>
     </div>
@@ -160,6 +160,7 @@
           <van-field
             v-model="$store.state.newDealer.params.contactsPhone"
             label="法人电话"
+            pattern="[0-9]*"
             :disabled="recordStatus"
             placeholder="请输入法人电话"
             label-width="130"
@@ -203,8 +204,20 @@
               </van-cell-group>
             </van-radio-group>
           </van-popup>
+
+          
+          
           <div></div>
         </div>
+
+        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+            <div style="width:130px; color:#323233;">地理位置</div>
+            <div
+              class="flex-1"
+              @click="!recordStatus && $router.push('/map')"
+              :style="{color:$store.getters.NDparams.locationName && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"
+            >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
+          </div>
 
 
 
@@ -219,14 +232,7 @@
           label-width="130"
         />-->
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-          <div style="width:130px; color:#323233;">地理位置</div>
-          <div
-            class="flex-1"
-            @click="$router.push('/map')"
-            :style="{color:$store.getters.NDparams.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
-        </div>
+        
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">经销商分级</div>
@@ -321,7 +327,7 @@ export default {
       existLegal: false, //法人是否存在
       isShowErrorNameMsg: false,
 
-      recordStatus: 0
+      recordStatus: false
     };
   },
 
@@ -335,7 +341,6 @@ export default {
     }
   },
   mounted() {
-debugger
     this.recordStatus = !!this.$store.getters.NDparams.recordStatus;
     // this.$store.commit('setNewDealerParams')
 
@@ -353,6 +358,7 @@ debugger
       mapInfo.longitude = this.$store.getters.NDparams.longitude;
       mapInfo.latitude = this.$store.getters.NDparams.latitude;
     }
+
     this.$store.state.newDealer.params.ownerUserList = this.$store.state.newDealer.params.ownerUserList || [
       {
         id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
@@ -363,9 +369,11 @@ debugger
     this.ownerUserGidsA = this.$store.state.newDealer.params.ownerUserList;
     this.ownerUserGidsB = this.$store.state.newDealer.params.followerUserList || []
 
-    if (this.$route.query.id) {
-      this.id = this.$route.query.id;
+    this.id = this.$route.query.id || '';
+    if (this.$route.query.id && !sessionStorage.mapsource) { 
+      
       this.$store.dispatch("getinfo", this.id).then(() => {
+
         this.$store.commit("setNewDealerParams");
 
         mapInfo.locationName &&
@@ -459,6 +467,9 @@ debugger
     }
   },
   methods: {
+    delmapsource(){
+      sessionStorage.mapsource && delete sessionStorage.mapsource
+    },
     getArea(code) {
       this.$store.state.dealer.citysList.some(r => {
         if (r.value === code) {

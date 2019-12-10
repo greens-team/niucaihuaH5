@@ -6,7 +6,7 @@
       :title="$route.query.clockIn?'签到打卡':'选择地图位置'"
       left-text="返回"
       :right-text="$route.query.lng ? '' : '确定'"
-      @click-left="$router.go(-1)"
+      @click-left="setSource(),$router.go(-1)"
       @click-right="setLocation"
     />
 
@@ -76,7 +76,11 @@ export default {
         })
       });
     },
+    setSource(){
+      sessionStorage.mapsource="true"
+    },
     setLocation(){
+      this.setSource()
       if(this.addressValue){
         let o = JSON.parse(this.addressValue)
         this.$store.getters.NDparams.longitude =  String(o.lng).split('.')[1].length > 6 ? o.lng.toFixed(6) : o.lng

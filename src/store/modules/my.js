@@ -17,6 +17,15 @@ export default {
         },
     },
     actions: {
+        selectdpcheck({}, data = {}){
+            return new Promise(resolve => {
+                window.$ajax.auth.selectdpcheck(data).then(res => {
+                    if (!Number(res.code)) {
+                        resolve(res)
+                    }
+                })
+            })
+        },
         dataprivilegecheck({}, data = {}){
             return new Promise(resolve => {
                 window.$ajax.auth.dataprivilegecheck(data).then(res => {

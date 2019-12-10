@@ -119,13 +119,13 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}})" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
           <p
             :class="['p5  ',{'text-gray-800': !!dealerName}]"
             v-else
             @click="editor && (dealerShow = true)"
           >
-            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}})">{{dealerName}}</span>
+            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))">{{dealerName}}</span>
             <span v-else>{{dealerName || '请选择相关经销商'}}</span>
           </p>
         </template>

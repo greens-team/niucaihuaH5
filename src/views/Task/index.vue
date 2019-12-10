@@ -90,7 +90,7 @@
             <span class="custom-title">相关经销商</span>
           </template>
           <template slot="default">
-            <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}})">{{dealerName}}</p>
+            <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))">{{dealerName}}</p>
             <!-- <p class="p5  text-gray-800">{{dealerName || '请选择相关经销商'}}</p> -->
           </template>
         </van-cell>

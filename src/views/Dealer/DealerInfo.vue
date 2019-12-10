@@ -240,6 +240,19 @@
                     <p class="text-xs text-gray-500">营业执照</p>
                     <img :src="picServer + info.licensePic" alt />
                   </div>
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs text-gray-500">地理位置</p>
+                    <div
+                      class="flex"
+                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >
+                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
+                        {{info.locationName}}
+                      </span>
+                      <span v-else>-</span>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
@@ -254,18 +267,7 @@
                   </div>
                 </div>
                 <div v-show="showInfo2">
-                  <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">地理位置</p>
-                    <div
-                      class="flex"
-                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >
-                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
-                        {{info.locationName}}
-                      </span>
-                      <span v-else>-</span>
-                    </div>
-                  </div>
+                  
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">经销商分级</p>
                     <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
@@ -338,7 +340,7 @@
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/ContactsInfo',query:{gid:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
                     >{{r.contactsName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -405,7 +407,7 @@
                     <p class="text-xs text-gray-500">竞对名称</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/CompetitorInfo',query:{id:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
                     >{{r.competorName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -465,7 +467,7 @@
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
                       class="text-gray-900 text-sm text-blue-500"
-                      @click="$router.push({path:'/LesseeInfo',query:{id:r.gid}})"
+                      @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
                     >{{r.lesseeName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -489,6 +491,10 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">性别</p>
                     <p class="text-gray-900 text-sm">{{r.gender ? '女' : '男'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs text-gray-500">状态</p>
+                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">客户类型</p>
@@ -676,7 +682,9 @@ export default {
   data() {
     return {
       id: "",
-      info: {},
+      info: {
+        recordStatus: ''
+      },
       contactslist: [],
       competitorlist: [],
       lesseelist: [],
