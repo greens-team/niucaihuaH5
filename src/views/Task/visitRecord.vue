@@ -169,7 +169,8 @@
 
     <div
       @click="finishTask"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100"
+      style="color:#FF9B02"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100"
     >完成任务</div>
   </div>
 </template>
@@ -264,10 +265,11 @@ export default {
       } else {
         let competitorList = this.$store.state.task.addEditVisitlogParams
           .competitorList;
+          console.log(competitorList)
         for (let i = 0; i < competitorList.length; i++) {
-          if (Number(competitorList[i].modelGid) == 0) {
-            competitorList.splice(i, 1); //删除下标为i的元素
-          }
+          // if (Number(competitorList[i].modelGid) == 0) {
+          //   competitorList.splice(i, 1); //删除下标为i的元素
+          // }
         }
         this.$store.state.task.addEditVisitlogParams.competitorList = competitorList;
 

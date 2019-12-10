@@ -365,7 +365,7 @@
           @click="createTask"
           class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer"
         >
-          <span class="text-orange-500 font-bold text-xl">创建拜访任务</span>
+          <span style="color:#FF9B02" class="font-bold text-xl">创建拜访任务</span>
           <br />
           <span class="text-gray-500 text-sm">未完成拜访，创建拜访任务</span>
         </div>
@@ -373,7 +373,7 @@
           class="text-center border-b border-gray-300 bg-white items-center p-2 cursor-pointer"
           @click="createTaskLog(1)"
         >
-          <span class="text-orange-500 font-bold text-xl">直接填写拜访记录</span>
+          <span style="color:#FF9B02" class="font-bold text-xl">直接填写拜访记录</span>
           <br />
           <span class="text-gray-500 text-sm">已完成拜访，直接填写拜访记要</span>
         </div>
@@ -388,27 +388,31 @@
       v-show="$root.checkRole('TASK_EDIT')"
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, finishTask)"
       v-if="!editor && $route.query.taskType == 2 && taskId"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
+      style="color:#FF9B02"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
     >完成任务</div>
 
     <div
       v-show="$root.checkRole('TASK_EDIT')"
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, clockIn)"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 0"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
+      style="color:#FF9B02"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
     >签到打卡</div>
     <div
       v-show="$root.checkRole('TASK_EDIT')"
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
+      style="color:#FF9B02"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 1"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <div
       v-show="$root.checkRole('TASK_EDIT')"
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==1"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 text-orange-500 bg-gray-100 fixed left-0 right-0 bottom-0"
+      style="color:#FF9B02"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <!-- CreateTask
