@@ -240,6 +240,19 @@
                     <p class="text-xs text-gray-500">营业执照</p>
                     <img :src="picServer + info.licensePic" alt />
                   </div>
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs text-gray-500">地理位置</p>
+                    <div
+                      class="flex"
+                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >
+                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
+                        {{info.locationName}}
+                      </span>
+                      <span v-else>-</span>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
@@ -254,18 +267,7 @@
                   </div>
                 </div>
                 <div v-show="showInfo2">
-                  <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">地理位置</p>
-                    <div
-                      class="flex"
-                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >
-                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
-                        {{info.locationName}}
-                      </span>
-                      <span v-else>-</span>
-                    </div>
-                  </div>
+                  
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">经销商分级</p>
                     <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
