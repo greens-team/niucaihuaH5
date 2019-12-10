@@ -35,13 +35,12 @@
       </div>
     </div>
 
-    <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
-        <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-          <div class="flex">
-            <p class="flex-1 text-xl font-bold">{{info.dealerName}}</p>
-            <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
-<!-- 
+    <div>
+      <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+        <div class="flex">
+          <p class="flex-1 text-xl font-bold">{{info.dealerName}}</p>
+          <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
+          <!-- 
             <div>
               <img
                 src="../../assets/lessee/iphone.png"
@@ -55,36 +54,36 @@
                 class="inline-block float-left mr-5"
                 alt
               />
-            </div> -->
+          </div>-->
+        </div>
+        <div class="flex mt-8 justify-between">
+          <div class="text-center text-xs" @click="$refs.swipe.swipeTo(1)">
+            {{info.contactsCount}}
+            <br />联系人
           </div>
-          <div class="flex mt-8 justify-between">
-            <div class="text-center text-xs" @click="$refs.swipe.swipeTo(1)">
-              {{info.contactsCount}}
-              <br />联系人
-            </div>
-            <!-- <div class="text-center  text-xs">
+          <!-- <div class="text-center  text-xs">
                   4<br/>经营品牌
-            </div>-->
-            <!-- <div class="text-center  text-xs">
+          </div>-->
+          <!-- <div class="text-center  text-xs">
                   4<br/>在售车型
-            </div>-->
-            <div class="text-center text-xs" @click="$refs.swipe.swipeTo(2)">
-              {{info.competitorCount}}
-              <br />竞争对手
-            </div>
-            <div class="text-center text-xs" @click="$refs.swipe.swipeTo(3)">
-              {{info.lesseeCount}}
-              <br />承租人
-            </div>
+          </div>-->
+          <div class="text-center text-xs" @click="$refs.swipe.swipeTo(2)">
+            {{info.competitorCount}}
+            <br />竞争对手
+          </div>
+          <div class="text-center text-xs" @click="$refs.swipe.swipeTo(3)">
+            {{info.lesseeCount}}
+            <br />承租人
           </div>
         </div>
+      </div>
 
-        <div class="shadow-md rounded-lg bg-white m-3 mt-0 p-4">
-          <div class="flex">
-            <div class="flex-1 font-bold">业务状态</div>
-            <!-- <p class="text-sm text-orange-500">放弃</p> -->
-          </div>
-          <!-- <div class="flex mt-2">
+      <div class="shadow-md rounded-lg bg-white m-3 mt-0 p-4">
+        <div class="flex">
+          <div class="flex-1 font-bold">业务状态</div>
+          <!-- <p class="text-sm text-orange-500">放弃</p> -->
+        </div>
+        <!-- <div class="flex mt-2">
             <div
               @click="changeFollowStatus(i)"
               v-for="(row,i) in $store.state.dealer.followStatus"
@@ -95,40 +94,42 @@
               <div class="rounded bg-line p-2 text-center text-sm shadow">{{row.name}}</div>
               <div class="triangle-line"></div>
             </div>
-          </div>-->
+        </div>-->
 
-          <div>
-            <div class="flex mt-2">
+        <div>
+          <div class="flex mt-2">
+            <div
+              @click="changeFollowStatus(i)"
+              v-for="(row,i) in $store.state.dealer.followStatus"
+              :key="i"
+            >
               <div
-                @click="changeFollowStatus(i)"
-                v-for="(row,i) in $store.state.dealer.followStatus"
-                :key="i"
+                v-if="i"
+                :class="['flex flex-1 relative items-center', {gray: i <= info.followStatus}]"
               >
-                <div
-                  v-if="i"
-                  :class="['flex flex-1 relative items-center', {gray: i <= info.followStatus}]"
-                >
-                  <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
-                  <div class="status_correct"></div>
-                </div>
+                <div class="rounded bg-line mr-4 p-3 px-5 text-center text-sm shadow">{{row.name}}</div>
+                <div class="status_correct"></div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <van-tabs
-          class="tabs -mt-2 -mb-2"
-          v-model="$store.state.dealerInfo.currentTabsIndex"
-          @click="$refs.swipe.swipeTo($store.state.dealerInfo.currentTabsIndex)"
-        >
-          <van-tab
-            v-for="(row,index) in $store.state.dealerInfo.tabs"
-            :key="index"
-            :title="row.text"
-            :name="row.id"
-          ></van-tab>
-        </van-tabs>
-
+      <van-tabs
+        class="tabs"
+        v-model="$store.state.dealerInfo.currentTabsIndex"
+        @click="$refs.swipe.swipeTo($store.state.dealerInfo.currentTabsIndex)"
+      >
+        <van-tab
+          v-for="(row,index) in $store.state.dealerInfo.tabs"
+          :key="index"
+          :title="row.text"
+          :name="row.id"
+        ></van-tab>
+      </van-tabs>
+    </div>
+    <div class="flex-1 relative h-full">
+      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
         <van-swipe
           ref="swipe"
           :loop="false"
@@ -246,13 +247,14 @@
                       class="flex"
                       :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >
-                      <span class="text-blue-500" v-if="info.locationName" @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})">
-                        {{info.locationName}}
-                      </span>
+                      <span
+                        class="text-blue-500"
+                        v-if="info.locationName"
+                        @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
+                      >{{info.locationName}}</span>
                       <span v-else>-</span>
                     </div>
                   </div>
-                  
                 </div>
               </div>
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
@@ -267,7 +269,6 @@
                   </div>
                 </div>
                 <div v-show="showInfo2">
-                  
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">经销商分级</p>
                     <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
@@ -494,7 +495,9 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">状态</p>
-                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">客户类型</p>
@@ -683,7 +686,7 @@ export default {
     return {
       id: "",
       info: {
-        recordStatus: ''
+        recordStatus: ""
       },
       contactslist: [],
       competitorlist: [],
@@ -715,9 +718,9 @@ export default {
 
     this.addRecentvisit({ modelObjType: 1, modelId: this.id });
 
-    this.$store.state.dealerInfo.currentTabsIndex = 0
+    this.$store.state.dealerInfo.currentTabsIndex = 0;
     this.getBaseInfo(0);
-    
+
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
     //   this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
@@ -1037,9 +1040,6 @@ export default {
 .DealerInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
   border: 0;
 }
-.DealerInfo .tabs /deep/ .van-tab--active span {
-  font-size: 1.2rem;
-}
 .DealerInfo .tabs /deep/ [class*="van-hairline"]::after {
   position: static;
 }
@@ -1108,5 +1108,8 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.DealerInfo /deep/ .van-tab span {
+  font-size: 1.143rem;
 }
 </style>
