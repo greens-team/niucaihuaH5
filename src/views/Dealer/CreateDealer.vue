@@ -34,6 +34,7 @@
         <van-field
           v-model="$store.getters.NDparams.dealerName"
           required
+          :disabled="recordStatus"
           label="经销商名称"
           placeholder="请填写信息"
           label-width="130"
@@ -44,6 +45,7 @@
         <van-field
           v-model="$store.getters.NDparams.creditCode"
           label="统一社会信用代码"
+          :disabled="recordStatus"
           placeholder="请填写信息"
           label-width="130"
         />
@@ -59,8 +61,8 @@
           <div style="width:130px; color:#323233;">成立日期</div>
           <div
             class="flex-1"
-            @click="establishTimeShow = true"
-            :style="{color:$store.getters.NDparams.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            @click="!recordStatus && (establishTimeShow = true)"
+            :style="{color:$store.getters.NDparams.establishTime && !recordStatus ?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{$store.getters.NDparams.establishTime ? $root.moment($store.getters.NDparams.establishTime * 1000).format('YYYY-MM-DD') : '请选择时间'}}</div>
         </div>
 
@@ -80,14 +82,17 @@
           <div style="width:130px; color:#323233;">所属地区</div>
           <van-dropdown-menu class="flex-1 border-0 pr-3">
             <van-dropdown-item
+              :disabled="recordStatus"
               v-model="$store.state.newDealer.params.rgnPrCd"
               :options="$store.state.dealer.provincesList"
             />
             <van-dropdown-item
+              :disabled="recordStatus"
               v-model="$store.state.newDealer.params.rgnCyCd"
               :options="$store.state.dealer.citysList"
             />
             <van-dropdown-item
+              :disabled="recordStatus"
               v-if="$store.state.dealer.areasList.length"
               v-model="$store.state.newDealer.params.rgnArCd"
               :options="$store.state.dealer.areasList"
@@ -98,6 +103,7 @@
         <van-field
           v-model="$store.state.newDealer.params.address"
           label="注册地址"
+          :disabled="recordStatus"
           placeholder="请填写注册地址"
           label-width="130"
         />
@@ -105,6 +111,7 @@
           <div style="width:130px; color:#323233;">公司归属</div>
           <van-dropdown-menu class="border-0">
             <van-dropdown-item
+              :disabled="recordStatus"
               v-model="$store.getters.NDparams.ownerCd"
               :options="$store.getters.NDownerCdTypes"
             />
@@ -113,7 +120,7 @@
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">业务类型</div>
-          <div class="flex-1" :style="{color:$store.state.newDealer.businessTypesValues.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"  @click="businessTypesShow = true">{{typeList | typeListFilter}}</div>
+          <div class="flex-1" :style="{color: typeList.length && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"  @click="!recordStatus && (businessTypesShow = true)">{{typeList | typeListFilter}}</div>
         </div>
 
         <van-popup v-model="businessTypesShow" position="bottom" :style="{ height: '40%'}">
@@ -140,6 +147,66 @@
             </van-checkbox-group>
           </div>
         </van-popup>
+
+        <div v-if="id">
+          <!-- <div class="relative formBar font-bold text-base p-3 pl-4">法人信息</div> -->
+          <van-field
+            v-model="$store.state.newDealer.params.contactsName"
+            label="法人名称"
+            :disabled="recordStatus"
+            placeholder="请输入法人姓名"
+            label-width="130"
+          />
+          <van-field
+            v-model="$store.state.newDealer.params.contactsPhone"
+            label="法人电话"
+            :disabled="recordStatus"
+            placeholder="请输入法人电话"
+            label-width="130"
+          />
+          <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+            <div style="width:130px; color:#323233;">法人证件类型</div>
+            <div
+              class="flex-1"
+              :style="{color:$store.state.newDealer.params.certTypCd && !recordStatus ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+              @click="!recordStatus && (certTypCdShow = true)"
+            >{{$store.state.newDealer.params.certTypCd ? $store.state.record.certTypCd[$store.state.newDealer.params.certTypCd] : '请选择'}}</div>
+          </div>
+          <van-field
+            v-model="$store.state.newDealer.params.certNo"
+            :disabled="recordStatus"
+            label="法人证件号"
+            placeholder="请输入法人证件号"
+            label-width="130"
+          />
+
+          <van-popup v-model="certTypCdShow" position="bottom" :style="{ height: '40%'}">
+            <van-nav-bar
+              title="请选择法人证件类型"
+              left-text="取消"
+              right-text="确定"
+              left-arrow
+              @click-left="certTypCdShow = false"
+              @click-right="certTypCdShow = false; $store.state.newDealer.params.certTypCd = certTypCdVal;"
+            />
+            <van-radio-group v-model="certTypCdVal">
+              <van-cell-group>
+                <van-cell
+                  v-for="(r,i) in $store.state.record.certTypCd"
+                  :key="i"
+                  :title="r"
+                  clickable
+                  @click="certTypCdVal = i"
+                >
+                  <van-radio slot="right-icon" :name="i" />
+                </van-cell>
+              </van-cell-group>
+            </van-radio-group>
+          </van-popup>
+          <div></div>
+        </div>
+
+
 
         <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
 
@@ -176,7 +243,7 @@
           <UserList
             title="选择负责人"
             :paramsVal="ownerUserGidsA"
-            @setParams="val=>ownerUserGidsA = val"
+            @setParams="val=>{$store.state.newDealer.params.ownerUserList = val, ownerUserGidsA = val}"
             class="flex-1"
           />
         </div>
@@ -186,7 +253,7 @@
           <UserList
             title="选择参与人"
             :paramsVal="ownerUserGidsB"
-            @setParams="val=>ownerUserGidsB = val"
+            @setParams="val=>{$store.state.newDealer.params.followerUserList=val,ownerUserGidsB = val}"
             class="flex-1"
           />
         </div>
@@ -202,59 +269,9 @@
           label-width="130"
           show-word-limit
         />
+        <div></div>
 
-        <div v-if="id">
-          <div class="relative formBar font-bold text-base p-3 pl-4">法人信息</div>
-          <van-field
-            v-model="$store.state.newDealer.params.contactsName"
-            label="法人名称"
-            placeholder="请输入法人姓名"
-            label-width="130"
-          />
-          <van-field
-            v-model="$store.state.newDealer.params.contactsPhone"
-            label="法人电话"
-            placeholder="请输入法人电话"
-            label-width="130"
-          />
-          <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-            <div style="width:130px; color:#323233;">法人证件类型</div>
-            <div
-              class="flex-1"
-              @click="certTypCdShow = true"
-            >{{$store.state.newDealer.params.certTypCd ? $store.state.record.certTypCd[$store.state.newDealer.params.certTypCd] : '请选择'}}</div>
-          </div>
-          <van-field
-            v-model="$store.state.newDealer.params.certNo"
-            label="法人证件号"
-            placeholder="请输入法人证件号"
-            label-width="130"
-          />
-
-          <van-popup v-model="certTypCdShow" position="bottom" :style="{ height: '40%'}">
-            <van-nav-bar
-              title="请选择法人证件类型"
-              left-text="取消"
-              right-text="确定"
-              left-arrow
-              @click-left="certTypCdShow = false"
-              @click-right="certTypCdShow = false; $store.state.newDealer.params.certTypCd = certTypCdVal;"
-            />
-            <van-radio-group v-model="certTypCdVal">
-              <van-cell-group>
-                <van-cell
-                  v-for="(r,i) in $store.state.record.certTypCd"
-                  :key="i"
-                  :title="r"
-                  clickable
-                  @click="certTypCdVal = i"
-                >
-                  <van-radio slot="right-icon" :name="i" />
-                </van-cell>
-              </van-cell-group>
-            </van-radio-group>
-          </van-popup>
-        </div>
+        
       </div>
     </div>
 
@@ -302,7 +319,9 @@ export default {
       certTypCdShow: false,
       certTypCdVal: "",
       existLegal: false, //法人是否存在
-      isShowErrorNameMsg: false
+      isShowErrorNameMsg: false,
+
+      recordStatus: 0
     };
   },
 
@@ -316,6 +335,8 @@ export default {
     }
   },
   mounted() {
+debugger
+    this.recordStatus = !!this.$store.getters.NDparams.recordStatus;
     // this.$store.commit('setNewDealerParams')
 
     this.typeList = this.$store.state.newDealer.businessTypesValues || [];
@@ -332,6 +353,17 @@ export default {
       mapInfo.longitude = this.$store.getters.NDparams.longitude;
       mapInfo.latitude = this.$store.getters.NDparams.latitude;
     }
+
+debugger
+    this.$store.state.newDealer.params.ownerUserList = this.$store.state.newDealer.params.ownerUserList || [
+      {
+        id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+        refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+      }
+    ];
+    // 负责人默认为当前登录用户
+    this.ownerUserGidsA = this.$store.state.newDealer.params.ownerUserList;
+    this.ownerUserGidsB = this.$store.state.newDealer.params.followerUserList || []
 
     if (this.$route.query.id) {
       this.id = this.$route.query.id;
@@ -388,6 +420,7 @@ export default {
   },
   watch: {
     ownerUserGidsA(data) {
+      console.log(data)
       let vals = [];
       data.map(r => {
         vals.push(r.ownerUserGid || r.id);

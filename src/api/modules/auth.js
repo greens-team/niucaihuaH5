@@ -15,7 +15,7 @@ export default (m)=>{
       getOftenuselist: m.POST + '/common/oftenuselist',
       login: TEST_URL + '/auth/login', // '/lbccrm/system/user/login', //m.GET + 
       testtest: TEST_URL,    // 无用接口
-      dataprivilegecheck: m.POST + '/common/dataprivilegecheck'
+      dataprivilegecheck: m.POST + '/common/writedpcheck'
     }
   }
 };
