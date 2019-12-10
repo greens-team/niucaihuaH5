@@ -148,7 +148,7 @@
         </template>
         <template slot="default">
           <UserList
-            title="选择负责人"
+            :title="$route.query.taskType == 2 ? '选择负责人' : '选择拜访人'"
             v-if="editor"
             :paramsVal="mainUserGids"
             @setParams="val=>mainUserGids = val"
@@ -167,7 +167,7 @@
         <template slot="default">
           <UserList
             v-if="editor"
-            title="选择负责人"
+            :title="$route.query.taskType == 2 ? '选择参与人' : '选择协访人'"
             :paramsVal="otherUserGids"
             @setParams="val=>otherUserGids = val"
             soltCon="true"

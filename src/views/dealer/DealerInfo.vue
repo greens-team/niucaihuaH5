@@ -706,12 +706,16 @@ export default {
     this.id = this.$route.query.id;
 
     this.addRecentvisit({ modelObjType: 1, modelId: this.id });
-    if (this.$store.state.dealerInfo.currentTabsIndex) {
-      this.getBaseInfo(0);
-      this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
-    } else {
-      this.getBaseInfo(0);
-    }
+
+    this.$store.state.dealerInfo.currentTabsIndex = 0
+    this.getBaseInfo(0);
+    
+    // if (this.$store.state.dealerInfo.currentTabsIndex) {
+    //   this.getBaseInfo(0);
+    //   this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
+    // } else {
+    //   this.getBaseInfo(0);
+    // }
 
     // 动态记录
     this.$refs.listBox &&
