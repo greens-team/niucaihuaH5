@@ -160,28 +160,32 @@ export default {
     mainUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.competitor.addParams.ownerUserGids = data.toString();
-      return vals
-        .map(r => {
-          return String(r.refRlNm);
-        })
-        .toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
     },
 
     //参与人
     mainFollowerUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.competitor.addParams.followerUserGids = data.toString();
-      return vals
-        .map(r => {
-          return String(r.refRlNm);
-        })
-        .toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
     },
     createCompetitor() {
       this.$store.state.competitor.addParams.ownerUserGids = this.$store.state.competitor.addParams.ownerUserGids.split(
@@ -193,8 +197,9 @@ export default {
       if (this.$store.state.competitor.addParams.followerUserGids[0] == "") {
         this.$store.state.competitor.addParams.followerUserGids = [];
       }
-      console.log(this.$store.state.competitor.addParams.ownerUserGids);
-      console.log(this.$store.state.competitor.addParams.followerUserGids);
+      if (this.$store.state.competitor.addParams.ownerUserGids[0] == "") {
+        this.$store.state.competitor.addParams.ownerUserGids = [];
+      }
       this.checkErrorMsg();
       if (!this.isShowErrorNameMsg) {
         this.$store

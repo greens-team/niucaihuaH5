@@ -133,42 +133,53 @@ export default {
     mainUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.contacts.createContactsParams.ownerUserGids = data.toString();
-      return vals
-        .map(r => {
-          return String(r.refRlNm);
-        })
-        .toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
     },
 
     //参与人
     mainFollowerUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.contacts.createContactsParams.followerUserGids = data.toString();
-      return vals
-        .map(r => {
-          return String(r.refRlNm);
-        })
-        .toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
     },
     createContacts() {
       this.$store.state.contacts.createContactsParams.ownerUserGids = this.$store.state.contacts.createContactsParams.ownerUserGids.split(
         ","
       );
-
       this.$store.state.contacts.createContactsParams.followerUserGids = this.$store.state.contacts.createContactsParams.followerUserGids.split(
         ","
       );
-      if(this.$store.state.contacts.createContactsParams.followerUserGids[0] == '') {
-        this.$store.state.contacts.createContactsParams.followerUserGids = []
+      if (
+        this.$store.state.contacts.createContactsParams.followerUserGids[0] ==
+        ""
+      ) {
+        this.$store.state.contacts.createContactsParams.followerUserGids = [];
       }
-      console.log(this.$store.state.contacts.createContactsParams.ownerUserGids);
-      console.log(this.$store.state.contacts.createContactsParams.followerUserGids);
+
+      if (
+        this.$store.state.contacts.createContactsParams.ownerUserGids[0] ==
+        ""
+      ) {
+        this.$store.state.contacts.createContactsParams.ownerUserGids = [];
+      }
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&

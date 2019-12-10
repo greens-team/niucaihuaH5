@@ -149,7 +149,7 @@
                     <p
                       class="text_content text-base"
                       :style="{color:info.gender != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.gender == null ? '-' : (info.gender ? '男' : '女')}}</p>
+                    >{{info.gender == null ? '-' : (info.gender ? '女' : '男')}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -280,7 +280,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
+                        @click="$root.selectdpcheck({modelObjType:3, id:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
                       >{{r.dealerName}}</p>
                     </div>
                   </van-collapse-item>
@@ -513,13 +513,23 @@ export default {
             this.userPicArr = this.info.userPic.split(",");
           }
 
-          this.$store.state.lessee.info.followerUserList.map(r => {
+          this.info.followerUserList.map(r => {
             this.followerUserGids.push(r.ownerUserName);
           });
 
-          this.$store.state.lessee.info.ownerUserList.map(r => {
-            this.ownerUserGids.push(r.ownerUserName);
-          });
+          if (this.info.ownerUserList) {
+            this.info.ownerUserList.map(r => {
+              this.ownerUserGids.push(r.ownerUserName);
+            });
+          } else {
+            console.log(this.info.ownerUserList,111)
+            this.info.ownerUserList = [
+              {
+                id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+                refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+              }
+            ];
+          }
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;

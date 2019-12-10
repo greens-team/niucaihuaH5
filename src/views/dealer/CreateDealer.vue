@@ -353,8 +353,6 @@ debugger
       mapInfo.longitude = this.$store.getters.NDparams.longitude;
       mapInfo.latitude = this.$store.getters.NDparams.latitude;
     }
-
-debugger
     this.$store.state.newDealer.params.ownerUserList = this.$store.state.newDealer.params.ownerUserList || [
       {
         id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,

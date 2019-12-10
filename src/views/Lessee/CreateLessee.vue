@@ -360,28 +360,28 @@ export default {
     mainUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.addParams.ownerUserGids = data.toString();
-      return vals
+      return vals.length ? vals
         .map(r => {
-          return String(r.refRlNm);
+          return String(r.refRlNm || r.ownerUserName);
         })
-        .toString();
+        .toString() : "请选择负责人";
     },
 
     //参与人
     mainFollowerUserGidsFun(vals) {
       let data = [];
       vals.map(r => {
-        data.push(r.id);
+        data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.addParams.followerUserGids = data.toString();
-      return vals
+      return vals.length ? vals
         .map(r => {
-          return String(r.refRlNm);
+          return String(r.refRlNm || r.ownerUserName);
         })
-        .toString();
+        .toString() : "请选择参与人";
     },
 
     deleteFile(file, detail) {
@@ -430,8 +430,9 @@ export default {
       if(this.$store.state.lessee.addParams.followerUserGids[0] == '') {
         this.$store.state.lessee.addParams.followerUserGids = []
       }
-      console.log(this.$store.state.lessee.addParams.ownerUserGids);
-      console.log(this.$store.state.lessee.addParams.followerUserGids);
+      if(this.$store.state.lessee.addParams.ownerUserGids[0] == '') {
+        this.$store.state.lessee.addParams.ownerUserGids = []
+      }
 
       //保存前进行校验
       this.checkErrorMsg();

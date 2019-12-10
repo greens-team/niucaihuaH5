@@ -152,8 +152,9 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
+                        @click="$root.selectdpcheck({modelObjType:2, id:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
                       >{{r.dealerName}}</p>
+                      <!-- @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})" -->
                     </div>
                     <div class="pt-2 pb-2">
                       <p class="text-xs text-gray-500">职务</p>
@@ -396,12 +397,21 @@ export default {
             this.isShowDealer = false;
           }
 
+          if (this.info.ownerUserList) {
+            this.info.ownerUserList.map(r => {
+              this.ownerUserGids.push(r.ownerUserName);
+            });
+          } else {
+            this.info.ownerUserList = [
+              {
+                id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+                refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+              }
+            ];
+          }
+
           this.info.followerUserList.map(r => {
             this.followerUserGids.push(r.ownerUserName);
-          });
-
-          this.info.ownerUserList.map(r => {
-            this.ownerUserGids.push(r.ownerUserName);
           });
         });
       }

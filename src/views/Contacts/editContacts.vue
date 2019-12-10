@@ -43,6 +43,34 @@
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
         <van-field
           v-model="$store.state.contacts.editContactsParams.weichatNum"
           label="微信号"
@@ -67,18 +95,106 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
 export default {
   name: "editContacts",
+  components: {
+    UserList
+  },
   data() {
     return {
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
-      isShowErrorChatMsg: false
+      isShowErrorChatMsg: false,
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
-  mounted() {},
+  mounted() {
+    //负责人、参与人默认显示
+    let ownerUserList = this.$store.state.contacts.contactsInfo.ownerUserList;
+    let followerUserList = this.$store.state.contacts.contactsInfo
+      .followerUserList;
+
+    if (ownerUserList) {
+      ownerUserList.map(r => {
+        this.ownerUserGids.push({ refRlNm: r.ownerUserName });
+      });
+    } else {
+      [
+        {
+          id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+          refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+        }
+      ];
+    }
+
+    followerUserList.map(r => {
+      this.followerUserGids.push({ refRlNm: r.ownerUserName });
+    });
+
+    if (!followerUserList.length) {
+      this.followerUserGids = [
+        {
+          refRlNm: "请选择参与人"
+        }
+      ];
+    } else {
+      this.mainFollowerUserGidsFun(followerUserList);
+    }
+  },
   methods: {
+    //负责人
+    mainUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id || r.ownerUserGid);
+      });
+      this.$store.state.contacts.editContactsParams.ownerUserGids = data.toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
+    },
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id || r.ownerUserGid);
+      });
+      this.$store.state.contacts.editContactsParams.followerUserGids = data.toString();
+
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
+    },
     editContacts() {
+      this.$store.state.contacts.editContactsParams.ownerUserGids = this.$store.state.contacts.editContactsParams.ownerUserGids.split(
+        ","
+      );
+      this.$store.state.contacts.editContactsParams.followerUserGids = this.$store.state.contacts.editContactsParams.followerUserGids.split(
+        ","
+      );
+      if (
+        this.$store.state.contacts.editContactsParams.followerUserGids[0] == ""
+      ) {
+        this.$store.state.contacts.editContactsParams.followerUserGids = [];
+      }
+
+      if (
+        this.$store.state.contacts.editContactsParams.ownerUserGids[0] == ""
+      ) {
+        this.$store.state.contacts.editContactsParams.ownerUserGids = [];
+      }
+
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&

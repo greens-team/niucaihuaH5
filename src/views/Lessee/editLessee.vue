@@ -64,6 +64,35 @@
             />
           </van-popup>
         </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <div class="border_line flex ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#252525;">承租人状态</div>
           <div
@@ -249,8 +278,13 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
+import { userInfo } from "os";
 export default {
   name: "editLessee",
+  components: {
+    UserList
+  },
   data() {
     return {
       birthdayTimeShow: false,
@@ -281,7 +315,10 @@ export default {
       idcardFrontPicVal: [],
       idcardBackPicVal: [],
       pictureVal: [],
-      userPicArr: []
+      userPicArr: [],
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
   watch: {
@@ -347,15 +384,19 @@ export default {
 
       //性别的默认显示
       this.genderValus = this.$store.state.lessee.info.gender;
-      this.selectGender = this.$store.state.lessee.genderList[
-        this.genderValus
-      ].text;
+      if (this.genderValus != null) {
+        this.selectGender = this.$store.state.lessee.genderList[
+          this.genderValus
+        ].text;
+      }
 
       //客户类型的默认显示
       this.lesseeTypeValus = this.$store.state.lessee.info.lesseeType;
-      this.selectLesseeType = this.$store.state.lessee.lesseeTypeList[
-        this.lesseeTypeValus
-      ].text;
+      if (this.lesseeTypeValus != null) {
+        this.selectLesseeType = this.$store.state.lessee.lesseeTypeList[
+          this.lesseeTypeValus
+        ].text;
+      }
 
       //承租人状态的默认显示
       this.lesseeStatusValus = this.$store.state.lessee.info.lesseeStatus;
@@ -386,6 +427,64 @@ export default {
           this.pictureVal.push({ url: window.picServer + userPics[i] });
         }
       }
+
+      //负责人、参与人默认显示
+
+      if (!this.$store.state.lessee.info.followerUserList.length) {
+        this.followerUserGids = [
+          {
+            refRlNm: "请选择参与人"
+          }
+        ];
+      } else {
+        this.$store.state.lessee.info.followerUserList.map(r => {
+          this.followerUserGids.push({ refRlNm: r.ownerUserName });
+        });
+      }
+
+      if (this.$store.state.lessee.info.ownerUserList) {
+        this.$store.state.lessee.info.ownerUserList.map(r => {
+          this.ownerUserGids.push({ refRlNm: r.ownerUserName });
+        });
+      } else {
+        [
+          {
+            id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+            refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+          }
+        ];
+      }
+    },
+
+    //负责人
+    mainUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id || r.ownerUserGid);
+      });
+      this.$store.state.lessee.editParams.ownerUserGids = data.toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
+    },
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id || r.ownerUserGid);
+      });
+      this.$store.state.lessee.editParams.followerUserGids = data.toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
     },
     getBirthdayTime() {
       this.birthdayTimeShow = false;
@@ -404,6 +503,21 @@ export default {
       }
 
       this.$store.state.lessee.editParams.userPic = userPicStr;
+
+      this.$store.state.lessee.editParams.ownerUserGids = this.$store.state.lessee.editParams.ownerUserGids.split(
+        ","
+      );
+      this.$store.state.lessee.editParams.followerUserGids = this.$store.state.lessee.editParams.followerUserGids.split(
+        ","
+      );
+      if (this.$store.state.lessee.editParams.followerUserGids[0] == "") {
+        this.$store.state.lessee.editParams.followerUserGids = [];
+      }
+      if (this.$store.state.lessee.editParams.ownerUserGids[0] == "") {
+        this.$store.state.lessee.editParams.ownerUserGids = [];
+        this.$store.state.lessee.editParams.ownerUserList = []
+      }
+
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&

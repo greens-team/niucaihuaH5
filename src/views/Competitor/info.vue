@@ -102,7 +102,7 @@
                     <p
                       class="text_content text-base"
                       :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                    >{{ownerUserGids.toString()}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -145,7 +145,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})"
+                        @click="$root.selectdpcheck({modelObjType:4, id:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
                       >{{r.dealerName}}</p>
                     </div>
                     <div class="border_line pt-2 pb-2">
@@ -396,12 +396,21 @@ export default {
             this.isShowCompetitor = false;
           }
 
+          if (this.info.ownerUserList) {
+            this.info.ownerUserList.map(r => {
+              this.ownerUserGids.push(r.ownerUserName);
+            });
+          } else {
+            this.info.ownerUserList = [
+              {
+                id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+                refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+              }
+            ];
+          }
+
           this.info.followerUserList.map(r => {
             this.followerUserGids.push(r.ownerUserName);
-          });
-
-          this.info.ownerUserList.map(r => {
-            this.ownerUserGids.push(r.ownerUserName);
           });
         });
       }

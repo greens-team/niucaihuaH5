@@ -34,16 +34,6 @@
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">竞争对手名称不能为空</div>
 
-        <!-- <div class="flex border-b border-gray-200 ml-4 items-center">
-          <div style="width:130px; color:#323233;">竞对类型</div>
-          <van-dropdown-menu class="border-0">
-            <van-dropdown-item
-              v-model="$store.state.competitor.editParams.competorType"
-              :options="$store.state.competitor.competorStatus"
-            />
-          </van-dropdown-menu>
-        </div>-->
-
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">竞对类型</div>
           <div
@@ -77,6 +67,34 @@
           </div>
         </van-popup>
 
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="val=>ownerUserGids = val"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <van-field
           v-model="$store.state.competitor.editParams.comment"
           :rows="5"
@@ -93,18 +111,26 @@
   </div>
 </template>
 <script>
+import UserList from "@/components/UserList/index.vue";
 export default {
   name: "editCompetitor",
+  components: {
+    UserList
+  },
   data() {
     return {
       isShowErrorNameMsg: false,
 
       competorTypeShow: false,
       competorStatusValus: 1,
-      defultCompetorType: "第三方",
-      selectCompetorType: ""
+      defultCompetorType: "",
+      selectCompetorType: "",
+
+      ownerUserGids: [],
+      followerUserGids: []
     };
   },
+
   watch: {
     competorStatusValus(type) {
       if (type != 0) {
@@ -115,21 +141,94 @@ export default {
     }
   },
   mounted() {
-    //竞对类型默认显示
-    this.competorStatusValus = this.$store.state.competitor.info.competorType;
-    console.log()
-    if (this.competorStatusValus != 0) {
-      this.selectCompetorType = this.$store.state.competitor.competorStatus[
-        this.competorStatusValus -1
-      ].text;
-    }
+    this.initStatus();
   },
   methods: {
+    initStatus() {
+      //竞对类型默认显示
+      this.competorStatusValus = this.$store.state.competitor.info.competorType;
+      if (this.competorStatusValus != 0) {
+        this.selectCompetorType = this.$store.state.competitor.competorStatus[
+          this.competorStatusValus - 1
+        ].text;
+      }
+
+      //负责人参与人默认显示
+      if (this.$store.state.competitor.info.ownerUserList) {
+        this.$store.state.competitor.info.ownerUserList.map(r => {
+          this.ownerUserGids.push({ refRlNm: r.ownerUserName });
+        });
+      } else {
+        [
+          {
+            id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
+            refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
+          }
+        ];
+      }
+
+      if (!this.$store.state.competitor.info.followerUserList.length) {
+        this.followerUserGids = [
+          {
+            refRlNm: "请选择参与人"
+          }
+        ];
+      } else {
+        this.$store.state.competitor.info.followerUserList.map(r => {
+          this.followerUserGids.push({ refRlNm: r.ownerUserName });
+        });
+      }
+    },
+    // 过滤负责信息 展示负责人姓名 及 给参数赋值
+    mainUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id || r.ownerUserGid);
+      });
+      this.$store.state.competitor.editParams.ownerUserGids = data.toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
+    },
+
+    //参与人
+    mainFollowerUserGidsFun(vals) {
+      let data = [];
+      vals.map(r => {
+        data.push(r.id);
+      });
+      this.$store.state.competitor.editParams.followerUserGids = data.toString();
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
+    },
     editCompetitor() {
+      this.$store.state.competitor.editParams.ownerUserGids = this.$store.state.competitor.editParams.ownerUserGids.split(
+        ","
+      );
+      this.$store.state.competitor.editParams.followerUserGids = this.$store.state.competitor.editParams.followerUserGids.split(
+        ","
+      );
+      if (this.$store.state.competitor.editParams.followerUserGids[0] == "") {
+        this.$store.state.competitor.editParams.followerUserGids = [];
+      }
+      if (this.$store.state.competitor.editParams.ownerUserGids[0] == "") {
+        this.$store.state.competitor.editParams.ownerUserGids = [];
+      }
       this.checkErrorMsg();
       if (!this.isShowErrorNameMsg) {
         this.$store
-          .dispatch("editCompetitor", { competorType: this.competorStatusValus })
+          .dispatch("editCompetitor", {
+            competorType: this.competorStatusValus
+          })
           .then(res => {
             this.$dialog
               .alert({
