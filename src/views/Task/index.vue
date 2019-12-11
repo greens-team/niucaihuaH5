@@ -204,7 +204,7 @@
             <template slot="default">
               <p
                 :class="['p5',  {'text-gray-800': $store.state.task.addEditTaskParams.lbPreOrderCount != null}]"
-              >{{$store.state.task.addEditTaskParams.lbPreOrderCount == null ? '未填写' : $store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
+              >{{$store.state.task.addEditTaskParams.lbPreOrderCount == null ? '-' : $store.state.task.addEditTaskParams.lbPreOrderCount}}</p>
             </template>
           </van-cell>
 
@@ -239,7 +239,7 @@
             <template slot="default">
               <p
                 :class="['p5',{'text-gray-800': $store.state.task.addEditTaskParams.competitorOrderCount != null}]"
-              >{{$store.state.task.addEditTaskParams.competitorOrderCount == null ? '未填写' : $store.state.task.addEditTaskParams.competitorOrderCount}}</p>
+              >{{$store.state.task.addEditTaskParams.competitorOrderCount == null ? '-' : $store.state.task.addEditTaskParams.competitorOrderCount}}</p>
             </template>
           </van-cell>
 
