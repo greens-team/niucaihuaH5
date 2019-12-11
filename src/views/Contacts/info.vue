@@ -316,8 +316,8 @@ export default {
 
       isShowNoData: false,
       isShowNoData_1: false,
-      ownerUserGids: [],
-      followerUserGids: []
+      ownerUserGids: '',
+      followerUserGids: ''
     };
   },
   watch: {
@@ -394,14 +394,18 @@ export default {
           } else {
             this.isShowDealer = false;
           }
-
+          
+          let followerUserList = [];
           this.info.followerUserList.map(r => {
-            this.followerUserGids.push(r.ownerUserName);
+            followerUserList.push(r.ownerUserName);
           });
+          this.followerUserGids = followerUserList.toString();
 
+          let ownerUserList = [];
           this.info.ownerUserList.map(r => {
-            this.ownerUserGids.push(r.ownerUserName);
+            ownerUserList.push(r.ownerUserName);
           });
+          this.ownerUserGids = ownerUserList.toString();
         });
       }
       if (num === 1) {

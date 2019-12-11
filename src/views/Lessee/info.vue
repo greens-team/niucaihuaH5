@@ -438,8 +438,8 @@ export default {
       isShowNoData: false,
       isShowNoData_1: false,
 
-      ownerUserGids: [],
-      followerUserGids: []
+      ownerUserGids: '',
+      followerUserGids: ''
     };
   },
   created() {
@@ -448,6 +448,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
+
     this.addRecentvisit({ modelObjType: 3, modelId: this.id });
     if (this.$store.state.lessee.currentTabsIndex) {
       this.getBaseInfo(0);
@@ -511,13 +512,18 @@ export default {
             this.userPicArr = this.info.userPic.split(",");
           }
 
+          let followerUserList = [];
           this.info.followerUserList.map(r => {
-            this.followerUserGids.push(r.ownerUserName);
+            followerUserList.push(r.ownerUserName);
           });
+          this.followerUserGids = followerUserList.toString();
 
+          let ownerUserList = [];
           this.info.ownerUserList.map(r => {
-            this.ownerUserGids.push(r.ownerUserName);
+            ownerUserList.push(r.ownerUserName);
           });
+          this.ownerUserGids = ownerUserList.toString();
+
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;
