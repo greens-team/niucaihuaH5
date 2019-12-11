@@ -70,17 +70,18 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
         >
-          <div style="width:130px; color:#323233;">负责人</div>
+          <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
           <UserList
             title="选择负责人"
             :paramsVal="ownerUserGids"
-            @setParams="val=>ownerUserGids = val"
+            @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{mainUserGidsFun(ownerUserGids)}}</UserList>
         </div>
+        <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
@@ -316,6 +317,7 @@ export default {
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
       isShowErrorIdCardMsg: false,
+      isShowErrorOwnerMsg: false,
 
       idcardFrontPicVal: [],
       idcardBackPicVal: [],
@@ -348,14 +350,14 @@ export default {
         refRlNm: this.userInfo.EMPLOYEE_NAME
       }
     ];
-
-    this.followerUserGids = [
-      {
-        refRlNm: "请选择参与人"
-      }
-    ];
   },
   methods: {
+    getOwnerUserList(val) {
+      this.ownerUserGids = val;
+      val.length
+        ? (this.isShowErrorOwnerMsg = false)
+        : (this.isShowErrorOwnerMsg = true);
+    },
     // 过滤负责信息 展示负责人姓名 及 给参数赋值
     mainUserGidsFun(vals) {
       let data = [];
@@ -363,11 +365,13 @@ export default {
         data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.addParams.ownerUserGids = data.toString();
-      return vals.length ? vals
-        .map(r => {
-          return String(r.refRlNm || r.ownerUserName);
-        })
-        .toString() : "请选择负责人";
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择负责人";
     },
 
     //参与人
@@ -377,11 +381,13 @@ export default {
         data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.addParams.followerUserGids = data.toString();
-      return vals.length ? vals
-        .map(r => {
-          return String(r.refRlNm || r.ownerUserName);
-        })
-        .toString() : "请选择参与人";
+      return vals.length
+        ? vals
+            .map(r => {
+              return String(r.refRlNm || r.ownerUserName);
+            })
+            .toString()
+        : "请选择参与人";
     },
 
     deleteFile(file, detail) {
@@ -420,26 +426,29 @@ export default {
       userPicStr = this.$store.state.lessee.addParams.userPic;
       userPicStr = userPicStr.substring(0, userPicStr.length - 1);
       this.$store.state.lessee.addParams.userPic = userPicStr;
-      this.$store.state.lessee.addParams.ownerUserGids = this.$store.state.lessee.addParams.ownerUserGids.split(
-        ","
-      );
 
-      this.$store.state.lessee.addParams.followerUserGids = this.$store.state.lessee.addParams.followerUserGids.split(
-        ","
-      );
-      if(this.$store.state.lessee.addParams.followerUserGids[0] == '') {
-        this.$store.state.lessee.addParams.followerUserGids = []
-      }
-      if(this.$store.state.lessee.addParams.ownerUserGids[0] == '') {
-        this.$store.state.lessee.addParams.ownerUserGids = []
-      }
+
+      //负责人、参与人传后台的参数
+      let ownerUserData = this.$store.state.lessee.addParams.ownerUserGids;
+      ownerUserData.length
+        ? (ownerUserData = ownerUserData.split(","))
+        : (ownerUserData = []);
+      this.$store.state.lessee.addParams.ownerUserGids = ownerUserData;
+
+      let followerUserData = this.$store.state.lessee.addParams
+        .followerUserGids;
+      followerUserData.length
+        ? (followerUserData = followerUserData.split(","))
+        : (followerUserData = []);
+      this.$store.state.lessee.addParams.followerUserGids = followerUserData;
 
       //保存前进行校验
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&
         !this.isShowErrorNameMsg &&
-        !this.isShowErrorIdCardMsg
+        !this.isShowErrorIdCardMsg &&
+        !this.isShowErrorOwnerMsg
       ) {
         this.$store
           .dispatch("addLessee", {
@@ -524,5 +533,18 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.CreateLessee /deep/ .van-cell--required::before {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 13px;
 }
 </style>

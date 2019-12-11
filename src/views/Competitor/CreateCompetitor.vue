@@ -35,6 +35,35 @@
         />
         <div class="checkContent" v-show="isShowErrorNameMsg">竞争对手名称不能为空</div>
 
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
+        >
+          <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
+          <UserList
+            title="选择负责人"
+            :paramsVal="ownerUserGids"
+            @setParams="getOwnerUserList"
+            soltCon="true"
+            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+        </div>
+        <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
+
+        <div
+          class="flex ml-4 items-center pt-3 pb-3"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+        >
+          <div style="width:130px; color:#323233;">参与人</div>
+          <UserList
+            title="选择参与人"
+            :paramsVal="followerUserGids"
+            @setParams="val=>followerUserGids = val"
+            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            soltCon="true"
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+        </div>
+
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">竞对类型</div>
           <div
@@ -68,34 +97,6 @@
           </div>
         </van-popup>
 
-        <div
-          class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
-        >
-          <div style="width:130px; color:#323233;">负责人</div>
-          <UserList
-            title="选择负责人"
-            :paramsVal="ownerUserGids"
-            @setParams="val=>ownerUserGids = val"
-            soltCon="true"
-            :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
-        </div>
-
-        <div
-          class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
-        >
-          <div style="width:130px; color:#323233;">参与人</div>
-          <UserList
-            title="选择参与人"
-            :paramsVal="followerUserGids"
-            @setParams="val=>followerUserGids = val"
-            :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-            soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
-        </div>
-
         <van-field
           v-model="$store.state.competitor.addParams.comment"
           :rows="5"
@@ -127,6 +128,7 @@ export default {
 
       //校验
       isShowErrorNameMsg: false,
+      isShowErrorOwnerMsg: false,
 
       ownerUserGids: [],
       followerUserGids: []
@@ -148,14 +150,14 @@ export default {
         refRlNm: this.userInfo.EMPLOYEE_NAME
       }
     ];
-
-    this.followerUserGids = [
-      {
-        refRlNm: "请选择参与人"
-      }
-    ];
   },
   methods: {
+    getOwnerUserList(val) {
+      this.ownerUserGids = val;
+      val.length
+        ? (this.isShowErrorOwnerMsg = false)
+        : (this.isShowErrorOwnerMsg = true);
+    },
     // 过滤负责信息 展示负责人姓名 及 给参数赋值
     mainUserGidsFun(vals) {
       let data = [];
@@ -188,20 +190,21 @@ export default {
         : "请选择参与人";
     },
     createCompetitor() {
-      this.$store.state.competitor.addParams.ownerUserGids = this.$store.state.competitor.addParams.ownerUserGids.split(
-        ","
-      );
-      this.$store.state.competitor.addParams.followerUserGids = this.$store.state.competitor.addParams.followerUserGids.split(
-        ","
-      );
-      if (this.$store.state.competitor.addParams.followerUserGids[0] == "") {
-        this.$store.state.competitor.addParams.followerUserGids = [];
-      }
-      if (this.$store.state.competitor.addParams.ownerUserGids[0] == "") {
-        this.$store.state.competitor.addParams.ownerUserGids = [];
-      }
+      let ownerUserData = this.$store.state.competitor.addParams.ownerUserGids;
+      ownerUserData.length
+        ? (ownerUserData = ownerUserData.split(","))
+        : (ownerUserData = []);
+      this.$store.state.competitor.addParams.ownerUserGids = ownerUserData;
+
+      let followerUserData = this.$store.state.competitor.addParams
+        .followerUserGids;
+      followerUserData.length
+        ? (followerUserData = followerUserData.split(","))
+        : (followerUserData = []);
+      this.$store.state.competitor.addParams.followerUserGids = followerUserData;
+
       this.checkErrorMsg();
-      if (!this.isShowErrorNameMsg) {
+      if (!this.isShowErrorNameMsg && !this.isShowErrorOwnerMsg) {
         this.$store
           .dispatch("addCompetitor", { competorType: this.competorStatusValus })
           .then(res => {
@@ -247,5 +250,18 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.CreateCompetitor /deep/ .van-cell--required::before {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 13px;
 }
 </style>

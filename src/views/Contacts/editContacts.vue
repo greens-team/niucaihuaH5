@@ -1,6 +1,6 @@
 <!-- 编辑联系人页面 -->
 <template>
-  <div class="CreateLessee flex-1 flex flex-col">
+  <div class="editContacts flex-1 flex flex-col">
     <!-- <van-nav-bar title="编辑联系人" left-text="取消" @click-left="$router.go(-1)" left-arrow>
       <div slot="right" @click="editContacts">保存</div>
     </van-nav-bar>-->
@@ -46,17 +46,18 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
         >
-          <div style="width:130px; color:#323233;">负责人</div>
+          <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
           <UserList
             title="选择负责人"
             :paramsVal="ownerUserGids"
-            @setParams="val=>ownerUserGids = val"
+            @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{mainUserGidsFun(ownerUserGids)}}</UserList>
         </div>
+        <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
@@ -106,45 +107,39 @@ export default {
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
       isShowErrorChatMsg: false,
+      isShowErrorOwnerMsg: false,
 
       ownerUserGids: [],
       followerUserGids: []
     };
   },
   mounted() {
-    //负责人、参与人默认显示
-    let ownerUserList = this.$store.state.contacts.contactsInfo.ownerUserList;
-    let followerUserList = this.$store.state.contacts.contactsInfo
-      .followerUserList;
-
-    if (ownerUserList) {
-      ownerUserList.map(r => {
-        this.ownerUserGids.push({ refRlNm: r.ownerUserName });
-      });
-    } else {
-      [
-        {
-          id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
-          refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
-        }
-      ];
-    }
-
-    followerUserList.map(r => {
-      this.followerUserGids.push({ refRlNm: r.ownerUserName });
-    });
-
-    if (!followerUserList.length) {
-      this.followerUserGids = [
-        {
-          refRlNm: "请选择参与人"
-        }
-      ];
-    } else {
-      this.mainFollowerUserGidsFun(followerUserList);
-    }
+    this.getInitParams();
   },
   methods: {
+    getInitParams() {
+      //负责人、参与人的默认显示
+      this.$store.state.contacts.contactsInfo.followerUserList.map(r => {
+        this.followerUserGids.push({
+          refRlNm: r.ownerUserName,
+          id: r.ownerUserGid
+        });
+      });
+      console.log(this.followerUserGids, 1111);
+      this.$store.state.contacts.contactsInfo.ownerUserList.map(r => {
+        this.ownerUserGids.push({
+          refRlNm: r.ownerUserName,
+          id: r.ownerUserGid
+        });
+      });
+      console.log(this.ownerUserGids, 22222);
+    },
+    getOwnerUserList(val) {
+      this.ownerUserGids = val;
+      val.length
+        ? (this.isShowErrorOwnerMsg = false)
+        : (this.isShowErrorOwnerMsg = true);
+    },
     //负责人
     mainUserGidsFun(vals) {
       let data = [];
@@ -177,29 +172,25 @@ export default {
         : "请选择参与人";
     },
     editContacts() {
-      this.$store.state.contacts.editContactsParams.ownerUserGids = this.$store.state.contacts.editContactsParams.ownerUserGids.split(
-        ","
-      );
-      this.$store.state.contacts.editContactsParams.followerUserGids = this.$store.state.contacts.editContactsParams.followerUserGids.split(
-        ","
-      );
-      if (
-        this.$store.state.contacts.editContactsParams.followerUserGids[0] == ""
-      ) {
-        this.$store.state.contacts.editContactsParams.followerUserGids = [];
-      }
+      let ownerUserData = this.$store.state.contacts.editContactsParams.ownerUserGids;
+      ownerUserData.length
+        ? (ownerUserData = ownerUserData.split(","))
+        : (ownerUserData = []);
+      this.$store.state.contacts.editContactsParams.ownerUserGids = ownerUserData;
 
-      if (
-        this.$store.state.contacts.editContactsParams.ownerUserGids[0] == ""
-      ) {
-        this.$store.state.contacts.editContactsParams.ownerUserGids = [];
-      }
+      let followerUserData = this.$store.state.contacts.editContactsParams
+        .followerUserGids;
+      followerUserData.length
+        ? (followerUserData = followerUserData.split(","))
+        : (followerUserData = []);
+      this.$store.state.contacts.editContactsParams.followerUserGids = followerUserData;
 
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&
         !this.isShowErrorNameMsg &&
-        !this.isShowErrorChatMsg
+        !this.isShowErrorChatMsg &&
+        !this.isShowErrorOwnerMsg
       ) {
         this.$store.dispatch("editContacts").then(res => {
           this.$dialog
@@ -258,5 +249,18 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.editContacts /deep/ .van-cell--required::before {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 13px;
 }
 </style>

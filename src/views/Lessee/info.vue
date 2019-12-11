@@ -120,10 +120,8 @@
                   </div>
                 </div>
                 <div v-show="showInfo1">
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">
-                      <span class="text-red-500">*</span>承租人姓名
-                    </p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
+                    <p class="text-xs text_title ownerUser">承租人姓名</p>
                     <p class="text_content text-base">{{info.lesseeName}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -152,12 +150,12 @@
                     >{{info.gender == null ? '-' : (info.gender ? '女' : '男')}}</p>
                   </div>
 
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">负责人</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
+                    <p class="text-xs text_title ownerUser">负责人</p>
                     <p
                       class="text_content text-base"
-                      :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                      style="color:#252525"
+                    >{{ownerUserGids.toString()}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -280,7 +278,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:3, id:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
+                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
                       >{{r.dealerName}}</p>
                     </div>
                   </van-collapse-item>
@@ -517,19 +515,9 @@ export default {
             this.followerUserGids.push(r.ownerUserName);
           });
 
-          if (this.info.ownerUserList) {
-            this.info.ownerUserList.map(r => {
-              this.ownerUserGids.push(r.ownerUserName);
-            });
-          } else {
-            console.log(this.info.ownerUserList,111)
-            this.info.ownerUserList = [
-              {
-                id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
-                refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
-              }
-            ];
-          }
+          this.info.ownerUserList.map(r => {
+            this.ownerUserGids.push(r.ownerUserName);
+          });
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;
@@ -821,5 +809,13 @@ export default {
 .LesseeInfo /deep/ .van-cell:not(:last-child)::after {
   position: absolute;
   left: 0px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 8px;
 }
 </style>

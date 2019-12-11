@@ -82,19 +82,17 @@
                   </div>
                 </div>
                 <div v-show="showInfo1">
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text-gray-500">
-                      <span class="text-red-500">*</span>姓名
-                    </p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
+                    <p class="text-xs text-gray-500 ownerUser">姓名</p>
                     <p class="text-gray-900 text-base">{{info.contactsName}}</p>
                   </div>
 
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">负责人</p>
+                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
+                    <p class="text-xs text_title ownerUser">负责人</p>
                     <p
                       class="text_content text-base"
                       :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{ownerUserGids ? ownerUserGids.toString():'-'}}</p>
+                    >{{ownerUserGids.toString()}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -152,7 +150,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:2, id:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
+                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
                       >{{r.dealerName}}</p>
                       <!-- @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})" -->
                     </div>
@@ -397,21 +395,12 @@ export default {
             this.isShowDealer = false;
           }
 
-          if (this.info.ownerUserList) {
-            this.info.ownerUserList.map(r => {
-              this.ownerUserGids.push(r.ownerUserName);
-            });
-          } else {
-            this.info.ownerUserList = [
-              {
-                id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
-                refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
-              }
-            ];
-          }
-
           this.info.followerUserList.map(r => {
             this.followerUserGids.push(r.ownerUserName);
+          });
+
+          this.info.ownerUserList.map(r => {
+            this.ownerUserGids.push(r.ownerUserName);
           });
         });
       }
@@ -629,5 +618,13 @@ export default {
   right: 0;
   bottom: 0;
   left: 0px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 8px;
 }
 </style>

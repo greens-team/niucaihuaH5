@@ -67,18 +67,18 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
         >
-          <div style="width:130px; color:#323233;">负责人</div>
+          <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
           <UserList
             title="选择负责人"
             :paramsVal="ownerUserGids"
-            @setParams="val=>ownerUserGids = val"
+            @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{mainUserGidsFun(ownerUserGids)}}</UserList>
         </div>
-
+        <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
         <div
           class="flex ml-4 items-center pt-3 pb-3"
           style="border-bottom:1px solid #ededee; margin-left:1rem;"
@@ -311,6 +311,7 @@ export default {
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
       isShowErrorIdCardMsg: false,
+      isShowErrorOwnerMsg: false,
 
       idcardFrontPicVal: [],
       idcardBackPicVal: [],
@@ -428,32 +429,28 @@ export default {
         }
       }
 
-      //负责人、参与人默认显示
-
-      if (!this.$store.state.lessee.info.followerUserList.length) {
-        this.followerUserGids = [
-          {
-            refRlNm: "请选择参与人"
-          }
-        ];
-      } else {
-        this.$store.state.lessee.info.followerUserList.map(r => {
-          this.followerUserGids.push({ refRlNm: r.ownerUserName });
+      //负责人、参与人的默认显示
+      this.$store.state.lessee.info.followerUserList.map(r => {
+        this.followerUserGids.push({
+          refRlNm: r.ownerUserName,
+          id: r.ownerUserGid
         });
-      }
-
-      if (this.$store.state.lessee.info.ownerUserList) {
-        this.$store.state.lessee.info.ownerUserList.map(r => {
-          this.ownerUserGids.push({ refRlNm: r.ownerUserName });
+      });
+      // console.log(this.followerUserGids, 1111);
+      this.$store.state.lessee.info.ownerUserList.map(r => {
+        this.ownerUserGids.push({
+          refRlNm: r.ownerUserName,
+          id: r.ownerUserGid
         });
-      } else {
-        [
-          {
-            id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
-            refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
-          }
-        ];
-      }
+      });
+      // console.log(this.ownerUserGids, 22222);
+    },
+
+    getOwnerUserList(val) {
+      this.ownerUserGids = val;
+      val.length
+        ? (this.isShowErrorOwnerMsg = false)
+        : (this.isShowErrorOwnerMsg = true);
     },
 
     //负责人
@@ -463,6 +460,7 @@ export default {
         data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.editParams.ownerUserGids = data.toString();
+
       return vals.length
         ? vals
             .map(r => {
@@ -478,6 +476,7 @@ export default {
         data.push(r.id || r.ownerUserGid);
       });
       this.$store.state.lessee.editParams.followerUserGids = data.toString();
+
       return vals.length
         ? vals
             .map(r => {
@@ -504,25 +503,25 @@ export default {
 
       this.$store.state.lessee.editParams.userPic = userPicStr;
 
-      this.$store.state.lessee.editParams.ownerUserGids = this.$store.state.lessee.editParams.ownerUserGids.split(
-        ","
-      );
-      this.$store.state.lessee.editParams.followerUserGids = this.$store.state.lessee.editParams.followerUserGids.split(
-        ","
-      );
-      if (this.$store.state.lessee.editParams.followerUserGids[0] == "") {
-        this.$store.state.lessee.editParams.followerUserGids = [];
-      }
-      if (this.$store.state.lessee.editParams.ownerUserGids[0] == "") {
-        this.$store.state.lessee.editParams.ownerUserGids = [];
-        this.$store.state.lessee.editParams.ownerUserList = []
-      }
+      let ownerUserData = this.$store.state.lessee.editParams.ownerUserGids;
+      ownerUserData.length
+        ? (ownerUserData = ownerUserData.split(","))
+        : (ownerUserData = []);
+      this.$store.state.lessee.editParams.ownerUserGids = ownerUserData;
+
+      let followerUserData = this.$store.state.lessee.editParams
+        .followerUserGids;
+      followerUserData.length
+        ? (followerUserData = followerUserData.split(","))
+        : (followerUserData = []);
+      this.$store.state.lessee.editParams.followerUserGids = followerUserData;
 
       this.checkErrorMsg();
       if (
         !this.isShowErrorPhoneMsg &&
         !this.isShowErrorNameMsg &&
-        !this.isShowErrorIdCardMsg
+        !this.isShowErrorIdCardMsg &&
+        !this.isShowErrorOwnerMsg
       ) {
         this.$store
           .dispatch("editLessee", {
@@ -607,5 +606,18 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.editLessee /deep/ .van-cell--required::before {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+}
+.ownerUser::before {
+  position: absolute;
+  left: -7px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
+  top: 13px;
 }
 </style>
