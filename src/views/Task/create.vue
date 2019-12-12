@@ -126,7 +126,7 @@
             v-else
             @click="editor && (dealerShow = true)"
           >
-            <span  v-if="!editor" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))">{{dealerName}}</span>
+            <span  v-if="!editor" style="color:#0885FF" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))">{{dealerName}}</span>
             <span v-else>{{dealerName || '请选择相关经销商'}}</span>
           </p>
         </template>

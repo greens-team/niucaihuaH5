@@ -22,7 +22,7 @@
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto">
-        <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
+        <div class="relative formBar font-bold p-3 pl-4" style="font-size:1.143rem;">基本信息</div>
         <van-field
           v-model="$store.state.competitor.editParams.competorName"
           required

@@ -17,7 +17,7 @@
       <span class="text-center font-medium bar_title">意见反馈</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div slot="right" class="text-center text-base" @click="submit">保存</div>
+        <div slot="right" class="text-center" style="font-size:1.143rem;" @click="submit">保存</div>
       </div>
     </div>
 
@@ -75,8 +75,8 @@
 
         <div class="flex emialUs mt-24">
           <p class="w-full text-center">
-            <span style="color:#80848D">有问题也可发送邮件给我们：</span>
-            <span style="color:#0885FF">liuyiwei@lionbridgecapital.cn</span>
+            <span style="color:#80848D;font-size:.75rem;">有问题也可发送邮件给我们：</span>
+            <span style="color:#0885FF;font-size:.75rem;">liuyiwei@lionbridgecapital.cn</span>
           </p>
         </div>
       </div>

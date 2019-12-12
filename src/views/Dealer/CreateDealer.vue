@@ -23,14 +23,14 @@
       <span class="text-center font-bold bar_title">{{$route.query.editor ? '编辑经销商' : '新建经销商'}}</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div v-if="$route.query.editor" class="text-center text-base" slot="right" @click="()=>{delmapsource(),save()}">保存</div>
-        <div v-else slot="right" class="text-center text-base" @click="nextStep">下一步</div>
+        <div v-if="$route.query.editor" class="text-center" slot="right" style="font-size:1.143rem;" @click="()=>{delmapsource(),save()}">保存</div>
+        <div v-else slot="right" class="text-center" style="font-size:1.143rem;" @click="nextStep">下一步</div>
       </div>
     </div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-hidden overflow-y-auto">
-        <div class="relative formBar font-bold text-base p-3 pl-4">备案信息</div>
+        <div class="relative formBar font-bold p-3 pl-4" style="font-size:1.143rem;">备案信息</div>
         <van-field
           v-model="$store.getters.NDparams.dealerName"
           required
@@ -221,7 +221,7 @@
 
 
 
-        <div class="relative formBar font-bold text-base p-3 pl-4">基本信息</div>
+        <div class="relative formBar font-bold p-3 pl-4" style="font-size:1.143rem;">基本信息</div>
 
         <!-- longitude -->
         <!-- <van-field
@@ -282,7 +282,7 @@
       </div>
     </div>
 
-    <van-popup v-model="showNext" position="bottom">
+    <!-- <van-popup v-model="showNext" position="bottom">
       <div class="bg-gray-200">
         <div
           @click="goContactsList"
@@ -297,7 +297,28 @@
           @click="showNext=false"
         >取消</div>
       </div>
+    </van-popup> -->
+
+
+    <van-popup v-model="showNext" position="bottom">
+      <div class="bg-gray-200">
+        <div
+          @click="goContactsList"
+          class="text-center font-bold text-xl border-b border-gray-300 bg-white h-16 flex items-center justify-center cursor-pointer"
+          style="color:#FF9B02"
+        >新建联系人</div>
+        <div
+          class="text-center font-bold text-xl bg-white h-16 flex items-center justify-center cursor-pointer"
+          style="color:#FF9B02"
+          @click="createDealer"
+        >直接新建经销商</div>
+        <div
+          class="text-center bg-white h-16 text-xl flex items-center justify-center cursor-pointer mt-3"
+          @click="showNext=false"
+        >取 消</div>
+      </div>
     </van-popup>
+
   </div>
 </template>
 

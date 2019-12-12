@@ -35,7 +35,7 @@
           />
           <img
             class="bar_icon plus_icon"
-            v-show="$root.checkRole('DEALER_CREATE')" 
+            v-show="$root.checkRole('DEALER_CREATE')"
             @click="$store.commit('setNewDealerParams'); $router.push('/CreateDealer')"
             src="../../assets/topBarIcon/add_icon.png"
             alt="添加"
@@ -180,7 +180,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .DealerManage /deep/ .van-hairline--top-bottom::after,
 .DealerManage /deep/ .van-hairline-unset--top-bottom::after {
@@ -232,5 +232,12 @@ export default {
 }
 .DealerManage /deep/ .van-dropdown-menu__title::after {
   opacity: 0;
+}
+.DealerManage /deep/ .van-cell--required::before {
+  position: absolute;
+  left: 8px;
+  color: #f42929;
+  font-size: 14px;
+  content: "*";
 }
 </style>

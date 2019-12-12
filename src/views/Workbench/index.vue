@@ -29,14 +29,14 @@
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       <div class="flex p-1 items-center justify-center">
-        <div class="font-bold">销售简报</div>
+        <div class="font-bold" style="font-size:1.143rem;">销售简报</div>
         <div class="flex-1"></div>
         <div
           class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis"
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
           <img
-            style="display:inline-block;width:1.57rem;height:1.57rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;"
             src="../../assets/workbench/my.png"
             alt
           />
@@ -75,7 +75,7 @@
         >
           <!-- <i class="iconfont iconcalendar mr-1"></i> -->
           <img
-            style="display:inline-block;width:1.57rem;height:1.57rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;"
             src="../../assets/workbench/calendar.png"
             alt
           />
@@ -116,7 +116,7 @@
     <!-- 快速入口 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       <div class="flex p-1">
-        <div class="font-bold">快速入口</div>
+        <div class="font-bold" style="font-size:1.143rem;">快速入口</div>
       </div>
 
       <div class="flex p-1 pt-2 justify-between">
@@ -190,7 +190,7 @@
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
                 <img
-                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;"
                   src="../../assets/workbench/calendar.png"
                   alt
                 />
@@ -257,7 +257,7 @@
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
                 <img
-                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;"
                   src="../../assets/workbench/calendar.png"
                   alt
                 />
@@ -270,7 +270,7 @@
               >
                 <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
                 <img
-                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;"
                   src="../../assets/workbench/my.png"
                   alt
                 />
@@ -545,12 +545,16 @@ export default {
 .Workbench .van-search__content {
   background-color: #f5f5f5;
 }
+.tabCustomize {
+  font-size: 1.143rem;
+}
 .tabCustomize::after {
   display: flex;
   width: 34px;
   border-bottom: 8px solid #fff;
   transform: scaleY(0.5);
   content: "";
+  font-size: 1.143rem;
 }
 .tabActive.gray {
   color: #000;

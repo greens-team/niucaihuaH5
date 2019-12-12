@@ -141,7 +141,7 @@
             <div v-if="$store.state.dealerInfo.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center relative">
-                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
+                  <div class="flex flex-1 items-center font-bold"  @click="showInfo1 = !showInfo1">
                     备案信息
                     <i
                       class="iconfont iconweizhankai ml-2 icon_toggle"
@@ -249,6 +249,7 @@
                     >
                       <span
                         class="text-blue-500"
+                        style="color:#0885FF"
                         v-if="info.locationName"
                         @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
                       >{{info.locationName}}</span>

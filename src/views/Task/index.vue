@@ -15,7 +15,7 @@
       >编辑</div>
     </van-nav-bar>-->
 
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+    <div class="items-center pl-4 pr-4 flex bg-white">
       <div class="flex-1 flex">
         <div
           @click="$router.replace('/')"
@@ -41,7 +41,8 @@
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
         <div
-          class="relative formBar font-bold text-base p-3 pl-4 mt-2"
+          class="relative formBar font-bold p-3 pl-4 mt-2"
+          style="font-size:1.143rem;"
         >{{$route.query.taskType == 1 ?'拜访安排' : '任务'}}</div>
 
         <van-cell clickable>
@@ -90,7 +91,8 @@
           </template>
           <template slot="default">
             <p
-              class="p5 text-blue-500"
+              class="p5"
+              style="color:#0885FF"
               @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))"
             >{{dealerName}}</p>
             <!-- <p class="p5  text-gray-800">{{dealerName || '请选择相关经销商'}}</p> -->
@@ -152,13 +154,17 @@
           v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
           class="bg-gray-100 pt-2 pb-1"
         >
-          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">打卡位置</div>
           <div
-            class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white"
+            class="relative formBar font-bold p-3 pl-4 mt-2 bg-white"
+            style="font-size:1.143rem;"
+          >打卡位置</div>
+          <div
+            class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
             @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
           >
             <div class="flex-1">
               <span
+                style="color:#0885FF"
                 class="text-blue-500"
               >{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
             </div>
@@ -167,7 +173,8 @@
 
         <div
           v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && !$store.state.task.addEditTaskParams.isInClockinRange"
-          class="bg-gray-100 text-red-500 pl-5 pt-1 text-sm"
+          class="bg-gray-100 pl-5 pt-1 text-sm"
+          style="color:#f42929"
         >打卡点不在经销商附近</div>
 
         <div
@@ -175,19 +182,22 @@
           class="bg-gray-100 pt-1 pb-4"
         >
           <!-- @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" -->
-          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">经销商位置</div>
           <div
-            class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white"
+            class="relative formBar font-bold p-3 pl-4 mt-2 bg-white"
+            style="font-size:1.143rem;"
+          >经销商位置</div>
+          <div
+            class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
             @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
           >
             <div class="flex-1">
-              <span class="text-blue-500">{{$store.state.task.addEditTaskParams.locationName}}</span>
+              <span class="text-blue-500" style="color:#0885FF">{{$store.state.task.addEditTaskParams.locationName}}</span>
             </div>
           </div>
         </div>
 
         <div v-if="$store.state.task.addEditTaskParams.dealerDes">
-          <div class="relative formBar font-bold text-base p-3 pl-4 mt-2">拜访记录</div>
+          <div class="relative formBar font-bold p-3 pl-4 mt-2" style="font-size:1.143rem;">拜访记录</div>
 
           <van-cell clickable>
             <template slot="title">
@@ -245,10 +255,7 @@
           </van-cell>
 
           <template v-if="$store.state.task.addEditTaskParams.competitorList">
-            <div
-              v-for="(r,i) in $store.state.task.addEditTaskParams.competitorList"
-              :key="i+'aa'"
-            >
+            <div v-for="(r,i) in $store.state.task.addEditTaskParams.competitorList" :key="i+'aa'">
               <div v-if="r.competitorGid != '0'">
                 <van-cell clickable>
                   <template slot="title">
