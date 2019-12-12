@@ -90,7 +90,8 @@ export default {
         this.$route.query.modelGid ? this.$router.push({path:'/SelectedCompetitorList', query: {modelGid: this.$route.query.modelGid}}) : this.$router.push('/SelectedCompetitorList') ;
         this.$store.state.competitor.confirmUserGids = this.$store.state.competitor.selectedUserGids
       }else{
-        this.$notify({ type: 'warning', message: '请选择联系人' })
+        this.$toast('请选择竞争对手')
+        // this.$notify({ type: 'warning', message: '请选择竞争对手' })
       }
     }
   }

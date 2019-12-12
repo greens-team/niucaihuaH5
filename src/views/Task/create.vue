@@ -219,7 +219,7 @@
         <div class="pl-5">打卡位置</div>
         <div
           class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2"
-          @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})"
+          @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
         >
           <div class="flex-1">
             <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
@@ -714,8 +714,8 @@ export default {
     //签到打卡 调地图
     clockIn() {
       this.$router.push({
-        path: "/map",
-        query: { clockIn: true, id: this.taskId }
+        path: "/ClockIn",
+        query: { id: this.taskId, dealerLog:this.$store.state.task.taskInfo.dealerLongitude,dealerLat:this.$store.state.task.taskInfo.dealerLatitud }
       });
     },
     // 创建拜访任务

@@ -31,17 +31,17 @@
       <div class="absolute inset-0 overflow-y-auto">
 
           <van-checkbox-group class="flex flex-col" v-model="$store.state.competitor.confirmUserGids" >
-            <div v-for="(item, i) in $store.state.competitor.selectedUserGids" :key="i" class="flex border-b border-gray-200 ml-4 mr-4">
+            <div v-for="(item, i) in $store.state.competitor.selectedUserGids" :key="i" class="flex flex-col border-b border-gray-200 ml-4 mr-4">
               <van-checkbox
                 icon-size="16px"
-                class="w-2/5"
+                class="pt-5"
                 :name="item"
               >
                 {{item.split(',')[0]}}
               </van-checkbox>
-              <div class="w-3/5 flex flex-col">
-                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize class="w-full" v-model="$store.state.competitor.jobsUser[i]" placeholder="请输入应对策略" />
-                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize class="w-full" v-model="$store.state.competitor.jobsUser1[i]" placeholder="请输入竞对政策" />
+              <div class="pl-3">
+                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize v-model="$store.state.competitor.jobsUser[i]" placeholder="请输入应对策略" />
+                <van-field type="textarea" rows="2" maxlength="200" :show-word-limit="true" autosize v-model="$store.state.competitor.jobsUser1[i]" placeholder="请输入竞对政策" />
               </div>
             </div>
           </van-checkbox-group>

@@ -502,7 +502,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text-gray-900 text-sm">自然人</p>
+                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeTypeList[r.lesseeType].text}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">手机号</p>
@@ -887,6 +887,9 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getinfo", this.id).then(res => {
           this.info = this.$store.state.dealerInfo.baseInfo;
+          this.info.ownerUserGids = this.info.ownerUserList.map(r=>{
+            return String(r.ownerUserGid)
+          })
         });
       }
       if (num === 1) {

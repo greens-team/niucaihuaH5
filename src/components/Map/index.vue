@@ -1,200 +1,163 @@
-<!-- 嵌套部门循环组件 -->
 <template>
   <div class="flex-1 flex flex-col">
-
     <van-nav-bar
-      :title="$route.query.clockIn?'签到打卡':'选择地图位置'"
+      title="地图位置"
       left-text="返回"
-      :right-text="$route.query.lng ? '' : '确定'"
+      :right-text="$route.query.lng && $route.query.edit ? '确定' : ($route.query.lng ? '' : '确定')"
       @click-left="setSource(),$router.go(-1)"
       @click-right="setLocation"
     />
-
-    <div v-if="!$route.query.lng">
+    <div class="amap-page-container flex-1 flex flex-col relative">
+      <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
+      <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 " style="top:5px; left:5px; right:5px;">
+        经销商位置: {{params.address}}
+      </div>
       
-        <div class="p-1 text-sm text-gray-500 pl-3 text-center bg-gray-100">拖动地图上的红色图标，可选择地址</div>
-        
-        <van-radio-group v-model="addressValue">
-          <van-radio v-for="(r,i) in addressList" :key="i" icon-size="15px" :name="r.value" class=" text-sm p-2 border-b border-gray-200"><span class="ellipsis">{{r.text}}</span></van-radio>
-        </van-radio-group>
-
+      <el-amap-search-box v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" placeholder="请输入短信验证码" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <el-amap-search-box v-if="$route.query.edit" placeholder="请输入短信验证码" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
+        <el-amap-marker v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true" ></el-amap-marker>
+        <el-amap-marker :position="dealerPosition" :events="markerClick"></el-amap-marker>
+      </el-amap>
     </div>
-
-      <label>地址：<input v-model="keyword"></label>
-    <baidu-map class="flex-1  map" :center="center" :zoom="zoom"  @ready="handler"> 
-      <bm-local-search :keyword="keyword" :auto-viewport="true"  zoom="30"></bm-local-search>
-      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
-      <bm-marker :position="center" :dragging="true" @dragend="dragend"></bm-marker>
-    </baidu-map>
-
   </div>
 </template>
 
 <script>
-// import {BmlMarkerClusterer, BaiduMap, BmScale, BmGeolocation } from 'vue-baidu-map'
+import VueAMap from 'vue-amap';
+VueAMap.initAMapApiLoader({
+  key: 'e8a380104e8968d416649626d213e339',
+  plugin: ['AMap.Geolocation','AMap.ToolBar'],
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.4'
+});
 export default {
   name: 'Map',
   data() {
-    return {
-      center: '',
-      zoom: 18,
-      addressList: [],
-      addressValue: '',
-      BMap: '',
-      keyword:'',
-    }
-  },
-  watch: {
-    keyword(){
-      console.log(this.center)
-    }
-  },
-  components: {
-    // BmlMarkerClusterer
+    let self = this;
+      return {
+        params : {
+          lng: '',
+          lat: '',
+          address: ''
+        },
+        markerClick: {
+          click: (e) => {
+            let { lng, lat } = e.target.F.position || e.lnglat;//e.lnglat; //()
+            self.getInfo(lng, lat)
+          }
+        },
+        // icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576128884556&di=bec7a6edff8972abb223c4a92f70f68e&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F59%2F31%2F594d771606856_610.jpg',
+        dealerPosition: [121.59, 31.19],
+        markers:[],
+        searchOption: {
+            city: '全国',
+            citylimit: true
+          },
+        events: {
+          click(e) {
+            let { lng, lat } = e.lnglat;
+            self.getInfo(lng, lat, true)      
+          }
+        },
+        zoom: 15,
+        center: [121.59, 31.19],
+        address: '',
+        plugin: [{
+          pName: 'Geolocation',
+          events: !self.$route.query.lng ? {
+            init(o) {
+              // o 是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  self.center = [result.position.lng, result.position.lat];
+                  self.dealerPosition = [result.position.lng, result.position.lat]
+                  self.params = {
+                    lng: result.position.lng,
+                    lat: result.position.lat,
+                    address: result.formattedAddress
+                  }
+                  // self.searchOption.city = result.addressComponent.city || result.addressComponent.province
+                  self.$nextTick();
+                }
+              });
+            }
+          }: {}
+        },{
+          pName: 'ToolBar',
+          position: 'RB',
+        }]
+      }
   },
   methods: {
-    dragend(event){
-      let _this = this
-      var map = new this.BMap.Map("allmap");
-      var point = new this.BMap.Point(event.point.lng,event.point.lat);
-      var gc = new this.BMap.Geocoder();
-      gc.getLocation(point, function(rs){
-        // _this.center = point;
-        var addComp = rs.addressComponents;
-        let lngLatText = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
-        console.log(lngLatText)
-        _this.addressList = []
-        _this.addressList.push({
-          text: lngLatText.replace(/,|\s/g, ''),
-          value: JSON.stringify(point)
-        })
-        rs.surroundingPois.map(r=>{
-          _this.addressList.push({
-            text:( r.title+' '+r.address).replace(/,|\s/g, ''),
-            value: JSON.stringify(r.point)
-          })
-        })
-      });
+    getInfo(lng ,lat, dealerCenter){
+      let self = this
+      var geocoder = new AMap.Geocoder({
+        radius: 300,
+        extensions: "all"
+      });        
+      geocoder.getAddress([lng ,lat], function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.regeocode) {
+            self.params = {
+              lng: lng,
+              lat: lat,
+              address: result.regeocode.formattedAddress
+            }
+            dealerCenter && (self.dealerPosition = [lng, lat])
+            console.log(self.params, 'cente22r')
+            self.$nextTick();
+          }
+        }
+      }); 
     },
+    onSearchResult(pois) {
+        let latSum = 0;
+        let lngSum = 0;
+        if (pois.length > 0) {
+          pois.forEach(poi => {
+            let {lng, lat} = poi;
+            lngSum += lng;
+            latSum += lat;
+            console.log(poi, 88)
+            this.markers.push([poi.lng, poi.lat]);
+          });
+          let center = {
+            lng: lngSum / pois.length,
+            lat: latSum / pois.length
+          };
+          this.center = [center.lng, center.lat];
+        }
+      },
+    
     setSource(){
+      // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
       sessionStorage.mapsource="true"
     },
     setLocation(){
-      this.setSource()
-      if(this.addressValue){
-        let o = JSON.parse(this.addressValue)
-        this.$store.getters.NDparams.longitude =  String(o.lng).split('.')[1].length > 6 ? o.lng.toFixed(6) : o.lng
-        this.$store.getters.NDparams.latitude = String(o.lat).split('.')[1].length > 6 ? o.lat.toFixed(6) : o.lat
-
-        let address = ''
-        this.addressList.some(r=>{
-          if(r.value == this.addressValue){
-            address = r.text
-          }
-        })
-
-        this.$store.getters.NDparams.locationName = address
-
-        //打卡
-        if(this.$route.query.id && this.$route.query.clockIn){
-          this.$store.dispatch('clockincheck',{
-            gid: this.$route.query.id,
-            longitude: this.$store.getters.NDparams.longitude,
-            latitude: this.$store.getters.NDparams.latitude
-          }).then(res=>{
-            this.$dialog.confirm({
-              message: res.data ? '你在打卡范围内' : '你不在打卡范围内',
-              confirmButtonText: '打卡'
-            }).then(() => {
-              // let address = ''
-              // this.addressList.some(r=>{
-              //   if(r.value == this.addressValue){
-              //     address = r.text
-              //   }
-              // })
-              // 确认打卡
-              let paras = {
-                gid: this.$route.query.id,
-                longitude: this.$store.getters.NDparams.longitude,
-                latitude: this.$store.getters.NDparams.latitude,
-                clockinPlaceName: address,
-                clockinPlaceAddress: address
-              }
-              this.$store.dispatch('clockin',paras).then(r=>{
-                sessionStorage.localMap = JSON.stringify(paras)
-              }).then(()=>{
-                this.$router.go(-1)
-              })
-            });
-          })
-        }else{
-          this.$router.go(-1)
-        }
-      }else{
-        this.$notify({ type: 'warning', message: '请选择地址' })
-      }
+      this.setSource() // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
+      // 赋值给NDparams 经纬度
+      this.$store.getters.NDparams.longitude =  this.params.lng
+      this.$store.getters.NDparams.latitude = this.params.lat
+      // 赋值给NDparams 地理位置
+      this.$store.getters.NDparams.locationName = this.params.address
+      this.$router.go(-1)
     },
-
-    handler({BMap, map}){
-
-    //   var geolocation = new BMap.Geolocation();
-    // // 开启SDK辅助定位
-    // geolocation.enableSDKLocation();
-    // geolocation.getCurrentPosition(function(r){
-    //   console.log(r)
-    //   // if(this.getStatus() == BMAP_STATUS_SUCCESS){
-    //   //   var mk = new BMap.Marker(r.point);
-    //   //   map.addOverlay(mk);
-    //   //   map.panTo(r.point);
-    //   //   alert('您的位置：'+r.point.lng+','+r.point.lat);
-    //   // }
-    //   // else {
-    //   //   alert('failed'+this.getStatus());
-    //   // }        
-    // });
-
-        this.BMap = BMap
-        if(this.$route.query.lng){
-          this.center = {
-            lng: this.$route.query.lng, 
-            lat: this.$route.query.lat
-          }
-          this.dragend({
-            point: this.center
-          })
-        }else{
-              
-              var geolocation1 = new this.BMap.Geolocation();
-              geolocation1.enableSDKLocation();
-              geolocation1.getCurrentPosition((position) => {
-                console.log(position)
-                this.center = {
-                  lng: position.point.lng, 
-                  lat:position.point.lat
-                }
-                this.dragend({
-                  point: this.center
-                })
-              })
-        }
-
-
-    }
-
   },
   mounted() {
     delete sessionStorage.localMap;
-
-    
+    //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
+    if(this.$route.query.lng){
+      this.getInfo(this.$route.query.lng, this.$route.query.lat, true)
+      this.center = [this.$route.query.lng, this.$route.query.lat];
+      console.log(this.center, 'center')
+    }
   },
 }
 </script>
 
 <style scoped>
-.ellipsis{
-  max-width: 12rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.amap-demo {
+  height: 300px;
 }
 </style>

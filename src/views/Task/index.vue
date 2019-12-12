@@ -155,7 +155,7 @@
           <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">打卡位置</div>
           <div
             class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white"
-            @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.longitude, lat:$store.state.task.addEditTaskParams.latitude}})"
+            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
           >
             <div class="flex-1">
               <span
@@ -174,10 +174,11 @@
           v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && $store.state.task.addEditTaskParams.locationName"
           class="bg-gray-100 pt-1 pb-4"
         >
+          <!-- @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" -->
           <div class="relative formBar font-bold text-base p-3 pl-4 mt-2 bg-white">经销商位置</div>
           <div
             class="flex items-center bg-white pl-5 pr-5 pt-2 pb-2 bg-white"
-            @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})"
+            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
           >
             <div class="flex-1">
               <span class="text-blue-500">{{$store.state.task.addEditTaskParams.locationName}}</span>
@@ -234,7 +235,7 @@
 
           <van-cell clickable>
             <template slot="title">
-              <span class="custom-title">竞对单量</span>
+              <span class="custom-title">竞对合作单量</span>
             </template>
             <template slot="default">
               <p

@@ -214,7 +214,7 @@
             <div style="width:130px; color:#323233;">地理位置</div>
             <div
               class="flex-1"
-              @click="!recordStatus && $router.push('/map')"
+              @click="!recordStatus && ($store.getters.NDparams.gid ? $router.push({path:'/map',query:{lng:$store.getters.NDparams.longitude,lat:$store.getters.NDparams.latitude,edit:true}}) : $router.push('/map'))"
               :style="{color:$store.getters.NDparams.locationName && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"
             >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
           </div>
@@ -244,7 +244,8 @@
           </van-dropdown-menu>
         </div>
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex border-b border-gray-200 ml-2 items-center pt-3 pb-3">
+          <span class="text-red-500">*</span>
           <div style="width:130px; color:#323233;">负责人</div>
           <UserList
             title="选择负责人"
@@ -530,9 +531,9 @@ export default {
       });
     },
     nextStep() {
-      if (!this.$store.state.newDealer.params.dealerName) {
+      if (!this.$store.state.newDealer.params.dealerName || !this.$store.state.newDealer.params.ownerUserList.length) {
         this.$dialog.alert({
-          message: "经销商名称不能为空"
+          message: "有必填项为空，请认填写"
         });
       } else {
         this.showNext = true;

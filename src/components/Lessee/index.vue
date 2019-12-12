@@ -89,7 +89,8 @@ export default {
         this.$route.query.modelGid ? this.$router.push({path:'/SelectedLesseeList', query: {modelGid: this.$route.query.modelGid}}) : this.$router.push('/SelectedLesseeList') ;
         this.$store.state.lessee.confirmUserGids = this.$store.state.lessee.selectedUserGids
       }else{
-        this.$notify({ type: 'warning', message: '请选择联系人' })
+        this.$toast('请选择承租人')
+        // this.$notify({ type: 'warning', message: '请选择承租人' })
       }
     }
   }
