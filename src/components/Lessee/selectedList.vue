@@ -94,7 +94,8 @@ export default {
           })
         })
         .then(msg => {
-          this.$notify({ type: "success", message: msg });
+          this.$toast(msg)
+          // this.$notify({ type: "success", message: msg });
           this.$router.go(-2);
         });
     }

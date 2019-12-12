@@ -262,7 +262,7 @@
     <van-popup v-model="taskTimeShow" position="bottom">
       <van-datetime-picker
         type="datetime"
-        :min-date="new Date()"
+        :min-date="new Date(new Date().getFullYear()+'-01-01 00:00')"
         @cancel="taskTimeShow=false"
         @confirm="confirmTaskTime"
         v-model="currentDate"
@@ -816,6 +816,10 @@ export default {
     },
 
     confirmTaskTime() {
+      if(this.timeStamp(this.currentDate) < this.timeStamp(new Date() - 3*60*1000)){
+        this.$toast('创建时间不能小于当前时间');
+        return true
+      }
       this.taskTimeShow = false;
       this.$store.state.task.addEditTaskParams.taskTime = Math.floor(
         this.timeStamp(this.currentDate) / 1000

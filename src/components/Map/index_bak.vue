@@ -131,7 +131,8 @@ export default {
           this.$router.go(-1)
         }
       }else{
-        this.$notify({ type: 'warning', message: '请选择地址' })
+        this.$toast('请选择地址')
+        // this.$notify({ type: 'warning', message: '请选择地址' })
       }
     },
 

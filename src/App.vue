@@ -36,11 +36,8 @@ export default {
     // sessionStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
 
     window.getUserInfoIosCallBack = (data) => {
-      alert(JSON.stringify(JSON.parse(data).datas))
-      alert(JSON.parse(data).datas.TOKEN)
       sessionStorage.Authorization = JSON.parse(data).datas.TOKEN
       sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
-
       _this.loginStatus = true;
       setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
       // location.reload()

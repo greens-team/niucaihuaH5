@@ -319,7 +319,8 @@ export default {
         this.params.endTime &&
         timeStr > this.params.endTime
       ) {
-        this.$notify({ type: "warning", message: "开始时间要小于结束时间" });
+        this.$toast('开始时间要小于结束时间')
+        // this.$notify({ type: "warning", message: "开始时间要小于结束时间" });
         return;
       }
       if (
@@ -327,7 +328,8 @@ export default {
         this.params.startTime &&
         timeStr < this.params.startTime
       ) {
-        this.$notify({ type: "warning", message: "结束时间要大于开始时间" });
+        this.$toast('结束时间要大于开始时间')
+        // this.$notify({ type: "warning", message: "结束时间要大于开始时间" });
         return;
       }
       this.timeType
