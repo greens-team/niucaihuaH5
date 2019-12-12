@@ -95,7 +95,8 @@ export default {
             : this.$router.push("/DealerSelectedList");
           this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
         } else {
-          this.$notify({ type: "warning", message: "请选择联系人" });
+          this.$toast('请选择联系人')
+          // this.$notify({ type: "warning", message: "请选择联系人" });
         }
       }
       if (flag == 2) {
@@ -109,7 +110,8 @@ export default {
             : this.$router.push("/CompetitorSelectedList");
           this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
         } else {
-          this.$notify({ type: "warning", message: "请选择联系人" });
+          this.$toast('请选择联系人')
+          // this.$notify({ type: "warning", message: "请选择联系人" });
         }
       }
       if (flag == 3) {
@@ -123,7 +125,8 @@ export default {
             : this.$router.push("/ContactsSelectedList");
           this.$store.state.dealer.confirmUserGids = this.$store.state.dealer.selectedUserGids;
         } else {
-          this.$notify({ type: "warning", message: "请选择联系人" });
+          this.$toast('请选择联系人')
+          // this.$notify({ type: "warning", message: "请选择联系人" });
         }
       }
     }

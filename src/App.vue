@@ -35,11 +35,16 @@ export default {
     // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
     // sessionStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
 
-
     window.getUserInfoIosCallBack = (data) => {
-      // alert(JSON.parse(data).datas.TOKEN)
+      sessionStorage.Authorization = JSON.parse(data).datas.TOKEN
       sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
-      _this.setAuthorization(JSON.parse(data).datas.TOKEN)
+      _this.loginStatus = true;
+      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
+      // location.reload()
+      _this.$store.dispatch('getUserInfo').then((data)=>{
+        _this.$root.userInfo = data
+      })
+
     }
 
     // 获取用户登录信息
@@ -65,7 +70,7 @@ export default {
 
 
 
-    window.setToken('74d33508f4bd815c4fa8cc63e2a3f74e',{ "SYSUSERFLAG": "1", "buOrgCd": "00000001", "ORG_CHILDREN": "", "TOKEN": "74d33508f4bd815c4fa8cc63e2a3f74e", "funauth": [ { "orgdispnm": "重卡-山西-晋北区域（朔州）", "orgid": "206", "roleisvis": "1", "isdisusr": "1", "rolename": "客户经理", "roleid": "10008" } ], "EMPLOYEE_ISDEPT": "晋中分公司", "IS_FINANCELEASE": "1", "EMPLOYEE_ID": "1000378", "EMPLOYEE_CODE": "0300040", "SIGN": "20693625c276f645253c9a0db97f31eb", "ORG_NAME": "", "genderCdList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ], "EMPLOYEE_NAME": "董伟", "prdTypCateList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ]})
+    // window.setToken('74d33508f4bd815c4fa8cc63e2a3f74e',{ "SYSUSERFLAG": "1", "buOrgCd": "00000001", "ORG_CHILDREN": "", "TOKEN": "74d33508f4bd815c4fa8cc63e2a3f74e", "funauth": [ { "orgdispnm": "重卡-山西-晋北区域（朔州）", "orgid": "206", "roleisvis": "1", "isdisusr": "1", "rolename": "客户经理", "roleid": "10008" } ], "EMPLOYEE_ISDEPT": "晋中分公司", "IS_FINANCELEASE": "1", "EMPLOYEE_ID": "1000378", "EMPLOYEE_CODE": "0300040", "SIGN": "20693625c276f645253c9a0db97f31eb", "ORG_NAME": "", "genderCdList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ], "EMPLOYEE_NAME": "董伟", "prdTypCateList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ]})
 
   },
   methods: {

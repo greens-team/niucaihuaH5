@@ -53,14 +53,16 @@ export default {
       }else{
         if(this.$store.state.contacts.createContactsParams.contactsName){
           this.$store.dispatch('createContacts').then(res => {
-            this.$notify({ type: 'success', message: res.msg })
+            // this.$notify({ type: 'success', message: res.msg })
+            this.$toast(res.msg)
             this.$store.state.contacts.listContactsParams.queryString = ''
             let selectedUserGids = this.$store.state.contacts.selectedUserGids.concat(this.$store.state.contacts.createContactsParams.contactsName+','+res.data)
             sessionStorage.selectedUserGids = JSON.stringify(selectedUserGids)
             this.$router.go(-1)
           })
         }else{
-          this.$notify({ type: 'warning', message: '请填写姓名' })
+          // this.$notify({ type: 'warning', message: '请填写姓名' })
+          this.$toast('请填写姓名')
         }
       }
     }
