@@ -154,7 +154,7 @@
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
-        >我的任务1</div>
+        >我的任务</div>
         <div
           :class="['font-bold relative ml-4 gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(1);$store.commit('setWorkbenchTaskStatus', 1);"
@@ -420,16 +420,35 @@ export default {
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
     this.getBriefing();
-    this.$store.dispatch("getTaskList", { pageNum: 1 });
+    this.$store.dispatch("getTaskList", { pageNum: 1 }).then(msg => {
+      if (!this.$store.state.workbench.myTaskList) {
+        this.isShowNoData_my = true;
+      } else {
+        this.isShowNoData_my = false;
+      }
+    });
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
-      this.$store.dispatch("getTaskList", { pageNum: 1 });
+      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(res => {
+        if (!this.$store.state.workbench.colleaguesTaskList) {
+          this.isShowNoData_other = true;
+        } else {
+          this.isShowNoData_other = false;
+        }
+
+        if (!this.$store.state.workbench.myTaskList) {
+          this.isShowNoData_my = true;
+        } else {
+          this.isShowNoData_my = false;
+        }
+      });
     }
   },
   methods: {
     changeWorkbenchTaskStatus(index) {
       this.$store.commit("setWorkbenchTaskStatus", index);
+      // console.log(this.$store.state.workbench.colleaguesTaskList)
     },
     // 确定任务时间
     confirmTaskTime() {
