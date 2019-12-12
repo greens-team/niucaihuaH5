@@ -127,7 +127,7 @@
                 </div>
               </div>
 
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white dealer">
                 <div class="flex pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
@@ -316,8 +316,8 @@ export default {
 
       isShowNoData: false,
       isShowNoData_1: false,
-      ownerUserGids: '',
-      followerUserGids: ''
+      ownerUserGids: "",
+      followerUserGids: ""
     };
   },
   watch: {
@@ -394,7 +394,7 @@ export default {
           } else {
             this.isShowDealer = false;
           }
-          
+
           let followerUserList = [];
           this.info.followerUserList.map(r => {
             followerUserList.push(r.ownerUserName);
@@ -510,9 +510,12 @@ export default {
   color: #252525;
 }
 
-.ContactsInfo .tabs /deep/.van-tabs__line {
-  background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
-  height: 5px;
+.ContactsInfo /deep/.van-tabs__line {
+  width: 34px !important;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  background-color: #ff9505;
+  height: 4px;;
 }
 .ContactsInfo .tabs /deep/ .van-hairline--top-bottom::after,
 .ContactsInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
@@ -623,9 +626,12 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #ee0a24;
+  color: #F42929;
   font-size: 14px;
   content: "*";
   top: 8px;
+}
+.dealer /deep/ .van-cell {
+  padding: 10px 0px;
 }
 </style>

@@ -175,9 +175,16 @@ export default {
 </script>
 
 <style scoped>
-.LesseeList /deep/ .van-tabs__line {
+/* .LesseeList /deep/ .van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
   height: 6px;
+} */
+.LesseeList /deep/.van-tabs__line {
+  width: 34px !important;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  background-color: #ff9505;
+  height: 4px;;
 }
 .LesseeList /deep/ .van-hairline--top-bottom::after,
 .LesseeList /deep/ .van-hairline-unset--top-bottom::after {

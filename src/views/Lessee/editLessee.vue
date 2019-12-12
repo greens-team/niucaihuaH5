@@ -16,7 +16,7 @@
       <span class="text-center font-bold bar_title">编辑承租人</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div slot="right" class="text-center text-base" @click="editLessee">保存</div>
+        <div slot="right" class="text-center" style="font-size:1.143rem" @click="editLessee">保存</div>
       </div>
     </div>
 
@@ -600,6 +600,12 @@ export default {
 .editLessee /deep/ .van-uploader__preview-delete {
   color: #f42929;
 }
+.editLessee /deep/ .van-uploader__upload {
+  border: 1px solid #e5e5e5;
+}
+.editLessee /deep/ .van-uploader__preview-image {
+  border: 1px solid #e5e5e5;
+}
 .bar_icon {
   width: 1.57rem;
   height: 1.57rem;
@@ -615,7 +621,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #ee0a24;
+  color: #F42929;
   font-size: 14px;
   content: "*";
   top: 13px;

@@ -172,7 +172,7 @@
                     <p
                       class="text_content text-base"
                       :style="{color:info.lesseeType != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.lesseeType == null ? '-' : (info.gender ? '自然人' : '法人')}}</p>
+                    >{{info.lesseeType == null ? '-' : (info.lesseeType ? '自然人' : '法人')}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>
@@ -209,35 +209,35 @@
                     >{{info.workingYears ? info.workingYears : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2">
-                    <p class="text-xs text_title">照片</p>
+                    <p class="text-xs text_title py-2">照片</p>
 
                     <div class="flex justify-space">
-                      <div v-if="userPicArr.length">
-                        <div v-for="(r,i) in userPicArr" :key="i">
-                          <img :src="picServer + r" width="78" alt="照片" />
+                      <template v-if="userPicArr.length">
+                        <div v-for="(r,i) in userPicArr" :key="i" class="userPic">
+                          <img :src="picServer + r" alt="照片" class="lessessPics" />
                         </div>
-                      </div>
+                      </template>
 
                       <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
                     </div>
                   </div>
                   <div class="border_line pt-2 pb-2">
-                    <p class="text-xs text_title">上传承租人身份证件照片</p>
+                    <p class="text-xs text_title py-2">上传承租人身份证件照片</p>
                     <div class="flex justify-space">
-                      <div class="flex" v-if="info.idcardFrontPic">
+                      <div v-if="info.idcardFrontPic" class="userPic">
                         <img
                           :src="info.idcardFrontPic ? picServer + info.idcardFrontPic : info.idcardFrontPic"
-                          width="78"
                           alt="身份证正面"
+                          class="lessessPics"
                         />
                       </div>
                       <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
 
-                      <div class="flex" v-if="info.idcardBackPic">
+                      <div v-if="info.idcardBackPic" class="userPic">
                         <img
                           :src="info.idcardBackPic ? picServer + info.idcardBackPic : info.idcardBackPic"
-                          width="78"
                           alt="身份证反面"
+                          class="lessessPics"
                         />
                       </div>
                       <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
@@ -255,7 +255,7 @@
               </div>
             </div>
             <div v-if="$store.state.lessee.currentTabsIndex === 1">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white dealer">
                 <div class="flex pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
@@ -438,8 +438,8 @@ export default {
       isShowNoData: false,
       isShowNoData_1: false,
 
-      ownerUserGids: '',
-      followerUserGids: ''
+      ownerUserGids: "",
+      followerUserGids: ""
     };
   },
   created() {
@@ -523,7 +523,6 @@ export default {
             ownerUserList.push(r.ownerUserName);
           });
           this.ownerUserGids = ownerUserList.toString();
-
 
           // if (this.$store.state.lessee.info.dealerList != null) {
           //   this.isShowDealer = true;
@@ -648,9 +647,16 @@ export default {
 </script>
 
 <style scoped>
-.LesseeInfo /deep/.van-tabs__line {
+/* .LesseeInfo /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
   height: 6px;
+} */
+.LesseeInfo /deep/.van-tabs__line {
+  width: 34px !important;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  background-color: #ff9505;
+  height: 4px;;
 }
 .LesseeInfo /deep/ .van-hairline--top-bottom::after,
 .LesseeInfo /deep/ .van-hairline-unset--top-bottom::after {
@@ -816,9 +822,27 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #ee0a24;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 8px;
+}
+.lessessPics {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.userPic {
+  width: 78px;
+  height: 78px;
+  margin-right: 0.5rem;
+}
+.userPic:last-child {
+  margin-right: 0rem;
+}
+.dealer /deep/ .van-cell {
+  padding: 10px 0px;
 }
 </style>

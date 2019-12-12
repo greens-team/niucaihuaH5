@@ -33,6 +33,7 @@
           @click="save"
           v-if="editor && !taskId"
           slot="right"
+          style="font-size:1.143rem;"
         >{{$route.query.taskType == 1 ? '下一步' : '保存'}}</div>
 
         <img

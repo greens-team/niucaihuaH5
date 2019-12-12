@@ -17,7 +17,7 @@
       <span class="text-center font-bold bar_title">新建竞争对手</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div slot="right" class="text-center text-base" @click="createCompetitor">保存</div>
+        <div slot="right" class="text-center" style="font-size:1.143rem;" @click="createCompetitor">保存</div>
       </div>
     </div>
 
@@ -259,7 +259,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #ee0a24;
+  color: #F42929;
   font-size: 14px;
   content: "*";
   top: 13px;

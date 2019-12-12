@@ -7,7 +7,7 @@
 
 <!-- 工作台模块首页 -->
 <template>
-  <div class="Workbench bg-white overflow-hidden" >
+  <div class="Workbench bg-white overflow-hidden">
     <!-- 搜索 -->
     <div class="flex items-center pr-3 pl-3">
       <!-- <i class="iconfont icontixing" style="font-size: 20px;"></i> -->
@@ -32,13 +32,19 @@
         <div class="font-bold">销售简报</div>
         <div class="flex-1"></div>
         <div
-          class="text-xs text-gray-600 hover:text-blue-500 ellipsis"
+          class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis"
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
-          <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
+          <img
+            style="display:inline-block;width:1.57rem;height:1.57rem;"
+            src="../../assets/workbench/my.png"
+            alt
+          />
+          <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
           <span
             v-if="$store.state.workbench.briefingColleagues.userGids.concat($store.state.workbench.briefingColleagues.deptGids).toString()"
             class="text-xs"
+            style="color: #80848D;"
           >
             <span
               class="text-xs"
@@ -58,15 +64,21 @@
               {{r.split(',')[0]}}
             </span>
           </span>
-          <span v-else class="text-xs">选择同事</span>
+          <span v-else class="text-xs" style="color: #80848D;">选择同事</span>
         </div>
-        <div class="text-xs text-gray-600 pl-2 pr-2">|</div>
+        <div class="text-xs pl-2 pr-2" style="color: #80848D;">|</div>
         <!-- $root.moment(formatterSalesKitDate).format('YYYY-MM-DD') -->
         <div
-          class="flex items-center justify-center text-gray-600 hover:text-blue-500"
+          class="flex items-center justify-center hover:text-blue-500"
+          style="color: #80848D;"
           @click="$router.push({name:'DateRange', params: $store.state.workbench.briefingDate})"
         >
-          <i class="iconfont iconcalendar mr-1"></i>
+          <!-- <i class="iconfont iconcalendar mr-1"></i> -->
+          <img
+            style="display:inline-block;width:1.57rem;height:1.57rem;"
+            src="../../assets/workbench/calendar.png"
+            alt
+          />
           <div
             v-if="$store.state.workbench.briefingDate.text"
             class="text-xs"
@@ -108,7 +120,10 @@
       </div>
 
       <div class="flex p-1 pt-2 justify-between">
-        <div class="text-center text-gray-800" @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push('/DealerManage')">
+        <div
+          class="text-center text-gray-800"
+          @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push('/DealerManage')"
+        >
           <img src="../../assets/workbench/icon1.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">经销商管理</div>
         </div>
@@ -135,13 +150,13 @@
 
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 pt-2 pb-2 rounded-lg shadowaa">
-      <div class="flex p-1 border-b border-gray-200 pl-2 pr-2" swipeable>
+      <div class="flex p-1 border-gray-200 pl-2 pr-2" swipeable>
         <div
-          :class="['font-bold text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
+          :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
-        >我的任务</div>
+        >我的任务1</div>
         <div
-          :class="['font-bold relative ml-4 text-gray-600 tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"
+          :class="['font-bold relative ml-4 gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: $store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(1);$store.commit('setWorkbenchTaskStatus', 1);"
         >
           全部任务
@@ -150,7 +165,12 @@
           </div>-->
         </div>
         <div class="flex-1"></div>
-        <van-icon v-show="$root.checkRole('TASK_CREATE')" size="20px" name="plus" @click="newTask = true" />
+        <van-icon
+          v-show="$root.checkRole('TASK_CREATE')"
+          size="20px"
+          name="plus"
+          @click="newTask = true"
+        />
       </div>
 
       <van-swipe
@@ -168,7 +188,12 @@
                 class="text-sm text-gray-700 flex justify-center items-center"
                 @click="taskDateBox= true;"
               >
-                <i class="iconfont iconcalendar mr-1"></i>
+                <!-- <i class="iconfont iconcalendar mr-1"></i> -->
+                <img
+                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  src="../../assets/workbench/calendar.png"
+                  alt
+                />
                 {{$root.moment($store.state.workbench.myTaskTime).format('YYYY-MM-DD')}}
               </div>
               <div class="flex-1"></div>
@@ -205,6 +230,22 @@
               />
             </div>
           </div>
+
+          <div
+            class="flex justify-center items-center text-center"
+            style="height:20rem;margin-top:-4rem;"
+            v-show="isShowNoData_my"
+          >
+            <div>
+              <img
+                src="../../assets/workbench/no_data.png"
+                style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                alt="暂无数据"
+              />
+              <p style="color:#484C55;font-weight:bold">暂无数据</p>
+              <p style="color:#80848D">暂时还没有数据呢～</p>
+            </div>
+          </div>
         </van-swipe-item>
         <van-swipe-item class="bg-white">
           <!-- 同事任务列表 -->
@@ -214,15 +255,25 @@
                 class="text-sm text-gray-700 flex justify-center items-center"
                 @click="taskDateBox= true;"
               >
-                <i class="iconfont iconcalendar mr-1"></i>
+                <!-- <i class="iconfont iconcalendar mr-1"></i> -->
+                <img
+                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  src="../../assets/workbench/calendar.png"
+                  alt
+                />
                 {{$root.moment($store.state.workbench.colleaguesTaskTime).format('YYYY-MM-DD')}}
               </div>
               <div class="flex-1"></div>
               <div
-                class="text-xs text-gray-600 hover:text-blue-500 ellipsis"
+                class="text-xs hover:text-blue-500 ellipsis flex items-center"
                 @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})"
               >
-                <i class="iconfont iconwo" style="font-size: 0.6rem"></i>
+                <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
+                <img
+                  style="display:inline-block;width:1.57rem;height:1.57rem;"
+                  src="../../assets/workbench/my.png"
+                  alt
+                />
                 <span
                   v-if="$store.state.workbench.taskColleagues.userGids.concat($store.state.workbench.taskColleagues.deptGids).toString()"
                   class="text-xs"
@@ -245,7 +296,7 @@
                     {{r.split(',')[0]}}
                   </span>
                 </span>
-                <span v-else class="text-xs">选择同事</span>
+                <span v-else class="text-xs" style="color: #80848D;">选择同事</span>
               </div>
             </div>
             <!-- <div class="text-gray-500 text-xs mt-3 border-t border-gray-100 p-2">
@@ -262,20 +313,34 @@
                 <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
                 <div class="flex-1"></div>
                 <span
-                  class="text-xs text-gray-600"
+                  class="text-xs"
+                  style="color: #80848D;"
                 >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
               </div>
               <span class="text-base text-gray-900">{{row.dealerName}}</span>
               <!-- {{row.positionName}} >  -->
-              <div
-                class="text-sm text-gray-600 mt-1"
-              >{{row.deptName}} > {{row.userName}}</div>
+              <div class="text-sm mt-1" style="color: #80848D;">{{row.deptName}} > {{row.userName}}</div>
               <img
                 v-show="row.isFinish"
                 class="absolute bottom-0 right-0 mr-2 w-16"
                 src="../../assets/workbench/icon5.png"
                 alt
               />
+            </div>
+          </div>
+          <div
+            class="flex justify-center items-center text-center"
+            style="height:20rem;margin-top:-4rem;"
+            v-show="isShowNoData_other"
+          >
+            <div>
+              <img
+                src="../../assets/workbench/no_data.png"
+                style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                alt="暂无数据"
+              />
+              <p style="color:#484C55;font-weight:bold">暂无数据</p>
+              <p style="color:#80848D">暂时还没有数据呢～</p>
             </div>
           </div>
         </van-swipe-item>
@@ -297,10 +362,12 @@
       <div class="bg-gray-200">
         <div
           @click="$router.push({name:'CreateTask',query:{taskType:1,editor: true}})"
-          class="text-center font-bold text-xl border-b border-gray-300 bg-white h-16 flex items-center justify-center cursor-pointer" style="color:#FF9B02"
+          class="text-center font-bold text-xl border-b border-gray-300 bg-white h-16 flex items-center justify-center cursor-pointer"
+          style="color:#FF9B02"
         >经销商拜访</div>
         <div
-          class="text-center border-b border-gray-300 font-bold text-xl bg-white h-16 flex items-center justify-center cursor-pointer" style="color:#FF9B02"
+          class="text-center border-b border-gray-300 font-bold text-xl bg-white h-16 flex items-center justify-center cursor-pointer"
+          style="color:#FF9B02"
           @click="$router.push({name:'CreateTask',query:{taskType:2,editor: true}})"
         >任务事项</div>
         <div
@@ -332,8 +399,9 @@ export default {
         dealerChangeStateCount: 0
       },
 
-
-      newTask: false
+      newTask: false,
+      isShowNoData_other: true,
+      isShowNoData_my: true
     };
   },
   mounted() {
@@ -460,16 +528,18 @@ export default {
 }
 .tabCustomize::after {
   display: flex;
-  width: 60%;
-  border-bottom: 5px solid #fff;
+  width: 34px;
+  border-bottom: 8px solid #fff;
   transform: scaleY(0.5);
   content: "";
 }
-.tabActive {
+.tabActive.gray {
   color: #000;
 }
 .tabActive::after {
-  border-bottom: 5px solid #ff9b02;
+  border-bottom: 8px solid #ff9505;
+  border-radius: 3px;
+  /* margin-top: 0.3rem; */
 }
 .rowBox:active {
   background-color: #f2f3f5;
@@ -486,5 +556,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.gray {
+  color: #80848d;
 }
 </style>

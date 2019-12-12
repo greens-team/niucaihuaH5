@@ -171,9 +171,16 @@ export default {
 </script>
 
 <style scoped>
-.DealerManage /deep/.van-tabs__line {
+/* .DealerManage /deep/.van-tabs__line {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
   height: 6px;
+} */
+.DealerManage /deep/ .van-tabs__line {
+  width: 34px !important;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  background-color: #ff9505;
+  height: 4px;;
 }
 .DealerManage /deep/ .van-hairline--top-bottom::after,
 .DealerManage /deep/ .van-hairline-unset--top-bottom::after {
