@@ -206,11 +206,11 @@
 
                   <div class="flex items-center mt-3 pl-2">
                     <p
-                      v-if="r.content != '' "
+                      v-if="r.content != null "
                       class="text-ms leading-relaxed"
                       style="color:#252525"
                     >{{r.content}}</p>
-                    <img v-if="r.pics != '' " :src="picServer+r.pics" alt />
+                    <img v-if="r.pics != null " :src="picServer+r.pics" alt />
                   </div>
                   <p
                     class="text-sm text-gray-500"
@@ -285,7 +285,7 @@
       <van-field
         v-model="newsLogContent"
         class="rounded-lg m-3"
-        style="background:#f6f6f6;height:70%"
+        style="background:#f6f6f6;height:70%;line-height:70%;"
         placeholder="请输入工作进展"
         @keyup.13="tapToSearch"
       />
@@ -607,9 +607,6 @@ export default {
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
-}
-.ContactsInfo /deep/ .van-cell {
-  padding: 10px 0px;
 }
 .ContactsInfo /deep/ .van-collapse-item__content {
   padding: 16px 0px;
