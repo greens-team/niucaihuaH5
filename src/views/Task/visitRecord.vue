@@ -33,7 +33,7 @@
               v-model="$store.state.task.addEditVisitlogParams.dealerDes"
               type="textarea"
               rows="5"
-              placeholder="月销售量/半年人销售量/近期热销车"
+              placeholder="收集经销商近期运营情况月销售量、近期热销车型等"
             />
           </template>
         </van-cell>
@@ -88,7 +88,7 @@
 
         <van-cell clickable>
           <template slot="title">
-            <span class="custom-title">竞对单量</span>
+            <span class="custom-title">与竞对合作单量</span>
           </template>
           <template slot="default">
             <van-field

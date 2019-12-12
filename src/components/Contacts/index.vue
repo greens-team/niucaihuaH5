@@ -111,7 +111,7 @@ export default {
           : this.$router.push("/SelectedList");
         this.$store.state.contacts.confirmUserGids = this.$store.state.contacts.selectedUserGids;
       } else {
-        this.$notify({ type: "warning", message: "请选择联系人" });
+        this.$toast("请选择联系人");
       }
     }
   }

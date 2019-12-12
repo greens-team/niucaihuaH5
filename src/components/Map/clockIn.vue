@@ -1,0 +1,121 @@
+<!-- 嵌套部门循环组件 -->
+<template>
+  <div class="flex-1 flex flex-col">
+
+    <van-nav-bar
+      title="签到打卡"
+      left-text="返回"
+      :right-text="$route.query.lng ? '' : '确定'"
+      @click-left="$router.go(-1)"
+      @click-right="setLocation"
+    />
+    <div class="flex flex-1 flex-col relative">
+      <div v-if="!$route.query.lng" class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">
+        占位
+      </div>
+      <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 " style="top:5px; left:5px; right:5px;">
+        您所在位置: {{address}}
+      </div>
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" >
+        <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity"></el-amap-circle>
+      </el-amap>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import VueAMap from 'vue-amap';
+VueAMap.initAMapApiLoader({
+  key: 'e8a380104e8968d416649626d213e339',
+  plugin: ['AMap.Geolocation','AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 默认高德 sdk 版本为 1.4.4
+  // v: '1.4.4'
+});
+export default {
+  name: 'Map',
+  data() {
+    let self = this;
+      return {
+        zoom: 15,
+        circles: [ // 经销商位置
+          {
+            center: [121.5273285, 31.21515044],
+            radius: 300,
+            fillOpacity: 0.4
+          }
+        ],
+        center: [121.59996, 31.197646], // 当前地图 及 当前用户位置
+        lng: 0,
+        lat: 0,
+        address: '',
+        plugin: [{
+          pName: 'Geolocation',
+          events: {
+            init(o) {
+              // o 是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position && !self.$route.query.lng) {
+                  self.lng = result.position.lng;
+                  self.lat = result.position.lat;
+                  self.address = result.formattedAddress;
+                  self.center = [self.lng, self.lat];
+                  self.$nextTick();
+                }else{
+                  self.$nextTick();
+                }
+              });
+            }
+          }
+        },{
+            pName: 'ToolBar',
+            position: 'RB',
+          }]
+      }
+  },
+  methods: {
+    setLocation(){
+      //打卡是否在范围内
+      this.$store.dispatch('clockincheck',{
+        gid: this.$route.query.id,
+        longitude: this.lng,
+        latitude: this.lat
+      }).then(res=>{
+        this.$dialog.confirm({
+          message: res.data ? '你在打卡范围内' : '你不在打卡范围内',
+          confirmButtonText: '打卡'
+        }).then(() => {
+          // 确认打卡
+          let paras = {
+            gid: this.$route.query.id,
+            longitude: this.lng,
+            latitude: this.lat,
+            clockinPlaceName: this.address,
+            clockinPlaceAddress: this.address
+          }
+          //开始打卡
+          this.$store.dispatch('clockin',paras).then(r=>{
+            sessionStorage.localMap = JSON.stringify(paras)
+          }).then(()=>{
+            this.$router.go(-1)
+          })
+        });
+      })
+    },
+  },
+  mounted() {
+    delete sessionStorage.localMap;
+    //经销商位置赋值
+    this.circles[0].center = [this.$route.query.dealerLog, this.$route.query.dealerLat]
+    if(this.$route.query.lng){
+      this.center = [this.$route.query.lng, this.$route.query.lat];
+    }
+  },
+}
+</script>
+
+<style scoped>
+.amap-demo {
+  height: 300px;
+}
+</style>

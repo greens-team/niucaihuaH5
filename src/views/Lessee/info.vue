@@ -172,7 +172,7 @@
                     <p
                       class="text_content text-base"
                       :style="{color:info.lesseeType != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.lesseeType == null ? '-' : (info.gender ? '自然人' : '法人')}}</p>
+                    >{{$store.state.lessee.lesseeTypeList[info.lesseeType].text}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>

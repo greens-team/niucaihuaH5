@@ -163,6 +163,13 @@ export default new Router({
       // component: Map
       component: () => import(/* webpackChunkName: "Map" */ './components/Map')
     },
+    {
+      path: '/ClockIn',   // 打卡
+      name: 'ClockIn',
+      // component: ClockIn
+      component: () => import(/* webpackChunkName: "ClockIn" */ './components/Map/clockIn.vue')
+    },
+    
 
 
     {
