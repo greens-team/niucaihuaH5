@@ -9,15 +9,15 @@
     />
     <div class="amap-page-container flex-1 flex flex-col relative">
       <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
-      <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 " style="top:5px; left:5px; right:5px;">
+      <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         经销商位置: {{params.address}}
       </div>
       
-      <el-amap-search-box v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" placeholder="请输入短信验证码" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
-      <el-amap-search-box v-if="$route.query.edit" placeholder="请输入短信验证码" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <el-amap-search-box v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <!-- <el-amap-search-box v-if="$route.query.edit" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
       <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
-        <el-amap-marker v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true" ></el-amap-marker>
-        <el-amap-marker :position="dealerPosition" :events="markerClick"></el-amap-marker>
+        <el-amap-marker v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
+        <el-amap-marker :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
       </el-amap>
     </div>
   </div>
@@ -44,7 +44,8 @@ export default {
         markerClick: {
           click: (e) => {
             let { lng, lat } = e.target.F.position || e.lnglat;//e.lnglat; //()
-            self.getInfo(lng, lat)
+            debugger
+            self.getInfo(lng, lat, true)
           }
         },
         // icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576128884556&di=bec7a6edff8972abb223c4a92f70f68e&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F59%2F31%2F594d771606856_610.jpg',
@@ -57,6 +58,7 @@ export default {
         events: {
           click(e) {
             let { lng, lat } = e.lnglat;
+            debugger
             self.getInfo(lng, lat, true)      
           }
         },
@@ -104,6 +106,7 @@ export default {
               lat: lat,
               address: result.regeocode.formattedAddress
             }
+            console.log(self.params, 11111)
             dealerCenter && (self.dealerPosition = [lng, lat])
             console.log(self.params, 'cente22r')
             self.$nextTick();
@@ -150,6 +153,7 @@ export default {
     //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
+      debugger
       this.getInfo(lng, lat, true)
       this.center = [lng, lat];
       console.log(this.center, 'center')
@@ -161,5 +165,10 @@ export default {
 <style scoped>
 .amap-demo {
   height: 300px;
+}
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
