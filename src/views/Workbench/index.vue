@@ -420,27 +420,31 @@ export default {
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
     this.getBriefing();
-    this.$store.dispatch("getTaskList", { pageNum: 1 }).then(msg => {
-      if (!this.$store.state.workbench.myTaskList) {
-        this.isShowNoData_my = true;
-      } else {
+    this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+      if (len) {
         this.isShowNoData_my = false;
+      } else {
+        this.isShowNoData_my = true;
       }
     });
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
-      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(res => {
-        if (!this.$store.state.workbench.colleaguesTaskList) {
-          this.isShowNoData_other = true;
+      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+        if (!this.$store.state.workbench.workbenchTaskStatus) {
+          //0 我的任务
+          if (len) {
+            this.isShowNoData_my = false;
+          } else {
+            this.isShowNoData_my = true;
+          }
         } else {
-          this.isShowNoData_other = false;
-        }
-
-        if (!this.$store.state.workbench.myTaskList) {
-          this.isShowNoData_my = true;
-        } else {
-          this.isShowNoData_my = false;
+          //1 全部任务
+          if (len) {
+            this.isShowNoData_other = false;
+          } else {
+            this.isShowNoData_other = true;
+          }
         }
       });
     }
@@ -448,7 +452,6 @@ export default {
   methods: {
     changeWorkbenchTaskStatus(index) {
       this.$store.commit("setWorkbenchTaskStatus", index);
-      // console.log(this.$store.state.workbench.colleaguesTaskList)
     },
     // 确定任务时间
     confirmTaskTime() {
@@ -457,7 +460,23 @@ export default {
         ? this.$store.commit("setColleaguesTaskTime", this.taskTime)
         : this.$store.commit("setMyTaskTime", this.taskTime);
       this.taskDateBox = false;
-      this.$store.dispatch("getTaskList", { pageNum: 1 });
+      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+        if (!this.$store.state.workbench.workbenchTaskStatus) {
+          //0 我的任务
+          if (len) {
+            this.isShowNoData_my = false;
+          } else {
+            this.isShowNoData_my = true;
+          }
+        } else {
+          //1 全部任务
+          if (len) {
+            this.isShowNoData_other = false;
+          } else {
+            this.isShowNoData_other = true;
+          }
+        }
+      });
     },
     // 获取简报信息
     getBriefing() {
