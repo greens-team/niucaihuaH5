@@ -13,7 +13,7 @@
       <div v-if="!$route.query.lng" class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">
         占位
       </div>
-      <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 " style="top:5px; left:5px; right:5px;">
+      <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         您所在位置: {{address}}
       </div>
       <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" >
@@ -120,5 +120,10 @@ export default {
 <style scoped>
 .amap-demo {
   height: 300px;
+}
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
