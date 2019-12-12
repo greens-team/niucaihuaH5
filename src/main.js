@@ -154,7 +154,7 @@ new Vue({
   store,
   methods: {
     checkRole(key, tip = false){
-      console.log(this.userInfo.roles)
+      // console.log(this.userInfo.roles)
       let res = this.userInfo.roles.includes(key)
       !res && tip && Toast('没有权限');
       return res

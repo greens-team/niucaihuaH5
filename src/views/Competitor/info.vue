@@ -209,8 +209,9 @@
                     >{{r.content}}</p>
                     <img v-if="r.pics != null " :src="picServer+r.pics" alt />
                   </div>
-                  <p
+                 <p
                     class="text-sm text-gray-500"
+                    style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
                   >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                 </div>
               </div>
@@ -256,7 +257,7 @@
 
     <div
       class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
-      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <van-uploader
         :after-read="logPic"
@@ -315,8 +316,8 @@ export default {
 
       isShowNoData: false,
       isShowNoData_1: false,
-      ownerUserGids: '',
-      followerUserGids: ''
+      ownerUserGids: "",
+      followerUserGids: ""
     };
   },
   mounted() {
@@ -394,7 +395,6 @@ export default {
             this.isShowCompetitor = false;
           }
 
-          
           let followerUserList = [];
           this.info.followerUserList.map(r => {
             followerUserList.push(r.ownerUserName);
@@ -495,7 +495,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .CompetitorInfo /deep/ .van-hairline--top-bottom::after,
 .CompetitorInfo /deep/ .van-hairline-unset--top-bottom::after {
@@ -625,7 +625,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 8px;

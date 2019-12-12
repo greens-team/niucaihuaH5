@@ -1,7 +1,7 @@
 <!-- 经销商详情信息页面 -->
 <template>
   <!--  -->
-  <div class="DealerInfo flex-1 flex flex-col bg-gray-100">
+  <div class="DealerInfo flex-1 flex flex-col">
     <!-- <van-nav-bar title="经销商详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
@@ -78,7 +78,7 @@
         </div>
       </div>
 
-      <div class="shadow-md rounded-lg bg-white m-3 mt-0 p-4">
+      <div class="rounded-lg bg-white m-3 mt-0 p-4">
         <div class="flex">
           <div class="flex-1 font-bold">业务状态</div>
           <!-- <p class="text-sm text-orange-500">放弃</p> -->
@@ -166,61 +166,61 @@
                 <div v-show="showInfo1">
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500">
-                      <span class="text-red-500">*</span>经销商名称
+                      <span class="text-red-500" style="color:#f42929;margin-left:-6px;">*</span>经销商名称
                     </p>
                     <p>{{info.dealerName}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">统一社会信用代码</p>
+                    <p class="text-xs" style="color:#80848D">统一社会信用代码</p>
                     <p
                       :style="{color:info.creditCode?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.creditCode?info.creditCode:'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">成立日期</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">成立日期</p>
 
                     <p
                       :style="{color:info.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.establishTime?$root.moment(info.establishTime*1000).format('YYYY-MM-DD'):'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">所属地区</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">所属地区</p>
                     <p>{{info.province}}{{info.city}}{{info.area}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">注册地址</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">注册地址</p>
                     <p
                       :style="{color:info.address?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.address?info.address:'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">公司归属</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">公司归属</p>
                     <p>{{$store.getters.NDownerCdTypes[info.ownerCd-1] && $store.getters.NDownerCdTypes[info.ownerCd-1].text}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">业务类型</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
                     <p>{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
                   </div>
 
                   <div v-if="info.contactsName">
                     <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500">法人姓名</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人姓名</p>
                       <p
                         :style="{color:info.contactsName?'#252525':'rgba(69, 90, 100, 0.6)'}"
                       >{{info.contactsName?info.contactsName:'-'}}</p>
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500">证件类型</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">证件类型</p>
                       <p>{{$store.state.record.certTypCd[info.certTypCd]}}</p>
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500">证件号码</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">证件号码</p>
                       <p
                         :style="{color:info.certNo?'#252525':'rgba(69, 90, 100, 0.6)'}"
                       >{{info.certNo?info.certNo:'-'}}</p>
                     </div>
                     <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500">手机号码</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">手机号码</p>
                       <p
                         :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                       >{{info.contactsPhone?info.contactsPhone:'-'}}</p>
@@ -229,20 +229,20 @@
 
                   <div v-if="info.idcardFrontPic" class="border-t border-gray-100 p-2 mt-2 flex">
                     <div class="flex-1">
-                      <p class="text-xs text-gray-500">法人身份证正面</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人身份证正面</p>
                       <img :src="picServer + info.idcardFrontPic" alt />
                     </div>
                     <div class="flex-1 ml-3">
-                      <p class="text-xs text-gray-500">法人身份证反面</p>
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人身份证反面</p>
                       <img :src="picServer + info.idcardBackPic" alt />
                     </div>
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2" v-if="info.licensePic">
-                    <p class="text-xs text-gray-500">营业执照</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">营业执照</p>
                     <img :src="picServer + info.licensePic" alt />
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">地理位置</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">地理位置</p>
                     <div
                       class="flex"
                       :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
@@ -271,29 +271,29 @@
                 </div>
                 <div v-show="showInfo2">
                   <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">经销商分级</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">经销商分级</p>
                     <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
                   </div>
                   <div
                     v-if="info.ownerUserList && info.ownerUserList.length"
                     class="border-t border-gray-100 p-2 mt-2"
                   >
-                    <p class="text-xs text-gray-500">负责人</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">负责人</p>
                     <p>{{info.ownerUserList.map(r=>r.ownerUserName).toString()}}</p>
                   </div>
                   <div
                     v-if="info.followerUserList && info.followerUserList.length"
                     class="border-t border-gray-100 p-2 mt-2"
                   >
-                    <p class="text-xs text-gray-500">参与人</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">参与人</p>
                     <p>{{info.followerUserList.map(r=>r.ownerUserName).toString()}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
-                    <p class="text-xs text-gray-500">创建日期</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">创建日期</p>
                     <p>{{$root.moment(info.createTime*1000).format('YYYY-MM-DD')}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">备注信息</p>
+                    <p class="text-xs text-gray-500" style="color:#80848D">备注信息</p>
                     <p
                       :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.comment?info.comment:'-'}}</p>
@@ -639,8 +639,8 @@
     </div>
 
     <div
-      class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
-      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+      class="flex bg-white footer-bar iteams-center"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <i
         class="iconfont iconjingxiaoshangbaifang ml-3 mr-3"
@@ -978,6 +978,9 @@ export default {
 </script>
 
 <style scoped>
+.DealerInfo {
+  background: #f7f8f9;
+}
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
@@ -1122,5 +1125,9 @@ export default {
 }
 .DealerInfo /deep/ .van-tab span {
   font-size: 1.143rem;
+}
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
+    0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
 </style>

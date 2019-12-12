@@ -30,7 +30,7 @@
             @click="goDetails(row)"
           >
             <template slot="title">
-              <p class="leading-snug">
+              <p class="leading-snug font-bold">
                 {{row.someName}}
                 <br />
                 <span class="text-gray-500">{{row.modelName}}</span>

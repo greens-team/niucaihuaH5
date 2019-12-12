@@ -77,11 +77,12 @@
           <div
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"
-            class="p-2 border-b border-gray-200 flex ml-5 mr-5 items-center"
+            class="border-b border-gray-200 flex m-4  items-center"
+            style="padding-bottom:1rem;"
             @click="$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
-            <div class="circleBg font-bold mr-6 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
-            <div class="text-base contactsDetail">{{r.contactsName}}</div>
+            <div class="circleBg font-bold mr-4 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
+            <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>
           </div>
         </div>
       </div>

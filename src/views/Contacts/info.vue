@@ -83,7 +83,7 @@
                 </div>
                 <div v-show="showInfo1">
                   <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
-                    <p class="text-xs text-gray-500 ownerUser">姓名</p>
+                    <p class="text-xs text-gray-500 ownerUser" style="color:#80848d">姓名</p>
                     <p class="text-gray-900 text-base">{{info.contactsName}}</p>
                   </div>
 
@@ -104,21 +104,21 @@
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text-gray-500">手机号</p>
+                    <p class="text-xs text-gray-500" style="color:#80848d">手机号</p>
                     <p
                       class="text-gray-900 text-base"
                       :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.contactsPhone ? info.contactsPhone : '-'}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text-gray-500">微信号</p>
+                    <p class="text-xs text-gray-500" style="color:#80848d">微信号</p>
                     <p
                       class="text-gray-900 text-base"
                       :style="{color:info.weichatNum?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{info.weichatNum ? info.weichatNum : '-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">备注</p>
+                    <p class="text-xs text-gray-500" style="color:#80848d">备注</p>
                     <p
                       class="text-gray-900 text-base"
                       :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
@@ -146,7 +146,7 @@
                     class="text-gray-900 text-lg"
                   >
                     <div class="border_line pt-2 pb-2">
-                      <p class="text-xs text-gray-500">经销商名称</p>
+                      <p class="text-xs text-gray-500" style="color:#80848d">经销商名称</p>
                       <p
                         class="text-base"
                         style="color:#0885FF;"
@@ -155,7 +155,7 @@
                       <!-- @click="$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})" -->
                     </div>
                     <div class="pt-2 pb-2">
-                      <p class="text-xs text-gray-500">职务</p>
+                      <p class="text-xs text-gray-500" style="color:#80848d">职务</p>
 
                       <p
                         class="text-base"
@@ -212,8 +212,9 @@
                     >{{r.content}}</p>
                     <img v-if="r.pics != null " :src="picServer+r.pics" alt />
                   </div>
-                  <p
+                 <p
                     class="text-sm text-gray-500"
+                    style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
                   >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                 </div>
               </div>
@@ -259,7 +260,7 @@
 
     <div
       class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
-      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <van-uploader
         :after-read="logPic"
@@ -612,7 +613,7 @@ export default {
   transform: rotate(180deg); /*顺时针旋转90°*/
 }
 .ContactsInfo /deep/ .van-collapse-item__content {
-  padding: 16px 0px;
+  padding: 0px 0px;
 }
 .ContactsInfo /deep/ .van-cell:not(:last-child)::after {
   position: absolute;

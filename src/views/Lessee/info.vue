@@ -332,6 +332,7 @@
                   </div>
                   <p
                     class="text-sm text-gray-500"
+                    style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
                   >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                 </div>
               </div>
@@ -377,7 +378,7 @@
 
     <div
       class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
-      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.1); z-index: 1;"
+      style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <van-uploader
         :after-read="logPic"
@@ -813,7 +814,7 @@ export default {
   transform: rotate(180deg); /*顺时针旋转90°*/
 }
 .LesseeInfo /deep/ .van-collapse-item__content {
-  padding: 16px 0px;
+  padding: 0px 0px;
 }
 .LesseeInfo /deep/ .van-cell:not(:last-child)::after {
   position: absolute;
