@@ -137,8 +137,9 @@ export default {
     setLocation(){
       this.setSource() // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
       // 赋值给NDparams 经纬度
-      this.$store.getters.NDparams.longitude =  this.params.lng
-      this.$store.getters.NDparams.latitude = this.params.lat
+      let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
+      this.$store.getters.NDparams.longitude =  lng
+      this.$store.getters.NDparams.latitude = lat
       // 赋值给NDparams 地理位置
       this.$store.getters.NDparams.locationName = this.params.address
       this.$router.go(-1)
@@ -148,8 +149,9 @@ export default {
     delete sessionStorage.localMap;
     //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
     if(this.$route.query.lng){
-      this.getInfo(this.$route.query.lng, this.$route.query.lat, true)
-      this.center = [this.$route.query.lng, this.$route.query.lat];
+      let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
+      this.getInfo(lng, lat, true)
+      this.center = [lng, lat];
       console.log(this.center, 'center')
     }
   },

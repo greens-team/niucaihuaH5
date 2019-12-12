@@ -75,11 +75,12 @@ export default {
   },
   methods: {
     setLocation(){
+      let { lng, lat } = this.$root.gps_bgps(this.lng, this.lat)
       //打卡是否在范围内
       this.$store.dispatch('clockincheck',{
         gid: this.$route.query.id,
-        longitude: this.lng,
-        latitude: this.lat
+        longitude: lng,
+        latitude: lat
       }).then(res=>{
         this.$dialog.confirm({
           message: res.data ? '你在打卡范围内' : '你不在打卡范围内',
@@ -88,8 +89,8 @@ export default {
           // 确认打卡
           let paras = {
             gid: this.$route.query.id,
-            longitude: this.lng,
-            latitude: this.lat,
+            longitude: lng,
+            latitude: lat,
             clockinPlaceName: this.address,
             clockinPlaceAddress: this.address
           }
@@ -106,9 +107,11 @@ export default {
   mounted() {
     delete sessionStorage.localMap;
     //经销商位置赋值
-    this.circles[0].center = [this.$route.query.dealerLog, this.$route.query.dealerLat]
+    let { lng, lat } = this.$root.bgps_gps(this.$route.query.dealerLog, this.$route.query.dealerLat) 
+    this.circles[0].center = [lng, lat]
     if(this.$route.query.lng){
-      this.center = [this.$route.query.lng, this.$route.query.lat];
+      let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
+      this.center = [lng, lat];
     }
   },
 }

@@ -195,8 +195,8 @@ new Vue({
       var bd_lng = z * Math.cos(theta) + 0.0065;
       var bd_lat = z * Math.sin(theta) + 0.006;
       return {
-          bd_lat: bd_lat,
-          bd_lng: bd_lng
+          lat: bd_lat,
+          lng: bd_lng
       };
     }
   },
