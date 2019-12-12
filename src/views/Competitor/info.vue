@@ -283,7 +283,7 @@
       <van-field
         v-model="newsLogContent"
         class="rounded-lg m-3"
-        style="background:#f6f6f6;height:70%;line-height:70%;"
+        style="background:#f6f6f6;height:70%;"
         placeholder="请输入工作进展"
         @keyup.13="tapToSearch"
       />
