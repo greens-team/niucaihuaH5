@@ -504,23 +504,22 @@ export default {
         }
       });
       this.$store.dispatch("getAreas", code).then(data => {
-        // this.$store.state.dealer.areasList.length && (this.$store.state.dealer.areasList[0] = {text: '空', value: 1})
         this.$store.commit("setParams", {
           rgnArCd:
             data.length &&
             this.$store.state.newDealer.params.rgnArCd &&
             this.initCount == 1
               ? this.$store.state.newDealer.params.rgnArCd
-              : data[0]
-              ? data[0].value
+              : data[1]
+              ? data[1].value
               : "",
           area:
             data.length &&
             this.$store.state.newDealer.params.area &&
             this.initCount == 1
               ? this.$store.state.newDealer.params.area
-              : data[0]
-              ? data[0].text
+              : data[1]
+              ? data[1].text
               : ""
         });
       });
