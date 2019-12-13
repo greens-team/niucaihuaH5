@@ -127,7 +127,7 @@
                     class="text-base"
                     style="color:#FF9B02"
                     v-show="$root.checkRole('COMPETITOR_EDIT')"
-                    @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2}}))"
+                    @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2,isOnlyWrite:true}}))"
                   >添加</div>
                 </div>
                 <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">

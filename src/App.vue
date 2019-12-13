@@ -38,6 +38,7 @@ export default {
     window.getUserInfoIosCallBack = (data) => {
       sessionStorage.Authorization = JSON.parse(data).datas.TOKEN
       sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
+      window.Authorization = JSON.parse(data).datas.TOKEN
       _this.loginStatus = true;
       setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
       // location.reload()

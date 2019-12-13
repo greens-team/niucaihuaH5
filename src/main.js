@@ -24,17 +24,24 @@ import apiList from '@/api'
 
 ajax(apiList, error => {
   // 请求错误统一处理
-  if (!error.response || error.response.status == 401) {
+  if (!error.response) {
     Dialog({ message: error.response.statusText });
     // Notify({ type: 'warning', message: error.response.statusText })
     delete sessionStorage.Authorization
     // store.commit('setLoginState', false)
     router.push('/')
   }
-  if (error.response.status !== 401) {
+  if (error.response.status == 401) {
+    Dialog({ message: error.response.statusText });
+    // Notify({ type: 'warning', message: error.response.statusText })
+    delete sessionStorage.Authorization
+    // store.commit('setLoginState', false)
+    router.push('/')
+  }else{
     Dialog({ message: error.response.data.msg || error.response.statusText });
     // Notify({ type: 'warning', message: error.response.data.msg || error.response.statusText })
   }
+
 }, function (response) {
   // 请求成功统一处理
   if (Number(response.data.code)) {
