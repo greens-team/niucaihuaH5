@@ -262,7 +262,7 @@
                     class="text-base"
                     style="color:#FF9B02"
                     v-show="$root.checkRole('LESSEE_EDIT')"
-                    @click="$root.dataCheck({modelObjType:3, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:1, isOnlyWrite:true}}))"
+                    @click="$root.dataCheck({modelObjType:3, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:1, onlyWrite:true}}))"
                   >添加</div>
                 </div>
                 <van-collapse v-model="currentLessee" v-show="isShowDealer">

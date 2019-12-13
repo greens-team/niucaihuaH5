@@ -134,7 +134,7 @@
                     class="text-base"
                     style="color:#FF9B02"
                     v-show="$root.checkRole('CONTACTS_EDIT')"
-                    @click="$root.dataCheck({modelObjType:2, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:3,isOnlyWrite:true}}))"
+                    @click="$root.dataCheck({modelObjType:2, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:3,onlyWrite:true}}))"
                   >添加</div>
                 </div>
                 <van-collapse v-model="currentContacts" v-show="isShowDealer">

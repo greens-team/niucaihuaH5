@@ -474,13 +474,13 @@ export default {
       code && this.getCity(code);
     },
     "$store.state.newDealer.params.rgnCyCd"(code) {
-      code && this.getArea(code);
+      code && this.getArea(code)
     },
     "$store.state.newDealer.params.rgnArCd"(code) {
       this.$store.state.dealer.areasList.some(r => {
         if (r.value === code) {
           this.$store.commit("setParams", {
-            rgnArCd: this.$store.state.newDealer.params.rgnArCd || ode,
+            rgnArCd: this.$store.state.newDealer.params.rgnArCd || code,
             area: this.$store.state.newDealer.params.area || r.text
           });
           return true;
@@ -493,6 +493,7 @@ export default {
       sessionStorage.mapsource && delete sessionStorage.mapsource
     },
     getArea(code) {
+      console.log(code, 2222)
       this.$store.state.dealer.citysList.some(r => {
         if (r.value === code) {
           this.$store.commit("setParams", {
@@ -503,6 +504,7 @@ export default {
         }
       });
       this.$store.dispatch("getAreas", code).then(data => {
+        // this.$store.state.dealer.areasList.length && (this.$store.state.dealer.areasList[0] = {text: '空', value: 1})
         this.$store.commit("setParams", {
           rgnArCd:
             data.length &&

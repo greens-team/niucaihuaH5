@@ -71,7 +71,7 @@ export default {
   },
   watch: {
     "$store.state.contacts.listContactsParams.queryString"(val) {
-      this.$store.dispatch("listContacts", { queryString: val, isOnlyWrite:this.$route.query.isOnlyWrite ? true : false});
+      this.$store.dispatch("listContacts", { queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false});
     }
   },
   mounted() {
@@ -81,7 +81,7 @@ export default {
         this.$store
           .dispatch("listContacts", {
             pageNum: this.$store.state.contacts.listContactsParams.pageNum,
-            isOnlyWrite:this.$route.query.isOnlyWrite ? true : false
+            onlyWrite:this.$route.query.onlyWrite ? true : false
           })
           .then(msg => {
             resolve(msg);
@@ -98,7 +98,7 @@ export default {
     } else {
       this.$store.state.contacts.selectedUserGids = [];
     }
-    this.$store.dispatch("listContacts", { pageNum: 1, isOnlyWrite:this.$route.query.isOnlyWrite ? true : false });
+    this.$store.dispatch("listContacts", { pageNum: 1, onlyWrite:this.$route.query.onlyWrite ? true : false });
   },
   methods: {
     selectedList() {

@@ -313,7 +313,7 @@
                   class="text-base text-blue-500"
                   style="color:#FF9B02"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, isOnlyWrite:true}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
@@ -380,7 +380,7 @@
                   style="color:#FF9B02"
                   class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id,isOnlyWrite:true}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id,onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
@@ -440,7 +440,7 @@
                   style="color:#FF9B02"
                   class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id,isOnlyWrite:true}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id,onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
