@@ -316,7 +316,7 @@
                   @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id}}))"
                 >添加</div>
               </div>
-              <div
+              <!-- <div
                 class="flex justify-center items-center text-center"
                 style="height:20rem;margin-top:-4rem;"
                 v-show="isShowNoData"
@@ -330,7 +330,7 @@
                   <p style="color:#484C55;font-weight:bold">暂无数据</p>
                   <p style="color:#80848D">暂时还没有数据呢～</p>
                 </div>
-              </div>
+              </div> -->
               <van-collapse v-model="currentContacts">
                 <van-collapse-item
                   v-for="(r,i) in contactslist"
@@ -503,7 +503,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeTypeList[r.lesseeType].text}}</p>
+                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">手机号</p>
