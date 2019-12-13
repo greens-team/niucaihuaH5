@@ -16,8 +16,10 @@
       <el-amap-search-box v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
       <!-- <el-amap-search-box v-if="$route.query.edit" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
       <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
-        <el-amap-marker v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
-        <el-amap-marker :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
+        <template v-if="($route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)) && markers.length">
+          <el-amap-marker v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
+        </template>
+        <el-amap-marker style="z-index: 9999999999;" :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
       </el-amap>
     </div>
   </div>
@@ -43,9 +45,8 @@ export default {
         },
         markerClick: {
           click: (e) => {
-            let { lng, lat } = e.target.F.position || e.lnglat;//e.lnglat; //()
-            debugger
-            self.getInfo(lng, lat, true)
+            let { lng, lat } = e.lnglat;//e.lnglat; //()
+            self.getInfo(lng, lat)
           }
         },
         // icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576128884556&di=bec7a6edff8972abb223c4a92f70f68e&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F59%2F31%2F594d771606856_610.jpg',
@@ -57,9 +58,8 @@ export default {
           },
         events: {
           click(e) {
-            let { lng, lat } = e.lnglat;
-            debugger
-            self.getInfo(lng, lat, true)      
+            let { lng, lat } = e.lnglat;  
+            self.getInfo(lng, lat)  
           }
         },
         zoom: 15,
@@ -79,7 +79,7 @@ export default {
                     lat: result.position.lat,
                     address: result.formattedAddress
                   }
-                  // self.searchOption.city = result.addressComponent.city || result.addressComponent.province
+                  self.searchOption.city = result.addressComponent.city || result.addressComponent.province
                   self.$nextTick();
                 }
               });
@@ -92,29 +92,28 @@ export default {
       }
   },
   methods: {
-    getInfo(lng ,lat, dealerCenter){
-      let self = this
+    getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
         radius: 300,
         extensions: "all"
       });        
-      geocoder.getAddress([lng ,lat], function(status, result) {
+      geocoder.getAddress([lng ,lat], (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
-            self.params = {
+            this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+            this.params = {
               lng: lng,
               lat: lat,
               address: result.regeocode.formattedAddress
             }
-            console.log(self.params, 11111)
-            dealerCenter && (self.dealerPosition = [lng, lat])
-            console.log(self.params, 'cente22r')
-            self.$nextTick();
+           this.dealerPosition = [lng, lat]
+            this.$nextTick();
           }
         }
       }); 
     },
     onSearchResult(pois) {
+        this.markers=[]
         let latSum = 0;
         let lngSum = 0;
         if (pois.length > 0) {
@@ -122,7 +121,6 @@ export default {
             let {lng, lat} = poi;
             lngSum += lng;
             latSum += lat;
-            console.log(poi, 88)
             this.markers.push([poi.lng, poi.lat]);
           });
           let center = {
@@ -153,10 +151,8 @@ export default {
     //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
-      debugger
-      this.getInfo(lng, lat, true)
+      this.getInfo(lng, lat)
       this.center = [lng, lat];
-      console.log(this.center, 'center')
     }
   },
 }
