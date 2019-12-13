@@ -316,7 +316,7 @@
                   @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id}}))"
                 >添加</div>
               </div>
-              <!-- <div
+              <div
                 class="flex justify-center items-center text-center"
                 style="height:20rem;margin-top:-4rem;"
                 v-show="isShowNoData"
@@ -330,7 +330,7 @@
                   <p style="color:#484C55;font-weight:bold">暂无数据</p>
                   <p style="color:#80848D">暂时还没有数据呢～</p>
                 </div>
-              </div> -->
+              </div>
               <van-collapse v-model="currentContacts">
                 <van-collapse-item
                   v-for="(r,i) in contactslist"
@@ -341,7 +341,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
-                      class="text-gray-900 text-sm text-blue-500"
+                      class="text-gray-900 text-sm" style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
                     >{{r.contactsName}}</p>
                   </div>
@@ -408,7 +408,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">竞对名称</p>
                     <p
-                      class="text-gray-900 text-sm text-blue-500"
+                      class="text-gray-900 text-sm" style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
                     >{{r.competorName}}</p>
                   </div>
@@ -468,7 +468,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
-                      class="text-gray-900 text-sm text-blue-500"
+                      class="text-gray-900 text-sm" style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
                     >{{r.lesseeName}}</p>
                   </div>
