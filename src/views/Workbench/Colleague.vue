@@ -157,10 +157,14 @@ export default {
           enabled: true
       }).then(()=>{
         this.$store.state.dealer.colleagueDataList = []
+        this.$store.state.dealer.oftenuselist = []
       })
     },
     getOftenuselist(){
-      this.$store.dispatch('getOftenuselist',{queryString: this.searchKeyword})
+      this.$store.dispatch('getOftenuselist',{queryString: this.searchKeyword}).then(()=>{
+        this.$store.state.dealer.colleagueDataList = []
+        this.$store.state.dealer.deptDataList = []
+      })
     },
     getColleague(){
       this.colleagueLastPage = false
@@ -172,16 +176,24 @@ export default {
         rlNm: this.searchKeyword
       }).then(()=>{
         this.$store.state.dealer.deptDataList = []
+        this.$store.state.dealer.oftenuselist = []
       })
 
       setTimeout(() => {
         // 同事列表滚动加载
         this.scrollLoad(this.$refs.colleagueListBox, resolve => {
           console.log(111)
-          if(!this.active){
+          if(this.active === 1){
             if(!this.colleagueLastPage){
+              this.getColleaguePageNum++
+              console.log({
+                pageNum: this.getColleaguePageNum,
+                pageSize: 20,
+                usrNM: '',
+                rlNm: this.searchKeyword
+              })
               this.$store.dispatch('getColleague',{
-                pageNum: ++this.getColleaguePageNum,
+                pageNum: this.getColleaguePageNum,
                 pageSize: 20,
                 usrNM: '',
                 rlNm: this.searchKeyword
