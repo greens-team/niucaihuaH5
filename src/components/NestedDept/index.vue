@@ -3,12 +3,13 @@
   <div>
     <div v-for="(row, i) in deptData" :key="i" class="">
       <div class="flex p-3 border-b border-gray-100">
-        <van-checkbox class="flex-1" icon-size="16px" :name="row.name+','+row.id">{{row.name}}</van-checkbox>
-        <!-- showId == row.id ? (showId = '') : (showId = row.id) -->
-        <div v-if="row.children && row.children.length" @click="showId == '' ? (showId = row.id) : (showId = '')" class="cursor-pointer text-blue-500 text-sm"><span class="pr-2 text-gray-500">|</span>下级</div>
+        <van-checkbox icon-size="16px" :name="row.name+','+row.id">{{row.name}}</van-checkbox>
+        <div v-if="row.children && row.children.length" @click="showId == row.id ? showId = '' : showId = row.id" class="flex-1 text-right cursor-pointer text-blue-500 text-sm">
+          <van-icon v-if="showId == row.id"  name="arrow-down" />
+          <van-icon v-else  name="arrow-up" />
+        </div>
       </div>
-      <!-- showId == row.id -->
-      <NestedDept v-if="row.children && row.children.length && showId == ''" :deptData="row.children" />
+      <NestedDept class="pl-5" v-if="row.children && row.children.length && showId == row.id" :deptData="row.children" />
     </div>
   </div>
 </template>
@@ -20,7 +21,7 @@ export default {
   data() {
     return {
       deptGids: [],
-      showId: ''
+      showId: 1
     }
   },
   methods: {

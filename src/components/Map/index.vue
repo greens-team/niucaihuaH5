@@ -94,7 +94,7 @@ export default {
   methods: {
     getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
-        radius: 300,
+        radius: 500,
         extensions: "all"
       });        
       geocoder.getAddress([lng ,lat], (status, result) => {

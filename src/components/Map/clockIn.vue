@@ -41,7 +41,7 @@ export default {
         circles: [ // 经销商位置
           {
             center: [121.5273285, 31.21515044],
-            radius: 300,
+            radius: 500,
             fillOpacity: 0.4
           }
         ],

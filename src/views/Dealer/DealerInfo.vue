@@ -1130,4 +1130,12 @@ export default {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
     0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
+.DealerInfo /deep/ .van-collapse{margin-left: 10px; margin-right:10px;}
+.DealerInfo /deep/ .van-collapse-item .van-cell__title{
+  font-weight: bold;
+}
+.DealerInfo /deep/ .van-collapse-item__title{
+  background-color: #f7f7f7;
+  border-bottom:1px solid #fff;
+}
 </style>
