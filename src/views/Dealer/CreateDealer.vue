@@ -363,10 +363,14 @@ export default {
     }
   },
   mounted() {
+    // console.log(this.$store.state.newDealer.params.chkBusTypCdList,this.$store.state.newDealer.businessTypesValues, 998877)
     this.recordStatus = !!this.$store.getters.NDparams.recordStatus;
     // this.$store.commit('setNewDealerParams')
 
-    this.typeList = this.$store.state.newDealer.businessTypesValues || [];
+    if(!this.$store.state.newDealer.params.chkBusTypCdList){
+      this.$store.state.newDealer.businessTypesValues = []
+    }
+    this.typeList = this.$store.state.newDealer.params.chkBusTypCdList ? this.$store.state.newDealer.businessTypesValues : [];
 
     // 从地图页面回来时 回显地理位置
     let mapInfo = {
@@ -474,14 +478,15 @@ export default {
       code && this.getCity(code);
     },
     "$store.state.newDealer.params.rgnCyCd"(code) {
+      this.initCount++
       code && this.getArea(code)
     },
     "$store.state.newDealer.params.rgnArCd"(code) {
-      this.$store.state.dealer.areasList.some(r => {
+      this.$store.state.dealer.areasList.length && this.$store.state.dealer.areasList.some(r => {
         if (r.value === code) {
           this.$store.commit("setParams", {
-            rgnArCd: this.$store.state.newDealer.params.rgnArCd || code,
-            area: this.$store.state.newDealer.params.area || r.text
+            rgnArCd:  code, //this.$store.state.newDealer.params.rgnArCd ||
+            area: r.text //this.$store.state.newDealer.params.area || 
           });
           return true;
         }
@@ -493,7 +498,6 @@ export default {
       sessionStorage.mapsource && delete sessionStorage.mapsource
     },
     getArea(code) {
-      console.log(code, 2222)
       this.$store.state.dealer.citysList.some(r => {
         if (r.value === code) {
           this.$store.commit("setParams", {
@@ -503,26 +507,74 @@ export default {
           return true;
         }
       });
+      console.log(this.$store.state.dealer.areasList, 111)
+
       this.$store.dispatch("getAreas", code).then(data => {
-        this.$store.commit("setParams", {
-          rgnArCd:
-            data.length &&
-            this.$store.state.newDealer.params.rgnArCd &&
-            this.initCount == 1
-              ? this.$store.state.newDealer.params.rgnArCd
-              : data[1]
-              ? data[1].value
-              : "",
-          area:
-            data.length &&
-            this.$store.state.newDealer.params.area &&
-            this.initCount == 1
-              ? this.$store.state.newDealer.params.area
-              : data[1]
-              ? data[1].text
-              : ""
+        this.$store.state.dealer.areasList.shift()
+        // if(data.length && this.initCount == 1 && this.$store.state.newDealer.params.rgnArCd){
+        //   this.$store.commit("setParams", {
+        //     rgnArCd: this.$store.state.newDealer.params.rgnArCd,
+        //     area: this.$store.state.newDealer.params.area
+        //   })
+        //   return true
+        // }
+        // if(data.length && this.initCount == 1 && !this.$store.state.newDealer.params.rgnArCd){
+        //   this.$store.commit("setParams", {
+        //     rgnArCd: data[1].value,
+        //     area: data[1].text
+        //   })
+        //   return true
+        // }
+
+        // this.$store.commit("setParams", {
+        //     rgnArCd: '',
+        //     area: ''
+        //   })
+
+        // this.$store.commit("setParams", {
+        //   rgnArCd: data.length && this.initCount == 1 && this.$store.state.newDealer.params.rgnArCd ?  data[1].value : '',
+        //   area: data.length && this.initCount == 1 && this.$store.state.newDealer.params.area ? data[1].text : ''
+        // })
+
+        // this.$store.commit("setParams", {
+        //   rgnArCd:
+        //     data.length &&
+        //     this.$store.state.newDealer.params.rgnArCd &&
+        //     this.initCount == 1
+        //       ? this.$store.state.newDealer.params.rgnArCd
+        //       : data[0]
+        //       ? data[0].value
+        //       : "",
+        //   area:
+        //     data.length &&
+        //     this.$store.state.newDealer.params.area &&
+        //     this.initCount == 1
+        //       ? this.$store.state.newDealer.params.area
+        //       : data[0]
+        //       ? data[0].text
+        //       : ""
+        // });
+
+        if(this.initCount == 1){
+          data.length && this.$store.commit("setParams", {
+            rgnArCd: this.$store.state.newDealer.params.rgnArCd,
+            area: this.$store.state.newDealer.params.area
+          });
+          return
+        }
+        data.length && this.$store.commit("setParams", {
+          rgnArCd: data[0].value,
+          area: data[0].text
         });
+        if(!data.length){
+          this.$store.commit("setParams", {
+            rgnArCd: '',
+            area: ''
+          });
+        }
+
       });
+      
     },
     getCity(code) {
       this.$store.state.dealer.provincesList.some(r => {
