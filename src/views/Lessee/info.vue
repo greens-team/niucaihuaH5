@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="briefBox" ref="briefBox">
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3 flex justify-between">
           <span class="text-xl font-bold lessee_name">{{info.lesseeName}}</span>
@@ -55,7 +55,6 @@
           </div>
         </div>
       </div>
-
       <div class="shadow-md rounded-lg m-3 p-4 bg-white">
         <div class="mb-3 flex justify-between">
           <span class="text-xl font-bold">承租人状态</span>
@@ -79,7 +78,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="tabs">
       <van-tabs
         class="tabs"
         v-model="$store.state.lessee.currentTabsIndex"
@@ -93,7 +94,7 @@
         ></van-tab>
       </van-tabs>
     </div>
-    <div class="flex-1 relative h-full">
+    <div class="flex-1 relative h-full" ref="listBoxWrap">
       <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
         <van-swipe
           ref="swipe"
@@ -103,8 +104,8 @@
         >
           <van-swipe-item v-for="(row,index) in $store.state.lessee.tabs" :key="index">
             <!-- 基本信息 经销商-->
-            <div v-if="$store.state.lessee.currentTabsIndex === 0">
-              <div class="shadow-md rounded-lg m-3 pl-4 pr-4 bg-white">
+            <div v-if="$store.state.lessee.currentTabsIndex === 0" style="padding-top:.3rem;">
+              <div class="shadow-md rounded-lg pl-4 pr-4 bg-white" style="margin: 0 .75rem;">
                 <div class="flex items-center">
                   <div
                     class="flex flex-1 items-center font-bold border_line"
@@ -254,8 +255,11 @@
                 </div>
               </div>
             </div>
-            <div v-if="$store.state.lessee.currentTabsIndex === 1">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white dealer">
+            <div v-if="$store.state.lessee.currentTabsIndex === 1" style="padding-top:.3rem;">
+              <div
+                class="shadow-md rounded-lg p-2 pl-4 pr-4 bg-white dealer"
+                style="margin: 0 .75rem;"
+              >
                 <div class="flex pb-3" style="height:3.143rem;line-height:3.143rem;">
                   <div class="flex-1 font-bold">经销商</div>
                   <div
@@ -286,14 +290,14 @@
               </div>
             </div>
 
-            <div v-if="$store.state.lessee.currentTabsIndex === 2">
-              <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+            <div v-if="$store.state.lessee.currentTabsIndex === 2" style="padding-top:.3rem;">
+              <div class="shadow-md rounded-lg p-4 bg-white" style="margin: 0 .75rem;">
                 <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">动态记录</div>
                 </div>
                 <div
                   class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
+                  style="height:16rem;margin-top:-4rem;"
                   v-show="isShowNoData"
                 >
                   <div>
@@ -337,8 +341,8 @@
                 </div>
               </div>
             </div>
-            <div v-if="$store.state.lessee.currentTabsIndex === 3">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+            <div v-if="$store.state.lessee.currentTabsIndex === 3" style="padding-top:.3rem;">
+              <div class="shadow-md rounded-lg p-2 pl-4 pr-4 bg-white" style="margin: 0 .75rem;">
                 <div class="flex pr-3 pb-3">
                   <div class="flex-1 font-bold">操作历史</div>
                 </div>
@@ -388,19 +392,6 @@
       >
         <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
       </van-uploader>
-
-      <!-- <form class="search-block" action="javascript:void 0">
-        <input
-          type="text"
-          placeholder="请输入工作进展"
-          input-align="center"
-          class="rounded-lg bg-gray-200 flex-1 mr-3 p-3 h-12 progress"
-          v-model="newsLogContent"
-          @keyup.13="tapToSearch"
-          onfocus="this.placeholder=''"
-          onblur="this.placeholder='请输入工作进展'"
-        />
-      </form>-->
       <van-field
         v-model="newsLogContent"
         class="rounded-lg m-3"
@@ -440,7 +431,9 @@ export default {
       isShowNoData_1: false,
 
       ownerUserGids: "",
-      followerUserGids: ""
+      followerUserGids: "",
+
+      navBarFixed: false
     };
   },
   created() {
@@ -448,8 +441,8 @@ export default {
     this.$store.commit("setInitParams_tabs");
   },
   mounted() {
-    this.id = this.$route.query.id;
 
+    this.id = this.$route.query.id;
     this.addRecentvisit({ modelObjType: 3, modelId: this.id });
     if (this.$store.state.lessee.currentTabsIndex) {
       this.getBaseInfo(0);
@@ -657,7 +650,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .LesseeInfo /deep/ .van-hairline--top-bottom::after,
 .LesseeInfo /deep/ .van-hairline-unset--top-bottom::after {

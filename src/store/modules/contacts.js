@@ -159,7 +159,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.contacts.editContacts(Object.assign(state.editContactsParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve()
+            resolve('操作成功')
           }
         })
       })
@@ -168,7 +168,7 @@ export default {
       return new Promise(resolve => {
         window.$ajax.contacts.associatedContacts(Object.assign(state.associatedContactsParams, data)).then(res => {
           if (!Number(res.code)) {
-            resolve()
+            resolve('操作成功')
           }
         })
       })
