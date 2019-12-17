@@ -265,7 +265,7 @@
         :max-count="1"
         style="height:105%"
       >
-        <i class="iconfont iconzhaopianhover mr-3 ml-3" style="font-size: 2rem;"></i>
+        <i class="iconfont iconzhaopianhover ml-3" style="font-size: 2rem;"></i>
       </van-uploader>
 
       <!-- <form class="search-block" action="javascript:void 0">
@@ -286,8 +286,10 @@
         class="rounded-lg m-3"
         style="background:#f6f6f6;height:70%;"
         placeholder="请输入工作进展"
-        @keyup.13="tapToSearch"
       />
+
+      <div class="sendBtn" @click="tapToSearch">发送</div>
+
     </div>
   </div>
 </template>

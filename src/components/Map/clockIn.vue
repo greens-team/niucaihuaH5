@@ -32,6 +32,7 @@ VueAMap.initAMapApiLoader({
   // 默认高德 sdk 版本为 1.4.4
   // v: '1.4.4'
 });
+//18141923080 1q2w3e4r 
 export default {
   name: 'Map',
   data() {

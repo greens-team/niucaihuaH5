@@ -123,4 +123,16 @@ export default {
   -webkit-transform: scaleY(.5);
   transform: scaleY(.5);
 }
+.sendBtn{
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right:10px;
+  height:69%;
+  color: white;
+  font-weight: bold;
+  background-image: linear-gradient( to left, #FF9505, #FEC43A);
+  border-radius: 0.3rem;
+}
 </style>
