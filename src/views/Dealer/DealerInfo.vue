@@ -910,9 +910,9 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getinfo", this.id).then(res => {
           this.info = this.$store.state.dealerInfo.baseInfo;
-          this.info.ownerUserGids = this.info.ownerUserList.map(r=>{
-            return String(r.ownerUserGid)
-          })
+          this.info.ownerUserGids = this.info.ownerUserList.map(r => {
+            return String(r.ownerUserGid);
+          });
         });
       }
       if (num === 1) {
@@ -955,6 +955,8 @@ export default {
         });
       }
       if (num === 4) {
+        this.listNewslogPageNum = 1;
+        this.isNewslogLastPage = false;
         this.$store
           .dispatch("listNewslog", {
             modelObjType: 1,
@@ -963,7 +965,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData_newslog = false;
             } else {
               this.isShowNoData_newslog = true;
@@ -971,6 +973,8 @@ export default {
           });
       }
       if (num === 5) {
+        this.listOperatelogNum = 1;
+        this.isOperatelogLastPage = false;
         this.$store
           .dispatch("listOperatelog", {
             modelObjType: 1,
@@ -979,7 +983,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData_operatelog = false;
             } else {
               this.isShowNoData_operatelog = true;
@@ -1070,7 +1074,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .DealerInfo .tabs /deep/ .van-hairline--top-bottom::after,
 .DealerInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
@@ -1151,23 +1155,19 @@ export default {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
     0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
-.DealerInfo /deep/ .van-collapse{margin-left: 10px; margin-right:10px;}
-.DealerInfo /deep/ .van-collapse-item .van-cell__title{
+.DealerInfo /deep/ .van-collapse {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.DealerInfo /deep/ .van-collapse-item .van-cell__title {
   font-weight: bold;
 }
-.DealerInfo /deep/ .van-collapse-item__title{
+.DealerInfo /deep/ .van-collapse-item__title {
   background-color: #f7f7f7;
-  border-bottom:1px solid #fff;
+  border-bottom: 1px solid #fff;
 }
 
-.positioning{
-  position: fixed;
-  top: 54px;
-  left:0px;
-  right:0;
-  background-color: #f7f8f9;
-  z-index: 10;
-}
+
 
 
 </style>

@@ -135,4 +135,14 @@ export default {
   background-image: linear-gradient( to left, #FF9505, #FEC43A);
   border-radius: 0.3rem;
 }
+.positioning{
+  position: fixed;
+  padding-bottom:1px;
+  border-bottom: 1px solid #f5f5f5;
+  background-color: white;
+  top: 54px;
+  left:0px;
+  right:0;
+  z-index: 10;
+}
 </style>

@@ -54,6 +54,7 @@
             </div>
           </template>
         </van-cell>
+        <div></div>
         <!-- <van-cell is-link>
           <template slot="title">
             <div class="flex  items-center">

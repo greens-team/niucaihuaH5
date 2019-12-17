@@ -1,6 +1,6 @@
  <!-- 竞争对手内容页 -->
 <template>
-  <div class="CompetitorInfo flex-1 flex flex-col bg-gray-100">
+  <div class="CompetitorInfo bg-gray-100  absolute  inset-0  overflow-y-scroll" ref="listBox">
     <!-- <van-nav-bar title="竞争对手" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
@@ -10,7 +10,7 @@
       ></i>
     </van-nav-bar>-->
 
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white fixed top-0 left-0 right-0 z-10">
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
@@ -35,228 +35,233 @@
       </div>
     </div>
 
-    <div>
-      <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-        <div class="mb-3">
-          <p class="text-xl font-bold">{{info.competorName}}</p>
-          <p class="text-sm">{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
+
+    <div style="margin:65px 0;">
+      <div>
+        <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+          <div class="mb-3">
+            <p class="text-xl font-bold">{{info.competorName}}</p>
+            <p class="text-sm">{{$store.state.competitor.competorStatus_1[info.competorType-1]}}</p>
+          </div>
         </div>
+
+        <div style="height:44px;" v-show="positioning"></div>
+        <div :class="{positioning:positioning}">
+          <van-tabs
+            class="tabs"
+            v-model="$store.state.competitor.currentTabsIndex"
+            @click="$refs.swipe.swipeTo($store.state.competitor.currentTabsIndex)"
+          >
+            <van-tab
+              v-for="(row,index) in $store.state.competitor.tabs"
+              :key="index"
+              :title="row.text"
+              :name="row.id"
+            ></van-tab>
+          </van-tabs>
+        </div>
+
       </div>
-
-      <van-tabs
-        class="tabs"
-        v-model="$store.state.competitor.currentTabsIndex"
-        @click="$refs.swipe.swipeTo($store.state.competitor.currentTabsIndex)"
-      >
-        <van-tab
-          v-for="(row,index) in $store.state.competitor.tabs"
-          :key="index"
-          :title="row.text"
-          :name="row.id"
-        ></van-tab>
-      </van-tabs>
-    </div>
-    <div class="flex-1 relative h-full">
-      <div class="absolute inset-0 overflow-y-scroll" ref="listBox">
-        <van-swipe
-          ref="swipe"
-          :loop="false"
-          :show-indicators="false"
-          @change="(num)=>$store.commit('setCurrentTabsIndex_competitor', num)"
-        >
-          <van-swipe-item v-for="(row,index) in $store.state.competitor.tabs" :key="index">
-            <!-- 基本信息 经销商-->
-            <div v-if="$store.state.competitor.currentTabsIndex === 0">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex items-center">
-                  <div
-                    class="flex flex-1 items-center font-bold border_line"
-                    style="height:3.143rem;"
-                    @click="showInfo1 = !showInfo1"
-                  >
-                    基本信息
-                    <i
-                      class="iconfont iconweizhankai ml-2 icon_toggle"
-                      style="color:#80848D"
-                      :class="{ active: showInfo1}"
-                    ></i>
-                  </div>
-                </div>
-                <div v-show="showInfo1">
-                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
-                    <p class="text-xs text-gray-500 ownerUser">竞对名称</p>
-                    <p>{{info.competorName}}</p>
-                  </div>
-
-                  <div class="border_line pt-2 pb-2" style="height:4rem;position:relative">
-                    <p class="text-xs text_title ownerUser">负责人</p>
-                    <p
-                      class="text_content text-base"
-                      :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{ownerUserGids.toString()}}</p>
-                  </div>
-
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text_title">参与人</p>
-                    <p
-                      class="text_content text-base"
-                      :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
-                  </div>
-
-                  <div class="border_line pt-2 pb-2" style="height:4rem;">
-                    <p class="text-xs text-gray-500">竞对类型</p>
-                    <p
-                      :style="{color:info.competorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '-'}}</p>
-                  </div>
-
-                  <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">备注</p>
-                    <p
-                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.comment ? info.comment : '-'}}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white dealer">
-                <div class="flex">
-                  <div class="flex-1 font-bold">经销商</div>
-                  <div
-                    class="text-base"
-                    style="color:#FF9B02"
-                    v-show="$root.checkRole('COMPETITOR_EDIT')"
-                    @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2,onlyWrite:true}}))"
-                  >添加</div>
-                </div>
-                <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">
-                  <van-collapse-item
-                    v-for="(r,i) in competitorlist"
-                    :key="i"
-                    :title="r.dealerName"
-                    :name="r.dealerGid"
-                    class="text-gray-900 text-lg"
-                  >
-                    <div class="border_line pt-2 pb-2">
-                      <p class="text-xs text-gray-500">经销商名称</p>
-                      <p
-                        class="text-base"
-                        style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
-                      >{{r.dealerName}}</p>
-                    </div>
-                    <div class="border_line pt-2 pb-2">
-                      <p class="text-xs text-gray-500">竞对政策</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.racePolicy ? r.racePolicy : '-'}}</p>
-                    </div>
-                    <div class="pt-2 pb-2">
-                      <p class="text-xs text-gray-500">狮桥应对策略</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.tactics ? r.tactics : '-'}}</p>
-                    </div>
-                  </van-collapse-item>
-                </van-collapse>
-              </div>
-            </div>
-
-            <div v-if="$store.state.competitor.currentTabsIndex === 1">
-              <div class="shadow-md rounded-lg m-3 p-4 bg-white">
-                <div class="flex pr-3 pb-3">
-                  <div class="flex-1 font-bold">动态记录</div>
-                </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData"
-                >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
-                  </div>
-                </div>
-                <div
-                  class="border-b"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in $store.state.competitor.listNewslog"
-                  :key="i"
-                >
-                  <div class="flex">
+      <div :style="{minHeight:positioning ? '600px': 'auto'}">
+          <van-swipe
+            ref="swipe"
+            :loop="false"
+            :show-indicators="false"
+            @change="(num)=>$store.commit('setCurrentTabsIndex_competitor', num)"
+          >
+            <van-swipe-item v-for="(row,index) in $store.state.competitor.tabs" :key="index">
+              <!-- 基本信息 经销商-->
+              <div v-if="$store.state.competitor.currentTabsIndex === 0">
+                <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+                  <div class="flex items-center">
                     <div
-                      class="w-12 h-12 text-center rounded-full mr-4 text-xl baseName"
-                    >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
-                    <div>
-                      <div class="text-ms font-bold">{{r.userName}}</div>
-                      <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
+                      class="flex flex-1 items-center font-bold border_line"
+                      style="height:3.143rem;"
+                      @click="showInfo1 = !showInfo1"
+                    >
+                      基本信息
+                      <i
+                        class="iconfont iconweizhankai ml-2 icon_toggle"
+                        style="color:#80848D"
+                        :class="{ active: showInfo1}"
+                      ></i>
                     </div>
                   </div>
+                  <div v-show="showInfo1">
+                    <div class="border_line pt-2 pb-2" style="height:4rem;position:relative;">
+                      <p class="text-xs text-gray-500 ownerUser">竞对名称</p>
+                      <p>{{info.competorName}}</p>
+                    </div>
 
-                  <div class="flex items-center mt-3">
+                    <div class="border_line pt-2 pb-2" style="height:4rem;position:relative">
+                      <p class="text-xs text_title ownerUser">负责人</p>
+                      <p
+                        class="text_content text-base"
+                        :style="{color:ownerUserGids ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{ownerUserGids.toString()}}</p>
+                    </div>
+
+                    <div class="border_line pt-2 pb-2" style="height:4rem;">
+                      <p class="text-xs text_title">参与人</p>
+                      <p
+                        class="text_content text-base"
+                        :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
+                    </div>
+
+                    <div class="border_line pt-2 pb-2" style="height:4rem;">
+                      <p class="text-xs text-gray-500">竞对类型</p>
+                      <p
+                        :style="{color:info.competorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.competorType ? $store.state.competitor.competorStatus_1[info.competorType-1] : '-'}}</p>
+                    </div>
+
+                    <div class="pt-2 pb-2">
+                      <p class="text-xs text-gray-500">备注</p>
+                      <p
+                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.comment ? info.comment : '-'}}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white dealer">
+                  <div class="flex">
+                    <div class="flex-1 font-bold">经销商</div>
+                    <div
+                      class="text-base"
+                      style="color:#FF9B02"
+                      v-show="$root.checkRole('COMPETITOR_EDIT')"
+                      @click="$root.dataCheck({modelObjType:4, modelId: id}, ()=>$router.push({path:'/DealerList', query: {modelGid: id,flag:2,onlyWrite:true}}))"
+                    >添加</div>
+                  </div>
+                  <van-collapse v-model="currentCompetitor" v-show="isShowCompetitor">
+                    <van-collapse-item
+                      v-for="(r,i) in competitorlist"
+                      :key="i"
+                      :title="r.dealerName"
+                      :name="r.dealerGid"
+                      class="text-gray-900 text-lg"
+                    >
+                      <div class="border_line pt-2 pb-2">
+                        <p class="text-xs text-gray-500">经销商名称</p>
+                        <p
+                          class="text-base"
+                          style="color:#0885FF;"
+                          @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
+                        >{{r.dealerName}}</p>
+                      </div>
+                      <div class="border_line pt-2 pb-2">
+                        <p class="text-xs text-gray-500">竞对政策</p>
+                        <p
+                          class="text-gray-900 text-sm"
+                          :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                        >{{r.racePolicy ? r.racePolicy : '-'}}</p>
+                      </div>
+                      <div class="pt-2 pb-2">
+                        <p class="text-xs text-gray-500">狮桥应对策略</p>
+                        <p
+                          class="text-gray-900 text-sm"
+                          :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                        >{{r.tactics ? r.tactics : '-'}}</p>
+                      </div>
+                    </van-collapse-item>
+                  </van-collapse>
+                </div>
+              </div>
+
+              <div v-if="$store.state.competitor.currentTabsIndex === 1">
+                <div class="shadow-md rounded-lg m-3 p-4 bg-white">
+                  <div class="flex pr-3 pb-3">
+                    <div class="flex-1 font-bold">动态记录</div>
+                  </div>
+                  <div
+                    class="flex justify-center items-center text-center"
+                    style="height:20rem;margin-top:-4rem;"
+                    v-show="isShowNoData"
+                  >
+                    <div>
+                      <img
+                        src="../../assets/workbench/no_data.png"
+                        style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                        alt="暂无数据"
+                      />
+                      <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                      <p style="color:#80848D">暂时还没有数据呢～</p>
+                    </div>
+                  </div>
+                  <div
+                    class="border-b"
+                    style="padding-top: 1rem;padding-bottom: 1rem;"
+                    v-for="(r,i) in $store.state.competitor.listNewslog"
+                    :key="i"
+                  >
+                    <div class="flex">
+                      <div
+                        class="w-12 h-12 text-center rounded-full mr-4 text-xl baseName"
+                      >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
+                      <div>
+                        <div class="text-ms font-bold">{{r.userName}}</div>
+                        <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center mt-3">
+                      <p
+                        v-if="r.content != null "
+                        class="text-ms leading-relaxed"
+                        style="color:#252525"
+                      >{{r.content}}</p>
+                      <img v-if="r.pics != null " :src="picServer+r.pics" alt />
+                    </div>
                     <p
-                      v-if="r.content != null "
-                      class="text-ms leading-relaxed"
-                      style="color:#252525"
-                    >{{r.content}}</p>
-                    <img v-if="r.pics != null " :src="picServer+r.pics" alt />
-                  </div>
-                 <p
-                    class="text-sm text-gray-500"
-                    style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
-                  >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
-                </div>
-              </div>
-            </div>
-            <div v-if="$store.state.competitor.currentTabsIndex === 2">
-              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                <div class="flex pr-3 pb-3">
-                  <div class="flex-1 font-bold">操作历史</div>
-                </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData_1"
-                >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
+                      class="text-sm text-gray-500"
+                      style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
+                    >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
                   </div>
                 </div>
-                <div
-                  class="border-b"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in $store.state.competitor.listOperatelog"
-                  :key="i"
-                >
-                  <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                  <span
-                    class="text-gray-600"
-                    style="padding-right:1rem;word-wrap:break-word;"
-                  >{{r.content}}</span>
+              </div>
+              <div v-if="$store.state.competitor.currentTabsIndex === 2">
+                <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+                  <div class="flex pr-3 pb-3">
+                    <div class="flex-1 font-bold">操作历史</div>
+                  </div>
+                  <div
+                    class="flex justify-center items-center text-center"
+                    style="height:20rem;margin-top:-4rem;"
+                    v-show="isShowNoData_1"
+                  >
+                    <div>
+                      <img
+                        src="../../assets/workbench/no_data.png"
+                        style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                        alt="暂无数据"
+                      />
+                      <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                      <p style="color:#80848D">暂时还没有数据呢～</p>
+                    </div>
+                  </div>
+                  <div
+                    class="border-b"
+                    style="padding-top: 1rem;padding-bottom: 1rem;"
+                    v-for="(r,i) in $store.state.competitor.listOperatelog"
+                    :key="i"
+                  >
+                    <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
+                    <span
+                      class="text-gray-600"
+                      style="padding-right:1rem;word-wrap:break-word;"
+                    >{{r.content}}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </van-swipe-item>
-        </van-swipe>
-      </div>
+            </van-swipe-item>
+          </van-swipe>
+        </div>
     </div>
 
     <div
-      class="flex bg-white footer-bar border-t border-gray-300 iteams-center"
+      class="flex bg-white footer-bar border-t border-gray-300 iteams-center fixed bottom-0 left-0 right-0 z-10"
       style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <van-uploader
@@ -299,6 +304,8 @@ export default {
   name: "CompetitorInfo",
   data() {
     return {
+      positioning: false,
+      topVal: 103, // 滚动到238距离时 positioning设为true
       id: "",
       info: {},
       currentCompetitor: [],
@@ -373,10 +380,21 @@ export default {
             });
         }
         resolve();
+      }, (scrollTopVal)=>{
+        console.log(scrollTopVal)
+        if(scrollTopVal > this.topVal && !this.positioning){
+          this.positioning = true
+        }
+        if(scrollTopVal < this.topVal && this.positioning){
+          this.positioning = false
+        }
       });
   },
   watch: {
     "$store.state.competitor.currentTabsIndex"(num) {
+      if(this.positioning){
+        this.$refs.listBox.scrollTop = this.topVal
+      }
       this.getBaseInfo(num);
     }
   },
@@ -412,6 +430,8 @@ export default {
       }
       if (num === 1) {
         // 动态记录
+        this.listNewslogPageNum = 1;
+        this.isNewslogLastPage = false;
         this.$store
           .dispatch("listNewslogCompetitor", {
             modelObjType: 4,
@@ -429,6 +449,8 @@ export default {
       }
       if (num === 2) {
         //操作历史
+        this.listOperatelogNum = 1;
+        this.isOperatelogLastPage = false;
         this.$store
           .dispatch("listOperatelogCompetitor", {
             modelObjType: 4,
@@ -531,7 +553,6 @@ export default {
   line-height: 3rem;
 }
 .footer-bar {
-  position: relative;
   height: 4rem;
   line-height: 4rem;
   align-items: center;
