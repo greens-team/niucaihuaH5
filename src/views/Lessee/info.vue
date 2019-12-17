@@ -439,7 +439,6 @@ export default {
     this.$store.commit("setInitParams_tabs");
   },
   mounted() {
-
     this.id = this.$route.query.id;
     this.addRecentvisit({ modelObjType: 3, modelId: this.id });
     if (this.$store.state.lessee.currentTabsIndex) {
@@ -455,7 +454,6 @@ export default {
           this.$store.state.lessee.currentTabsIndex == 2 &&
           !this.isNewslogLastPage
         ) {
-          
           this.$store
             .dispatch("listNewslogLessee", {
               modelObjType: 3,
@@ -501,6 +499,11 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
+
+          this.info.ownerUserGids = this.info.ownerUserList.map(r => {
+            return String(r.ownerUserGid);
+          });
+
           if (this.info.userPic) {
             this.userPicArr = this.info.userPic.split(",");
           }
@@ -515,6 +518,7 @@ export default {
           this.info.ownerUserList.map(r => {
             ownerUserList.push(r.ownerUserName);
           });
+
           this.ownerUserGids = ownerUserList.toString();
 
           // if (this.$store.state.lessee.info.dealerList != null) {
