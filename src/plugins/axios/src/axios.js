@@ -23,7 +23,7 @@ function initAjax (apiList, errorCallback, successCallback){
         if(config.url.indexOf("/auth/login") != -1){
           config.headers.Authorization && delete config.headers.Authorization;
         } else {
-          config.headers.Authorization = sessionStorage.Authorization || '';
+          config.headers.Authorization = window.Authorization || sessionStorage.Authorization || '';
         }
         return config;
       },

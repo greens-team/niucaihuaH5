@@ -73,14 +73,14 @@ export default {
   },
   watch: {
     '$store.state.lessee.listParams.queryString'(val){
-      this.$store.dispatch('listLessee', {queryString: val})
+      this.$store.dispatch('listLessee', {queryString: val,onlyWrite:this.$route.query.onlyWrite ? true : false})
     }
   },
   mounted () {
     this.$store.state.lessee.confirmUserGids=[];
     this.$store.state.lessee.jobsUser=[]; 
     this.$store.state.lessee.selectedUserGids = [];
-    this.$store.dispatch('listLessee')
+    this.$store.dispatch('listLessee', {onlyWrite:this.$route.query.onlyWrite ? true : false})
   },
   methods: {
     selectedList(){

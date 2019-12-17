@@ -234,8 +234,9 @@
           <div
             class="flex justify-center items-center text-center"
             style="height:20rem;margin-top:-4rem;"
-            v-show="isShowNoData_my"
+            v-show="!$store.state.workbench.myTaskList.length"
           >
+            <!-- v-show="isShowNoData_my" -->
             <div>
               <img
                 src="../../assets/workbench/no_data.png"
@@ -246,6 +247,7 @@
               <p style="color:#80848D">暂时还没有数据呢～</p>
             </div>
           </div>
+          
         </van-swipe-item>
         <van-swipe-item class="bg-white">
           <!-- 同事任务列表 -->
@@ -331,8 +333,9 @@
           <div
             class="flex justify-center items-center text-center"
             style="height:20rem;margin-top:-4rem;"
-            v-show="isShowNoData_other"
+            v-show="!$store.state.workbench.colleaguesTaskList.length"
           >
+            <!-- v-show="isShowNoData_other" -->
             <div>
               <img
                 src="../../assets/workbench/no_data.png"

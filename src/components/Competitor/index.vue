@@ -74,14 +74,14 @@ export default {
   },
   watch: {
     '$store.state.competitor.listParams.queryString'(val){
-      this.$store.dispatch('listCompetitor', {queryString: val})
+      this.$store.dispatch('listCompetitor', {queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false})
     }
   },
   mounted () {
     this.$store.state.competitor.confirmUserGids=[];
     this.$store.state.competitor.jobsUser=[]; 
     this.$store.state.competitor.selectedUserGids = [];
-    this.$store.dispatch('listCompetitor')
+    this.$store.dispatch('listCompetitor',{onlyWrite:this.$route.query.onlyWrite ? true : false})
   },
   methods: {
     selectedList(){

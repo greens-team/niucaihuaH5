@@ -313,7 +313,7 @@
                   class="text-base text-blue-500"
                   style="color:#FF9B02"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
@@ -380,7 +380,7 @@
                   style="color:#FF9B02"
                   class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id,onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
@@ -440,7 +440,7 @@
                   style="color:#FF9B02"
                   class="text-base text-blue-500"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id,onlyWrite:true}}))"
                 >添加</div>
               </div>
               <div
@@ -1129,5 +1129,13 @@ export default {
 .shadow-md {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
     0 2px 4px -1px rgba(0, 0, 0, 0.01);
+}
+.DealerInfo /deep/ .van-collapse{margin-left: 10px; margin-right:10px;}
+.DealerInfo /deep/ .van-collapse-item .van-cell__title{
+  font-weight: bold;
+}
+.DealerInfo /deep/ .van-collapse-item__title{
+  background-color: #f7f7f7;
+  border-bottom:1px solid #fff;
 }
 </style>

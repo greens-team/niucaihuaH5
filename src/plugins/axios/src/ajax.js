@@ -79,7 +79,7 @@ const ajax = (axios) => {
     });
   };
 
-  let upload = (url, params = {}, option = {}) => {
+  let upload = (url, params = {}) => {
     let formData = new FormData();
     for (let _key in params) {
       formData.append(_key, params[_key]);
@@ -87,12 +87,7 @@ const ajax = (axios) => {
     return new Promise((resolve) => {
       axios.post(url, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: function (event) {
-          if (typeof option.onUploadProgress === 'function') {
-            option.onUploadProgress(event);
-          }
+          'Content-Type': 'multipart/form-data',
         }
       }).then((response) => {
         resolve(response);

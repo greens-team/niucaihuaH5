@@ -72,14 +72,14 @@ export default {
   },
   watch: {
     "$store.state.dealer.listParams.queryString"(val) {
-      this.$store.dispatch("getListData", { queryString: val });
+      this.$store.dispatch("getListData", { queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false });
     }
   },
   mounted() {
     this.$store.state.dealer.confirmUserGids = [];
     this.$store.state.dealer.jobsUser = [];
     this.$store.state.dealer.selectedUserGids = [];
-    this.$store.dispatch("getListData");
+    this.$store.dispatch("getListData",{onlyWrite:this.$route.query.onlyWrite ? true : false});
   },
   methods: {
     selectedList() {

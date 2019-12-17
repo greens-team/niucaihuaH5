@@ -71,7 +71,7 @@ export default {
   },
   watch: {
     "$store.state.contacts.listContactsParams.queryString"(val) {
-      this.$store.dispatch("listContacts", { queryString: val });
+      this.$store.dispatch("listContacts", { queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false});
     }
   },
   mounted() {
@@ -80,7 +80,8 @@ export default {
         this.$store.state.contacts.listContactsParams.pageNum++;
         this.$store
           .dispatch("listContacts", {
-            pageNum: this.$store.state.contacts.listContactsParams.pageNum
+            pageNum: this.$store.state.contacts.listContactsParams.pageNum,
+            onlyWrite:this.$route.query.onlyWrite ? true : false
           })
           .then(msg => {
             resolve(msg);
@@ -97,7 +98,7 @@ export default {
     } else {
       this.$store.state.contacts.selectedUserGids = [];
     }
-    this.$store.dispatch("listContacts", { pageNum: 1 });
+    this.$store.dispatch("listContacts", { pageNum: 1, onlyWrite:this.$route.query.onlyWrite ? true : false });
   },
   methods: {
     selectedList() {
