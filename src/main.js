@@ -77,9 +77,10 @@ Vue.prototype.addRecentvisit = (data) => {
 }
 
 //滚动加载
-Vue.prototype.scrollLoad = (domBox, callback) => {
+Vue.prototype.scrollLoad = (domBox, callback, positionCallback = false) => {
   let isSend = false
   domBox.onscroll = function () {
+    positionCallback && positionCallback(domBox.scrollTop)
     if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
       isSend = true
       new Promise(resolve => {

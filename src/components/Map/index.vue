@@ -29,7 +29,7 @@
 
 import VueAMap from 'vue-amap';
 VueAMap.initAMapApiLoader({
-  key: '8aa627fa31e90b627f676ad9c5f9f26a',
+  key: '276923c83894386e499c8b979ee7f446',
   plugin: ['AMap.Geolocation','AMap.ToolBar'],
   // 默认高德 sdk 版本为 1.4.4
   v: '1.4.4'
