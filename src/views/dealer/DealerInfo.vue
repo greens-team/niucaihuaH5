@@ -661,14 +661,14 @@
       >
         <i class="iconfont iconzhaopianhover" style="font-size: 2rem;"></i>
       </van-uploader>
+        <van-field
+          v-model="newsLogContent"
+          class="rounded-lg m-3"
+          style="background:#f6f6f6;height:70%"
+          placeholder="请输入工作进展"
+        />
 
-      <van-field
-        v-model="newsLogContent"
-        class="rounded-lg m-3"
-        style="background:#f6f6f6;height:70%"
-        placeholder="请输入工作进展"
-        @keyup.13="tapToSearch"
-      />
+      <div class="sendBtn" @click="tapToSearch">发送</div>
 
       <!-- <form class="flex-1 mr-3 flex" action="javascript:void 0" style="height:70%">
         <input
@@ -1150,4 +1150,6 @@ export default {
   background-color: #f7f7f7;
   border-bottom: 1px solid #fff;
 }
+
+
 </style>
