@@ -141,7 +141,7 @@
             <div v-if="$store.state.dealerInfo.currentTabsIndex === 0">
               <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
                 <div class="flex items-center relative">
-                  <div class="flex flex-1 items-center font-bold"  @click="showInfo1 = !showInfo1">
+                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
                     备案信息
                     <i
                       class="iconfont iconweizhankai ml-2 icon_toggle"
@@ -341,7 +341,8 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
-                      class="text-gray-900 text-sm" style="color:#0885FF;"
+                      class="text-gray-900 text-sm"
+                      style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
                     >{{r.contactsName}}</p>
                   </div>
@@ -408,7 +409,8 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">竞对名称</p>
                     <p
-                      class="text-gray-900 text-sm" style="color:#0885FF;"
+                      class="text-gray-900 text-sm"
+                      style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
                     >{{r.competorName}}</p>
                   </div>
@@ -468,7 +470,8 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">姓名</p>
                     <p
-                      class="text-gray-900 text-sm" style="color:#0885FF;"
+                      class="text-gray-900 text-sm"
+                      style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
                     >{{r.lesseeName}}</p>
                   </div>
@@ -503,7 +506,9 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">客户类型</p>
                     <!-- r.lesseeType -->
-                    <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
+                    <p
+                      class="text-gray-900 text-sm"
+                    >{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs text-gray-500">手机号</p>
@@ -888,9 +893,9 @@ export default {
       if (num === 0) {
         this.$store.dispatch("getinfo", this.id).then(res => {
           this.info = this.$store.state.dealerInfo.baseInfo;
-          this.info.ownerUserGids = this.info.ownerUserList.map(r=>{
-            return String(r.ownerUserGid)
-          })
+          this.info.ownerUserGids = this.info.ownerUserList.map(r => {
+            return String(r.ownerUserGid);
+          });
         });
       }
       if (num === 1) {
@@ -933,6 +938,8 @@ export default {
         });
       }
       if (num === 4) {
+        this.listNewslogPageNum = 1;
+        this.isNewslogLastPage = false;
         this.$store
           .dispatch("listNewslog", {
             modelObjType: 1,
@@ -941,7 +948,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData_newslog = false;
             } else {
               this.isShowNoData_newslog = true;
@@ -949,6 +956,8 @@ export default {
           });
       }
       if (num === 5) {
+        this.listOperatelogNum = 1;
+        this.isOperatelogLastPage = false;
         this.$store
           .dispatch("listOperatelog", {
             modelObjType: 1,
@@ -957,7 +966,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData_operatelog = false;
             } else {
               this.isShowNoData_operatelog = true;
@@ -1048,7 +1057,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .DealerInfo .tabs /deep/ .van-hairline--top-bottom::after,
 .DealerInfo .tabs /deep/ .van-hairline-unset--top-bottom::after {
@@ -1130,12 +1139,15 @@ export default {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01),
     0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
-.DealerInfo /deep/ .van-collapse{margin-left: 10px; margin-right:10px;}
-.DealerInfo /deep/ .van-collapse-item .van-cell__title{
+.DealerInfo /deep/ .van-collapse {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.DealerInfo /deep/ .van-collapse-item .van-cell__title {
   font-weight: bold;
 }
-.DealerInfo /deep/ .van-collapse-item__title{
+.DealerInfo /deep/ .van-collapse-item__title {
   background-color: #f7f7f7;
-  border-bottom:1px solid #fff;
+  border-bottom: 1px solid #fff;
 }
 </style>

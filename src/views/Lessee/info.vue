@@ -431,9 +431,7 @@ export default {
       isShowNoData_1: false,
 
       ownerUserGids: "",
-      followerUserGids: "",
-
-      navBarFixed: false
+      followerUserGids: ""
     };
   },
   created() {
@@ -457,6 +455,7 @@ export default {
           this.$store.state.lessee.currentTabsIndex == 2 &&
           !this.isNewslogLastPage
         ) {
+          
           this.$store
             .dispatch("listNewslogLessee", {
               modelObjType: 3,
@@ -548,6 +547,8 @@ export default {
       }
       if (num === 2) {
         // 动态记录
+        this.listNewslogPageNum = 1;
+        this.isNewslogLastPage = false;
         this.$store
           .dispatch("listNewslogLessee", {
             modelObjType: 3,
@@ -556,7 +557,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData = false;
             } else {
               this.isShowNoData = true;
@@ -564,6 +565,8 @@ export default {
           });
       }
       if (num === 3) {
+        this.listOperatelogNum = 1;
+        this.isOperatelogLastPage = false;
         this.$store
           .dispatch("listOperatelogLessee", {
             modelObjType: 3,
@@ -572,7 +575,7 @@ export default {
             pageSize: 10
           })
           .then(len => {
-            if (len > 0) {
+            if (len) {
               this.isShowNoData_1 = false;
             } else {
               this.isShowNoData_1 = true;

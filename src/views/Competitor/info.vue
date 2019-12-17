@@ -209,7 +209,7 @@
                     >{{r.content}}</p>
                     <img v-if="r.pics != null " :src="picServer+r.pics" alt />
                   </div>
-                 <p
+                  <p
                     class="text-sm text-gray-500"
                     style="color:#80848D;margin-left:.5rem;padding:.5rem 0;"
                   >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm')}}</p>
@@ -410,6 +410,8 @@ export default {
       }
       if (num === 1) {
         // 动态记录
+        this.listNewslogPageNum = 1;
+        this.isNewslogLastPage = false;
         this.$store
           .dispatch("listNewslogCompetitor", {
             modelObjType: 4,
@@ -427,6 +429,8 @@ export default {
       }
       if (num === 2) {
         //操作历史
+        this.listOperatelogNum = 1;
+        this.isOperatelogLastPage = false;
         this.$store
           .dispatch("listOperatelogCompetitor", {
             modelObjType: 4,
