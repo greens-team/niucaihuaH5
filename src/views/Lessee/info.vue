@@ -681,7 +681,7 @@ export default {
 }
 .LesseeInfo /deep/ .van-tab--active span {
   font-size: 1.2rem;
-}\
+}
 .bg-line {
   background: #f4f4f4;
   flex: 1;

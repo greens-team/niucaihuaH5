@@ -1,14 +1,37 @@
 <!-- 日期范围范围 -->
 <template>
   <div class="DateRange">
-    
+<!--     
     <van-nav-bar
       title="选择时间段"
       left-text="取消"
       right-text="重置"
       @click-left="cancel"
       @click-right="reset"
-    />
+    /> -->
+
+    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+      <div class="flex-1 flex">
+        <div class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600">
+          <div
+            slot="left"
+            class="text-center"
+            style="font-size:1.143rem;color:#1989fa;"
+            @click="cancel"
+          >取消</div>
+        </div>
+      </div>
+      <span class="text-center font-bold bar_title">选择时间段</span>
+      <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1"></div>
+        <div
+          slot="right"
+          class="text-center"
+          style="font-size:1.143rem;color:#1989fa;"
+          @click="reset"
+        >重置</div>
+      </div>
+    </div>
 
     <div class="p-6 pt-3 pb-3">
       <div class="flex justify-between p-2">
@@ -238,5 +261,8 @@ export default {
 <style scoped>
 .bgLinear{
   background:linear-gradient(225deg,rgba(255,155,2,1) 0%,rgba(254,233,124,1) 100%)
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

@@ -51,8 +51,8 @@
 
     <div class="flex bg-gray-100 mt-1 p-3 h-14 items-center" v-show="$store.state.lessee.selectedUserGids.length">
       <div class="flex-1 ellipsis">
-        <span class="text-gray-600 text-xs">已选择：</span>
-        <span class="text-xs" v-for="(r,i) in $store.state.lessee.selectedUserGids" :key="i">
+        <span class="text-gray-600 text-base">已选择：</span>
+        <span class="text-base" v-for="(r,i) in $store.state.lessee.selectedUserGids" :key="i">
           <span v-if="i">,</span>
           {{r.split(',')[0]}}
         </span>

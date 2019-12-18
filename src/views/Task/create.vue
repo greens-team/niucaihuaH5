@@ -120,13 +120,22 @@
           <span class="custom-title">相关经销商</span>
         </template>
         <template slot="default">
-          <p class="p5 text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))" v-if="$route.query.dealerName">{{$route.query.dealerName}}</p>
+          <p
+            class="p5 text-blue-500"
+            @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))"
+            v-if="$route.query.dealerName"
+          >{{$route.query.dealerName}}</p>
           <p
             :class="['p5  ',{'text-gray-800': !!dealerName}]"
             v-else
             @click="editor && (dealerShow = true)"
           >
-            <span  v-if="!editor" style="color:#0885FF" class="text-blue-500" @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))">{{dealerName}}</span>
+            <span
+              v-if="!editor"
+              style="color:#0885FF"
+              class="text-blue-500"
+              @click="$root.checkRole('DEALER_SELECT','tipText') && $root.selectdpcheck({modelObjType:1, modelId: $store.state.task.addEditTaskParams.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:$store.state.task.addEditTaskParams.dealerGid}}))"
+            >{{dealerName}}</span>
             <span v-else>{{dealerName || '请选择相关经销商'}}</span>
           </p>
         </template>
@@ -156,7 +165,10 @@
             soltCon="true"
             :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
           >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</UserList>
-          <div v-else :class="['p5  ',{'text-gray-800': mainUserGids.length}]">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
+          <div
+            v-else
+            :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
+          >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
         </template>
       </van-cell>
 
@@ -174,7 +186,10 @@
             soltCon="true"
             :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
           >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</UserList>
-          <div v-else :class="['p5  ',{'text-gray-800': otherUserGids.length}]">{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
+          <div
+            v-else
+            :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
+          >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
         </template>
       </van-cell>
 
@@ -218,11 +233,14 @@
       >
         <div class="pl-5">打卡位置</div>
         <div
-          class="flex items-center bg-white mt-2 pl-5 pr-5 pt-2 pb-2"
+          class="flex items-center bg-white mt-2 pl-5 pr-5 py-3"
           @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
         >
           <div class="flex-1">
-            <span class="text-blue-500">{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
+            <span
+              class="text-blue-500"
+              style="color:#0885FF"
+            >{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
             <!-- <br /> <span>{{$store.state.task.addEditTaskParams.clockinPlaceName}}</span> -->
           </div>
           <!-- <i class="iconfont iconweizhi text-orange-500"></i> -->
@@ -231,7 +249,7 @@
       </div>
     </div>
 
-    <div></div>
+    <!-- <div></div> -->
 
     <!-- 选择类型 -->
     <van-popup v-model="taskPopupShow" position="bottom">
@@ -390,7 +408,7 @@
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, finishTask)"
       v-if="!editor && $route.query.taskType == 2 && taskId"
       style="color:#FF9B02"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 fixed left-0 right-0 bottom-0"
     >完成任务</div>
 
     <div
@@ -398,14 +416,14 @@
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, clockIn)"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 0"
       style="color:#FF9B02"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 fixed left-0 right-0 bottom-0"
     >签到打卡</div>
     <div
       v-show="$root.checkRole('TASK_EDIT')"
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       style="color:#FF9B02"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==0 && $store.state.task.addEditTaskParams.visitType == 1"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <div
@@ -413,7 +431,7 @@
       @click="$root.dataCheck({modelObjType:5, modelId: taskId}, ()=>createTaskLog(0))"
       v-if="!editor && $route.query.taskType == 1 && taskId && taskStatus==1"
       style="color:#FF9B02"
-      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100 fixed left-0 right-0 bottom-0"
+      class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 fixed left-0 right-0 bottom-0"
     >填写拜访记录</div>
 
     <!-- CreateTask
@@ -715,7 +733,11 @@ export default {
     clockIn() {
       this.$router.push({
         path: "/ClockIn",
-        query: { id: this.taskId, dealerLog:this.$store.state.task.taskInfo.dealerLongitude,dealerLat:this.$store.state.task.taskInfo.dealerLatitud }
+        query: {
+          id: this.taskId,
+          dealerLog: this.$store.state.task.taskInfo.dealerLongitude,
+          dealerLat: this.$store.state.task.taskInfo.dealerLatitud
+        }
       });
     },
     // 创建拜访任务
@@ -755,12 +777,15 @@ export default {
             this.newTask = false;
             this.taskId = res.data;
             // 跳转到填写拜访记录页面
-            this.$router.push({name:'VisitRecord',query:{id: this.taskId}})
+            this.$router.push({
+              name: "VisitRecord",
+              query: { id: this.taskId }
+            });
           });
       } else {
         this.$router.push({
           name: "VisitRecord",
-          query: { id: this.taskId, back: "home"}
+          query: { id: this.taskId, back: "home" }
         });
       }
     },
@@ -816,9 +841,12 @@ export default {
     },
 
     confirmTaskTime() {
-      if(this.timeStamp(this.currentDate) < this.timeStamp(new Date() - 3*60*1000)){
-        this.$toast('创建时间不能小于当前时间');
-        return true
+      if (
+        this.timeStamp(this.currentDate) <
+        this.timeStamp(new Date() - 3 * 60 * 1000)
+      ) {
+        this.$toast("创建时间不能小于当前时间");
+        return true;
       }
       this.taskTimeShow = false;
       this.$store.state.task.addEditTaskParams.taskTime = Math.floor(
@@ -839,6 +867,10 @@ export default {
 </script>
 
 <style scoped>
+.taskCreate {
+  background: #f7f8f9;
+  height: 100%;
+}
 .taskCreate .taskCreateRow /deep/ .van-cell {
   padding: 5px 5px 5px 10px;
   /* background-color: inherit; */
