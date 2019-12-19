@@ -89,7 +89,11 @@ module.exports = {
   //     ];
   //   // }
   // },
+
   publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
+  outputDir: "dist",
+  assetsDir: "assets",
+
   runtimeCompiler: true,        // vue模板代码编译
   productionSourceMap: false,   // 打包清除map多个文件
   // cssSourceMap: true,           //开启    是否开启 cssSourceMap默认为false
