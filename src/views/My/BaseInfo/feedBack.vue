@@ -73,10 +73,10 @@
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
 
-        <div class="flex emialUs mt-24">
+        <div class="flex emialUs">
           <p class="w-full text-center">
             <span style="color:#80848D;font-size:.75rem;">有问题也可发送邮件给我们：</span>
-            <span style="color:#0885FF;font-size:.75rem;">liuyiwei@lionbridgecapital.cn</span>
+            <span style="color:#80848D;font-size:.75rem;">liuyiwei@lionbridgecapital.cn</span>
           </p>
         </div>
       </div>
@@ -160,6 +160,7 @@ export default {
 }
 .emialUs {
   width: 100%;
+  margin-top: 7rem;
 }
 .feedBack /deep/ .van-uploader__upload {
   border: 1px solid #d0d0d1;

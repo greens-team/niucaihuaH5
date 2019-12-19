@@ -21,16 +21,16 @@
     <div class="py-12 rounded-lg relative bg-white">
       <div class="flex-1 flex flex-col items-center relative">
         <img src="../../../assets/login/logo_set.png" alt class="w-24" />
-        <p class="text-center text-gray-800 py-4">重卡CRM 1.0.0</p>
+        <p class="text-center text-gray-800 py-4">重卡CRM 2.0.0</p>
       </div>
     </div>
     <div class="logOut" @click="logOut">退出登录</div>
 
-    <div class="p-5">
+    <!-- <div class="p-5">
       <p>测试数据</p>
       {{testToken}}<br />
       {{userInfo}}
-    </div>
+    </div> -->
     
   </div>
 </template>

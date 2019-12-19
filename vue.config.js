@@ -1,7 +1,7 @@
 // const CompressionWebpackPlugin = require('compression-webpack-plugin');
 // const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;
 
-const port = 8686; 
+const port = 8686;
 
 // mock接口数据
 //            /mock
@@ -15,11 +15,11 @@ let mockApi = 'http://10.20.7.129:8090/app/mock/1/'
 let testApi = ['http://10.20.6.34:8000'] //['http://10.2.247.99:8000']   开发环境：http://10.20.7.129:8000    测试环境：http://10.20.6.34:8000
 
 let proxy = {}
-let methods = ['GET','POST','PUT','DELETE']
-methods.map(r=>{
+let methods = ['GET', 'POST', 'PUT', 'DELETE']
+methods.map(r => {
   let pathRewrite = {}
-  pathRewrite['/api/'+r] = '' // r
-  proxy['/api/'+r] = {
+  pathRewrite['/api/' + r] = '' // r
+  proxy['/api/' + r] = {
     target: testApi[0],// mockApi,
     changeOrigin: true,
     secure: false,  // 如果是https接口，需要配置这个参数
@@ -28,21 +28,21 @@ methods.map(r=>{
   }
 })
 
-if (testApi){
+if (testApi) {
   proxy['/api/test/'] = {
     target: testApi[0],
     changeOrigin: true,
     secure: false,  // 如果是https接口，需要配置这个参数
     // ws: true, // 是否启用websockets
-    pathRewrite: {'/api/test': ''}
+    pathRewrite: { '/api/test': '' }
   },
-  proxy['/api'] = {
-    target: testApi[0],
-    changeOrigin: true,
-    secure: false,  // 如果是https接口，需要配置这个参数
-    // ws: true, // 是否启用websockets
-    pathRewrite: {'/api': ''}
-  }
+    proxy['/api'] = {
+      target: testApi[0],
+      changeOrigin: true,
+      secure: false,  // 如果是https接口，需要配置这个参数
+      // ws: true, // 是否启用websockets
+      pathRewrite: { '/api': '' }
+    }
   // proxy['/api/dp'] = {
   //   target: testApi[1],
   //   changeOrigin: true,
@@ -63,7 +63,7 @@ module.exports = {
   //   chunkFilename:'[name].js',// 设置按需加载后的chunk名字
   //   publicPath:'testdd/'
   // },
-  
+
   // pages: {
   //   index: {
   //     entry: 'src/main.js',
@@ -89,7 +89,7 @@ module.exports = {
   //     ];
   //   // }
   // },
-
+  publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
   runtimeCompiler: true,        // vue模板代码编译
   productionSourceMap: false,   // 打包清除map多个文件
   // cssSourceMap: true,           //开启    是否开启 cssSourceMap默认为false
