@@ -280,7 +280,7 @@
     <van-popup v-model="taskTimeShow" position="bottom">
       <van-datetime-picker
         type="datetime"
-        :min-date="new Date(new Date().getFullYear()+'-01-01 00:00')"
+        :min-date="minDate"
         @cancel="taskTimeShow=false"
         @confirm="confirmTaskTime"
         v-model="currentDate"
@@ -448,6 +448,7 @@ export default {
   },
   data() {
     return {
+      minDate: new Date(1899, 12, 1),
       searchKeyword: "",
       newTask: false,
 
