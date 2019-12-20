@@ -51,17 +51,19 @@ ajax(apiList, error => {
   }
 });
 
+
 let sendStart = true
 // 延迟请求
 Vue.prototype.delaySend = () => {
-  if(!sendStart){
+  if(sendStart){
+    sendStart = false
     setTimeout(()=>{
       sendStart = true
     },1000)
+    return false
+  }else{
     return true
   }
-  sendStart = false
-  return false
 }
 
 // 获取时间戳
