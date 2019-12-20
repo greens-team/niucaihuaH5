@@ -17,14 +17,14 @@
           </div>-->
 
           <div
-            @click="$router.go(-1)"
+            @click="$router.push('/')"
             class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
           >
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
-        <span class="text-center font-bold bar_title">经销商</span>
+        <span class="text-center font-bold bar_title">经销1商</span>
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
           <img
