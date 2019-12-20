@@ -145,4 +145,7 @@ export default {
   right:0;
   z-index: 10;
 }
+.iosScroll{
+  -webkit-overflow-scrolling: touch;
+}
 </style>
