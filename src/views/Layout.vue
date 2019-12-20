@@ -1,10 +1,10 @@
 <!-- 首页layout布局 -->
 <template>
-  <div class="tabbar flex-1 flex flex-col">
+  <div class="tabbar flex-1 flex flex-col bg-white">
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-hidden overflow-y-scroll iosScroll" id="taskListBox" style="padding-bottom:52px;">
-        <component v-bind:is="currentModel"></component>
+      <div class="absolute inset-0 overflow-hidden overflow-y-scroll" id="taskListBox" style="padding-bottom:52px;">
+        <component class="bg-white" v-bind:is="currentModel"></component>
       </div>
     </div>
 

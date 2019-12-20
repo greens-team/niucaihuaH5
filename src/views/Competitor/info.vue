@@ -482,6 +482,9 @@ export default {
       );
     },
     tapToSearch(picUrl) {
+      if(this.delaySend()){
+        return
+      }
       if (this.newsLogContent || typeof picUrl == "string") {
         this.$store
           .dispatch("addNewslogCompetitor", {

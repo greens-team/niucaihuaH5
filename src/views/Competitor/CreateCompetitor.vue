@@ -190,6 +190,9 @@ export default {
         : "请选择参与人";
     },
     createCompetitor() {
+      if(this.delaySend()){
+        return
+      }
       let ownerUserData = this.$store.state.competitor.addParams.ownerUserGids;
       ownerUserData.length
         ? (ownerUserData = ownerUserData.split(","))

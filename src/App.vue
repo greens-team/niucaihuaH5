@@ -1,10 +1,10 @@
 <template>
-  <div id="app" class="fixed inset-0 flex flex-col">
+  <div id="app" class="fixed inset-0 flex flex-col bg-white">
 
     <!-- <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
       <van-loading size="24px" vertical>加载中...</van-loading>
     </div> -->
-    <router-view v-if="loginStatus"></router-view>
+    <router-view v-if="loginStatus" class=" bg-white"></router-view>
 
   </div>
 </template>
@@ -145,7 +145,20 @@ export default {
   right:0;
   z-index: 10;
 }
-.iosScroll{
-  -webkit-overflow-scrolling: touch;
+
+html {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+body {
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
 }
 </style>

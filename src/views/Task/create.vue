@@ -686,6 +686,9 @@ export default {
       this.$refs.checkboxes[index].toggle();
     },
     save() {
+      if(this.delaySend()){
+        return
+      }
       let params = this.$store.state.task.addEditTaskParams;
       if (
         params.taskName.trim() === "" ||
@@ -743,6 +746,9 @@ export default {
     },
     // 创建拜访任务
     createTask() {
+      if(this.delaySend()){
+        return
+      }
       // 经销商拜访
       // this.$store.state.task.addEditTaskParams.visitType = 0
       this.visitTypeVal = 0;
@@ -764,6 +770,9 @@ export default {
 
     // 直接填写拜访记录
     createTaskLog(visitType) {
+      if(this.delaySend()){
+        return
+      }
       // 清空填写拜访记录
       this.$store.commit("setAddEditVisitlogParams");
       if (visitType) {
@@ -793,6 +802,9 @@ export default {
 
     // 完成并保存
     finishTask() {
+      if(this.delaySend()){
+        return
+      }
       this.$store.dispatch("finishTask", this.taskId).then(res => {
         this.$dialog
           .alert({
@@ -804,6 +816,9 @@ export default {
       });
     },
     editorFun() {
+      if(this.delaySend()){
+        return
+      }
       let mainUserNames = this.$store.state.task.addEditTaskParams.mainUserNames
         ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r => {
             return String(r.modelGid || r.id);

@@ -560,10 +560,7 @@ export default {
 .shadowaa {
   box-shadow: 0 0px 12px 0px rgba(0, 0, 0, 0.1) !important;
 }
-.Workbench {
-  padding-bottom: 1000px;
-  margin-bottom: -1000px;
-}
+
 .Workbench .van-search__content {
   background-color: #f5f5f5;
 }

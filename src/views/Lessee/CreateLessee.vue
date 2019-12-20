@@ -422,6 +422,9 @@ export default {
         this.$root.timeStamp(this.currentDate) / 1000;
     },
     createLessee() {
+      if(this.delaySend()){
+        return
+      }
       let userPicStr = "";
       userPicStr = this.$store.state.lessee.addParams.userPic;
       userPicStr = userPicStr.substring(0, userPicStr.length - 1);

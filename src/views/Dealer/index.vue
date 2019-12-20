@@ -7,7 +7,7 @@
 
  <!-- 经销商管理页面 -->
 <template>
-  <div class="DealerManage flex-1 flex flex-col">
+  <div class="DealerManage flex-1 flex flex-col bg-white">
     <div class="flex flex-col">
       <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar">
         <div class="flex-1 flex">
@@ -143,6 +143,11 @@ export default {
       searchBar: false,
       homeSearch: false
     };
+  },
+  watch: {
+    '$store.state.dealer.listParams.followStatus'(){
+      this.$refs.dealerListBox.scrollTop = 0
+    }
   },
   mounted() {
     this.scrollLoad(this.$refs.dealerListBox, resolve => {

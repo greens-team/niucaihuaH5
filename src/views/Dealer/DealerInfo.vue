@@ -159,13 +159,13 @@
                       style="color:#FF9B02"
                       class="text-base"
                     >{{$store.state.record.recordStatus[info.recordStatus]}}</div>
-                    <div
+                    <!-- <div
                       v-else
                       style="color:#FF9B02"
                       class="text-base"
                       v-show="$root.checkRole('DEALER_EDIT')"
                       @click="$root.dataCheck({modelObjType:1, modelId: id}, recordSubmit)"
-                    >提交备案</div>
+                    >提交备案</div> -->
                   </div>
 
                   <div v-show="showInfo1">
@@ -670,7 +670,7 @@
           placeholder="请输入工作进展"
         />
 
-      <div class="sendBtn" @click="tapToSearch">发送</div>
+      <div class="sendBtn" @click="tapToSearch()">发送</div>
 
       <!-- <form class="flex-1 mr-3 flex" action="javascript:void 0" style="height:70%">
         <input
@@ -834,6 +834,9 @@ export default {
       );
     },
     tapToSearch(picUrl) {
+      if(this.delaySend()){
+        return
+      }
       if (this.newsLogContent || typeof picUrl == "string") {
         this.$store
           .dispatch("addNewslog", {

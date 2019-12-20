@@ -623,6 +623,9 @@ export default {
       });
     },
     save() {
+      if(this.delaySend()){
+        return
+      }
       let legalParams = this.$store.state.newDealer.params;
       legalParams.dealerGid = this.id;
       if (

@@ -261,6 +261,9 @@ export default {
   watch: {},
   methods: {
     finishTask() {
+      if(this.delaySend()){
+        return
+      }
       if (!this.$store.state.task.addEditVisitlogParams.dealerDes.trim() || !this.$store.state.task.addEditVisitlogParams.dealerDes) {
         this.$dialog.alert({
           message: "请认真填写"

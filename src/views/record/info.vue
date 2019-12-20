@@ -132,6 +132,9 @@ export default {
       console.log(key)
     },
     recordSubmit(){
+      if(this.delaySend()){
+        return
+      }
       if(this.idcardFrontPicVal.length && this.idcardBackPicVal.length && this.licensePicVal.length){
         this.$store.dispatch('recordSubmit', Object.assign({},this.info,{
           dealerGid: this.$route.query.id,

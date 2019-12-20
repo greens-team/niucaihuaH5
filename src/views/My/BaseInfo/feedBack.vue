@@ -121,6 +121,9 @@ export default {
       this.wordTotal = this.$store.state.my.submitParams.content.length;
     },
     submit() {
+      if(this.delaySend()){
+        return
+      }
       let userPicStr = "";
       userPicStr = this.$store.state.my.submitParams.pics;
       userPicStr = userPicStr.substring(0, userPicStr.length - 1);

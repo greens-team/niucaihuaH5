@@ -163,6 +163,9 @@ export default {
         : "请选择参与人";
     },
     createContacts() {
+      if(this.delaySend()){
+        return
+      }
       let ownerUserData = this.$store.state.contacts.createContactsParams
         .ownerUserGids;
       ownerUserData.length
