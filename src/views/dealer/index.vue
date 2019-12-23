@@ -24,7 +24,7 @@
           </div>
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
-        <span class="text-center font-bold bar_title">经销1商</span>
+        <span class="text-center font-bold bar_title">经销商</span>
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
           <img
