@@ -35,38 +35,40 @@ export default {
     // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
     // sessionStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
 
+    // iOS原生调用该方法
     window.getUserInfoIosCallBack = (data) => {
       sessionStorage.Authorization = JSON.parse(data).datas.TOKEN
       sessionStorage.userInfo = JSON.stringify(JSON.parse(data).datas)
       window.Authorization = JSON.parse(data).datas.TOKEN
       _this.loginStatus = true;
-      setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
-      // location.reload()
-      _this.$store.dispatch('getUserInfo').then((data)=>{
-        _this.$root.userInfo = data
-      })
-
+      setTimeout(()=>{
+        document.getElementById('loadingPage').style.display = 'none'
+        _this.$store.dispatch('getUserInfo').then((data)=>{
+          _this.$root.userInfo = data
+        })
+      },2000)
     }
 
     // 获取用户登录信息
-    this.userAgent(() => { // 返回原生页面
-      if(!sessionStorage.Authorization){
+    this.userAgent(() => { // iOS获取用户信息
+      // if(!sessionStorage.Authorization){
         var params = {"selector": "getUserInfo", "type": "LBHiOSApp"};
         var resultjson = prompt(JSON.stringify(params));
         eval(resultjson)
-      }
-    }, ()=>{
-      if(!sessionStorage.Authorization){
+      // }
+    }, ()=>{   // android获取用户信息
+      // if(!sessionStorage.Authorization){
         var userGsonStr = HelperNativeInterface.getUserInfo();
         sessionStorage.userInfo = userGsonStr
         sessionStorage.Authorization = JSON.parse(userGsonStr).TOKEN
         _this.loginStatus = true;
-        setTimeout(()=>document.getElementById('loadingPage').style.display = 'none',2000)
-        // location.reload()
-        _this.$store.dispatch('getUserInfo').then((data)=>{
-          _this.$root.userInfo = data
-        })
-      }
+        setTimeout(()=>{
+          document.getElementById('loadingPage').style.display = 'none'
+          _this.$store.dispatch('getUserInfo').then((data)=>{
+            _this.$root.userInfo = data
+          })
+        },2000)
+      // }
     })
 
 
