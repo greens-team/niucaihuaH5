@@ -142,7 +142,7 @@
           <div class="text-sm">新建任务</div>
         </div>
         <div class="text-center text-gray-800" @click="$router.push('/RecentVisit')">
-          <img src="../../assets/workbench/icon4.png" alt class="w-10 m-auto mb-1" />
+          <img src="../../assets/workbench/icon4_work.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">最近访问</div>
         </div>
       </div>
