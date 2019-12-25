@@ -63,6 +63,7 @@ module.exports = {
   //   chunkFilename:'[name].js',// 设置按需加载后的chunk名字
   //   publicPath:'testdd/'
   // },
+  filenameHashing: false,
 
   // pages: {
   //   index: {
