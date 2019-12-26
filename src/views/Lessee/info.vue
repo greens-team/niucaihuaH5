@@ -177,7 +177,7 @@
                     <p
                       class="text_content text-base"
                       :style="{color:info.lesseeType != null ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{info.lesseeType == null ? '-' : (info.lesseeType ? '自然人' : '法人')}}</p>
+                    >{{info.lesseeType == null ? '-' : (info.lesseeType ? '法人' : '自然人')}}</p>
                   </div>
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">手机号</p>
@@ -511,7 +511,7 @@ export default {
           resolve();
         },
         scrollTopVal => {
-          console.log(scrollTopVal);
+          // console.log(scrollTopVal);
           if (scrollTopVal > this.topVal && !this.positioning) {
             this.positioning = true;
           }
@@ -539,6 +539,10 @@ export default {
             return String(r.ownerUserGid);
           });
 
+          this.info.followerUserGids = this.info.followerUserList.map(r => {
+            return String(r.ownerUserGid);
+          });
+
           if (this.info.userPic) {
             this.userPicArr = this.info.userPic.split(",");
           }
@@ -553,21 +557,7 @@ export default {
           this.info.ownerUserList.map(r => {
             ownerUserList.push(r.ownerUserName);
           });
-
           this.ownerUserGids = ownerUserList.toString();
-
-          // if (this.$store.state.lessee.info.dealerList != null) {
-          //   this.isShowDealer = true;
-          //   this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
-          //   this.currentLessee = [this.lesseeInfolist[0].dealerGid];
-          // } else {
-          //   this.isShowDealer = false;
-          // }
-
-          // //判断如果出生日期为null 显示空
-          // if (this.info.birthday == null) {
-          //   this.info.birthday = null;
-          // }
         });
       }
       if (num === 1) {

@@ -71,7 +71,7 @@
             :style="{color:selectCompetorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectCompetorType ? selectCompetorType : '请选择类型'}}</div>
         </div>
-        <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}">
+        <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
           <van-nav-bar
             title="竞对类型"
             left-text="取消"
@@ -85,13 +85,25 @@
             style="top:46px;"
           >
             <van-radio-group v-model="competorStatusValus">
-              <van-radio
+              <!-- <van-radio
                 icon-size="16px"
                 class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3"
                 v-for="(r,i) in $store.state.competitor.competorStatus"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio>
+              >{{r.text}}</van-radio> -->
+
+              <van-cell-group>
+                <van-cell
+                  :title="r.text"
+                  clickable
+                  @click="competorStatusValus = r.value"
+                  v-for="(r,i) in $store.state.competitor.competorStatus"
+                  :key="i"
+                >
+                  <van-radio slot="right-icon" :name="r.value" />
+                </van-cell>
+              </van-cell-group>
             </van-radio-group>
           </div>
         </van-popup>
@@ -272,7 +284,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 13px;
@@ -281,5 +293,35 @@ export default {
   border-bottom: 1px solid #ededee;
   -webkit-transform: scaleY(1);
   transform: scaleY(1);
+}
+
+.radioGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ff9b02;
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon .van-icon {
+  border: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-icon-success:before {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.radioGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>

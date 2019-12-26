@@ -23,8 +23,20 @@
       <span class="text-center font-bold bar_title">{{$route.query.editor ? '编辑经销商' : '新建经销商'}}</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div v-if="$route.query.editor" class="text-center" slot="right" style="font-size:1.143rem;" @click="()=>{delmapsource(),save()}">保存</div>
-        <div v-else slot="right" class="text-center" style="font-size:1.143rem;" @click="nextStep">下一步</div>
+        <div
+          v-if="$route.query.editor"
+          class="text-center"
+          slot="right"
+          style="font-size:1.143rem;"
+          @click="()=>{delmapsource(),save()}"
+        >保存</div>
+        <div
+          v-else
+          slot="right"
+          class="text-center"
+          style="font-size:1.143rem;"
+          @click="nextStep"
+        >下一步</div>
       </div>
     </div>
 
@@ -120,7 +132,11 @@
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">业务类型</div>
-          <div class="flex-1" :style="{color: typeList.length && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"  @click="!recordStatus && (businessTypesShow = true)">{{typeList | typeListFilter}}</div>
+          <div
+            class="flex-1"
+            :style="{color: typeList.length && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"
+            @click="!recordStatus && (businessTypesShow = true)"
+          >{{typeList | typeListFilter}}</div>
         </div>
 
         <van-popup v-model="businessTypesShow" position="bottom" :style="{ height: '40%'}">
@@ -181,7 +197,12 @@
             label-width="130"
           />
 
-          <van-popup v-model="certTypCdShow" position="bottom" :style="{ height: '40%'}">
+          <van-popup
+            v-model="certTypCdShow"
+            position="bottom"
+            :style="{ height: '40%'}"
+            class="radioGroup"
+          >
             <van-nav-bar
               title="请选择法人证件类型"
               left-text="取消"
@@ -205,21 +226,17 @@
             </van-radio-group>
           </van-popup>
 
-          
-          
           <div></div>
         </div>
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
-            <div style="width:130px; color:#323233;">地理位置</div>
-            <div
-              class="flex-1"
-              @click="!recordStatus && ($store.getters.NDparams.gid ? $router.push({path:'/map',query:{lng:$store.getters.NDparams.longitude,lat:$store.getters.NDparams.latitude,edit:true}}) : $router.push('/map'))"
-              :style="{color:$store.getters.NDparams.locationName && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"
-            >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
-          </div>
-
-
+          <div style="width:130px; color:#323233;">地理位置</div>
+          <div
+            class="flex-1"
+            @click="!recordStatus && ($store.getters.NDparams.gid ? $router.push({path:'/map',query:{lng:$store.getters.NDparams.longitude,lat:$store.getters.NDparams.latitude,edit:true}}) : $router.push('/map'))"
+            :style="{color:$store.getters.NDparams.locationName && !recordStatus ? '#252525' : 'rgba(69, 90, 100, 0.6)'}"
+          >{{$store.getters.NDparams.locationName || '选择地图位置'}}</div>
+        </div>
 
         <div class="relative formBar font-bold p-3 pl-4" style="font-size:1.143rem;">基本信息</div>
 
@@ -231,8 +248,6 @@
           placeholder="请填写经纬度"
           label-width="130"
         />-->
-
-        
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">经销商分级</div>
@@ -277,8 +292,6 @@
           show-word-limit
         />
         <div></div>
-
-        
       </div>
     </div>
 
@@ -297,8 +310,7 @@
           @click="showNext=false"
         >取消</div>
       </div>
-    </van-popup> -->
-
+    </van-popup>-->
 
     <van-popup v-model="showNext" position="bottom">
       <div class="bg-gray-200">
@@ -318,7 +330,6 @@
         >取 消</div>
       </div>
     </van-popup>
-
   </div>
 </template>
 
@@ -368,10 +379,12 @@ export default {
     this.recordStatus = !!this.$store.getters.NDparams.recordStatus;
     // this.$store.commit('setNewDealerParams')
 
-    if(!this.$store.state.newDealer.params.chkBusTypCdList){
-      this.$store.state.newDealer.businessTypesValues = []
+    if (!this.$store.state.newDealer.params.chkBusTypCdList) {
+      this.$store.state.newDealer.businessTypesValues = [];
     }
-    this.typeList = this.$store.state.newDealer.params.chkBusTypCdList ? this.$store.state.newDealer.businessTypesValues : [];
+    this.typeList = this.$store.state.newDealer.params.chkBusTypCdList
+      ? this.$store.state.newDealer.businessTypesValues
+      : [];
 
     // 从地图页面回来时 回显地理位置
     let mapInfo = {
@@ -386,7 +399,8 @@ export default {
       mapInfo.latitude = this.$store.getters.NDparams.latitude;
     }
 
-    this.$store.state.newDealer.params.ownerUserList = this.$store.state.newDealer.params.ownerUserList || [
+    this.$store.state.newDealer.params.ownerUserList = this.$store.state
+      .newDealer.params.ownerUserList || [
       {
         id: JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID,
         refRlNm: JSON.parse(sessionStorage.userInfo).EMPLOYEE_NAME
@@ -394,13 +408,12 @@ export default {
     ];
     // 负责人默认为当前登录用户
     this.ownerUserGidsA = this.$store.state.newDealer.params.ownerUserList;
-    this.ownerUserGidsB = this.$store.state.newDealer.params.followerUserList || []
+    this.ownerUserGidsB =
+      this.$store.state.newDealer.params.followerUserList || [];
 
-    this.id = this.$route.query.id || '';
-    if (this.$route.query.id && !sessionStorage.mapsource) { 
-      
+    this.id = this.$route.query.id || "";
+    if (this.$route.query.id && !sessionStorage.mapsource) {
       this.$store.dispatch("getinfo", this.id).then(() => {
-
         this.$store.commit("setNewDealerParams");
 
         mapInfo.locationName &&
@@ -453,7 +466,7 @@ export default {
   },
   watch: {
     ownerUserGidsA(data) {
-      console.log(data)
+      console.log(data);
       let vals = [];
       data.map(r => {
         vals.push(r.ownerUserGid || r.id);
@@ -479,24 +492,25 @@ export default {
       code && this.getCity(code);
     },
     "$store.state.newDealer.params.rgnCyCd"(code) {
-      this.initCount++
-      code && this.getArea(code)
+      this.initCount++;
+      code && this.getArea(code);
     },
     "$store.state.newDealer.params.rgnArCd"(code) {
-      this.$store.state.dealer.areasList.length && this.$store.state.dealer.areasList.some(r => {
-        if (r.value === code) {
-          this.$store.commit("setParams", {
-            rgnArCd:  code, //this.$store.state.newDealer.params.rgnArCd ||
-            area: r.text //this.$store.state.newDealer.params.area || 
-          });
-          return true;
-        }
-      });
+      this.$store.state.dealer.areasList.length &&
+        this.$store.state.dealer.areasList.some(r => {
+          if (r.value === code) {
+            this.$store.commit("setParams", {
+              rgnArCd: code, //this.$store.state.newDealer.params.rgnArCd ||
+              area: r.text //this.$store.state.newDealer.params.area ||
+            });
+            return true;
+          }
+        });
     }
   },
   methods: {
-    delmapsource(){
-      sessionStorage.mapsource && delete sessionStorage.mapsource
+    delmapsource() {
+      sessionStorage.mapsource && delete sessionStorage.mapsource;
     },
     getArea(code) {
       this.$store.state.dealer.citysList.some(r => {
@@ -508,10 +522,10 @@ export default {
           return true;
         }
       });
-      console.log(this.$store.state.dealer.areasList, 111)
+      console.log(this.$store.state.dealer.areasList, 111);
 
       this.$store.dispatch("getAreas", code).then(data => {
-        this.$store.state.dealer.areasList.shift()
+        this.$store.state.dealer.areasList.shift();
         // if(data.length && this.initCount == 1 && this.$store.state.newDealer.params.rgnArCd){
         //   this.$store.commit("setParams", {
         //     rgnArCd: this.$store.state.newDealer.params.rgnArCd,
@@ -556,26 +570,26 @@ export default {
         //       : ""
         // });
 
-        if(this.initCount == 1){
-          data.length && this.$store.commit("setParams", {
-            rgnArCd: this.$store.state.newDealer.params.rgnArCd,
-            area: this.$store.state.newDealer.params.area
-          });
-          return
+        if (this.initCount == 1) {
+          data.length &&
+            this.$store.commit("setParams", {
+              rgnArCd: this.$store.state.newDealer.params.rgnArCd,
+              area: this.$store.state.newDealer.params.area
+            });
+          return;
         }
-        data.length && this.$store.commit("setParams", {
-          rgnArCd: data[0].value,
-          area: data[0].text
-        });
-        if(!data.length){
+        data.length &&
           this.$store.commit("setParams", {
-            rgnArCd: '',
-            area: ''
+            rgnArCd: data[0].value,
+            area: data[0].text
+          });
+        if (!data.length) {
+          this.$store.commit("setParams", {
+            rgnArCd: "",
+            area: ""
           });
         }
-
       });
-      
     },
     getCity(code) {
       this.$store.state.dealer.provincesList.some(r => {
@@ -606,7 +620,10 @@ export default {
       });
     },
     nextStep() {
-      if (!this.$store.state.newDealer.params.dealerName || !this.$store.state.newDealer.params.ownerUserList.length) {
+      if (
+        !this.$store.state.newDealer.params.dealerName ||
+        !this.$store.state.newDealer.params.ownerUserList.length
+      ) {
         this.$dialog.alert({
           message: "有必填项为空，请认填写"
         });
@@ -623,8 +640,8 @@ export default {
       });
     },
     save() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let legalParams = this.$store.state.newDealer.params;
       legalParams.dealerGid = this.id;
@@ -640,10 +657,11 @@ export default {
           legalParams.certTypCd &&
           legalParams.certNo
         ) {
-          !this.recordStatus && this.$store.dispatch(
-            this.existLegal ? "editlegal" : "addlegal",
-            legalParams
-          );
+          !this.recordStatus &&
+            this.$store.dispatch(
+              this.existLegal ? "editlegal" : "addlegal",
+              legalParams
+            );
         } else {
           this.$dialog.alert({
             message: "法人信息不全"
@@ -701,5 +719,34 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.radioGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ff9b02;
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon .van-icon {
+  border: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-icon-success:before {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.radioGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>
