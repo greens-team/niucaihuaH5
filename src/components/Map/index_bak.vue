@@ -75,7 +75,13 @@ export default {
               o.getCurrentPosition((status, result) => {
                 if (result && result.position) {
                   self.center = [result.position.lng, result.position.lat];
-                  self.getInfo(result.position.lng, result.position.lat)
+                  self.dealerPosition = [result.position.lng, result.position.lat]
+                  self.params = {
+                    lng: result.position.lng,
+                    lat: result.position.lat,
+                    address: result.formattedAddress
+                  }
+                  self.searchOption.city = result.addressComponent.city || result.addressComponent.province
                   self.$nextTick();
                 }
               });
@@ -102,8 +108,7 @@ export default {
               lat: lat,
               address: result.regeocode.formattedAddress
             }
-            console.log(result, 88)
-            this.dealerPosition = [lng, lat]
+           this.dealerPosition = [lng, lat]
             this.$nextTick();
           }
         }

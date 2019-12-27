@@ -720,7 +720,7 @@ export default {
         this.empty2 = true
         return;
       }
-      if(!this.visitAimObj.id && this.$route.query.taskType === 1){
+      if(this.visitAimObj.id !== 0 && !this.visitAimObj.id && this.$route.query.taskType === 1){
         this.empty3 = true;
         return;
       }

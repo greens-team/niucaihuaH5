@@ -24,7 +24,7 @@
             <div class="bg-gray-200 mt-2">
               <van-field
                 v-model="params.dealerName"
-                style="background-color: #F8FAFB; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
             </div>
@@ -124,7 +124,7 @@
                   v-model="params.notVisitDays"
                   pattern="[0-9]*"
                   @input="val=>!/^[0-9]+$/.test(val) && (this.params.notVisitDays = '')"
-                  style="background-color: #F8FAFB; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                  style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                   placeholder="天数"
                 />
               </div>
@@ -260,10 +260,7 @@ export default {
       if (val) {
         this.$store.dispatch("getAreas", val).then(data => {
           this.$store.state.dealer.areasList.length &&
-            this.$store.state.dealer.areasList.unshift({
-              text: "请选择县",
-              value: ""
-            });
+            (this.$store.state.dealer.areasList[0].text = "请选择县")
         });
         this.$store.state.dealer.citysList.some(r => {
           if (r.value == val) {
@@ -359,7 +356,7 @@ export default {
         province: "",
         provinceVal: ""
       };
-      this.finish();
+      // this.finish();
     }
   }
 };
@@ -415,6 +412,11 @@ export default {
   border: 6px solid;
   border-color: transparent #ff9b02 #ff9b02 transparent;
   content: "";
+}
+
+.Screening /deep/ .van-picker__cancel, .Screening /deep/ .van-picker__confirm{
+  color: #ff9b02;
+  font-size: 1.143rem;
 }
 
 .Screening /deep/ .van-picker__toolbar {

@@ -8,20 +8,38 @@
       @click-right="setLocation"
     />
     <div class="amap-page-container flex-1 flex flex-col relative">
-      <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
+      <!-- <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
       <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         经销商位置: {{params.address}}
-      </div>
+      </div> -->
       
-      <el-amap-search-box v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <!-- v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" -->
       <!-- <el-amap-search-box v-if="$route.query.edit" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
       <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
-        <template v-if="($route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)) && markers.length">
+        <!-- <template v-if="($route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)) && markers.length">
           <el-amap-marker v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
-        </template>
+        </template> -->
         <el-amap-marker style="z-index: 9999999999;" :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
       </el-amap>
     </div>
+
+    <div style="height: 350px;" class="checkBoxGroup flex flex-col" >
+      <el-amap-search-box  style="width:90%;margin:10px 5%" placeholder="请输入姓名" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <div class="flex-1 relative">
+        <div class="absolute inset-0 overflow-y-scroll">
+            <van-radio-group v-model="resPoi">
+              <van-radio icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in pois.pois" :key="i" :name="r">
+                {{r.name}}<br />
+                <span class="text-sm text-gray-500">{{r.address}}</span>
+              </van-radio>
+            </van-radio-group>
+        </div>
+      </div>
+
+          
+
+    </div>
+
   </div>
 </template>
 
@@ -40,6 +58,8 @@ export default {
   data() {
     let self = this;
       return {
+        pois: {},
+        resPoi: {},
         params : {
           lng: '',
           lat: '',
@@ -75,13 +95,7 @@ export default {
               o.getCurrentPosition((status, result) => {
                 if (result && result.position) {
                   self.center = [result.position.lng, result.position.lat];
-                  self.dealerPosition = [result.position.lng, result.position.lat]
-                  self.params = {
-                    lng: result.position.lng,
-                    lat: result.position.lat,
-                    address: result.formattedAddress
-                  }
-                  self.searchOption.city = result.addressComponent.city || result.addressComponent.province
+                  self.getInfo(result.position.lng, result.position.lat)
                   self.$nextTick();
                 }
               });
@@ -93,6 +107,17 @@ export default {
         }]
       }
   },
+  watch: {
+    resPoi(val){
+      this.params = {
+        lng: val.location.lng,
+        lat: val.location.lat,
+        address: this.pois.addressComponent.province + this.pois.addressComponent.city + this.pois.addressComponent.district + val.address + val.name
+      }
+      this.dealerPosition = [val.location.lng, val.location.lat]
+      this.center = [val.location.lng, val.location.lat];
+    }
+  },
   methods: {
     getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
@@ -103,34 +128,40 @@ export default {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
             this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
-            this.params = {
-              lng: lng,
-              lat: lat,
-              address: result.regeocode.formattedAddress
-            }
-           this.dealerPosition = [lng, lat]
+            // this.params = {
+            //   lng: lng,
+            //   lat: lat,
+            //   address: result.regeocode.formattedAddress
+            // }
+            this.pois = result.regeocode
+            this.resPoi = this.pois.pois[0]
             this.$nextTick();
           }
         }
       }); 
     },
-    onSearchResult(pois) {
-        this.markers=[]
-        let latSum = 0;
-        let lngSum = 0;
-        if (pois.length > 0) {
-          pois.forEach(poi => {
-            let {lng, lat} = poi;
-            lngSum += lng;
-            latSum += lat;
-            this.markers.push([poi.lng, poi.lat]);
-          });
-          let center = {
-            lng: lngSum / pois.length,
-            lat: latSum / pois.length
-          };
-          this.center = [center.lng, center.lat];
-        }
+    onSearchResult(pois, aa) {
+      console.log(pois, aa,43)
+
+      this.pois.pois = pois
+      this.resPoi = pois[0]
+
+        // this.markers=[]
+        // let latSum = 0;
+        // let lngSum = 0;
+        // if (pois.length > 0) {
+        //   pois.forEach(poi => {
+        //     let {lng, lat} = poi;
+        //     lngSum += lng;
+        //     latSum += lat;
+        //     this.markers.push([poi.lng, poi.lat]);
+        //   });
+        //   let center = {
+        //     lng: lngSum / pois.length,
+        //     lat: latSum / pois.length
+        //   };
+        //   this.center = [center.lng, center.lat];
+        // }
       },
     
     setSource(){
@@ -169,4 +200,43 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
+
+
+.checkBoxGroup /deep/ textarea::-webkit-input-placeholder {
+  color: #c4c6cc;
+}
+.checkBoxGroup /deep/ textarea::-moz-input-placeholder {
+  color: #c4c6cc;
+}
+.checkBoxGroup /deep/ textarea::-ms-input-placeholder {
+  color: #c4c6cc;
+}
+
+.checkBoxGroup /deep/ .el-vue-search-box-container{
+  border-radius: 20px;
+  box-shadow: 0 3px 5px #f5f5f5;
+  border: 1px solid #f1f1f1;
+  height: 40px;
+}
+.checkBoxGroup /deep/ .el-vue-search-box-container input{
+  margin-left: 10px;
+}
+
 </style>
