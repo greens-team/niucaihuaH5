@@ -160,15 +160,15 @@
                     <p
                       class="text_content text-base"
                       style="color:#252525"
-                    >{{ownerUserGids.toString()}}</p>
+                    >{{ownerUserGidsName.toString()}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
                     <p class="text-xs text_title">参与人</p>
                     <p
                       class="text_content text-base"
-                      :style="{color:followerUserGids.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                    >{{followerUserGids.length ? followerUserGids.toString():'-'}}</p>
+                      :style="{color:followerUserGidsName.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{followerUserGidsName.length ? followerUserGidsName.toString():'-'}}</p>
                   </div>
 
                   <div class="border_line pt-2 pb-2" style="height:4rem;">
@@ -450,8 +450,8 @@ export default {
       isShowNoData: false,
       isShowNoData_1: false,
 
-      ownerUserGids: "",
-      followerUserGids: ""
+      ownerUserGidsName: "",
+      followerUserGidsName: ""
     };
   },
   created() {
@@ -551,13 +551,13 @@ export default {
           this.info.followerUserList.map(r => {
             followerUserList.push(r.ownerUserName);
           });
-          this.followerUserGids = followerUserList.toString();
+          this.followerUserGidsName = followerUserList.toString();
 
           let ownerUserList = [];
           this.info.ownerUserList.map(r => {
             ownerUserList.push(r.ownerUserName);
           });
-          this.ownerUserGids = ownerUserList.toString();
+          this.ownerUserGidsName = ownerUserList.toString();
         });
       }
       if (num === 1) {
