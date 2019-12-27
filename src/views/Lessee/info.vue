@@ -566,7 +566,7 @@ export default {
         });
       }
       if (num === 1) {
-        // this.$store.dispatch("getLesseeInfo", this.id).then(res => {
+        this.$store.dispatch("getLesseeInfo", this.id).then(res => {
           this.info = this.$store.state.lessee.info;
           if (this.$store.state.lessee.info.dealerList != null) {
             this.isShowDealer = true;
@@ -579,7 +579,7 @@ export default {
           if (this.info.birthday == null) {
             this.info.birthday = null;
           }
-        // });
+        });
       }
       if (num === 2) {
         // 动态记录

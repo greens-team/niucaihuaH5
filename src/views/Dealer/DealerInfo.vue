@@ -738,6 +738,7 @@ export default {
 
     // this.$store.state.dealerInfo.currentTabsIndex = 0;
     this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
+    console.log(this.$store.state.dealerInfo.currentTabsIndex)
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
@@ -805,6 +806,7 @@ export default {
         this.$refs.listBox.scrollTop = this.topVal;
       }
       this.getBaseInfo(num);
+      console.log(num,this.$store.state.dealerInfo.currentTabsIndex)
     }
   },
   filters: {
