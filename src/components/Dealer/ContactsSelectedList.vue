@@ -35,13 +35,14 @@
           class="border-b border-gray-200"
           style="padding: .86rem .86rem 0 .86rem"
         >
-          <van-checkbox-group v-model="$store.state.dealer.confirmUserGids">
+          <van-checkbox-group v-model="$store.state.dealer.confirmUserGids" class="checkBoxGroup">
             <van-checkbox :name="item">{{item.split(',')[0]}}</van-checkbox>
           </van-checkbox-group>
 
           <van-field v-model="$store.state.dealer.jobsUser[i]" placeholder="职务" />
           <!-- <van-field v-model="$store.state.dealer.jobsUser1[i]" placeholder="竞对政策" /> -->
         </div>
+        
       </div>
     </div>
   </div>
@@ -117,4 +118,21 @@ export default {
 .bar_title {
   font-size: 1.286rem;
 }
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
+
 </style>

@@ -139,7 +139,7 @@
           >{{typeList | typeListFilter}}</div>
         </div>
 
-        <van-popup v-model="businessTypesShow" position="bottom" :style="{ height: '40%'}">
+        <van-popup v-model="businessTypesShow" position="bottom" :style="{ height: '40%'}" class="checkBoxGroup">
           <van-nav-bar
             title="请选择业务类型"
             left-text="取消"
@@ -749,4 +749,22 @@ export default {
 .radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
   margin-left: -25px;
 }
+
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
+
 </style>

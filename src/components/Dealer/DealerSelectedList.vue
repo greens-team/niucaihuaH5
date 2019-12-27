@@ -30,7 +30,7 @@
       <div class="absolute inset-0 overflow-y-auto">
         <!-- <div class="flex"> -->
 
-        <van-checkbox-group v-model="$store.state.dealer.confirmUserGids" class="flex-1 ml-5">
+        <van-checkbox-group v-model="$store.state.dealer.confirmUserGids" class="flex-1 ml-5 checkBoxGroup">
           <van-checkbox
             v-for="(item, i) in $store.state.dealer.selectedUserGids"
             :key="i"
@@ -125,5 +125,21 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>
