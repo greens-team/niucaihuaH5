@@ -25,14 +25,14 @@ import apiList from '@/api'
 ajax(apiList, error => {
   // 请求错误统一处理
   if (!error.response) {
-    Dialog({ message: error.response.statusText });
+    Dialog({ message: error.response.statusText || error.response.message });
     // Notify({ type: 'warning', message: error.response.statusText })
     delete sessionStorage.Authorization
     // store.commit('setLoginState', false)
     router.push('/')
   }
   if (error.response.status == 401) {
-    Dialog({ message: error.response.statusText });
+    Dialog({ message: error.response.statusText || error.response.message });
     // Notify({ type: 'warning', message: error.response.statusText })
     delete sessionStorage.Authorization
     // store.commit('setLoginState', false)
