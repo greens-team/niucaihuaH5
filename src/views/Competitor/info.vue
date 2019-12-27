@@ -191,7 +191,7 @@
                   </div>
                 </div>
                 <div
-                  class="border-b"
+                  class="border-b last_child" 
                   style="padding-top: 1rem;padding-bottom: 1rem;"
                   v-for="(r,i) in $store.state.competitor.listNewslog"
                   :key="i"
@@ -257,7 +257,7 @@
                   </div>
                 </div>
                 <div
-                  class="border-b"
+                  class="border-b last_child"
                   style="padding-top: 1rem;padding-bottom: 1rem;"
                   v-for="(r,i) in $store.state.competitor.listOperatelog"
                   :key="i"
@@ -265,7 +265,7 @@
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
                   <span
                     class="text-gray-600"
-                    style="padding-right:1rem;word-wrap:break-word;"
+                    style="padding-right:1rem;word-wrap:break-word;color:#252525"
                   >{{r.content}}</span>
                 </div>
               </div>
@@ -276,7 +276,7 @@
     </div>
 
     <div
-      class="flex bg-white footer-bar border-t border-gray-300 iteams-center fixed bottom-0 left-0 right-0 z-10"
+      class="flex bg-white footer-bar iteams-center fixed bottom-0 left-0 right-0 z-10"
       style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03); z-index: 1;"
     >
       <van-uploader
@@ -676,5 +676,8 @@ export default {
 }
 .dealer /deep/ .van-cell {
   padding: 10px 0px;
+}
+.last_child:last-child {
+  border-bottom: 0px;
 }
 </style>

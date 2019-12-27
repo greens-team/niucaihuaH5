@@ -172,7 +172,7 @@
 
                 <div v-show="showInfo1">
                   <div class="border-t border-gray-100 p-2 mt-2">
-                    <p class="text-xs text-gray-500">
+                    <p class="text-xs" style="color:#80848D">
                       <span class="text-red-500" style="color:#f42929;margin-left:-6px;">*</span>经销商名称
                     </p>
                     <p>{{info.dealerName}}</p>
@@ -346,31 +346,31 @@
                   :name="r.id"
                 >
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">姓名</p>
+                    <p class="text-xs" style="color:#80848D">姓名</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
                     >{{r.contactsName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">职务</p>
+                    <p class="text-xs" style="color:#80848D">职务</p>
                     <p
                       :style="{color:r.jobTitle?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                     >{{r.jobTitle?r.jobTitle:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">电话</p>
+                    <p class="text-xs" style="color:#80848D">电话</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.contactsPhone?r.contactsPhone:'-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">微信</p>
+                    <p class="text-xs" style="color:#80848D">微信</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.weichatNum?r.weichatNum:'-'}}</p>
                   </div>
@@ -414,24 +414,24 @@
                   :name="r.id"
                 >
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">竞对名称</p>
+                    <p class="text-xs" style="color:#80848D">竞对名称</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
                     >{{r.competorName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">竞对政策</p>
+                    <p class="text-xs" style="color:#80848D">竞对政策</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.racePolicy?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.racePolicy?r.racePolicy:'-'}}</p>
                   </div>
                   <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">应对策略</p>
+                    <p class="text-xs" style="color:#80848D">应对策略</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.tactics?r.tactics:'-'}}</p>
                   </div>
@@ -475,24 +475,24 @@
                   :name="r.id"
                 >
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">姓名</p>
+                    <p class="text-xs" style="color:#80848D">姓名</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       style="color:#0885FF;"
                       @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>{$store.state.lessee.currentTabsIndex = 0;$router.push({path:'/LesseeInfo',query:{id:r.gid}})})"
                     >{{r.lesseeName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">证件号码</p>
+                    <p class="text-xs" style="color:#80848D">证件号码</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-base" 
                       :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.idcardNum?r.idcardNum:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">出生日期</p>
+                    <p class="text-xs" style="color:#80848D">出生日期</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.birthday?r.birthday:'-'}}</p>
                   </div>
@@ -501,49 +501,49 @@
                             <p class="text-gray-900 text-sm">{{r.marry ? '已婚' : '未婚'}}</p>
                   </div>-->
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">性别</p>
-                    <p class="text-gray-900 text-sm">{{r.gender ? '女' : '男'}}</p>
+                    <p class="text-xs" style="color:#80848D">性别</p>
+                    <p class="text-gray-900 text-base">{{r.gender ? '女' : '男'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">状态</p>
+                    <p class="text-xs" style="color:#80848D">状态</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                     >{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">客户类型</p>
+                    <p class="text-xs" style="color:#80848D">客户类型</p>
                     <!-- r.lesseeType -->
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                     >{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">手机号</p>
+                    <p class="text-xs" style="color:#80848D">手机号</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.lesseePhone?r.lesseePhone:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">户口所在地</p>
+                    <p class="text-xs" style="color:#80848D">户口所在地</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.domicilePlace?r.domicilePlace:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">从业年限</p>
+                    <p class="text-xs" style="color:#80848D">从业年限</p>
                     <p
-                      class="text-gray-900 text-sm"
+                      class="text-gray-900 text-base"
                       :style="{color:r.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.workingYears?r.workingYears:'-'}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
-                    <p class="text-xs text-gray-500">本人照片</p>
+                    <p class="text-xs" style="color:#80848D">本人照片</p>
                     <img :src="r.userPic" width="130" alt="本人照片" />
                   </div>
                   <div class="pt-2 pb-2">
-                    <p class="text-xs text-gray-500">身份证照片</p>
+                    <p class="text-xs" style="color:#80848D">身份证照片</p>
                     <div class="flex">
                       <img :src="r.idcardFrontPic" width="130" alt="身份证正面" />
                       <img :src="r.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
@@ -579,7 +579,7 @@
               </div>
 
               <div
-                class="border-b ml-4 mr-4"
+                class="border-b ml-4 mr-4 last_child"
                 style="padding-top: 1rem;padding-bottom: 1rem;"
                 v-for="(r,i) in $store.state.dealerInfo.listNewslog"
                 :key="i"
@@ -597,18 +597,18 @@
                 </div>
 
                 <div class="mt-3" style="margin-left:3.3rem;">
-                    <p
-                      v-if="r.content != '' "
-                      class="text-ms leading-relaxed"
-                      style="color:#252525"
-                    >{{r.content}}</p>
+                  <p
+                    v-if="r.content != '' "
+                    class="text-ms leading-relaxed"
+                    style="color:#252525"
+                  >{{r.content}}</p>
 
-                    <img v-if="r.pics != null " :src="picServer+r.pics" alt />
-                    <p
-                      class="text-sm mt-3"
-                      style="color:#80848D"
-                    >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm:ss')}}</p>
-                  </div>
+                  <img v-if="r.pics != null " :src="picServer+r.pics" alt />
+                  <p
+                    class="text-sm mt-3"
+                    style="color:#80848D"
+                  >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm:ss')}}</p>
+                </div>
               </div>
             </div>
 
@@ -636,13 +636,16 @@
                 </div>
               </div>
               <div
-                class="border-b ml-4 mr-4"
-                style="padding-top: 1rem;padding-bottom: 1rem;"
+                class="border-b ml-4 mr-4 last_child"
+                style="padding-top: 1rem;padding-bottom: 1rem;border-color:#ededee;"
                 v-for="(r,i) in $store.state.dealerInfo.listOperatelog"
                 :key="i"
               >
                 <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                <span class="text-gray-600">{{r.content}}</span>
+                <span
+                  class="text-gray-600"
+                  style="padding-right:1rem;word-wrap:break-word;color:#252525"
+                >{{r.content}}</span>
               </div>
             </div>
           </van-swipe-item>
@@ -738,7 +741,7 @@ export default {
 
     // this.$store.state.dealerInfo.currentTabsIndex = 0;
     this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
-    console.log(this.$store.state.dealerInfo.currentTabsIndex)
+    console.log(this.$store.state.dealerInfo.currentTabsIndex);
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
@@ -806,7 +809,7 @@ export default {
         this.$refs.listBox.scrollTop = this.topVal;
       }
       this.getBaseInfo(num);
-      console.log(num,this.$store.state.dealerInfo.currentTabsIndex)
+      console.log(num, this.$store.state.dealerInfo.currentTabsIndex);
     }
   },
   filters: {
@@ -1179,5 +1182,8 @@ export default {
 .DealerInfo /deep/ .van-collapse-item__title {
   background-color: #f7f7f7;
   border-bottom: 1px solid #fff;
+}
+.last_child:last-child {
+  border-bottom: 0px;
 }
 </style>
