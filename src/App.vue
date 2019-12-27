@@ -175,15 +175,11 @@ body {
   color: #f42929;
 }
 
-/* 设置固定定位,将bottom设置为0 */
-.footerBox {
-  position: fixed;
-  bottom: 0;
-}
-/* 判断iphoneX 将 footerBox 的 padding-bottom 填充到最底部 */
-@supports (bottom: env(safe-area-inset-bottom)) {
-  .footerBox {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+@supports (bottom: env(safe-area-inset-bottom)){
+    body,
+    .footer {
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }
 </style>
