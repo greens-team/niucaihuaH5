@@ -2,13 +2,13 @@
 <template>
 <div>
   <div  @click="userListValues = []; userListShow = true">
-    <span v-if="!soltCon" :class="[{'text-gray-500':!paramsVal.length}]">{{paramsVal | fiterUser}}</span>
+    <span v-if="!soltCon" :style="{color: paramsVal.length ? '#252525' : '#80848d'}">{{paramsVal | fiterUser}}</span>
     <slot></slot>
   </div>
   <van-popup
       v-model="userListShow"
       position="bottom"
-      :style="{ height: '40%'}">
+      :style="{ height: '40%'}" class="checkBoxGroup">
       <van-nav-bar
         :title="title"
         left-text="取消"
@@ -106,4 +106,21 @@ export default {
 </script>
 
 <style scoped>
+
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
 </style>

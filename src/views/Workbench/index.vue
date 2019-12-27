@@ -550,6 +550,7 @@ export default {
     },
     goWorkbenchSearch() {
       delete sessionStorage.globalSearchVal;
+      delete sessionStorage.globalModelType;
       this.$router.push({ name: "WorkbenchSearch" });
     }
   }

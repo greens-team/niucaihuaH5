@@ -137,7 +137,7 @@ export default {
     setInfo(state, data = {}) {
       Object.assign(state.info, data)
     },
-    setCurrentTabsIndex_lessee(state, num) {
+    setCurrentTabsIndex_lessee(state, num){
       state.currentTabsIndex = num
     },
     setInitParams(state) {
@@ -149,9 +149,9 @@ export default {
         pageSize: 10
       }
     },
-    setInitParams_tabs(state) {
-      state.currentTabsIndex = 0
-    },
+    // setInitParams_tabs(state) {
+    //   state.currentTabsIndex = 0
+    // },
     setInitAddParams(state) {
       state.addParams = {
 

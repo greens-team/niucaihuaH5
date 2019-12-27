@@ -15,30 +15,32 @@
       v-model="screeningShow"
       :overlay="false"
       position="right"
-      :style="{ width: '85%', height: '100%' }"
+      :style="{ width: '90%', height: '100%' }"
     >
       <div class="absolute inset-0 flex flex-col flex-1">
         <div class="flex-1 p-2 relative">
           <div class="absolute inset-0 overflow-y-scroll p-5">
             <div class="text-gray-700 font-bold">经营商名称</div>
-            <div class="bg-gray-200">
+            <div class="bg-gray-200 mt-2">
               <van-field
                 v-model="params.dealerName"
-                style="background-color: inherit;"
+                style="background-color: #F8FAFB; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
             </div>
 
             <div class="text-gray-700 font-bold mt-5">创建时间</div>
-            <div class="flex justify-between text-center items-center text-gray-600">
+            <div class="flex justify-between items-center text-gray-600  mt-2">
               <div
                 @click="showTime = !showTime; timeType=0;"
-                class="bg-gray-200 p-2 flex-1"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+                :style="{color: params.startTime ? '#252525' : '#80848d'}"
               >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
-              <div class="ml-2 mr-2">至</div>
+              <div class="ml-2 mr-2 ">-</div>
               <div
                 @click="showTime = !showTime; timeType=1;"
-                class="bg-gray-200 p-2 flex-1"
+                :style="{color: params.endTime ? '#252525' : '#80848d'}"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
               >{{params.endTime ? $root.moment(params.endTime).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
@@ -54,10 +56,10 @@
             </van-popup>
 
             <div class="text-gray-700 font-bold mt-5">所属区域</div>
-            <div class="flex flex-wrap text-center text-gray-600">
+            <div class="flex flex-wrap  mt-2">
               <van-dropdown-menu
-                class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1"
-                style="background-color: #edf2f7;  height: inherit; text-align:right;"
+                class="mr-1 flex-1 "
+                :style="{color: params.provinceVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
                   v-model="params.provinceVal"
@@ -66,8 +68,8 @@
               </van-dropdown-menu>
               <van-dropdown-menu
                 v-if="$store.state.dealer.citysList.length"
-                class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1"
-                style="background-color: #edf2f7;  height: inherit; text-align:right;"
+                class="text-gray-600 mr-1 flex-1 "
+                :style="{color: params.cityVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
                   v-model="params.cityVal"
@@ -76,8 +78,8 @@
               </van-dropdown-menu>
               <van-dropdown-menu
                 v-if="$store.state.dealer.areasList.length"
-                class="text-gray-600 mr-1 pt-3 pb-3 pr-2 pl-2 flex-1"
-                style="background-color: #edf2f7;  height: inherit; text-align:right;"
+                class="text-gray-600 mr-1 flex-1 "
+                :style="{color: params.areaVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
                   v-model="params.areaVal"
@@ -99,30 +101,30 @@
                 title="选择负责人"
                 :paramsVal="params.ownerUserGids"
                 @setParams="val=>params.ownerUserGids = val"
-                class="text-gray-600 ml-3 p-3 ellipsis"
-                style="background-color: #edf2f7; width:70%; height: 39px; text-align:right;"
+                class="text-gray-600  ellipsis flex-1 ml-3"
+                style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
               />
             </div>
 
-            <div class="flex items-center mt-5">
-              <div class="text-gray-700 font-bold">未拜访天数</div>
-              <div class="flex-1"></div>
+            <div class="text-gray-700 font-bold mt-5">未拜访天数</div>
+
+            <div class="flex items-center  mt-2">
               <van-dropdown-menu
-                class="text-gray-600 ml-3 p-3 w-32"
-                style="background-color: #edf2f7; height: inherit; text-align:right;"
+                class="text-gray-600  flex-1 "
+                :style="{color: params.notVisitConditions ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
                   v-model="params.notVisitConditions"
                   :options="$store.state.dealer.conditions"
                 />
               </van-dropdown-menu>
-              <div class="bg-gray-200 w-24 ml-1">
+              <div class="bg-gray-200 flex-1 ml-1">
                 <van-field
                   type="number"
                   v-model="params.notVisitDays"
                   pattern="[0-9]*"
                   @input="val=>!/^[0-9]+$/.test(val) && (this.params.notVisitDays = '')"
-                  style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;"
+                  style="background-color: #F8FAFB; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                   placeholder="天数"
                 />
               </div>
@@ -131,7 +133,7 @@
             <!-- <div class="flex items-center mt-5">
               <div class="text-gray-700 font-bold">拜访次数</div>
               <div class="flex-1"></div>
-              <van-dropdown-menu class="text-gray-600 ml-3 p-3 w-32" style="background-color: #edf2f7; height: inherit; text-align:right;">
+              <van-dropdown-menu class="text-gray-600 ml-3 p-3 w-32" style="background-color: #F8FAFB; height: 2.5rem; text-align:right;">
                 <van-dropdown-item v-model="params.visitConditions" :options="$store.state.dealer.conditions" />
               </van-dropdown-menu>
               <div class="bg-gray-200 w-24 ml-1">
@@ -151,8 +153,8 @@
         </div>
 
         <div class="flex text-center">
-          <div class="w-2/5 bg-gray-300 p-3 text-xl font-bold" @click="reset">重置</div>
-          <div class="flex-1 bg-orange p-3 text-xl font-bold text-white" @click="finish">完成</div>
+          <div class="w-2/5 bg-gray-300 p-3 text-xl font-bold" style="background:#EFF1F3;color:#252525;" @click="reset">重置</div>
+          <div class="flex-1 bg-orange p-3 text-xl font-bold text-white" style="background-image: linear-gradient( to left, #FF9505, #FEC43A);" @click="finish">完成</div>
         </div>
       </div>
     </van-popup>
@@ -395,13 +397,12 @@ export default {
     rgba(252, 254, 124, 1) 100%
   );
 }
-.Screening /deep/ .van-dropdown-menu__item {
-  padding-right: 5px;
-  justify-content: flex-end;
+
+.Screening /deep/ .van-dropdown-menu__item{
+  -webkit-justify-content: left;
+  justify-content: left;
 }
-.Screening /deep/ .van-dropdown-menu__item .van-ellipsis {
-  color: #718096;
-}
+
 .cardStatus {
   background-color: #fff2e6;
   position: relative;
@@ -439,4 +440,39 @@ export default {
   display: inline-block;
   margin-right: .3rem;
 }
+
+.Screening .bg-gray-200{
+  background:#F8FAFB;
+  height: 2.5rem;
+}
+.Screening .text-gray-700{
+  color: #252525;
+}
+.DealerManage .Screening /deep/ .van-dropdown-menu__title{
+  padding:0;
+  color: inherit;
+}
+
+
+.Screening /deep/ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #80848d;
+  font-size: 14px;
+}
+
+.Screening /deep/ input:-moz-placeholder, textarea:-moz-placeholder {
+  color: #80848d;
+  font-size: 14px;
+}
+
+.Screening /deep/ input::-moz-placeholder, textarea::-moz-placeholder {
+  color: #80848d;
+  font-size: 14px;
+}
+
+.Screening /deep/ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+  color: #80848d;
+  font-size: 14px;
+}
+
+
 </style>

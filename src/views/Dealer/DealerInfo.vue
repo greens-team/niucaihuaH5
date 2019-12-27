@@ -2,7 +2,7 @@
 <template>
   <!--  -->
   <!-- <div class="absolute inset-0 overflow-y-scroll" ref="listBox"> -->
-  <div class="DealerInfo  absolute inset-0 overflow-y-scroll" ref="listBox">
+  <div class="DealerInfo absolute inset-0 overflow-y-scroll" ref="listBox">
     <!-- <van-nav-bar title="经销商详情" @click-left="$router.go(-1)" left-text="返回" left-arrow>
       <i
         class="iconfont iconqipaocaidanbianji-bang"
@@ -13,7 +13,9 @@
       ></i>
       <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> 
     </van-nav-bar>-->
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white fixed top-0 left-0 right-0 z-10">
+    <div
+      class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white fixed top-0 left-0 right-0 z-10"
+    >
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
@@ -135,518 +137,528 @@
       </div>
       <div :style="{minHeight:positioning ? '600px': 'auto'}">
         <!-- <div class="absolute inset-0 overflow-y-scroll" ref="listBox"> -->
-          <van-swipe
-            ref="swipe"
-            :loop="false"
-            :show-indicators="false"
-            @change="(num)=>$store.commit('setCurrentTabsIndex', num)"
-          >
-            <van-swipe-item v-for="(row,index) in $store.state.dealerInfo.tabs" :key="index">
-              <!-- 备案信息 基本信息 -->
-              <div v-if="$store.state.dealerInfo.currentTabsIndex === 0">
-                <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                  <div class="flex items-center relative">
-                    <div class="flex flex-1 items-center font-bold"  @click="showInfo1 = !showInfo1">
-                      备案信息
-                      <i
-                        class="iconfont iconweizhankai ml-2 icon_toggle"
-                        style="color:#80848D"
-                        :class="{ active: showInfo1}"
-                      ></i>
-                    </div>
-                    <div
-                      v-if="info.recordStatus"
-                      style="color:#FF9B02"
-                      class="text-base"
-                    >{{$store.state.record.recordStatus[info.recordStatus]}}</div>
-                    <!-- <div
+        <van-swipe
+          ref="swipe"
+          :loop="false"
+          :show-indicators="false"
+          @change="(num)=>$store.commit('setCurrentTabsIndex', num)"
+        >
+          <van-swipe-item v-for="(row,index) in $store.state.dealerInfo.tabs" :key="index">
+            <!-- 备案信息 基本信息 -->
+            <div v-if="$store.state.dealerInfo.currentTabsIndex === 0">
+              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+                <div class="flex items-center relative">
+                  <div class="flex flex-1 items-center font-bold" @click="showInfo1 = !showInfo1">
+                    备案信息
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo1}"
+                    ></i>
+                  </div>
+                  <div
+                    v-if="info.recordStatus"
+                    style="color:#FF9B02"
+                    class="text-base"
+                  >{{$store.state.record.recordStatus[info.recordStatus]}}</div>
+                  <!-- <div
                       v-else
                       style="color:#FF9B02"
                       class="text-base"
                       v-show="$root.checkRole('DEALER_EDIT')"
                       @click="$root.dataCheck({modelObjType:1, modelId: id}, recordSubmit)"
-                    >提交备案</div> -->
-                  </div>
-
-                  <div v-show="showInfo1">
-                    <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500">
-                        <span class="text-red-500" style="color:#f42929;margin-left:-6px;">*</span>经销商名称
-                      </p>
-                      <p>{{info.dealerName}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs" style="color:#80848D">统一社会信用代码</p>
-                      <p
-                        :style="{color:info.creditCode?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{info.creditCode?info.creditCode:'-'}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">成立日期</p>
-
-                      <p
-                        :style="{color:info.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{info.establishTime?$root.moment(info.establishTime*1000).format('YYYY-MM-DD'):'-'}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">所属地区</p>
-                      <p>{{info.province}}{{info.city}}{{info.area}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">注册地址</p>
-                      <p
-                        :style="{color:info.address?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{info.address?info.address:'-'}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">公司归属</p>
-                      <p>{{$store.getters.NDownerCdTypes[info.ownerCd-1] && $store.getters.NDownerCdTypes[info.ownerCd-1].text}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
-                      <p>{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
-                    </div>
-
-                    <div v-if="info.contactsName">
-                      <div class="border-t border-gray-100 p-2 mt-2">
-                        <p class="text-xs text-gray-500" style="color:#80848D">法人姓名</p>
-                        <p
-                          :style="{color:info.contactsName?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                        >{{info.contactsName?info.contactsName:'-'}}</p>
-                      </div>
-                      <div class="border-t border-gray-100 p-2 mt-2">
-                        <p class="text-xs text-gray-500" style="color:#80848D">证件类型</p>
-                        <p>{{$store.state.record.certTypCd[info.certTypCd]}}</p>
-                      </div>
-                      <div class="border-t border-gray-100 p-2 mt-2">
-                        <p class="text-xs text-gray-500" style="color:#80848D">证件号码</p>
-                        <p
-                          :style="{color:info.certNo?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                        >{{info.certNo?info.certNo:'-'}}</p>
-                      </div>
-                      <div class="border-t border-gray-100 p-2 mt-2">
-                        <p class="text-xs text-gray-500" style="color:#80848D">手机号码</p>
-                        <p
-                          :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                        >{{info.contactsPhone?info.contactsPhone:'-'}}</p>
-                      </div>
-                    </div>
-
-                    <div v-if="info.idcardFrontPic" class="border-t border-gray-100 p-2 mt-2 flex">
-                      <div class="flex-1">
-                        <p class="text-xs text-gray-500" style="color:#80848D">法人身份证正面</p>
-                        <img :src="picServer + info.idcardFrontPic" alt />
-                      </div>
-                      <div class="flex-1 ml-3">
-                        <p class="text-xs text-gray-500" style="color:#80848D">法人身份证反面</p>
-                        <img :src="picServer + info.idcardBackPic" alt />
-                      </div>
-                    </div>
-                    <div class="border-t border-gray-100 p-2 mt-2" v-if="info.licensePic">
-                      <p class="text-xs text-gray-500" style="color:#80848D">营业执照</p>
-                      <img :src="picServer + info.licensePic" alt />
-                    </div>
-                    <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">地理位置</p>
-                      <div
-                        class="flex"
-                        :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >
-                        <span
-                          class="text-blue-500"
-                          style="color:#0885FF"
-                          v-if="info.locationName"
-                          @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
-                        >{{info.locationName}}</span>
-                        <span v-else>-</span>
-                      </div>
-                    </div>
-                  </div>
+                  >提交备案</div>-->
                 </div>
-                <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
-                  <div class="flex items-center">
-                    <div class="flex flex-1 items-center font-bold" @click="showInfo2 = !showInfo2">
-                      基本信息
-                      <i
-                        class="iconfont iconweizhankai ml-2 icon_toggle"
-                        style="color:#80848D"
-                        :class="{ active: showInfo2}"
-                      ></i>
+
+                <div v-show="showInfo1">
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs" style="color:#80848D">
+                      <span class="text-red-500" style="color:#f42929;margin-left:-6px;">*</span>经销商名称
+                    </p>
+                    <p>{{info.dealerName}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs" style="color:#80848D">统一社会信用代码</p>
+                    <p
+                      :style="{color:info.creditCode?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.creditCode?info.creditCode:'-'}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">成立日期</p>
+
+                    <p
+                      :style="{color:info.establishTime?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.establishTime?$root.moment(info.establishTime*1000).format('YYYY-MM-DD'):'-'}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">所属地区</p>
+                    <p>{{info.province}}{{info.city}}{{info.area}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">注册地址</p>
+                    <p
+                      :style="{color:info.address?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.address?info.address:'-'}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">公司归属</p>
+                    <p>{{$store.getters.NDownerCdTypes[info.ownerCd-1] && $store.getters.NDownerCdTypes[info.ownerCd-1].text}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
+                    <p v-if="info.chkBusTypCdList">{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
+                    <p v-else style="color: rgba(69, 90, 100, 0.6);">-</p>
+                  </div>
+
+                  <div v-if="info.contactsName">
+                    <div class="border-t border-gray-100 p-2 mt-2">
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人姓名</p>
+                      <p
+                        :style="{color:info.contactsName?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.contactsName?info.contactsName:'-'}}</p>
+                    </div>
+                    <div class="border-t border-gray-100 p-2 mt-2">
+                      <p class="text-xs text-gray-500" style="color:#80848D">证件类型</p>
+                      <p>{{$store.state.record.certTypCd[info.certTypCd]}}</p>
+                    </div>
+                    <div class="border-t border-gray-100 p-2 mt-2">
+                      <p class="text-xs text-gray-500" style="color:#80848D">证件号码</p>
+                      <p
+                        :style="{color:info.certNo?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.certNo?info.certNo:'-'}}</p>
+                    </div>
+                    <div class="border-t border-gray-100 p-2 mt-2">
+                      <p class="text-xs text-gray-500" style="color:#80848D">手机号码</p>
+                      <p
+                        :style="{color:info.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      >{{info.contactsPhone?info.contactsPhone:'-'}}</p>
                     </div>
                   </div>
-                  <div v-show="showInfo2">
-                    <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">经销商分级</p>
-                      <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
+
+                  <div v-if="info.idcardFrontPic" class="border-t border-gray-100 p-2 mt-2 flex">
+                    <div class="flex-1">
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人身份证正面</p>
+                      <img :src="picServer + info.idcardFrontPic" alt />
                     </div>
+                    <div class="flex-1 ml-3">
+                      <p class="text-xs text-gray-500" style="color:#80848D">法人身份证反面</p>
+                      <img :src="picServer + info.idcardBackPic" alt />
+                    </div>
+                  </div>
+                  <div class="border-t border-gray-100 p-2 mt-2" v-if="info.licensePic">
+                    <p class="text-xs text-gray-500" style="color:#80848D">营业执照</p>
+                    <img :src="picServer + info.licensePic" alt />
+                  </div>
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">地理位置</p>
                     <div
-                      v-if="info.ownerUserList && info.ownerUserList.length"
-                      class="border-t border-gray-100 p-2 mt-2"
+                      class="flex"
+                      :style="{color:info.locationName?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >
-                      <p class="text-xs text-gray-500" style="color:#80848D">负责人</p>
-                      <p>{{info.ownerUserList.map(r=>r.ownerUserName).toString()}}</p>
-                    </div>
-                    <div
-                      v-if="info.followerUserList && info.followerUserList.length"
-                      class="border-t border-gray-100 p-2 mt-2"
-                    >
-                      <p class="text-xs text-gray-500" style="color:#80848D">参与人</p>
-                      <p>{{info.followerUserList.map(r=>r.ownerUserName).toString()}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">创建日期</p>
-                      <p>{{$root.moment(info.createTime*1000).format('YYYY-MM-DD')}}</p>
-                    </div>
-                    <div class="border-t border-gray-100 p-2 mt-2">
-                      <p class="text-xs text-gray-500" style="color:#80848D">备注信息</p>
-                      <p
-                        :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{info.comment?info.comment:'-'}}</p>
+                      <span
+                        class="text-blue-500"
+                        style="color:#0885FF"
+                        v-if="info.locationName"
+                        @click="$router.push({name:'Map', query:{lng:info.longitude ,lat: info.latitude}})"
+                      >{{info.locationName}}</span>
+                      <span v-else>-</span>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <!-- 联系人 -->
-              <div
-                v-if="$store.state.dealerInfo.currentTabsIndex === 1"
-                class="contactslist shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
-              >
-                <div class="flex pl-3 pr-3 pb-3">
-                  <div class="flex-1 font-bold">联系人</div>
-                  <div
-                    class="text-base text-blue-500"
-                    style="color:#FF9B02"
-                    v-show="$root.checkRole('DEALER_EDIT')"
-                    @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}))"
-                  >添加</div>
-                </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData"
-                >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
+              <div class="shadow-md rounded-lg m-3 p-2 pl-4 pr-4 bg-white">
+                <div class="flex items-center">
+                  <div class="flex flex-1 items-center font-bold" @click="showInfo2 = !showInfo2">
+                    基本信息
+                    <i
+                      class="iconfont iconweizhankai ml-2 icon_toggle"
+                      style="color:#80848D"
+                      :class="{ active: showInfo2}"
+                    ></i>
                   </div>
                 </div>
-                <van-collapse v-model="currentContacts">
-                  <van-collapse-item
-                    v-for="(r,i) in contactslist"
-                    :key="i"
-                    :title="r.contactsName"
-                    :name="r.id"
+                <div v-show="showInfo2">
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">经销商分级</p>
+                    <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
+                  </div>
+                  <div
+                    v-if="info.ownerUserList && info.ownerUserList.length"
+                    class="border-t border-gray-100 p-2 mt-2"
                   >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">姓名</p>
-                      <p
-                        class="text-gray-900 text-sm" style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
-                      >{{r.contactsName}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">职务</p>
-                      <p
-                        :style="{color:r.jobTitle?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                        class="text-gray-900 text-sm"
-                      >{{r.jobTitle?r.jobTitle:'-'}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">电话</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.contactsPhone?r.contactsPhone:'-'}}</p>
-                    </div>
-                    <div class="pt-2 pb-2">
-                      <p class="text-xs text-gray-500">微信</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.weichatNum?r.weichatNum:'-'}}</p>
-                    </div>
-                  </van-collapse-item>
-                </van-collapse>
+                    <p class="text-xs text-gray-500" style="color:#80848D">负责人</p>
+                    <p>{{info.ownerUserList.map(r=>r.ownerUserName).toString()}}</p>
+                  </div>
+                  <div
+                    v-if="info.followerUserList && info.followerUserList.length"
+                    class="border-t border-gray-100 p-2 mt-2"
+                  >
+                    <p class="text-xs text-gray-500" style="color:#80848D">参与人</p>
+                    <p>{{info.followerUserList.map(r=>r.ownerUserName).toString()}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">创建日期</p>
+                    <p>{{$root.moment(info.createTime*1000).format('YYYY-MM-DD')}}</p>
+                  </div>
+                  <div class="border-t border-gray-100 p-2 mt-2">
+                    <p class="text-xs text-gray-500" style="color:#80848D">备注信息</p>
+                    <p
+                      :style="{color:info.comment?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.comment?info.comment:'-'}}</p>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              <div
-                v-if="$store.state.dealerInfo.currentTabsIndex === 2"
-                class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
-              >
-                <div class="flex pl-3 pr-3 pb-3">
-                  <div class="flex-1 font-bold">竞争对手</div>
-                  <div
-                    style="color:#FF9B02"
-                    class="text-base text-blue-500"
-                    v-show="$root.checkRole('DEALER_EDIT')"
-                    @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id,onlyWrite:true}}))"
-                  >添加</div>
-                </div>
+            <!-- 联系人 -->
+            <div
+              v-if="$store.state.dealerInfo.currentTabsIndex === 1"
+              class="contactslist shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+            >
+              <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex-1 font-bold">联系人</div>
                 <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData_competitor"
-                >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
-                  </div>
-                </div>
-                <van-collapse v-model="currentCompetitor">
-                  <van-collapse-item
-                    v-for="(r,i) in competitorlist"
-                    :key="i"
-                    :title="r.competorName"
-                    :name="r.id"
-                  >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">竞对名称</p>
-                      <p
-                        class="text-gray-900 text-sm" style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
-                      >{{r.competorName}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">竞对政策</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.racePolicy?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.racePolicy?r.racePolicy:'-'}}</p>
-                    </div>
-                    <div class="pt-2 pb-2">
-                      <p class="text-xs text-gray-500">应对策略</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.tactics?r.tactics:'-'}}</p>
-                    </div>
-                  </van-collapse-item>
-                </van-collapse>
+                  class="text-base text-blue-500"
+                  style="color:#FF9B02"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}));"
+                >添加</div>
               </div>
-
               <div
-                v-if="$store.state.dealerInfo.currentTabsIndex === 3"
-                class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+                class="flex justify-center items-center text-center"
+                style="height:20rem;margin-top:-4rem;"
+                v-show="isShowNoData"
               >
-                <div class="flex pl-3 pr-3 pb-3">
-                  <div class="flex-1 font-bold">承租人</div>
-                  <div
-                    style="color:#FF9B02"
-                    class="text-base text-blue-500"
-                    v-show="$root.checkRole('DEALER_EDIT')"
-                    @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id,onlyWrite:true}}))"
-                  >添加</div>
+                <div>
+                  <img
+                    src="../../assets/workbench/no_data.png"
+                    style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                    alt="暂无数据"
+                  />
+                  <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                  <p style="color:#80848D">暂时还没有数据呢～</p>
                 </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData_lessee"
+              </div>
+              <van-collapse v-model="currentContacts">
+                <van-collapse-item
+                  v-for="(r,i) in contactslist"
+                  :key="i"
+                  :title="r.contactsName"
+                  :name="r.id"
                 >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">姓名</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      style="color:#0885FF;"
+                      @click="$root.selectdpcheck({modelObjType:2, modelId: r.gid}, ()=>$router.push({path:'/ContactsInfo',query:{gid:r.gid}}))"
+                    >{{r.contactsName}}</p>
                   </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">职务</p>
+                    <p
+                      :style="{color:r.jobTitle?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                      class="text-gray-900 text-base"
+                    >{{r.jobTitle?r.jobTitle:'-'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">电话</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.contactsPhone?r.contactsPhone:'-'}}</p>
+                  </div>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">微信</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.contactsPhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.weichatNum?r.weichatNum:'-'}}</p>
+                  </div>
+                </van-collapse-item>
+              </van-collapse>
+            </div>
+
+            <div
+              v-if="$store.state.dealerInfo.currentTabsIndex === 2"
+              class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+            >
+              <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex-1 font-bold">竞争对手</div>
+                <div
+                  style="color:#FF9B02"
+                  class="text-base text-blue-500"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/CompetitorList', query: {modelGid: id,onlyWrite:true}}))"
+                >添加</div>
+              </div>
+              <div
+                class="flex justify-center items-center text-center"
+                style="height:20rem;margin-top:-4rem;"
+                v-show="isShowNoData_competitor"
+              >
+                <div>
+                  <img
+                    src="../../assets/workbench/no_data.png"
+                    style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                    alt="暂无数据"
+                  />
+                  <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                  <p style="color:#80848D">暂时还没有数据呢～</p>
                 </div>
-                <van-collapse v-model="currentLesseelist">
-                  <van-collapse-item
-                    v-for="(r,i) in lesseelist"
-                    :key="i"
-                    :title="r.lesseeName"
-                    :name="r.id"
-                  >
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">姓名</p>
-                      <p
-                        class="text-gray-900 text-sm" style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
-                      >{{r.lesseeName}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">证件号码</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.idcardNum?r.idcardNum:'-'}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">出生日期</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.birthday?r.birthday:'-'}}</p>
-                    </div>
-                    <!-- <div class="border-b border-gray-100 pt-2 pb-2">
+              </div>
+              <van-collapse v-model="currentCompetitor">
+                <van-collapse-item
+                  v-for="(r,i) in competitorlist"
+                  :key="i"
+                  :title="r.competorName"
+                  :name="r.id"
+                >
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">竞对名称</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      style="color:#0885FF;"
+                      @click="$root.selectdpcheck({modelObjType:4, modelId: r.gid}, ()=>$router.push({path:'/CompetitorInfo',query:{id:r.gid}}))"
+                    >{{r.competorName}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">竞对政策</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.racePolicy?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.racePolicy?r.racePolicy:'-'}}</p>
+                  </div>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">应对策略</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.tactics?r.tactics:'-'}}</p>
+                  </div>
+                </van-collapse-item>
+              </van-collapse>
+            </div>
+
+            <div
+              v-if="$store.state.dealerInfo.currentTabsIndex === 3"
+              class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+            >
+              <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex-1 font-bold">承租人</div>
+                <div
+                  style="color:#FF9B02"
+                  class="text-base text-blue-500"
+                  v-show="$root.checkRole('DEALER_EDIT')"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/LesseeList', query: {modelGid: id,onlyWrite:true}}))"
+                >添加</div>
+              </div>
+              <div
+                class="flex justify-center items-center text-center"
+                style="height:20rem;margin-top:-4rem;"
+                v-show="isShowNoData_lessee"
+              >
+                <div>
+                  <img
+                    src="../../assets/workbench/no_data.png"
+                    style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                    alt="暂无数据"
+                  />
+                  <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                  <p style="color:#80848D">暂时还没有数据呢～</p>
+                </div>
+              </div>
+              <van-collapse v-model="currentLesseelist">
+                <van-collapse-item
+                  v-for="(r,i) in lesseelist"
+                  :key="i"
+                  :title="r.lesseeName"
+                  :name="r.id"
+                >
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">姓名</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      style="color:#0885FF;"
+                      @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>{$store.state.lessee.currentTabsIndex = 0;$router.push({path:'/LesseeInfo',query:{id:r.gid}})})"
+                    >{{r.lesseeName}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">证件号码</p>
+                    <p
+                      class="text-base" 
+                      :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.idcardNum?r.idcardNum:'-'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">出生日期</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.birthday?r.birthday:'-'}}</p>
+                  </div>
+                  <!-- <div class="border-b border-gray-100 pt-2 pb-2">
                             <p class="text-xs text-gray-500">婚姻情况</p>
                             <p class="text-gray-900 text-sm">{{r.marry ? '已婚' : '未婚'}}</p>
-                    </div>-->
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">性别</p>
-                      <p class="text-gray-900 text-sm">{{r.gender ? '女' : '男'}}</p>
+                  </div>-->
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">性别</p>
+                    <p class="text-gray-900 text-base">{{r.gender ? '女' : '男'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">状态</p>
+                    <p
+                      class="text-gray-900 text-base"
+                    >{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">客户类型</p>
+                    <!-- r.lesseeType -->
+                    <p
+                      class="text-gray-900 text-base"
+                    >{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">手机号</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.lesseePhone?r.lesseePhone:'-'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">户口所在地</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.domicilePlace?r.domicilePlace:'-'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">从业年限</p>
+                    <p
+                      class="text-gray-900 text-base"
+                      :style="{color:r.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{r.workingYears?r.workingYears:'-'}}</p>
+                  </div>
+                  <div class="border-b border-gray-100 pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">本人照片</p>
+                    <img :src="r.userPic" width="130" alt="本人照片" />
+                  </div>
+                  <div class="pt-2 pb-2">
+                    <p class="text-xs" style="color:#80848D">身份证照片</p>
+                    <div class="flex">
+                      <img :src="r.idcardFrontPic" width="130" alt="身份证正面" />
+                      <img :src="r.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
                     </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">状态</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                      >{{$store.state.lessee.lesseeStatus[r.lesseeStatus].name}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">客户类型</p>
-                      <!-- r.lesseeType -->
-                      <p class="text-gray-900 text-sm">{{$store.state.lessee.lesseeTypeList[Number(r.lesseeType)].text}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">手机号</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.lesseePhone?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.lesseePhone?r.lesseePhone:'-'}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">户口所在地</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.domicilePlace?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.domicilePlace?r.domicilePlace:'-'}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">从业年限</p>
-                      <p
-                        class="text-gray-900 text-sm"
-                        :style="{color:r.workingYears?'#252525':'rgba(69, 90, 100, 0.6)'}"
-                      >{{r.workingYears?r.workingYears:'-'}}</p>
-                    </div>
-                    <div class="border-b border-gray-100 pt-2 pb-2">
-                      <p class="text-xs text-gray-500">本人照片</p>
-                      <img :src="r.userPic" width="130" alt="本人照片" />
-                    </div>
-                    <div class="pt-2 pb-2">
-                      <p class="text-xs text-gray-500">身份证照片</p>
-                      <div class="flex">
-                        <img :src="r.idcardFrontPic" width="130" alt="身份证正面" />
-                        <img :src="r.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
-                      </div>
-                    </div>
-                  </van-collapse-item>
-                </van-collapse>
+                  </div>
+                </van-collapse-item>
+              </van-collapse>
+            </div>
+
+            <div
+              v-if="$store.state.dealerInfo.currentTabsIndex === 4"
+              class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+            >
+              <div class="flex pl-3 pr-3 pb-3">
+                <div class="flex-1 font-bold">动态记录</div>
+                <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
+              </div>
+              <div
+                class="flex justify-center items-center text-center"
+                style="height:20rem;margin-top:-4rem;"
+                v-show="!$store.state.dealerInfo.listNewslog.length"
+              >
+                <!-- v-show="isShowNoData_newslog" -->
+                <div>
+                  <img
+                    src="../../assets/workbench/no_data.png"
+                    style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                    alt="暂无数据"
+                  />
+                  <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                  <p style="color:#80848D">暂时还没有数据呢～</p>
+                </div>
               </div>
 
               <div
-                v-if="$store.state.dealerInfo.currentTabsIndex === 4"
-                class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+                class="border-b ml-4 mr-4 last_child"
+                style="padding-top: 1rem;padding-bottom: 1rem;"
+                v-for="(r,i) in $store.state.dealerInfo.listNewslog"
+                :key="i"
               >
-                <div class="flex pl-3 pr-3 pb-3">
-                  <div class="flex-1 font-bold">动态记录</div>
-                  <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
-                </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="!$store.state.dealerInfo.listNewslog.length"
-                >
-                  <!-- v-show="isShowNoData_newslog" -->
+                <div class="flex">
+                  <div
+                    class="w-12 h-12 text-center rounded-full mr-4 text-xl font-bold baseName"
+                    style="width:2.3rem;height:2.3rem;line-height:2.3rem;"
+                  >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
+
                   <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
+                    <div class="text-ms font-bold">{{r.userName}}</div>
+                    <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
                   </div>
                 </div>
 
-                <div
-                  class="border-b ml-4 mr-4"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in $store.state.dealerInfo.listNewslog"
-                  :key="i"
-                >
-                  <div class="flex">
-                    <div
-                      class="w-12 h-12 text-center rounded-full mr-4 text-xl font-bold baseName"
-                    >{{r.userName && r.userName.trim().substring(0,1).toUpperCase()}}</div>
-
-                    <div>
-                      <div class="text-ms font-bold">{{r.userName}}</div>
-                      <div class="text-xs" style="color:#80848D">{{r.userJobTitle}}</div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center mt-3">
-                    <p
-                      v-if="r.content != '' "
-                      class="text-ms leading-relaxed"
-                      style="color:#252525"
-                    >{{r.content}}</p>
-
-                    <img v-if="r.pics != null " :src="picServer+r.pics" alt />
-                    <br />
-                  </div>
+                <div class="mt-3" style="margin-left:3.3rem;">
                   <p
-                    class="text-sm text-gray-500"
+                    v-if="r.content != '' "
+                    class="text-ms leading-relaxed"
+                    style="color:#252525"
+                  >{{r.content}}</p>
+
+                  <img v-if="r.pics != null " :src="picServer+r.pics" alt />
+                  <p
+                    class="text-sm mt-3"
+                    style="color:#80848D"
                   >{{$root.moment(r.createTime*1000).format('YYYY-MM-DD HH:mm:ss')}}</p>
                 </div>
               </div>
+            </div>
 
+            <div
+              v-if="$store.state.dealerInfo.currentTabsIndex === 5"
+              class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+            >
+              <div class="flex pl-3 pr-3 pb-3 border-b">
+                <div class="flex-1 font-bold">操作历史</div>
+                <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
+              </div>
               <div
-                v-if="$store.state.dealerInfo.currentTabsIndex === 5"
-                class="shadow-md rounded-lg m-3 pt-3 pb-3 bg-white"
+                class="flex justify-center items-center text-center"
+                style="height:20rem;margin-top:-4rem;"
+                v-show="isShowNoData_operatelog"
               >
-                <div class="flex pl-3 pr-3 pb-3 border-b">
-                  <div class="flex-1 font-bold">操作历史</div>
-                  <!-- <div class="text-sm text-blue-500" @click="$router.push({path:'/LesseeList', query: {modelGid: id}})">关联</div> -->
-                </div>
-                <div
-                  class="flex justify-center items-center text-center"
-                  style="height:20rem;margin-top:-4rem;"
-                  v-show="isShowNoData_operatelog"
-                >
-                  <div>
-                    <img
-                      src="../../assets/workbench/no_data.png"
-                      style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
-                      alt="暂无数据"
-                    />
-                    <p style="color:#484C55;font-weight:bold">暂无数据</p>
-                    <p style="color:#80848D">暂时还没有数据呢～</p>
-                  </div>
-                </div>
-                <div
-                  class="border-b ml-4 mr-4"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
-                  v-for="(r,i) in $store.state.dealerInfo.listOperatelog"
-                  :key="i"
-                >
-                  <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                  <span class="text-gray-600">{{r.content}}</span>
+                <div>
+                  <img
+                    src="../../assets/workbench/no_data.png"
+                    style=" width: 7.85rem;height: 7.85rem;margin: 0 auto;"
+                    alt="暂无数据"
+                  />
+                  <p style="color:#484C55;font-weight:bold">暂无数据</p>
+                  <p style="color:#80848D">暂时还没有数据呢～</p>
                 </div>
               </div>
-            </van-swipe-item>
-          </van-swipe>
+              <div
+                class="border-b ml-4 mr-4 last_child"
+                style="padding-top: 1rem;padding-bottom: 1rem;border-color:#ededee;"
+                v-for="(r,i) in $store.state.dealerInfo.listOperatelog"
+                :key="i"
+              >
+                <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
+                <span
+                  class="text-gray-600"
+                  style="padding-right:1rem;word-wrap:break-word;color:#252525"
+                >{{r.content}}</span>
+              </div>
+            </div>
+          </van-swipe-item>
+        </van-swipe>
 
-          <!-- {{info}} -->
+        <!-- {{info}} -->
         <!-- </div> -->
       </div>
     </div>
 
     <div
-      class="flex bg-white footer-bar iteams-center  fixed bottom-0 left-0 right-0 z-10"
+      class="flex bg-white footer-bar iteams-center fixed bottom-0 left-0 right-0 z-10"
       style="box-shadow: 0 -2px 10px 0px rgba(0,0,0,.03);"
     >
       <i
@@ -663,12 +675,12 @@
       >
         <i class="iconfont iconzhaopianhover" style="font-size: 2rem;"></i>
       </van-uploader>
-        <van-field
-          v-model="newsLogContent"
-          class="rounded-lg m-3"
-          style="background:#f6f6f6;height:70%"
-          placeholder="请输入工作进展"
-        />
+      <van-field
+        v-model="newsLogContent"
+        class="rounded-lg m-3"
+        style="background:#f6f6f6;height:70%"
+        placeholder="请输入工作进展"
+      />
 
       <div class="sendBtn" @click="tapToSearch()">发送</div>
 
@@ -728,8 +740,9 @@ export default {
 
     this.addRecentvisit({ modelObjType: 1, modelId: this.id });
 
-    this.$store.state.dealerInfo.currentTabsIndex = 0;
-    this.getBaseInfo(0);
+    // this.$store.state.dealerInfo.currentTabsIndex = 0;
+    this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
+    console.log(this.$store.state.dealerInfo.currentTabsIndex);
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
@@ -738,64 +751,66 @@ export default {
     //   this.getBaseInfo(0);
     // }
 
-    
     // 动态记录
     this.$refs.listBox &&
-      this.scrollLoad(this.$refs.listBox, resolve => {
-        if (
-          this.$store.state.dealerInfo.currentTabsIndex == 4 &&
-          !this.isNewslogLastPage
-        ) {
-          this.$store
-            .dispatch("listNewslog", {
-              modelObjType: 1,
-              modelId: this.id,
-              pageNum: ++this.listNewslogPageNum,
-              pageSize: 10
-            })
-            .then(len => {
-              if (len < 10) {
-                this.isNewslogLastPage = true;
-              }
-              resolve();
-            });
+      this.scrollLoad(
+        this.$refs.listBox,
+        resolve => {
+          if (
+            this.$store.state.dealerInfo.currentTabsIndex == 4 &&
+            !this.isNewslogLastPage
+          ) {
+            this.$store
+              .dispatch("listNewslog", {
+                modelObjType: 1,
+                modelId: this.id,
+                pageNum: ++this.listNewslogPageNum,
+                pageSize: 10
+              })
+              .then(len => {
+                if (len < 10) {
+                  this.isNewslogLastPage = true;
+                }
+                resolve();
+              });
+          }
+          if (
+            this.$store.state.dealerInfo.currentTabsIndex == 5 &&
+            !this.isOperatelogLastPage
+          ) {
+            this.$store
+              .dispatch("listOperatelog", {
+                modelObjType: 1,
+                modelId: this.id,
+                pageNum: ++this.listOperatelogNum,
+                pageSize: 10
+              })
+              .then(len => {
+                if (len < 10) {
+                  this.isOperatelogLastPage = true;
+                }
+                resolve();
+              });
+          }
+          resolve();
+        },
+        scrollTopVal => {
+          if (scrollTopVal > this.topVal && !this.positioning) {
+            this.positioning = true;
+          }
+          if (scrollTopVal < this.topVal && this.positioning) {
+            this.positioning = false;
+          }
         }
-        if (
-          this.$store.state.dealerInfo.currentTabsIndex == 5 &&
-          !this.isOperatelogLastPage
-        ) {
-          this.$store
-            .dispatch("listOperatelog", {
-              modelObjType: 1,
-              modelId: this.id,
-              pageNum: ++this.listOperatelogNum,
-              pageSize: 10
-            })
-            .then(len => {
-              if (len < 10) {
-                this.isOperatelogLastPage = true;
-              }
-              resolve();
-            });
-        }
-        resolve();
-      }, (scrollTopVal)=>{
-        if(scrollTopVal > this.topVal && !this.positioning){
-          this.positioning = true
-        }
-        if(scrollTopVal < this.topVal && this.positioning){
-          this.positioning = false
-        }
-      });
-
-      
+      );
   },
   watch: {
     "$store.state.dealerInfo.currentTabsIndex"(num) {
-      if(this.positioning){
-        this.$refs.listBox.scrollTop = this.topVal
+      if (this.positioning) {
+        this.$refs.listBox.scrollTop = this.topVal;
       }
       this.getBaseInfo(num);
+      console.log(num, this.$store.state.dealerInfo.currentTabsIndex);
     }
   },
   filters: {
@@ -834,8 +849,8 @@ export default {
       );
     },
     tapToSearch(picUrl) {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       if (this.newsLogContent || typeof picUrl == "string") {
         this.$store
@@ -1169,8 +1184,7 @@ export default {
   background-color: #f7f7f7;
   border-bottom: 1px solid #fff;
 }
-
-
-
-
+.last_child:last-child {
+  border-bottom: 0px;
+}
 </style>

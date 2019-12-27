@@ -65,6 +65,7 @@
           <van-field
             style="height:36px;"
             autosize
+            @blur="()=>{ empty1 = !Boolean($store.state.task.addEditTaskParams.taskName)}"
             type="textarea"
             maxlength="50"
             placeholder="请输入任务主题"
@@ -72,10 +73,11 @@
             v-if="editor"
             v-model="$store.state.task.addEditTaskParams.taskName"
           />
-
           <p v-else class="p5 text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
+
+      <div class="checkContent" v-if="empty1">任务主题不能为空</div>
 
       <van-cell clickable>
         <template slot="title">
@@ -140,6 +142,7 @@
           </p>
         </template>
       </van-cell>
+      <div class="checkContent" v-if="$route.query.taskType == 1 && empty2">经销商不能为空</div>
 
       <van-cell clickable v-if="$route.query.gid">
         <template slot="title">
@@ -205,6 +208,7 @@
           >{{visitAimText || '请选择拜访目的'}}</p>
         </template>
       </van-cell>
+      <div class="checkContent" v-if="$route.query.taskType == 1 && empty3">拜访目的不能为空</div>
 
       <van-cell clickable>
         <template slot="title">
@@ -289,7 +293,7 @@
     </van-popup>
 
     <!-- 提醒列表选择 -->
-    <van-popup v-model="alarmTimeShow" position="bottom">
+    <van-popup v-model="alarmTimeShow" position="bottom" class="radioGroup">
       <van-nav-bar
         title="提醒时间"
         left-text="取消"
@@ -317,7 +321,7 @@
     <van-popup
       v-model="dealerShow"
       position="bottom"
-      class="flex flex-col"
+      class="flex flex-col radioGroup"
       :style="{ height: '50%',}"
     >
       <van-nav-bar
@@ -354,7 +358,7 @@
     </van-popup>
 
     <!-- 拜访目的 -->
-    <van-popup v-model="visitAimShow" position="bottom">
+    <van-popup v-model="visitAimShow" position="bottom" class="radioGroup">
       <van-nav-bar
         title="拜访目的"
         left-text="取消"
@@ -448,6 +452,10 @@ export default {
   },
   data() {
     return {
+      empty1: false,
+      empty2: false,
+      empty3: false,
+
       minDate: new Date(1899, 12, 1),
       searchKeyword: "",
       newTask: false,
@@ -533,7 +541,13 @@ export default {
         1
       );
     },
+    visitAimShow(val){
+      !val && (this.empty3 = !Boolean(this.visitAimText))
+    },
     dealerShow(val) {
+      if(!val){
+        this.empty2 = !Boolean(this.dealerName)
+      }
       setTimeout(() => {
         val &&
           this.scrollLoad(this.$refs.dealerListsBox, resolve => {
@@ -686,8 +700,8 @@ export default {
       this.$refs.checkboxes[index].toggle();
     },
     save() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let params = this.$store.state.task.addEditTaskParams;
       if (
@@ -696,18 +710,18 @@ export default {
         params.taskTime === "" ||
         params.mainUserGids === ""
       ) {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+        this.empty1 = true
+        // this.$dialog.alert({
+        //   message: "请认真填11写"
+        // });
         return;
       }
-      if (
-        this.$route.query.taskType === 1 &&
-        (params.visitAim === "" || params.dealerGid === "")
-      ) {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+      if (this.$route.query.taskType === 1 && params.dealerGid === "") {
+        this.empty2 = true
+        return;
+      }
+      if(!this.visitAimObj.id && this.$route.query.taskType === 1){
+        this.empty3 = true;
         return;
       }
 
@@ -746,8 +760,8 @@ export default {
     },
     // 创建拜访任务
     createTask() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       // 经销商拜访
       // this.$store.state.task.addEditTaskParams.visitType = 0
@@ -770,8 +784,8 @@ export default {
 
     // 直接填写拜访记录
     createTaskLog(visitType) {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       // 清空填写拜访记录
       this.$store.commit("setAddEditVisitlogParams");
@@ -802,8 +816,8 @@ export default {
 
     // 完成并保存
     finishTask() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       this.$store.dispatch("finishTask", this.taskId).then(res => {
         this.$dialog
@@ -816,8 +830,8 @@ export default {
       });
     },
     editorFun() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let mainUserNames = this.$store.state.task.addEditTaskParams.mainUserNames
         ? this.$store.state.task.addEditTaskParams.mainUserNames.map(r => {
@@ -833,9 +847,7 @@ export default {
 
       let taskName = this.$store.state.task.addEditTaskParams.taskName.trim();
       if (taskName === "") {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+        this.empty1 = true
         return;
       }
 
@@ -914,5 +926,34 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.radioGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ff9b02;
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon .van-icon {
+  border: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-icon-success:before {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.radioGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>

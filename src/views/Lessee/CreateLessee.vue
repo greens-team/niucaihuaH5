@@ -105,7 +105,12 @@
             @click="lesseeStatusShow = true;"
           >{{selectLesseeStatus}}</div>
         </div>
-        <van-popup v-model="lesseeStatusShow" position="bottom" :style="{ height: '40%'}">
+        <van-popup
+          v-model="lesseeStatusShow"
+          position="bottom"
+          :style="{ height: '40%'}"
+          class="radioGroup"
+        >
           <van-nav-bar
             title="承租人状态"
             left-text="取消"
@@ -119,13 +124,25 @@
             style="top:46px;"
           >
             <van-radio-group v-model="lesseeStatusValus">
-              <van-radio
+              <!-- <van-radio
                 icon-size="16px"
                 class="ml-5 mr-5 pt-3 pb-3"
                 v-for="(r,i) in $store.state.lessee.status"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio>
+              >{{r.text}}</van-radio> -->
+
+              <van-cell-group>
+                <van-cell
+                  :title="r.text"
+                  clickable
+                  @click="lesseeStatusValus = r.value"
+                  v-for="(r,i) in $store.state.lessee.status"
+                  :key="i"
+                >
+                  <van-radio slot="right-icon" :name="r.value" />
+                </van-cell>
+              </van-cell-group>
             </van-radio-group>
           </div>
         </van-popup>
@@ -139,7 +156,7 @@
             :style="{color:selectLesseeType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectLesseeType ? selectLesseeType : '请选择类型'}}</div>
         </div>
-        <van-popup v-model="lesseeTypeShow" position="bottom" :style="{ height: '40%'}">
+        <van-popup v-model="lesseeTypeShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
           <van-nav-bar
             title="客户类型"
             left-text="取消"
@@ -153,13 +170,27 @@
             style="top:46px;"
           >
             <van-radio-group v-model="lesseeTypeValus">
-              <van-radio
+              <!-- <van-radio
                 icon-size="16px"
                 class="ml-5 mr-5 pt-3 pb-3"
                 v-for="(r,i) in $store.state.lessee.lesseeTypeList"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio>
+              >{{r.text}}</van-radio> -->
+
+
+              <van-cell-group>
+                <van-cell
+                  :title="r.text"
+                  clickable
+                  @click="lesseeTypeValus = r.value"
+                  v-for="(r,i) in $store.state.lessee.lesseeTypeList"
+                  :key="i"
+                >
+                  <van-radio slot="right-icon" :name="r.value" />
+                </van-cell>
+              </van-cell-group>
+
             </van-radio-group>
           </div>
         </van-popup>
@@ -173,7 +204,7 @@
             :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
-        <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}">
+        <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
           <van-nav-bar
             title="性别"
             left-text="取消"
@@ -187,13 +218,28 @@
             style="top:46px;"
           >
             <van-radio-group v-model="genderValus">
-              <van-radio
+              <!-- <van-radio
                 icon-size="16px"
                 class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3"
                 v-for="(r,i) in $store.state.lessee.genderList"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio>
+              >{{r.text}}</van-radio> -->
+
+
+              <van-cell-group>
+                <van-cell
+                  :title="r.text"
+                  clickable
+                  @click="genderValus = r.value"
+                  v-for="(r,i) in $store.state.lessee.genderList"
+                  :key="i"
+                >
+                  <van-radio slot="right-icon" :name="r.value" />
+                </van-cell>
+              </van-cell-group>
+
+
             </van-radio-group>
           </div>
         </van-popup>
@@ -422,14 +468,13 @@ export default {
         this.$root.timeStamp(this.currentDate) / 1000;
     },
     createLessee() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let userPicStr = "";
       userPicStr = this.$store.state.lessee.addParams.userPic;
       userPicStr = userPicStr.substring(0, userPicStr.length - 1);
       this.$store.state.lessee.addParams.userPic = userPicStr;
-
 
       //负责人、参与人传后台的参数
       let ownerUserData = this.$store.state.lessee.addParams.ownerUserGids;
@@ -545,9 +590,38 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 13px;
+}
+.radioGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ff9b02;
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon .van-icon {
+  border: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-icon-success:before {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.radioGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>

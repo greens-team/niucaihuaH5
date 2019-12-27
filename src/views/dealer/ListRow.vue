@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     goInfo(id){
+      this.$store.state.dealerInfo.currentTabsIndex = 0;
       this.$router.push({name: 'DealerInfo', query: {id: id}})
     }
   }
