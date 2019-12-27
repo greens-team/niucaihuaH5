@@ -476,5 +476,7 @@ export default {
   font-size: 14px;
 }
 
-
+.Screening /deep/ .van-field__control{
+  color: #252525
+}
 </style>
