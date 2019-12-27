@@ -168,6 +168,8 @@ export default {
   },
   methods: {
     goInfo(id) {
+      this.$store.state.lessee.currentTabsIndex = 0;
+      // console.log(this.$store.state.lessee.currentTabsIndex)
       this.$router.push({ name: "LesseeInfo", query: { id: id } });
     }
   }

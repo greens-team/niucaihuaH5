@@ -286,7 +286,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
+                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>{$store.state.dealerInfo.currentTabsIndex = 0;$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})})"
                       >{{r.dealerName}}</p>
                     </div>
                   </van-collapse-item>
@@ -456,17 +456,22 @@ export default {
   },
   created() {
     //每次进来时候将参数设置为初始值
-    this.$store.commit("setInitParams_tabs");
+    // this.$store.commit("setInitParams_tabs");
   },
   mounted() {
     this.id = this.$route.query.id;
     this.addRecentvisit({ modelObjType: 3, modelId: this.id });
-    if (this.$store.state.lessee.currentTabsIndex) {
-      this.getBaseInfo(0);
-      this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);
-    } else {
-      this.getBaseInfo(0);
-    }
+
+    console.log(this.$store.state.lessee.currentTabsIndex);
+
+    this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);
+
+    // if (this.$store.state.lessee.currentTabsIndex) {
+    //   this.getBaseInfo(0);
+    //   this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);
+    // } else {
+    //   this.getBaseInfo(0);
+    // }
 
     this.$refs.listBox &&
       this.scrollLoad(
@@ -561,18 +566,20 @@ export default {
         });
       }
       if (num === 1) {
-        if (this.$store.state.lessee.info.dealerList != null) {
-          this.isShowDealer = true;
-          this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
-          this.currentLessee = [this.lesseeInfolist[0].dealerGid];
-        } else {
-          this.isShowDealer = false;
-        }
-
-        //判断如果出生日期为null 显示空
-        if (this.info.birthday == null) {
-          this.info.birthday = null;
-        }
+        // this.$store.dispatch("getLesseeInfo", this.id).then(res => {
+          this.info = this.$store.state.lessee.info;
+          if (this.$store.state.lessee.info.dealerList != null) {
+            this.isShowDealer = true;
+            this.lesseeInfolist = this.$store.state.lessee.info.dealerList;
+            this.currentLessee = [this.lesseeInfolist[0].dealerGid];
+          } else {
+            this.isShowDealer = false;
+          }
+          //判断如果出生日期为null 显示空
+          if (this.info.birthday == null) {
+            this.info.birthday = null;
+          }
+        // });
       }
       if (num === 2) {
         // 动态记录

@@ -39,7 +39,7 @@
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
 
-          <van-checkbox-group v-model="$store.state.competitor.selectedUserGids" class="bg-white"> 
+          <van-checkbox-group v-model="$store.state.competitor.selectedUserGids" class="bg-white checkBoxGroup"> 
             <van-checkbox v-for="(item, i) in $store.state.competitor.list" :key="i" icon-size="16px" 
               class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
               :name="item.competorName+','+item.gid">
@@ -110,5 +110,21 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
 }
 </style>

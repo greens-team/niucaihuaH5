@@ -320,7 +320,7 @@
                   class="text-base text-blue-500"
                   style="color:#FF9B02"
                   v-show="$root.checkRole('DEALER_EDIT')"
-                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}))"
+                  @click="$root.dataCheck({modelObjType:1, modelId: id}, ()=>$router.push({path:'/ContactsList', query: {modelGid: id, onlyWrite:true}}));"
                 >添加</div>
               </div>
               <div
@@ -479,7 +479,7 @@
                     <p
                       class="text-gray-900 text-sm"
                       style="color:#0885FF;"
-                      @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>$router.push({path:'/LesseeInfo',query:{id:r.gid}}))"
+                      @click="$root.selectdpcheck({modelObjType:3, modelId: r.gid}, ()=>{$store.state.lessee.currentTabsIndex = 0;$router.push({path:'/LesseeInfo',query:{id:r.gid}})})"
                     >{{r.lesseeName}}</p>
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
@@ -736,8 +736,8 @@ export default {
 
     this.addRecentvisit({ modelObjType: 1, modelId: this.id });
 
-    this.$store.state.dealerInfo.currentTabsIndex = 0;
-    this.getBaseInfo(0);
+    // this.$store.state.dealerInfo.currentTabsIndex = 0;
+    this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
