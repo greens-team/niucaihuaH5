@@ -206,7 +206,8 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
-                    <p>{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
+                    <p v-if="info.chkBusTypCdList">{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
+                    <p v-else style="color: rgba(69, 90, 100, 0.6);">-</p>
                   </div>
 
                   <div v-if="info.contactsName">
