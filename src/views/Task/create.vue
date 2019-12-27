@@ -65,6 +65,7 @@
           <van-field
             style="height:36px;"
             autosize
+            @blur="()=>{ empty1 = !Boolean($store.state.task.addEditTaskParams.taskName)}"
             type="textarea"
             maxlength="50"
             placeholder="请输入任务主题"
@@ -72,10 +73,11 @@
             v-if="editor"
             v-model="$store.state.task.addEditTaskParams.taskName"
           />
-
           <p v-else class="p5 text-gray-800">{{$store.state.task.addEditTaskParams.taskName}}</p>
         </template>
       </van-cell>
+
+      <div class="checkContent" v-if="empty1">任务主题不能为空</div>
 
       <van-cell clickable>
         <template slot="title">
@@ -140,6 +142,7 @@
           </p>
         </template>
       </van-cell>
+      <div class="checkContent" v-if="$route.query.taskType == 1 && empty2">经销商不能为空</div>
 
       <van-cell clickable v-if="$route.query.gid">
         <template slot="title">
@@ -205,6 +208,7 @@
           >{{visitAimText || '请选择拜访目的'}}</p>
         </template>
       </van-cell>
+      <div class="checkContent" v-if="$route.query.taskType == 1 && empty3">拜访目的不能为空</div>
 
       <van-cell clickable>
         <template slot="title">
@@ -448,6 +452,10 @@ export default {
   },
   data() {
     return {
+      empty1: false,
+      empty2: false,
+      empty3: false,
+
       minDate: new Date(1899, 12, 1),
       searchKeyword: "",
       newTask: false,
@@ -533,7 +541,13 @@ export default {
         1
       );
     },
+    visitAimShow(val){
+      !val && (this.empty3 = !Boolean(this.visitAimText))
+    },
     dealerShow(val) {
+      if(!val){
+        this.empty2 = !Boolean(this.dealerName)
+      }
       setTimeout(() => {
         val &&
           this.scrollLoad(this.$refs.dealerListsBox, resolve => {
@@ -696,18 +710,18 @@ export default {
         params.taskTime === "" ||
         params.mainUserGids === ""
       ) {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+        this.empty1 = true
+        // this.$dialog.alert({
+        //   message: "请认真填11写"
+        // });
         return;
       }
-      if (
-        this.$route.query.taskType === 1 &&
-        (params.visitAim === "" || params.dealerGid === "")
-      ) {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+      if (this.$route.query.taskType === 1 && params.dealerGid === "") {
+        this.empty2 = true
+        return;
+      }
+      if(!this.visitAimObj.id && this.$route.query.taskType === 1){
+        this.empty3 = true;
         return;
       }
 
@@ -833,9 +847,7 @@ export default {
 
       let taskName = this.$store.state.task.addEditTaskParams.taskName.trim();
       if (taskName === "") {
-        this.$dialog.alert({
-          message: "请认真填写"
-        });
+        this.empty1 = true
         return;
       }
 

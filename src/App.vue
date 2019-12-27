@@ -163,4 +163,10 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.checkContent {
+  background: #f7f8f9;
+  padding: 10px 16px;
+  color: #f42929;
+}
 </style>

@@ -624,9 +624,7 @@ export default {
         !this.$store.state.newDealer.params.dealerName ||
         !this.$store.state.newDealer.params.ownerUserList.length
       ) {
-        this.$dialog.alert({
-          message: "有必填项为空，请认填写"
-        });
+        this.isShowErrorNameMsg = true;
       } else {
         this.showNext = true;
       }
