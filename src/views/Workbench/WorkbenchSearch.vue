@@ -65,21 +65,21 @@ export default {
     }
   },
   watch: {
-    'params.queryString'(val){
-      sessionStorage.globalSearchVal = val
-    },
-    'params.modelType'(){
+    'params.modelType'(val){
+      sessionStorage.globalModelType = val
       this.initSend()
     },
     'params.pageNum'(){
       this.onSearch()
     },
     'params.queryString'(keyword){
+      sessionStorage.globalSearchVal = keyword
       this.initSend()
     }
   },
   mounted() {
     this.params.queryString = sessionStorage.globalSearchVal || ''
+    this.params.modelType = Number(sessionStorage.globalModelType) || 0
     this.onSearch()
 
     // 滚动加载
@@ -93,16 +93,24 @@ export default {
     goDetail(row){
       switch (row.modelName) {
         case '经销商':
-          this.$router.push({path:'/DealerInfo', query:{id:row.modelGid}})
+          this.$root.selectdpcheck({modelObjType:1, modelId: row.modelGid}, ()=>
+            this.$router.push({path:'/DealerInfo', query:{id:row.modelGid}})
+          )
           break;
         case '联系人':
-          this.$router.push({path:'/ContactsInfo', query:{gid:row.modelGid}})
+          this.$root.selectdpcheck({modelObjType:2, modelId: row.modelGid}, ()=>
+            this.$router.push({path:'/ContactsInfo', query:{gid:row.modelGid}})
+          )
           break;
         case '承租人':
-          this.$router.push({path:'/LesseeInfo', query:{id:row.modelGid}})
+          this.$root.selectdpcheck({modelObjType:3, modelId: row.modelGid}, ()=>
+            this.$router.push({path:'/LesseeInfo', query:{id:row.modelGid}})
+          )
           break;
         case '竞争对手':
-          this.$router.push({path:'/CompetitorInfo', query:{id:row.modelGid}})
+          this.$root.selectdpcheck({modelObjType:4, modelId: row.modelGid}, ()=>
+            this.$router.push({path:'/CompetitorInfo', query:{id:row.modelGid}})
+          )
           break;
       }
 

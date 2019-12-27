@@ -64,30 +64,39 @@ export default {
   },
   methods: {
     goDetails(row) {
+      
       switch (row.modelObjType) {
         case 1:
-          this.$router.push({
-            name: "DealerInfo",
-            query: { id: row.modelGid }
-          });
+          this.$root.selectdpcheck({modelObjType:1, modelId: row.modelGid}, ()=>
+            this.$router.push({
+              name: "DealerInfo",
+              query: { id: row.modelGid }
+            })
+          )
           break;
         case 2:
-          this.$router.push({
-            name: "ContactsInfo",
-            query: { gid: row.modelGid }
-          });
+          this.$root.selectdpcheck({modelObjType:2, modelId: row.modelGid}, ()=>
+            this.$router.push({
+              name: "ContactsInfo",
+              query: { gid: row.modelGid }
+            })
+          )
           break;
         case 3:
-          this.$router.push({
-            name: "LesseeInfo",
-            query: { id: row.modelGid }
-          });
+          this.$root.selectdpcheck({modelObjType:3, modelId: row.modelGid}, ()=>
+            this.$router.push({
+              name: "LesseeInfo",
+              query: { id: row.modelGid }
+            })
+          )
           break;
         case 4:
-          this.$router.push({
-            name: "CompetitorInfo",
-            query: { id: row.modelGid }
-          });
+          this.$root.selectdpcheck({modelObjType:4, modelId: row.modelGid}, ()=>
+            this.$router.push({
+              name: "CompetitorInfo",
+              query: { id: row.modelGid }
+            })
+          )
           break;
       }
     },
