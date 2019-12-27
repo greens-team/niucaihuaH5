@@ -38,7 +38,7 @@ ajax(apiList, error => {
     // store.commit('setLoginState', false)
     router.push('/')
   }else{
-    Dialog({ message: error.response.data.msg || error.response.statusText });
+    Dialog({ message: error.response.data.msg || error.response.statusText || error.response.message });
     // Notify({ type: 'warning', message: error.response.data.msg || error.response.statusText })
   }
 
