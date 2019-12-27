@@ -211,7 +211,7 @@
               @click-left="certTypCdShow = false"
               @click-right="certTypCdShow = false; $store.state.newDealer.params.certTypCd = certTypCdVal;"
             />
-            <van-radio-group v-model="certTypCdVal">
+            <van-radio-group v-model="certTypCdVal" style="height: 100%;overflow: scroll;">
               <van-cell-group>
                 <van-cell
                   v-for="(r,i) in $store.state.record.certTypCd"

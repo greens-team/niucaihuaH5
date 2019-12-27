@@ -148,7 +148,7 @@
                       <p
                         class="text-base"
                         style="color:#0885FF;"
-                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>$router.push({path:'/DealerInfo',query:{id:r.dealerGid}}))"
+                        @click="$root.selectdpcheck({modelObjType:1, modelId:r.dealerGid}, ()=>{$store.state.dealerInfo.currentTabsIndex = 0;$router.push({path:'/DealerInfo',query:{id:r.dealerGid}})})"
                       >{{r.dealerName}}</p>
                     </div>
                     <div class="border_line pt-2 pb-2">
