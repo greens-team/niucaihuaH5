@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="flex-1 relative h-full">
+    <div class="flex-1 relative h-full" :class="{'footerx':isIphonex}">
       <div class="absolute inset-0 overflow-y-scroll">
         <div class="py-3 px-4 flex justify-between" style="background:#F8FAFB">
           <span style="color:#484C55">问题和意见</span>
@@ -67,7 +67,7 @@
           placeholder="请输入手机号"
           label-width="130"
           type="number"
-          pattern='[0-9]*'
+          pattern="[0-9]*"
           clearable
           @blur="checkErrorMsg"
         />
@@ -93,6 +93,14 @@ export default {
       userPicArr: [],
       isShowErrorPhoneMsg: false
     };
+  },
+  computed: {
+    isIphonex() {
+      return (
+        /iphone/gi.test(navigator.userAgent) &&
+        (screen.height == 812 && screen.width == 375)
+      );
+    }
   },
   mounted() {
     this.initParamsEmpty();
@@ -121,8 +129,8 @@ export default {
       this.wordTotal = this.$store.state.my.submitParams.content.length;
     },
     submit() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let userPicStr = "";
       userPicStr = this.$store.state.my.submitParams.pics;
@@ -191,5 +199,8 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.footerx {
+  padding-bottom: 25px;
 }
 </style>

@@ -174,12 +174,4 @@ body {
   padding: 10px 16px;
   color: #f42929;
 }
-
-@supports (bottom: env(safe-area-inset-bottom)){
-    body,
-    .footer {
-        padding-bottom: constant(safe-area-inset-bottom);
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
 </style>

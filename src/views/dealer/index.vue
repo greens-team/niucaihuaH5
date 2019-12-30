@@ -116,6 +116,8 @@
             <ListRow />
           </van-swipe-item>
         </van-swipe>
+
+        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
       </div>
     </div>
   </div>
@@ -141,12 +143,13 @@ export default {
   data() {
     return {
       searchBar: false,
-      homeSearch: false
+      homeSearch: false,
+      isShowData: false
     };
   },
   watch: {
-    '$store.state.dealer.listParams.followStatus'(){
-      this.$refs.dealerListBox.scrollTop = 0
+    "$store.state.dealer.listParams.followStatus"() {
+      this.$refs.dealerListBox.scrollTop = 0;
     }
   },
   mounted() {
@@ -169,7 +172,16 @@ export default {
       });
     },
     searchAll(data) {
-      this.$store.dispatch("getListData", Object.assign(data, { pageNum: 1 }));
+      // console.log(data,"data")
+      this.$store
+        .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
+        .then(res => {
+          if (res.length) {
+            this.isShowData = false;
+          } else {
+            this.isShowData = true;
+          }
+        });
     }
   }
 };
