@@ -545,7 +545,7 @@
                     <p class="text-xs" style="color:#80848D">本人照片</p>
 
                     <div class="flex justify-space">
-                      <template v-if="r.userPic.length">
+                      <template v-if="r.userPic">
                         <div v-for="(r,i) in r.userPic.split(',')" :key="i" class="userPic">
                           <img :src="picServer + r" alt="照片" class="lessessPics" />
                         </div>
