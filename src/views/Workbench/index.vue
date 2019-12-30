@@ -28,7 +28,7 @@
 
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
-      <div class="flex items-center justify-center" style="padding:.55rem;">
+      <div class="flex items-center justify-center p-1" >
         <div class="font-bold" style="font-size:1.143rem;">销售简报</div>
         <div class="flex-1"></div>
         <div
@@ -149,8 +149,8 @@
     </div>
 
     <!-- 我的任务 同事任务 -->
-    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 pt-2 pb-2 rounded-lg shadowaa">
-      <div class="flex p-1 border-gray-200 pl-2 pr-2" swipeable>
+    <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
+      <div class="flex p-1 border-gray-200" swipeable>
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"

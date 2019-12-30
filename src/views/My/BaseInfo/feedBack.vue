@@ -201,6 +201,6 @@ export default {
   font-size: 1.286rem;
 }
 .footerx {
-  padding-bottom: 25px;
+  padding-bottom: 34px;
 }
 </style>

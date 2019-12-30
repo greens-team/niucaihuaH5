@@ -174,4 +174,11 @@ body {
   padding: 10px 16px;
   color: #f42929;
 }
+
+body {
+  padding-top: constant(safe-area-inset-top);
+  padding-left: constant(safe-area-inset-left);
+  padding-right: constant(safe-area-inset-right);
+  padding-bottom: constant(safe-area-inset-bottom);
+}
 </style>
