@@ -19,11 +19,11 @@
         placeholder="请输入搜索内容"
         shape="round"
       />
-      <i
+      <!-- <i
         @click="logout"
         class="iconfont icongongzuotai-tupianshangchuan-guanbi"
         style="font-size:20px;"
-      ></i>
+      ></i> -->
     </div>
 
     <!-- 销售简报 -->
