@@ -9,7 +9,7 @@
     </div>
 
     <div>
-      <van-tabbar v-model="$store.state.workbench.currentModelActive" style="height:3.57rem!important;">
+      <van-tabbar v-model="$store.state.workbench.currentModelActive" class="footer" style="height:3.57rem!important;">
         <van-tabbar-item>
           <span style="font-size:0.643rem; transform: scale(1)">工作台</span>
           <img

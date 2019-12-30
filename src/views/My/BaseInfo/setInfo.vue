@@ -25,7 +25,7 @@
           <p class="text-center text-gray-800 py-4">重卡CRM 2.0.0</p>
         </div>
       </div>
-      <div class="logOut" @click="logOut">退出登录</div>
+      <!-- <div class="logOut" @click="logOut">退出登录</div> -->
 
       <!-- <div class="p-5">
       <p>测试数据</p>
@@ -72,7 +72,7 @@ export default {
 </script>
 <style scoped>
 .mySet {
-  background: #f8fafb;
+  /* background: #f8fafb; */
   height: 100%;
 }
 .logOut {

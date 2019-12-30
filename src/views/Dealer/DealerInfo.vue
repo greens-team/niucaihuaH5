@@ -206,7 +206,9 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
-                    <p v-if="info.chkBusTypCdList">{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
+                    <p
+                      v-if="info.chkBusTypCdList"
+                    >{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
                     <p v-else style="color: rgba(69, 90, 100, 0.6);">-</p>
                   </div>
 
@@ -486,7 +488,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs" style="color:#80848D">证件号码</p>
                     <p
-                      class="text-base" 
+                      class="text-base"
                       :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.idcardNum?r.idcardNum:'-'}}</p>
                   </div>
@@ -742,7 +744,6 @@ export default {
 
     // this.$store.state.dealerInfo.currentTabsIndex = 0;
     this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
-    console.log(this.$store.state.dealerInfo.currentTabsIndex);
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
@@ -810,7 +811,6 @@ export default {
         this.$refs.listBox.scrollTop = this.topVal;
       }
       this.getBaseInfo(num);
-      console.log(num, this.$store.state.dealerInfo.currentTabsIndex);
     }
   },
   filters: {
@@ -935,6 +935,9 @@ export default {
       }
       if (num === 1) {
         this.$store.dispatch("getcontactslist", this.id).then(res => {
+
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.contactslist = this.$store.state.dealerInfo.contactslist;
           this.currentContacts = this.contactslist.length
             ? [this.contactslist[0].id]
@@ -948,6 +951,9 @@ export default {
       }
       if (num === 2) {
         this.$store.dispatch("getcompetitorlist", this.id).then(res => {
+
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.competitorlist = this.$store.state.dealerInfo.competitorlist;
           this.currentCompetitor = this.competitorlist.length
             ? [this.competitorlist[0].id]
@@ -961,6 +967,9 @@ export default {
       }
       if (num === 3) {
         this.$store.dispatch("getlesseelist", this.id).then(res => {
+
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.lesseelist = this.$store.state.dealerInfo.lesseelist;
           this.currentLesseelist = this.lesseelist.length
             ? [this.lesseelist[0].id]
