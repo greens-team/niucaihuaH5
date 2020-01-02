@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 // import moment from '@/plugins/moment' // 时间统一处理
 // 关联竞争对手
 export default {
@@ -30,6 +32,7 @@ export default {
     },
 
     list: [],
+    total: 0,
 
     associatedParams: {
       associatedType: 1,
@@ -165,26 +168,40 @@ export default {
         })
       })
     },
+    // listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
+    //   let params = Object.assign(state.listParams, data);
+    //   if (params.pageNum == 1) {
+    //     state.isLastPage = false;
+    //   }
+    //   return new Promise(resolve => {
+    //     if (state.isLastPage) {
+    //       resolve();
+    //       return;
+    //     }
+    //     window.$ajax.competitor.listCompetitor(params).then(res => {
+    //       if (!res.code) {
+    //         state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
+    //         if (res.data.list.length < params.pageSize)
+    //           state.isLastPage = true
+    //         resolve('操作成功')
+    //       }
+    //     })
+    //   })
+    // },
+
     listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
-      let params = Object.assign(state.listParams, data);
-      if (params.pageNum == 1) {
-        state.isLastPage = false;
-      }
       return new Promise(resolve => {
-        if (state.isLastPage) {
-          resolve();
-          return;
-        }
-        window.$ajax.competitor.listCompetitor(params).then(res => {
+        window.$ajax.competitor.listCompetitor(Object.assign(state.listParams, data)).then(res => {
           if (!res.code) {
-            state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
-            if (res.data.list.length < params.pageSize)
-              state.isLastPage = true
-            resolve('操作成功')
+            state.list = res.data.list;
+            state.total = res.data.total
+            resolve(state.list)
           }
         })
       })
     },
+
+
     associatedCompetitor({ state }, data = {}) {   // 关联和解除关联经销商
       return new Promise(resolve => {
         window.$ajax.competitor.associatedCompetitor(Object.assign(state.associatedParams, data)).then(res => {
@@ -198,7 +215,7 @@ export default {
     addNewslogCompetitor({ state }, data = {}) {   // 添加动态记录
       return new Promise(resolve => {
         window.$ajax.history.addNewslog(data).then(res => {
-          if(!res.code){
+          if (!res.code) {
             resolve('操作成功')
           }
         })
@@ -208,7 +225,7 @@ export default {
     listNewslogCompetitor({ state }, data = {}) {   // 获取动态记录列表
       return new Promise(resolve => {
         window.$ajax.history.listNewslog(data).then(res => {
-          if(!res.code){
+          if (!res.code) {
             state.listNewslog = data.pageNum == 1 ? res.data.list : state.listNewslog.concat(res.data.list)
             resolve(res.data.list.length)
           }
@@ -219,8 +236,8 @@ export default {
     listOperatelogCompetitor({ state }, data = {}) {   // 操作历史
       return new Promise(resolve => {
         window.$ajax.history.listOperatelog(data).then(res => {
-          if(!res.code){
-            state.listOperatelog = data.pageNum == 1 ? res.data.list :  state.listOperatelog.concat(res.data.list)
+          if (!res.code) {
+            state.listOperatelog = data.pageNum == 1 ? res.data.list : state.listOperatelog.concat(res.data.list)
             resolve(res.data.list.length)
           }
         })

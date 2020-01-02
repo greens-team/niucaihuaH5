@@ -25,7 +25,7 @@
 
           <!-- 添加图标 -->
           <img
-            v-show="$root.checkRole('COMPETITOR_CREATE')" 
+            v-show="$root.checkRole('COMPETITOR_CREATE')"
             class="bar_icon plus_icon"
             @click="$store.commit('setInitAddParams');$router.push('/CreateCompetitor')"
             src="../../assets/topBarIcon/add_icon.png"
@@ -89,7 +89,7 @@
 
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="competitorListBox">
-        <van-swipe
+        <!-- <van-swipe
           ref="swipe"
           :loop="false"
           :show-indicators="false"
@@ -102,7 +102,6 @@
               v-for="(r,i) in $store.state.competitor.list"
               :key="i"
               @click="getInfo(r.gid)"
-              
             >
               <van-cell is-link>
                 <template slot="title">
@@ -114,9 +113,47 @@
               </van-cell>
             </div>
           </van-swipe-item>
+        </van-swipe>-->
+
+        <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
+
+        <van-swipe
+          ref="swipe"
+          :loop="false"
+          :show-indicators="false"
+          @change="(num)=>$store.dispatch('listCompetitor',{competorType: num,pageNum:1})"
+        >
+          <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              :immediate-check="false"
+              finished-text="我们是有底线的"
+              @load="onLoad"
+              :offset="20"
+            >
+              <div
+                class="flex flex-col m-4 bg-white last_child"
+                style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
+                v-for="(r,i) in itemList"
+                :key="i"
+                @click="getInfo(r.gid)"
+              >
+                <van-cell is-link>
+                  <template slot="title">
+                    <p class="custom-title text-lg font-bold">{{r.competorName}}</p>
+                    <p
+                      class="text-gray-800"
+                    >{{$store.state.competitor.competorStatus_1[r.competorType-1]}}</p>
+                  </template>
+                </van-cell>
+              </div>
+            </van-list>
+          </van-swipe-item>
         </van-swipe>
       </div>
     </div>
+
     <!-- <div @click="$router.push('/CompetitorInfo')">详情页</div> -->
   </div>
 </template>
@@ -127,7 +164,13 @@ export default {
   data() {
     return {
       searchBar: false,
-      homeSearch: false
+      homeSearch: false,
+
+      loading: false,
+      finished: false,
+      page: 1, //请求第几页
+      total: 0, //总共的数据条数
+      itemList: []
     };
   },
   created() {
@@ -135,21 +178,52 @@ export default {
     this.$store.commit("setInitParams");
   },
   mounted() {
-    this.scrollLoad(this.$refs.competitorListBox, resolve => {
-      this.$store
-        .dispatch("listCompetitor", {
-          pageNum: this.$store.state.competitor.listParams.pageNum + 1
-        })
-        .then(msg => {
-          resolve(msg);
-        });
-    });
-    this.$store.dispatch("listCompetitor", { pageNum: 1 });
+    // this.scrollLoad(this.$refs.competitorListBox, resolve => {
+    //   this.$store
+    //     .dispatch("listCompetitor", {
+    //       pageNum: this.$store.state.competitor.listParams.pageNum + 1
+    //     })
+    //     .then(msg => {
+    //       resolve(msg);
+    //     });
+    // });
+    // this.$store.dispatch("listCompetitor", { pageNum: 1 });
+
+    this.getListData();
   },
   methods: {
     getInfo(id) {
       this.$store.state.competitor.currentTabsIndex = 0;
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
+    },
+    getListData() {
+      this.$store
+        .dispatch("listCompetitor", { pageNum: this.page })
+        .then(res => {
+          let rows = res;
+          this.loading = false;
+          this.total = this.$store.state.competitor.total;
+
+          if (rows.length === 0) {
+            // 加载结束
+            this.finished = true;
+            return;
+          }
+
+          // 将新数据与老数据进行合并
+          this.itemList = this.itemList.concat(rows);
+
+          //如果列表数据条数>=总条数，不再触发滚动加载
+          if (this.itemList.length >= this.total) {
+            this.finished = true;
+          }
+        });
+    },
+
+    //滚动加载时触发，list组件定义的方法
+    onLoad() {
+      this.page++;
+      this.getListData();
     }
   }
 };
@@ -160,12 +234,12 @@ export default {
   background-image: linear-gradient(160deg, #ffce00 20%, #ff8b00 80%);
   height: 6px;
 } */
-.CompetitorList  /deep/.van-tabs__line {
+.CompetitorList /deep/.van-tabs__line {
   width: 34px !important;
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .CompetitorList /deep/ .van-hairline--top-bottom::after,
 .CompetitorList /deep/ .van-hairline-unset--top-bottom::after {
@@ -209,7 +283,10 @@ export default {
   color: #80848d;
 }
 .CompetitorList /deep/ .van-dropdown-item__option--active,
-.CompetitorList /deep/ .van-dropdown-item__option--active .van-dropdown-item__icon {
+.CompetitorList
+  /deep/
+  .van-dropdown-item__option--active
+  .van-dropdown-item__icon {
   color: #ff9b02;
 }
 .CompetitorList /deep/ .van-dropdown-item__option--active,
@@ -219,7 +296,7 @@ export default {
   .van-dropdown-item__icon {
   color: #ff9b02;
 }
-.CompetitorList /deep/  .van-cell {
+.CompetitorList /deep/ .van-cell {
   padding: 0;
 }
 .last_child:last-child {
