@@ -128,7 +128,7 @@
               v-model="loading"
               :finished="finished"
               :immediate-check="false"
-              finished-text="我们是有底线的"
+              finished-text="已全部加载"
               @load="onLoad"
               :offset="20"
             >
@@ -220,7 +220,7 @@ export default {
         });
     },
 
-    //滚动加载时触发，list组件定义的方法
+    //滚动加载时触发
     onLoad() {
       this.page++;
       this.getListData();

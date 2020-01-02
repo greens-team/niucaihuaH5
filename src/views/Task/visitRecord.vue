@@ -5,7 +5,7 @@
 
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
-          <!-- @click="isAdd ? ($route.query.back ? $router.replace({path:'/TaskDetail',query:{gid: $route.query.id,taskType:1}}) : $router.replace('/')) : $router.go(-1)" -->
+        <!-- @click="isAdd ? ($route.query.back ? $router.replace({path:'/TaskDetail',query:{gid: $route.query.id,taskType:1}}) : $router.replace('/')) : $router.go(-1)" -->
         <div
           @click="isAdd ? ($route.query.back ? $router.go(-1) : $router.replace('/')) : $router.go(-1)"
           class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
@@ -18,8 +18,6 @@
         <div class="flex-1"></div>
       </div>
     </div>
-
-
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-auto">
@@ -261,17 +259,20 @@ export default {
   watch: {},
   methods: {
     finishTask() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
-      if (!this.$store.state.task.addEditVisitlogParams.dealerDes.trim() || !this.$store.state.task.addEditVisitlogParams.dealerDes) {
+      if (
+        !this.$store.state.task.addEditVisitlogParams.dealerDes.trim() ||
+        !this.$store.state.task.addEditVisitlogParams.dealerDes
+      ) {
         this.$dialog.alert({
           message: "请认真填写"
         });
       } else {
         let competitorList = this.$store.state.task.addEditVisitlogParams
           .competitorList;
-          console.log(competitorList)
+        console.log(competitorList);
         for (let i = 0; i < competitorList.length; i++) {
           // if (Number(competitorList[i].modelGid) == 0) {
           //   competitorList.splice(i, 1); //删除下标为i的元素
@@ -285,15 +286,17 @@ export default {
             gid: this.$route.query.id
           })
           .then(msg => {
-            this.$dialog
-              .alert({
-                message: msg
-              })
-              .then(() => {
-                this.$router.replace({
-                        path: "/TaskDetail",
-                        query: { gid: this.$route.query.id,taskType:1 }
-                      })
+
+            let message = '';
+            // this.$dialog
+            //   .alert({
+            //     message: msg
+            //   })
+            //   .then(() => {
+            //     this.$router.replace({
+            //       path: "/TaskDetail",
+            //       query: { gid: this.$route.query.id, taskType: 1 }
+            //     });
 
                 // this.isAdd
                 //   ? this.$route.query.back
@@ -303,7 +306,15 @@ export default {
                 //       })
                 //     : this.$router.replace("/")
                 //   : this.$router.go(-1);
-              });
+              // });
+
+
+            this.isAdd ? message = '已完成': message = '编辑成功'
+            this.$toast(message);
+            this.$router.replace({
+              path: "/TaskDetail",
+              query: { gid: this.$route.query.id, taskType: 1 }
+            });
           });
       }
     }
