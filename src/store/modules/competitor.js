@@ -28,7 +28,7 @@ export default {
       orderType: 1,
       competorType: 1,
       pageNum: 1,
-      pageSize: 15
+      pageSize: 10
     },
 
     list: [],
@@ -108,7 +108,7 @@ export default {
         orderType: 1,
         competorType: 0,   //竞对类型 0全部 1第三方 2厂商金融
         pageNum: 1,
-        pageSize: 15
+        pageSize: 10
       }
     },
     // setInitParams_tabs(state) {
