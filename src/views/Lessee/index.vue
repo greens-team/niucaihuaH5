@@ -98,7 +98,7 @@
         >
           <van-swipe-item v-for="(row,index) in $store.state.lessee.lesseeStatus" :key="index" class="bg-white">
             <div
-              class="flex flex-col m-4 bg-white"
+              class="flex flex-col m-4 bg-white last_child"
               style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
               v-for="(r,i) in $store.state.lessee.list"
               :key="i"
@@ -252,5 +252,8 @@ export default {
 .LesseeList /deep/ .van-hairline--top-bottom::after,
 .LesseeList /deep/ .van-hairline-unset--top-bottom::after {
   border-width: 0px;
+}
+.last_child:last-child {
+  border-bottom: 0px !important;
 }
 </style>

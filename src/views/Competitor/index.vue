@@ -97,10 +97,12 @@
         >
           <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
             <div
-              class="p-1 border-b border-gray-200"
+              class="flex flex-col m-4 bg-white last_child"
+              style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
               v-for="(r,i) in $store.state.competitor.list"
               :key="i"
               @click="getInfo(r.gid)"
+              
             >
               <van-cell is-link>
                 <template slot="title">
@@ -146,6 +148,7 @@ export default {
   },
   methods: {
     getInfo(id) {
+      this.$store.state.competitor.currentTabsIndex = 0;
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
     }
   }
@@ -206,7 +209,7 @@ export default {
   color: #80848d;
 }
 .CompetitorList /deep/ .van-dropdown-item__option--active,
-.LesseeList /deep/ .van-dropdown-item__option--active .van-dropdown-item__icon {
+.CompetitorList /deep/ .van-dropdown-item__option--active .van-dropdown-item__icon {
   color: #ff9b02;
 }
 .CompetitorList /deep/ .van-dropdown-item__option--active,
@@ -215,5 +218,11 @@ export default {
   .van-dropdown-item__option--active
   .van-dropdown-item__icon {
   color: #ff9b02;
+}
+.CompetitorList /deep/  .van-cell {
+  padding: 0;
+}
+.last_child:last-child {
+  border-bottom: 0px !important;
 }
 </style>

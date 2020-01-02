@@ -77,9 +77,9 @@
           <div
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"
-            class="border-b border-gray-200 flex m-4  items-center"
-            style="padding-bottom:1rem;"
-            @click="$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
+            class="flex m-4  items-center last_child"
+            style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
+            @click="$store.state.contacts.currentTabsIndex = 0;$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
             <div class="circleBg font-bold mr-4 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
             <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>
@@ -195,5 +195,8 @@ export default {
   /* overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis; */
+}
+.last_child:last-child {
+  border-bottom: 0px !important;
 }
 </style>

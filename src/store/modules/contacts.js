@@ -87,9 +87,9 @@ export default {
     setCurrentTabsIndex_contacts(state, num) {
       state.currentTabsIndex = num
     },
-    setInitParams_tabs(state) {
-      state.currentTabsIndex = 0
-    },
+    // setInitParams_tabs(state) {
+    //   state.currentTabsIndex = 0
+    // },
     setInitParams(state) {
       state.listContactsParams = {  // 获取联系人列表
         queryString: '',

@@ -108,9 +108,9 @@ export default {
         pageSize: 10
       }
     },
-    setInitParams_tabs(state) {
-      state.currentTabsIndex = 0
-    },
+    // setInitParams_tabs(state) {
+    //   state.currentTabsIndex = 0
+    // },
     setInitAddParams(state) {
 
       state.addParams = {
