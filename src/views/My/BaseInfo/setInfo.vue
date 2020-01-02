@@ -27,11 +27,11 @@
       </div>
       <!-- <div class="logOut" @click="logOut">退出登录</div> -->
 
-      <!-- <div class="p-5">
+      <div class="p-5">
       <p>测试数据</p>
       {{testToken}}<br />
       {{userInfo}}
-      </div>-->
+      </div>
     </div>
   </div>
 </template>
