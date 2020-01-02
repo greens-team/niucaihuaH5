@@ -206,7 +206,9 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
-                    <p v-if="info.chkBusTypCdList">{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
+                    <p
+                      v-if="info.chkBusTypCdList"
+                    >{{info.chkBusTypCdList | getBusTypCdList($store.getters.NDbusinessTypes)}}</p>
                     <p v-else style="color: rgba(69, 90, 100, 0.6);">-</p>
                   </div>
 
@@ -486,7 +488,7 @@
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs" style="color:#80848D">证件号码</p>
                     <p
-                      class="text-base" 
+                      class="text-base"
                       :style="{color:r.tactics?'#252525':'rgba(69, 90, 100, 0.6)'}"
                     >{{r.idcardNum?r.idcardNum:'-'}}</p>
                   </div>
@@ -541,13 +543,44 @@
                   </div>
                   <div class="border-b border-gray-100 pt-2 pb-2">
                     <p class="text-xs" style="color:#80848D">本人照片</p>
-                    <img :src="r.userPic" width="130" alt="本人照片" />
+
+                    <div class="flex justify-space">
+                      <template v-if="r.userPic">
+                        <div v-for="(r,i) in r.userPic.split(',')" :key="i" class="userPic">
+                          <img :src="picServer + r" alt="照片" class="lessessPics" />
+                        </div>
+                      </template>
+
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
+                    </div>
+
+                    <!-- <img :src="picServer + r.userPic" width="130" alt="本人照片" /> -->
                   </div>
                   <div class="pt-2 pb-2">
                     <p class="text-xs" style="color:#80848D">身份证照片</p>
-                    <div class="flex">
-                      <img :src="r.idcardFrontPic" width="130" alt="身份证正面" />
-                      <img :src="r.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
+                    <!-- <div class="flex">
+                      <img :src="picServer + r.idcardFrontPic" width="130" alt="身份证正面" />
+                      <img :src="picServer + r.idcardBackPic" class="ml-1" width="130" alt="身份证反面" />
+                    </div>-->
+
+                    <div class="flex justify-space">
+                      <div v-if="r.idcardFrontPic" style="width:130px;height:100px;margin-right:.5rem;">
+                        <img
+                          :src="r.idcardFrontPic ? picServer + r.idcardFrontPic : r.idcardFrontPic"
+                          alt="身份证正面"
+                          class="lessessPics"
+                        />
+                      </div>
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
+
+                      <div v-if="r.idcardBackPic" style="width:130px;height:100px;">
+                        <img
+                          :src="r.idcardBackPic ? picServer + r.idcardBackPic : r.idcardBackPic"
+                          alt="身份证反面"
+                          class="lessessPics"
+                        />
+                      </div>
+                      <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
                     </div>
                   </div>
                 </van-collapse-item>
@@ -731,7 +764,9 @@ export default {
       isShowNoData_competitor: false,
       isShowNoData_lessee: false,
       isShowNoData_newslog: false,
-      isShowNoData_operatelog: false
+      isShowNoData_operatelog: false,
+
+      userPicArr: []
     };
   },
   mounted() {
@@ -742,7 +777,6 @@ export default {
 
     // this.$store.state.dealerInfo.currentTabsIndex = 0;
     this.getBaseInfo(this.$store.state.dealerInfo.currentTabsIndex);
-    console.log(this.$store.state.dealerInfo.currentTabsIndex);
 
     // if (this.$store.state.dealerInfo.currentTabsIndex) {
     //   this.getBaseInfo(0);
@@ -810,7 +844,6 @@ export default {
         this.$refs.listBox.scrollTop = this.topVal;
       }
       this.getBaseInfo(num);
-      console.log(num, this.$store.state.dealerInfo.currentTabsIndex);
     }
   },
   filters: {
@@ -935,6 +968,8 @@ export default {
       }
       if (num === 1) {
         this.$store.dispatch("getcontactslist", this.id).then(res => {
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.contactslist = this.$store.state.dealerInfo.contactslist;
           this.currentContacts = this.contactslist.length
             ? [this.contactslist[0].id]
@@ -948,6 +983,8 @@ export default {
       }
       if (num === 2) {
         this.$store.dispatch("getcompetitorlist", this.id).then(res => {
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.competitorlist = this.$store.state.dealerInfo.competitorlist;
           this.currentCompetitor = this.competitorlist.length
             ? [this.competitorlist[0].id]
@@ -961,6 +998,8 @@ export default {
       }
       if (num === 3) {
         this.$store.dispatch("getlesseelist", this.id).then(res => {
+          this.info = this.$store.state.dealerInfo.baseInfo;
+
           this.lesseelist = this.$store.state.dealerInfo.lesseelist;
           this.currentLesseelist = this.lesseelist.length
             ? [this.lesseelist[0].id]
@@ -1186,5 +1225,21 @@ export default {
 }
 .last_child:last-child {
   border-bottom: 0px;
+}
+
+.lessessPics {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.userPic {
+  width: 78px;
+  height: 78px;
+  margin-right: 0.5rem;
+}
+.userPic:last-child {
+  margin-right: 0rem;
 }
 </style>

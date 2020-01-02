@@ -227,9 +227,9 @@
                     </div>
                   </div>
                   <div class="border_line pt-2 pb-2">
-                    <p class="text-xs text_title py-2">上传承租人身份证件照片</p>
+                    <p class="text-xs text_title py-2">承租人身份证件照片</p>
                     <div class="flex justify-space">
-                      <div v-if="info.idcardFrontPic" class="userPic">
+                      <div v-if="info.idcardFrontPic" style="width:130px;height:100px;margin-right:.5rem;">
                         <img
                           :src="info.idcardFrontPic ? picServer + info.idcardFrontPic : info.idcardFrontPic"
                           alt="身份证正面"
@@ -238,7 +238,7 @@
                       </div>
                       <div style="color:rgba(69, 90, 100, 0.6)" class="flex" v-else>-</div>
 
-                      <div v-if="info.idcardBackPic" class="userPic">
+                      <div v-if="info.idcardBackPic" style="width:130px;height:100px;">
                         <img
                           :src="info.idcardBackPic ? picServer + info.idcardBackPic : info.idcardBackPic"
                           alt="身份证反面"
@@ -461,8 +461,6 @@ export default {
   mounted() {
     this.id = this.$route.query.id;
     this.addRecentvisit({ modelObjType: 3, modelId: this.id });
-
-    console.log(this.$store.state.lessee.currentTabsIndex);
 
     this.getBaseInfo(this.$store.state.lessee.currentTabsIndex);
 

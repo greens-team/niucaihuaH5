@@ -32,6 +32,11 @@ export default {
       });
     };
 
+    setTimeout(()=>{
+      window.setToken('74d33508f4bd815c4fa8cc63e2a3f74e',{ "SYSUSERFLAG": "1", "buOrgCd": "00000001", "ORG_CHILDREN": "", "TOKEN": "74d33508f4bd815c4fa8cc63e2a3f74e", "funauth": [ { "orgdispnm": "重卡-山西-晋北区域（朔州）", "orgid": "206", "roleisvis": "1", "isdisusr": "1", "rolename": "客户经理", "roleid": "10008" } ], "EMPLOYEE_ISDEPT": "晋中分公司", "IS_FINANCELEASE": "1", "EMPLOYEE_ID": "1000378", "EMPLOYEE_CODE": "0300040", "SIGN": "20693625c276f645253c9a0db97f31eb", "ORG_NAME": "", "genderCdList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ], "EMPLOYEE_NAME": "董伟", "prdTypCateList": [ { "isHide": false, "key": "007", "value": "客车（卡车业务）" }, { "isHide": false, "key": "001", "value": "卡车" } ]})
+      // window.setToken('a3b8c3cbce4c147899efdbc58fa87d14',{ "TOKEN": "a3b8c3cbce4c147899efdbc58fa87d14", "EMPLOYEE_CODE": "0100095", "ORG_NAME": "", "prdTypCateList": [ { "key": "007", "value": "客车（卡车业务）", "isHide": false }, { "key": "001", "value": "卡车", "isHide": false } ], "EMPLOYEE_NAME": "桂小娟", "SYSUSERFLAG": "1", "funauth": [ { "orgid": "195", "roleisvis": "1", "roleid": "10008", "orgdispnm": "重卡-宁蒙大区（内蒙古）-西蒙区域（包头）", "isdisusr": "1", "rolename": "客户经理" } ], "genderCdList": [ { "key": "007", "value": "客车（卡车业务）", "isHide": false }, { "key": "001", "value": "卡车", "isHide": false } ], "ORG_CHILDREN": "", "IS_FINANCELEASE": "1", "SIGN": "3661f5b0fa213a8074bc982d4815d8c0", "buOrgCd": "00000001", "EMPLOYEE_ID": "1000362", "EMPLOYEE_ISDEPT": "包头分公司" })
+    }, 3000)
+
     // setToken('74d33508f4bd815c4fa8cc63e2a3f74e')
     // sessionStorage.Authorization = '74d33508f4bd815c4fa8cc63e2a3f74e'
 
@@ -173,13 +178,5 @@ body {
   background: #f7f8f9;
   padding: 10px 16px;
   color: #f42929;
-}
-
-@supports (bottom: env(safe-area-inset-bottom)){
-    body,
-    .footer {
-        padding-bottom: constant(safe-area-inset-bottom);
-        padding-bottom: env(safe-area-inset-bottom);
-    }
 }
 </style>
