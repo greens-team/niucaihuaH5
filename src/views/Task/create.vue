@@ -541,12 +541,12 @@ export default {
         1
       );
     },
-    visitAimShow(val){
-      !val && (this.empty3 = !Boolean(this.visitAimText))
+    visitAimShow(val) {
+      !val && (this.empty3 = !Boolean(this.visitAimText));
     },
     dealerShow(val) {
-      if(!val){
-        this.empty2 = !Boolean(this.dealerName)
+      if (!val) {
+        this.empty2 = !Boolean(this.dealerName);
       }
       setTimeout(() => {
         val &&
@@ -710,17 +710,21 @@ export default {
         params.taskTime === "" ||
         params.mainUserGids === ""
       ) {
-        this.empty1 = true
+        this.empty1 = true;
         // this.$dialog.alert({
         //   message: "请认真填11写"
         // });
         return;
       }
       if (this.$route.query.taskType === 1 && params.dealerGid === "") {
-        this.empty2 = true
+        this.empty2 = true;
         return;
       }
-      if(this.visitAimObj.id !== 0 && !this.visitAimObj.id && this.$route.query.taskType === 1){
+      if (
+        this.visitAimObj.id !== 0 &&
+        !this.visitAimObj.id &&
+        this.$route.query.taskType === 1
+      ) {
         this.empty3 = true;
         return;
       }
@@ -736,14 +740,18 @@ export default {
         this.$store
           .dispatch("addTask", { taskType: this.taskType })
           .then(res => {
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.taskId = res.data;
-                this.$router.go(-1);
-              });
+            // this.$dialog
+            //   .alert({
+            //     message: "操作成功"
+            //   })
+            //   .then(() => {
+            //     this.taskId = res.data;
+            //     this.$router.go(-1);
+            //   });
+
+            this.$toast("创建成功");
+            this.taskId = res.data;
+            this.$router.go(-1);
           });
       }
     },
@@ -771,14 +779,18 @@ export default {
         .dispatch("addTask", { taskType: this.taskType, visitType: 0 })
         .then(res => {
           this.newTask = false;
-          this.$dialog
-            .alert({
-              message: "操作成功"
-            })
-            .then(() => {
-              this.taskId = res.data;
-              this.$router.go(-1);
-            });
+          // this.$dialog
+          //   .alert({
+          //     message: "操作成功"
+          //   })
+          //   .then(() => {
+          //     this.taskId = res.data;
+          //     this.$router.go(-1);
+          //   });
+
+          this.$toast("创建成功");
+          this.taskId = res.data;
+          this.$router.go(-1);
         });
     },
 
@@ -820,13 +832,16 @@ export default {
         return;
       }
       this.$store.dispatch("finishTask", this.taskId).then(res => {
-        this.$dialog
-          .alert({
-            message: "操作成功"
-          })
-          .then(() => {
-            this.$router.go(-1);
-          });
+        // this.$dialog
+        //   .alert({
+        //     message: "操作成功666"
+        //   })
+        //   .then(() => {
+        //     this.$router.go(-1);
+        //   });
+
+        this.$toast("创建成功");
+        this.$router.go(-1);
       });
     },
     editorFun() {
@@ -847,7 +862,7 @@ export default {
 
       let taskName = this.$store.state.task.addEditTaskParams.taskName.trim();
       if (taskName === "") {
-        this.empty1 = true
+        this.empty1 = true;
         return;
       }
 
@@ -858,13 +873,16 @@ export default {
         })
         .then(msg => {
           this.newTask = false;
-          this.$dialog
-            .alert({
-              message: msg
-            })
-            .then(() => {
-              this.editor = false;
-            });
+          // this.$dialog
+          //   .alert({
+          //     message: "333"
+          //   })
+          //   .then(() => {
+          //     this.editor = false;
+          //   });
+
+          this.$toast('编辑成功');
+          this.editor = false;
         });
     },
 

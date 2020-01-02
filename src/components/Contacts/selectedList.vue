@@ -23,7 +23,7 @@
       <span class="text-center font-bold bar_title">联系人</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div slot="right" @click="finish">完成</div>
+        <div slot="right" style="font-size: 1.143rem;" @click="finish">完成</div>
       </div>
     </div>
 
@@ -107,7 +107,7 @@ export default {
         this.$store.getters.NDparams.addType = 1;
 
         this.$store.dispatch("addCreateDealer").then(r => {
-          console.log(r, 222);
+          this.$toast("新建成功")
           this.$router.push("/DealerManage");
         });
       }

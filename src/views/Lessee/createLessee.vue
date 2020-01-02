@@ -130,7 +130,7 @@
                 v-for="(r,i) in $store.state.lessee.status"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio> -->
+              >{{r.text}}</van-radio>-->
 
               <van-cell-group>
                 <van-cell
@@ -156,7 +156,12 @@
             :style="{color:selectLesseeType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectLesseeType ? selectLesseeType : '请选择类型'}}</div>
         </div>
-        <van-popup v-model="lesseeTypeShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
+        <van-popup
+          v-model="lesseeTypeShow"
+          position="bottom"
+          :style="{ height: '40%'}"
+          class="radioGroup"
+        >
           <van-nav-bar
             title="客户类型"
             left-text="取消"
@@ -176,8 +181,7 @@
                 v-for="(r,i) in $store.state.lessee.lesseeTypeList"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio> -->
-
+              >{{r.text}}</van-radio>-->
 
               <van-cell-group>
                 <van-cell
@@ -190,7 +194,6 @@
                   <van-radio slot="right-icon" :name="r.value" />
                 </van-cell>
               </van-cell-group>
-
             </van-radio-group>
           </div>
         </van-popup>
@@ -204,7 +207,12 @@
             :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
-        <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
+        <van-popup
+          v-model="genderShow"
+          position="bottom"
+          :style="{ height: '40%'}"
+          class="radioGroup"
+        >
           <van-nav-bar
             title="性别"
             left-text="取消"
@@ -224,8 +232,7 @@
                 v-for="(r,i) in $store.state.lessee.genderList"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio> -->
-
+              >{{r.text}}</van-radio>-->
 
               <van-cell-group>
                 <van-cell
@@ -238,8 +245,6 @@
                   <van-radio slot="right-icon" :name="r.value" />
                 </van-cell>
               </van-cell-group>
-
-
             </van-radio-group>
           </div>
         </van-popup>
@@ -505,13 +510,16 @@ export default {
             lesseeStatus: this.lesseeStatusValus
           })
           .then(res => {
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.$router.go(-1);
-              });
+            // this.$dialog
+            //   .alert({
+            //     message: "操作成功"
+            //   })
+            //   .then(() => {
+            //     this.$router.go(-1);
+            //   });
+
+            this.$toast("新建成功");
+            this.$router.go(-1);
           });
       }
     },

@@ -202,7 +202,12 @@
             :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
-        <van-popup v-model="genderShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
+        <van-popup
+          v-model="genderShow"
+          position="bottom"
+          :style="{ height: '40%'}"
+          class="radioGroup"
+        >
           <van-nav-bar
             title="性别"
             left-text="取消"
@@ -575,13 +580,16 @@ export default {
             lesseeStatus: this.lesseeStatusValus
           })
           .then(res => {
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.$router.go(-1);
-              });
+            // this.$dialog
+            //   .alert({
+            //     message: "操作成功"
+            //   })
+            //   .then(() => {
+            //     this.$router.go(-1);
+            //   });
+
+            this.$toast("编辑成功");
+            this.$router.go(-1);
           });
       }
     },

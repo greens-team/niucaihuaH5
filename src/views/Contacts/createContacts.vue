@@ -163,8 +163,8 @@ export default {
         : "请选择参与人";
     },
     createContacts() {
-      if(this.delaySend()){
-        return
+      if (this.delaySend()) {
+        return;
       }
       let ownerUserData = this.$store.state.contacts.createContactsParams
         .ownerUserGids;
@@ -188,13 +188,16 @@ export default {
         !this.isShowErrorOwnerMsg
       ) {
         this.$store.dispatch("createContacts").then(res => {
-          this.$dialog
-            .alert({
-              message: "操作成功"
-            })
-            .then(() => {
-              this.$router.go(-1);
-            });
+          // this.$dialog
+          //   .alert({
+          //     message: "操作成功"
+          //   })
+          //   .then(() => {
+          //     this.$router.go(-1);
+          //   });
+
+          this.$toast("新建成功");
+          this.$router.go(-1);
         });
       }
     },
@@ -255,7 +258,7 @@ export default {
 .CreateContacts /deep/ .van-cell--required::before {
   position: absolute;
   left: 8px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 13px;
@@ -263,7 +266,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 13px;

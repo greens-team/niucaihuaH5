@@ -634,6 +634,7 @@ export default {
     },
     createDealer() {
       this.$store.dispatch("addCreateDealer").then(r => {
+        this.$toast("新建成功")
         this.$router.go(-1);
       });
     },
@@ -687,6 +688,7 @@ export default {
       this.checkErrorMsg();
       if (!this.isShowErrorNameMsg) {
         this.$store.dispatch("editDealer", pars).then(r => {
+          this.$toast('编辑成功')
           this.$router.go(-1);
         });
       }

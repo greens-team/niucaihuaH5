@@ -173,14 +173,12 @@ export default {
           id: r.ownerUserGid
         });
       });
-      console.log(this.followerUserGids, 1111);
       this.$store.state.competitor.info.ownerUserList.map(r => {
         this.ownerUserGids.push({
           refRlNm: r.ownerUserName,
           id: r.ownerUserGid
         });
       });
-      console.log(this.ownerUserGids, 22222);
     },
     getOwnerUserList(val) {
       this.ownerUserGids = val;
@@ -241,13 +239,16 @@ export default {
             competorType: this.competorStatusValus
           })
           .then(res => {
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.$router.go(-1);
-              });
+            // this.$dialog
+            //   .alert({
+            //     message: "操作成功"
+            //   })
+            //   .then(() => {
+            //     this.$router.go(-1);
+            //   });
+
+            this.$toast('编辑成功');
+            this.$router.go(-1);
           });
       }
     },

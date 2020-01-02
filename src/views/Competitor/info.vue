@@ -347,12 +347,15 @@ export default {
     this.id = this.$route.query.id;
     this.picServer = window.picServer;
     this.addRecentvisit({ modelObjType: 4, modelId: this.id });
-    if (this.$store.state.competitor.currentTabsIndex) {
-      this.getBaseInfo(0);
-      this.getBaseInfo(this.$store.state.competitor.currentTabsIndex);
-    } else {
-      this.getBaseInfo(0);
-    }
+
+    this.getBaseInfo(this.$store.state.competitor.currentTabsIndex);
+
+    // if (this.$store.state.competitor.currentTabsIndex) {
+    //   this.getBaseInfo(0);
+    //   this.getBaseInfo(this.$store.state.competitor.currentTabsIndex);
+    // } else {
+    //   this.getBaseInfo(0);
+    // }
 
     // 动态记录
     this.$refs.listBox &&
@@ -398,7 +401,7 @@ export default {
           resolve();
         },
         scrollTopVal => {
-          console.log(scrollTopVal);
+          // console.log(scrollTopVal);
           if (scrollTopVal > this.topVal && !this.positioning) {
             this.positioning = true;
           }
@@ -418,7 +421,7 @@ export default {
   },
   created() {
     //每次进来时候将参数设置为初始值
-    this.$store.commit("setInitParams_tabs");
+    // this.$store.commit("setInitParams_tabs");
   },
   methods: {
     getBaseInfo(num) {
