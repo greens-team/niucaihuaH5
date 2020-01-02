@@ -172,7 +172,8 @@ export default {
         : "请选择参与人";
     },
     editContacts() {
-      let ownerUserData = this.$store.state.contacts.editContactsParams.ownerUserGids;
+      let ownerUserData = this.$store.state.contacts.editContactsParams
+        .ownerUserGids;
       ownerUserData.length
         ? (ownerUserData = ownerUserData.split(","))
         : (ownerUserData = []);
@@ -193,13 +194,16 @@ export default {
         !this.isShowErrorOwnerMsg
       ) {
         this.$store.dispatch("editContacts").then(res => {
-          this.$dialog
-            .alert({
-              message: "操作成功"
-            })
-            .then(() => {
-              this.$router.go(-1);
-            });
+          // this.$dialog
+          //   .alert({
+          //     message: "操作成功"
+          //   })
+          //   .then(() => {
+          //     this.$router.go(-1);
+          //   });
+
+          this.$toast("编辑成功");
+          this.$router.go(-1);
         });
       }
     },
@@ -258,7 +262,7 @@ export default {
 .ownerUser::before {
   position: absolute;
   left: -7px;
-  color: #F42929;
+  color: #f42929;
   font-size: 14px;
   content: "*";
   top: 13px;

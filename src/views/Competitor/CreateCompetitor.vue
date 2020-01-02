@@ -224,13 +224,15 @@ export default {
         this.$store
           .dispatch("addCompetitor", { competorType: this.competorStatusValus })
           .then(res => {
-            this.$dialog
-              .alert({
-                message: "操作成功"
-              })
-              .then(() => {
-                this.$router.go(-1);
-              });
+            // this.$dialog
+            //   .alert({
+            //     message: "操作成功"
+            //   })
+            //   .then(() => {
+            //     this.$router.go(-1);
+            //   });
+            this.$toast('新建成功');
+            this.$router.go(-1);
           });
       }
     },

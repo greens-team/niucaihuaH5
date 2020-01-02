@@ -19,7 +19,7 @@
       <span class="text-center font-bold bar_title">联系人</span>
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
-        <div slot="right" @click="selectedList">下一步</div>
+        <div slot="right" style="font-size: 1.143rem;" @click="selectedList">下一步</div>
       </div>
     </div>
 
