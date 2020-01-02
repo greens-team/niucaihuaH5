@@ -8,11 +8,12 @@
       @click-right="setLocation"
     />
     <div class="amap-page-container flex-1 flex flex-col relative">
-      <el-amap vid="amap" ref="map" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
+      <el-amap vid="amap" ref="map" :plugin="plugin" :zoom="zoom" :class="['flex-1', {ding: dealerPosition}]" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
+        <el-amap-marker v-if="dealerPosition" class="" style="z-index: 9999999999;" :position="center" icon="./ding.png" :offset="[-24,-40]"></el-amap-marker>
       </el-amap>
     </div>
 
-    <div style="height: 350px;" class="checkBoxGroup flex flex-col" >
+    <div v-if="!dealerPosition" style="height: 350px;" class="checkBoxGroup flex flex-col" >
       <el-amap-search-box  style="width:90%;margin:10px 5%" placeholder="请输入姓名" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
       <div class="flex-1 relative">
         <div class="absolute inset-0 overflow-y-scroll">
@@ -39,6 +40,12 @@ export default {
   data() {
     let self = this;
       return {
+        ding: {//自定义外观
+          url:'./ding.png',//图片地址
+          size:[48,48],  //要显示的点大小，将缩放图片
+          ancher:[24,40],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
+        },
+        dealerPosition: false,
         pois: {},
         resPoi: {},
         params : {
@@ -107,11 +114,7 @@ export default {
           var positionPicker = new PositionPicker({
               mode: 'dragMap',
               map: map,
-              iconStyle:{//自定义外观
-                url:'./ding.png',//图片地址
-                size:[48,48],  //要显示的点大小，将缩放图片
-                ancher:[24,40],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
-              }
+              iconStyle:self.ding
           });
           //定位
           let geolocation;
@@ -184,8 +187,8 @@ export default {
     delete sessionStorage.localMap;
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
-      this.getInfo(lng, lat)
       this.center = [lng, lat];
+      this.dealerPosition = true
     }
   },
 }
@@ -237,6 +240,10 @@ export default {
 }
 .checkBoxGroup /deep/ .el-vue-search-box-container input{
   margin-left: 10px;
+}
+
+.ding /deep/ img{
+  width: 48px;
 }
 
 </style>
