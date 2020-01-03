@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col amapBox">
     <van-nav-bar
       title="地图位置"
       left-text="返回"
@@ -13,8 +13,8 @@
       </el-amap>
     </div>
 
-    <div v-if="!dealerPosition" style="height: 350px;" class="checkBoxGroup flex flex-col" >
-      <el-amap-search-box  style="width:90%;margin:10px 5%" placeholder="请输入姓名" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+    <div v-if="!dealerPosition" style="min-height: 300px;" class="checkBoxGroup flex flex-col" >
+      <el-amap-search-box  style="width:90%;margin:10px 5%" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
       <div class="flex-1 relative">
         <div class="absolute inset-0 overflow-y-scroll">
             <van-radio-group v-model="resPoi">
@@ -26,10 +26,7 @@
         </div>
       </div>
 
-          
-
     </div>
-
   </div>
 </template>
 
@@ -55,8 +52,8 @@ export default {
         },
 
         searchOption: {
-          city: '全国',
-          citylimit: true
+          city: '北京',
+          citylimit: false
         },
 
         map:null,
@@ -66,6 +63,23 @@ export default {
             o.getCurrentPosition && o.getCurrentPosition((status, result) => {
               console.log(status, result, 333)
             })
+
+            // let marker = new AMap.Marker({
+            //   position: [116.397451, 39.909187]
+            // });
+            // marker.setMap(o);
+
+            // this.$refs.map.$$getInstance()
+
+            // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+            //     const marker = new SimpleMarker({
+            //       iconLabel: 'A',
+            //       iconStyle: 'red',
+            //       map: o,
+            //       position: o.getCenter()
+            //     });
+            //   });
+
           }
         },
         zoom: 15,
@@ -99,10 +113,14 @@ export default {
       }
     },
     resPoi(val){
-      this.params = {
+      this.params = val ? {
         lng: val.location.lng,
         lat: val.location.lat,
         address: this.pois.addressComponent.province + this.pois.addressComponent.city + this.pois.addressComponent.district + val.address + val.name
+      } : {
+        lng: '',
+        lat: '',
+        address: ''
       }
     }
   },
@@ -146,15 +164,16 @@ export default {
 
     getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
-        radius: 300,
+        radius: 100,
         extensions: "all"
       });        
       geocoder.getAddress([lng ,lat], (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
             this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+            console.log(this.searchOption.city, 6543)
             this.pois = result.regeocode
-            this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
+            this.pois.pois && this.pois.pois[0] && this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
             this.resPoi = this.pois.pois[0]
             this.$nextTick();
           }
@@ -166,7 +185,7 @@ export default {
       this.pois.pois = pois
       this.center = [pois[0].lng, pois[0].lat];
       this.resPoi = pois[0]
-      },
+    },
     
     setSource(){
       // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
@@ -175,12 +194,16 @@ export default {
     setLocation(){
       this.setSource() // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
       // 赋值给NDparams 经纬度
-      let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
-      this.$store.getters.NDparams.longitude =  lng
-      this.$store.getters.NDparams.latitude = lat
-      // 赋值给NDparams 地理位置
-      this.$store.getters.NDparams.locationName = this.params.address
-      this.$router.go(-1)
+      if(this.params.lng){
+        let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
+        this.$store.getters.NDparams.longitude =  lng
+        this.$store.getters.NDparams.latitude = lat
+        // 赋值给NDparams 地理位置
+        this.$store.getters.NDparams.locationName = this.params.address
+        this.$router.go(-1)
+      }else{
+        this.$toast('请在地图选择位置');
+      }
     },
   },
   mounted() {
@@ -245,5 +268,16 @@ export default {
 .ding /deep/ img{
   width: 48px;
 }
+
+
+.amapBox /deep/ .el-vue-search-box-container .search-tips{
+  left: -3px;
+  right: -3px;
+  border-radius: 5px;
+  box-shadow: 0 0px 2px #e5e5e5;
+  max-height: 248px;
+  border: none;
+}
+
 
 </style>

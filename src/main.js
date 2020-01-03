@@ -19,7 +19,7 @@ VueAMap.initAMapApiLoader({
   plugin: ['AMap.Geolocation','AMap.ToolBar'],
   // 默认高德 sdk 版本为 1.4.4
   v: '1.4.9',
-  uiVersion: "1.0"
+  uiVersion: "1.0.11"
 });
 
 
