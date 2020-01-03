@@ -32,7 +32,8 @@
         <div class="font-bold" style="font-size:1.143rem;">销售简报</div>
         <div class="flex-1"></div>
         <div
-          class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis" style="
+          class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis"
+          style="
           max-width:9rem;"
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
@@ -185,9 +186,10 @@
           <!-- 我的任务列表 -->
           <div>
             <!-- <CalendarControl /> -->
-            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
+            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1" style="color:#80848d;">
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
+                style="color:#80848d;"
                 @click="taskDateBox= true;"
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
@@ -255,7 +257,7 @@
           <div>
             <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
               <div
-                class="text-sm text-gray-700 flex justify-center items-center"
+                class="text-sm text-gray-700 flex justify-center items-center" style="color:#80848d;"
                 @click="taskDateBox= true;"
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
@@ -281,6 +283,7 @@
                 <span
                   v-if="$store.state.workbench.taskColleagues.userGids.concat($store.state.workbench.taskColleagues.deptGids).toString()"
                   class="text-xs"
+                  style="color: rgb(128, 132, 141);text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
                 >
                   <span
                     class="text-xs"
@@ -300,7 +303,7 @@
                     {{r.split(',')[0]}}
                   </span>
                 </span>
-                <span v-else class="text-xs" style="color: #80848D;margin-left:.3rem;">选择同事</span>
+                <span v-else class="text-xs" style="color: #80848D;">选择同事</span>
               </div>
             </div>
             <!-- <div class="text-gray-500 text-xs mt-3 border-t border-gray-100 p-2">
@@ -605,8 +608,17 @@ export default {
 .gray {
   color: #80848d;
 }
-.dateBox /deep/ .van-picker__cancel, .dateBox /deep/ .van-picker__confirm {
+.dateBox /deep/ .van-picker__cancel,
+.dateBox /deep/ .van-picker__confirm {
   color: #ff9b02;
   font-size: 1.143rem;
+}
+
+.dateBox /deep/ .van-picker__toolbar {
+  border-bottom: 1px solid #ededee;
+}
+.dateBox /deep/ .van-picker-column__item.van-picker-column__item--selected {
+  color: #252525;
+  font-size: 1.286rem;
 }
 </style>
