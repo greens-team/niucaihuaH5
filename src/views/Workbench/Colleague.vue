@@ -55,7 +55,7 @@
 
         <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="(num)=>{active=num}">
           <van-swipe-item>
-            <van-checkbox-group v-model="oftenuseValues" class="bg-white">
+            <van-checkbox-group v-model="oftenuseValues" class="bg-white checkBoxGroup">
               <div class="h-1"></div>
               <van-checkbox
                 v-for="(item, i) in $store.state.dealer.oftenuselist"
@@ -67,7 +67,7 @@
             </van-checkbox-group>
           </van-swipe-item>
           <van-swipe-item>
-            <van-checkbox-group v-model="colleagues.userGids" class="bg-white">
+            <van-checkbox-group v-model="colleagues.userGids" class="bg-white checkBoxGroup">
               <!-- <van-checkbox icon-size="16px" class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" name="a">全选</van-checkbox> -->
               <!-- <van-index-anchor index="A" class=" bg-gray-100"/> -->
               <div class="h-1"></div>
@@ -83,7 +83,7 @@
           <van-swipe-item>
             <div class="bg-gray-100">
               <div class="bg-white pt-1 pl-3 pr-3">
-                <van-checkbox-group v-model="colleagues.deptGids" class="bg-white NestedDept">
+                <van-checkbox-group v-model="colleagues.deptGids" class="bg-white NestedDept checkBoxGroup">
                   <NestedDept :deptData="$store.state.dealer.deptDataList" />
                 </van-checkbox-group>
               </div>
@@ -105,7 +105,11 @@
           {{r.split(',')[0]}}
         </span>
       </div>
-      <div class="btn rounded py-2 px-3 rounded-sm text-white" style="width:4.5rem;text-align: center;" @click="selectColleague()">确定</div>
+      <div
+        class="btn rounded py-2 px-3 rounded-sm text-white"
+        style="width:4.5rem;text-align: center;"
+        @click="selectColleague()"
+      >确定</div>
       <!-- <div class="btn text-white rounded text-sm p-1 pl-3 pr-3" @click="selectColleague">确 定</div> -->
     </div>
   </div>
@@ -317,5 +321,9 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
 }
 </style>

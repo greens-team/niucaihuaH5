@@ -28,15 +28,16 @@
 
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
-      <div class="flex items-center justify-center p-1" >
+      <div class="flex items-center justify-center p-1">
         <div class="font-bold" style="font-size:1.143rem;">销售简报</div>
         <div class="flex-1"></div>
         <div
-          class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis"
+          class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis" style="
+          max-width:9rem;"
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
           <img
-            style="display:inline-block;width:1.286rem;height:1.286rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
             src="../../assets/workbench/my.png"
             alt
           />
@@ -44,7 +45,7 @@
           <span
             v-if="$store.state.workbench.briefingColleagues.userGids.concat($store.state.workbench.briefingColleagues.deptGids).toString()"
             class="text-xs"
-            style="color: #80848D;"
+            style="color: #80848D;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
           >
             <span
               class="text-xs"
@@ -80,10 +81,11 @@
             alt
           />
           <div
+            style="font-size:.5rem;max-width: 3.8rem;text-align: right;margin-left:.3rem;"
             v-if="$store.state.workbench.briefingDate.text"
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
-          <div v-else style="font-size:.5rem; line-height:.8rem;">
+          <div v-else style="font-size:.5rem; line-height:.8rem;width: 5rem;text-align: right;">
             {{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}
             <br />
             {{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}
@@ -190,7 +192,7 @@
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
                 <img
-                  style="display:inline-block;width:1.286rem;height:1.286rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
                   src="../../assets/workbench/calendar.png"
                   alt
                 />
@@ -247,7 +249,6 @@
               <p style="color:#80848D">暂时还没有数据呢～</p>
             </div>
           </div>
-          
         </van-swipe-item>
         <van-swipe-item class="bg-white">
           <!-- 同事任务列表 -->
@@ -259,7 +260,7 @@
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
                 <img
-                  style="display:inline-block;width:1.286rem;height:1.286rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
                   src="../../assets/workbench/calendar.png"
                   alt
                 />
@@ -268,11 +269,12 @@
               <div class="flex-1"></div>
               <div
                 class="text-xs hover:text-blue-500 ellipsis flex items-center"
+                style="color: rgb(128, 132, 141);text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
                 @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})"
               >
                 <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
                 <img
-                  style="display:inline-block;width:1.286rem;height:1.286rem;"
+                  style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
                   src="../../assets/workbench/my.png"
                   alt
                 />
@@ -298,7 +300,7 @@
                     {{r.split(',')[0]}}
                   </span>
                 </span>
-                <span v-else class="text-xs" style="color: #80848D;">选择同事</span>
+                <span v-else class="text-xs" style="color: #80848D;margin-left:.3rem;">选择同事</span>
               </div>
             </div>
             <!-- <div class="text-gray-500 text-xs mt-3 border-t border-gray-100 p-2">
@@ -350,7 +352,7 @@
       </van-swipe>
     </div>
 
-    <van-popup v-model="taskDateBox" position="bottom" :style="{ height: '40%' }">
+    <van-popup v-model="taskDateBox" position="bottom" :style="{ height: '40%' }" class="dateBox">
       <van-datetime-picker
         title="请选择时间"
         :formatter="formatter"
@@ -589,7 +591,7 @@ export default {
 }
 
 .ellipsis {
-  max-width: 12rem;
+  max-width: 9rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -602,5 +604,9 @@ export default {
 }
 .gray {
   color: #80848d;
+}
+.dateBox /deep/ .van-picker__cancel, .dateBox /deep/ .van-picker__confirm {
+  color: #ff9b02;
+  font-size: 1.143rem;
 }
 </style>
