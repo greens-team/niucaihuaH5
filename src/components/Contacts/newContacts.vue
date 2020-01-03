@@ -73,7 +73,7 @@ export default {
         if(this.$store.state.contacts.createContactsParams.contactsName){
           this.$store.dispatch('createContacts').then(res => {
             // this.$notify({ type: 'success', message: res.msg })
-            this.$toast('新建成功')
+            this.$toast('创建成功')
             this.$store.state.contacts.listContactsParams.queryString = ''
             let selectedUserGids = this.$store.state.contacts.selectedUserGids.concat(this.$store.state.contacts.createContactsParams.contactsName+','+res.data)
             sessionStorage.selectedUserGids = JSON.stringify(selectedUserGids)

@@ -518,7 +518,7 @@ export default {
             //     this.$router.go(-1);
             //   });
 
-            this.$toast("新建成功");
+            this.$toast("创建成功");
             this.$router.go(-1);
           });
       }
