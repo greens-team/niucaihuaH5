@@ -172,7 +172,7 @@ export default {
       });
     },
     searchAll(data) {
-      // console.log(data,"data")
+      console.log(data,"data")
       this.$store
         .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
         .then(res => {

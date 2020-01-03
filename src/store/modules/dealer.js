@@ -150,9 +150,11 @@ export default {
     },
     getListData({ state }, data = {}) {
       let params = Object.assign(state.listParams, data)
-      params.ownerUserGids = params.ownerUserGids.map(r => {
-        return String(r.id)
-      })
+      if(params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id){
+        params.ownerUserGids = params.ownerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
       if (params.pageNum == 1) {
         state.isLastPage = false
       }

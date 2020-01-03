@@ -7,14 +7,31 @@
       @click-left="setSource(),$router.go(-1)"
       @click-right="setLocation"
     />
+
+    <!-- <input  
+          v-model="searchKey"
+          type="search"  
+          id="search"
+          > -->
+
+          <!-- <button @click="searchByHand" @input="searchByHand" >搜索</button> -->
+    
+
+    
+
+
+    
     <div class="amap-page-container flex-1 flex flex-col relative">
       <el-amap vid="amap" ref="map" :plugin="plugin" :zoom="zoom" :class="['flex-1', {ding: dealerPosition}]" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
         <el-amap-marker v-if="dealerPosition" class="" style="z-index: 9999999999;" :position="center" icon="./ding.png" :offset="[-24,-40]"></el-amap-marker>
       </el-amap>
     </div>
 
+    
     <div v-if="!dealerPosition" style="min-height: 300px;" class="checkBoxGroup flex flex-col" >
-      <el-amap-search-box  style="width:90%;margin:10px 5%" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <van-field v-model="searchKey" id="search"  type="search"   placeholder="请输入关键字" />
+      <div id="searchTip"></div>
+      <!-- <el-amap-search-box  style="width:90%;margin:10px 5%" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
       <div class="flex-1 relative">
         <div class="absolute inset-0 overflow-y-scroll">
             <van-radio-group v-model="resPoi">
@@ -37,6 +54,9 @@ export default {
   data() {
     let self = this;
       return {
+        searchKey: '',
+        poiPicker:null,
+        toSearch:false,
         ding: {//自定义外观
           url:'./ding.png',//图片地址
           size:[48,48],  //要显示的点大小，将缩放图片
@@ -51,10 +71,10 @@ export default {
           address: ''
         },
 
-        searchOption: {
-          city: '北京',
-          citylimit: false
-        },
+        // searchOption: {
+        //   city: '北京',
+        //   citylimit: false
+        // },
 
         map:null,
         events: {
@@ -63,6 +83,19 @@ export default {
             o.getCurrentPosition && o.getCurrentPosition((status, result) => {
               console.log(status, result, 333)
             })
+
+
+            // self.$refs.map.$$getInstance().plugin('AMap.Autocomplete', function(){
+            //   // 实例化Autocomplete
+            //   var autoOptions = {
+            //     // input 为绑定输入提示功能的input的DOM ID
+            //     input: 'input_id'
+            //   }
+            //   var autoComplete= new AMap.Autocomplete(autoOptions);
+            //   console.log(autoComplete, 333344444)
+            //   // 无需再手动执行search方法，autoComplete会根据传入input对应的DOM动态触发search
+            // })
+            
 
             // let marker = new AMap.Marker({
             //   position: [116.397451, 39.909187]
@@ -113,6 +146,7 @@ export default {
     map:function(){
       if(this.map!=null){
         this.startDrag();
+        this.initSearch();
       }
     },
     resPoi(val){
@@ -128,6 +162,52 @@ export default {
     }
   },
   methods: {
+    initSearch(){
+        let vm=this;
+        let map=this.$refs.map.$$getInstance();
+        this.toSearch=true;
+        AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+          var poiPicker = new PoiPicker({
+              input: 'search', //输入框id
+              placeSearchOptions: {
+                map: map,
+                pageSize: 10,
+              },
+              suggestContainer:'searchTip',
+          });
+          vm.poiPicker=poiPicker;
+          //监听poi选中信息
+          poiPicker.on('poiPicked', function(poiResult) {
+            let poi = poiResult.item;
+            poiPicker.clearSearchResults();
+            vm.searchKey="";
+            vm.center = [poi.location.lng, poi.location.lat];
+            vm.getInfo(poi.location.lng, poi.location.lat)
+            document.getElementById('searchTip').innerHTML = ''
+          });
+
+          // poiPicker.on('poiPicked', function(poiResult) {
+          //   let source = poiResult.source;
+          //   let poi = poiResult.item;
+          //   if (source !== 'search') {
+          //       poiPicker.searchByKeyword(poi.name);
+          //   } else {
+          //     poiPicker.clearSearchResults();
+          //     vm.center=[poiResult.item.location.lng,poiResult.item.location.lat];
+          //     vm.address=poi.name;
+          //     vm.searchKey="";
+          //     vm.toSearch=false;
+          //   }
+          // });
+
+
+        });
+      },
+    // searchByHand(){
+    //   if(this.searchKey!=''){
+    //     this.poiPicker.searchByKeyword(this.searchKey);
+    //   }
+    // },
     startDrag(){//方法二
         let self = this;
         var map = this.$refs.map.$$getInstance()
@@ -169,7 +249,7 @@ export default {
     },
 
     setAllVal(result){
-      this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+      // this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
       this.pois = result.regeocode
       this.pois.pois && this.pois.pois[0] && this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
       this.resPoi = this.pois.pois[0]
@@ -188,12 +268,12 @@ export default {
         }
       }); 
     },
-    onSearchResult(pois) {
-      console.log(pois, 444)
-      this.pois.pois = pois
-      this.center = [pois[0].lng, pois[0].lat];
-      this.resPoi = pois[0]
-    },
+    // onSearchResult(pois) {
+    //   console.log(pois, 444)
+    //   this.pois.pois = pois
+    //   this.center = [pois[0].lng, pois[0].lat];
+    //   this.resPoi = pois[0]
+    // },
     
     setSource(){
       // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
@@ -221,6 +301,7 @@ export default {
       this.center = [lng, lat];
       this.dealerPosition = true
     }
+
   },
 }
 </script>
@@ -278,14 +359,19 @@ export default {
 }
 
 
-.amapBox /deep/ .el-vue-search-box-container .search-tips{
-  left: -3px;
-  right: -3px;
+.amapBox #searchTip{
+  
+  overflow-y: scroll;
   border-radius: 5px;
+  margin: 0 6px;
   box-shadow: 0 0px 2px #e5e5e5;
   max-height: 248px;
   border: none;
 }
+
+ .amapBox /deep/ .sugg-no-id{
+   display: none;
+ }
 
 
 </style>
