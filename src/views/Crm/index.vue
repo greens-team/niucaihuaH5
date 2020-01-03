@@ -79,4 +79,7 @@ export default {
 </script>
 
 <style scoped>
+.Crm /deep/ .van-cell {
+  padding: 16px;
+}
 </style>

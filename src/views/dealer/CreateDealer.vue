@@ -634,7 +634,7 @@ export default {
     },
     createDealer() {
       this.$store.dispatch("addCreateDealer").then(r => {
-        this.$toast("新建成功")
+        this.$toast("创建成功")
         this.$router.go(-1);
       });
     },

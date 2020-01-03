@@ -28,7 +28,7 @@ export default {
       orderType: 1,
       competorType: 1,
       pageNum: 1,
-      pageSize: 10
+      pageSize: 15
     },
 
     list: [],
@@ -108,7 +108,7 @@ export default {
         orderType: 1,
         competorType: 0,   //竞对类型 0全部 1第三方 2厂商金融
         pageNum: 1,
-        pageSize: 10
+        pageSize: 15
       }
     },
     // setInitParams_tabs(state) {
@@ -168,38 +168,38 @@ export default {
         })
       })
     },
-    // listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
-    //   let params = Object.assign(state.listParams, data);
-    //   if (params.pageNum == 1) {
-    //     state.isLastPage = false;
-    //   }
-    //   return new Promise(resolve => {
-    //     if (state.isLastPage) {
-    //       resolve();
-    //       return;
-    //     }
-    //     window.$ajax.competitor.listCompetitor(params).then(res => {
-    //       if (!res.code) {
-    //         state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
-    //         if (res.data.list.length < params.pageSize)
-    //           state.isLastPage = true
-    //         resolve('操作成功')
-    //       }
-    //     })
-    //   })
-    // },
-
     listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
+      let params = Object.assign(state.listParams, data);
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
       return new Promise(resolve => {
-        window.$ajax.competitor.listCompetitor(Object.assign(state.listParams, data)).then(res => {
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.competitor.listCompetitor(params).then(res => {
           if (!res.code) {
-            state.list = res.data.list;
-            state.total = res.data.total
-            resolve(state.list)
+            state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
+            if (res.data.list.length < params.pageSize)
+              state.isLastPage = true
+            resolve('操作成功')
           }
         })
       })
     },
+
+    // listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
+    //   return new Promise(resolve => {
+    //     window.$ajax.competitor.listCompetitor(Object.assign(state.listParams, data)).then(res => {
+    //       if (!res.code) {
+    //         state.list = res.data.list;
+    //         state.total = res.data.total
+    //         resolve(state.list)
+    //       }
+    //     })
+    //   })
+    // },
 
 
     associatedCompetitor({ state }, data = {}) {   // 关联和解除关联经销商

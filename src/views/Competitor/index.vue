@@ -89,7 +89,7 @@
 
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="competitorListBox">
-        <!-- <van-swipe
+        <van-swipe
           ref="swipe"
           :loop="false"
           :show-indicators="false"
@@ -113,23 +113,17 @@
               </van-cell>
             </div>
           </van-swipe-item>
-        </van-swipe>-->
+        </van-swipe>
 
-        <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
 
-        <van-swipe
-          ref="swipe"
-          :loop="false"
-          :show-indicators="false"
-          @change="(num)=>$store.dispatch('listCompetitor',{competorType: num,pageNum:1})"
-        >
+        <!-- <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="onChange">
           <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
             <van-list
               v-model="loading"
               :finished="finished"
               :immediate-check="false"
               finished-text="已全部加载"
-              @load="onLoad"
+              @load="onLoad(swipeNum)"
               :offset="20"
             >
               <div
@@ -150,7 +144,7 @@
               </div>
             </van-list>
           </van-swipe-item>
-        </van-swipe>
+        </van-swipe> -->
       </div>
     </div>
 
@@ -170,7 +164,8 @@ export default {
       finished: false,
       page: 1, //请求第几页
       total: 0, //总共的数据条数
-      itemList: []
+      itemList: [],
+      swipeNum: 0
     };
   },
   created() {
@@ -178,52 +173,58 @@ export default {
     this.$store.commit("setInitParams");
   },
   mounted() {
-    // this.scrollLoad(this.$refs.competitorListBox, resolve => {
-    //   this.$store
-    //     .dispatch("listCompetitor", {
-    //       pageNum: this.$store.state.competitor.listParams.pageNum + 1
-    //     })
-    //     .then(msg => {
-    //       resolve(msg);
-    //     });
-    // });
-    // this.$store.dispatch("listCompetitor", { pageNum: 1 });
+    this.scrollLoad(this.$refs.competitorListBox, resolve => {
+      this.$store
+        .dispatch("listCompetitor", {
+          pageNum: this.$store.state.competitor.listParams.pageNum + 1
+        })
+        .then(msg => {
+          resolve(msg);
+        });
+    });
+    this.$store.dispatch("listCompetitor", { pageNum: 1 });
 
-    this.getListData();
+    // this.getListData(this.swipeNum);
   },
   methods: {
+    // onChange(num) {
+    //   this.swipeNum = num;
+    //   this.page = 1;
+    //   this.finished = false;
+    //   this.itemList = [];
+    //   this.getListData(this.swipeNum);
+    // },
+    // getListData(num) {
+    //   console.log(this.page)
+    //   this.$store
+    //     .dispatch("listCompetitor", { pageNum: this.page, competorType: num })
+    //     .then(res => {
+    //       let rows = res;
+    //       this.loading = false;
+    //       this.total = this.$store.state.competitor.total;
+
+    //       // if (rows.length === 0) {
+    //       //   // 加载结束
+    //       //   this.finished = true;
+    //       //   return;
+    //       // }
+
+    //       // 将新数据与老数据进行合并
+    //       this.itemList = this.itemList.concat(rows);
+    //       //如果列表数据条数>=总条数，不再触发滚动加载
+    //       if (this.itemList.length >= this.total) {
+    //         this.finished = true;
+    //       }
+    //     });
+    // },
+    //滚动加载时触发
+    // onLoad() {
+    //   this.page++;
+    //   this.getListData(this.swipeNum);
+    // },
     getInfo(id) {
       this.$store.state.competitor.currentTabsIndex = 0;
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
-    },
-    getListData() {
-      this.$store
-        .dispatch("listCompetitor", { pageNum: this.page })
-        .then(res => {
-          let rows = res;
-          this.loading = false;
-          this.total = this.$store.state.competitor.total;
-
-          if (rows.length === 0) {
-            // 加载结束
-            this.finished = true;
-            return;
-          }
-
-          // 将新数据与老数据进行合并
-          this.itemList = this.itemList.concat(rows);
-
-          //如果列表数据条数>=总条数，不再触发滚动加载
-          if (this.itemList.length >= this.total) {
-            this.finished = true;
-          }
-        });
-    },
-
-    //滚动加载时触发
-    onLoad() {
-      this.page++;
-      this.getListData();
     }
   }
 };

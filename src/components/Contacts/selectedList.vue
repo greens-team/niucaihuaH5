@@ -107,7 +107,7 @@ export default {
         this.$store.getters.NDparams.addType = 1;
 
         this.$store.dispatch("addCreateDealer").then(r => {
-          this.$toast("新建成功")
+          this.$toast("创建成功")
           this.$router.push("/DealerManage");
         });
       }

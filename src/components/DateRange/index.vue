@@ -142,6 +142,8 @@ export default {
     this.selected = this.$route.params.text
     this.params.startTime = this.$route.params.startTime
     this.params.endTime = this.$route.params.endTime
+
+    console.log(this.params,"111")
   },
   methods: {
     formatter(type, value) {
