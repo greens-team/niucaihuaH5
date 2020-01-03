@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <div class="flex-1 relative h-full">
+    <div class="flex-1 relative h-full competitorList">
       <div class="absolute inset-0 overflow-y-scroll" ref="competitorListBox">
         <van-swipe
           ref="swipe"
@@ -297,7 +297,7 @@ export default {
   .van-dropdown-item__icon {
   color: #ff9b02;
 }
-.CompetitorList /deep/ .van-cell {
+.competitorList /deep/ .van-cell {
   padding: 0;
 }
 .last_child:last-child {
