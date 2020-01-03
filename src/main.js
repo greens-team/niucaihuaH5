@@ -31,6 +31,7 @@ import ajax from '@/plugins/axios'
 import apiList from '@/api'
 
 ajax(apiList, error => {
+  document.getElementById('loadingBox').style.display = 'none'
   // 请求错误统一处理
   if (!error.response) {
     Dialog({ message: error.response.statusText || error.response.data.message });
@@ -51,6 +52,7 @@ ajax(apiList, error => {
   }
 
 }, function (response) {
+  document.getElementById('loadingBox').style.display = 'none'
   // 请求成功统一处理
   if (Number(response.data.code)) {
     Dialog({ message: response.data.msg });

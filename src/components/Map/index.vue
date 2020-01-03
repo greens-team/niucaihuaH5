@@ -93,7 +93,10 @@ export default {
               o.getCurrentPosition((status, result) => {
                 console.log(status, result, 555)
                 if (result && result.position) {
+                  console.log(111)
                   self.center = [result.position.lng, result.position.lat];
+
+                  console.log(result, 998877)
                   self.getInfo(result.position.lng, result.position.lat)
                   self.$nextTick();
                 }
@@ -150,9 +153,13 @@ export default {
             });//返回定位信息
           })
           positionPicker.on('success', function(positionResult){
-            let lt = positionResult.position
-            console.log('aaaaaaaaa')
-            self.getInfo(lt.lng, lt.lat)
+            // let lt = positionResult.position
+            // console.log('aaaaaaaaa')
+            // self.getInfo(lt.lng, lt.lat)
+            if (positionResult.info === 'OK') {
+              console.log(positionResult, 11111122222)
+              self.setAllVal(positionResult)
+            }
           })
           positionPicker.on('fail', function(failResult){
             console.log(failResult)
@@ -161,7 +168,12 @@ export default {
         })
     },
 
-
+    setAllVal(result){
+      this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+      this.pois = result.regeocode
+      this.pois.pois && this.pois.pois[0] && this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
+      this.resPoi = this.pois.pois[0]
+    },
     getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
         radius: 100,
@@ -170,11 +182,7 @@ export default {
       geocoder.getAddress([lng ,lat], (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
-            this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
-            console.log(this.searchOption.city, 6543)
-            this.pois = result.regeocode
-            this.pois.pois && this.pois.pois[0] && this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
-            this.resPoi = this.pois.pois[0]
+            this.setAllVal(result)
             this.$nextTick();
           }
         }

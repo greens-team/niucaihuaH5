@@ -1,8 +1,17 @@
 <template>
   <div id="app" class="fixed inset-0 flex flex-col bg-white">
+
     <!-- <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
       <van-loading size="24px" vertical>加载中...</van-loading>
     </div>-->
+    
+    <div id="loadingBox" style="display: none; z-index:99999999;">
+      <div style="background:#fff; opacity: .2" class="fixed inset-0 z-40"></div>
+      <div class="fixed inset-0 flex items-center justify-center z-50">
+        <van-loading type="spinner" color="orange"/>
+      </div>
+    </div>
+
     <router-view v-if="loginStatus" class="bg-white"></router-view>
   </div>
 </template>
@@ -12,6 +21,7 @@ export default {
   name: "app",
   data() {
     return {
+      show: true,
       loginStatus: false
     };
   },
@@ -179,4 +189,18 @@ body {
   padding: 10px 16px;
   color: #f42929;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 120px;
+  height: 120px;
+  background-color: #fff;
+}
+
 </style>

@@ -25,6 +25,7 @@ function initAjax (apiList, errorCallback, successCallback){
         } else {
           config.headers.Authorization = window.Authorization || sessionStorage.Authorization || '';
         }
+        document.getElementById('loadingBox').style.display = 'block'
         return config;
       },
       function(error) {
