@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col amapBox">
     <van-nav-bar
       title="地图位置"
       left-text="返回"
@@ -8,23 +8,13 @@
       @click-right="setLocation"
     />
     <div class="amap-page-container flex-1 flex flex-col relative">
-      <!-- <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
-      <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
-        经销商位置: {{params.address}}
-      </div> -->
-      
-      <!-- v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" -->
-      <!-- <el-amap-search-box v-if="$route.query.edit" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
-      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
-        <!-- <template v-if="($route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)) && markers.length">
-          <el-amap-marker v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
-        </template> -->
-        <el-amap-marker style="z-index: 9999999999;" :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
+      <el-amap vid="amap" ref="map" :plugin="plugin" :zoom="zoom" :class="['flex-1', {ding: dealerPosition}]" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
+        <el-amap-marker v-if="dealerPosition" class="" style="z-index: 9999999999;" :position="center" icon="./ding.png" :offset="[-24,-40]"></el-amap-marker>
       </el-amap>
     </div>
 
-    <div style="height: 350px;" class="checkBoxGroup flex flex-col" >
-      <el-amap-search-box  style="width:90%;margin:10px 5%" placeholder="请输入姓名" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+    <div v-if="!dealerPosition" style="min-height: 300px;" class="checkBoxGroup flex flex-col" >
+      <el-amap-search-box  style="width:90%;margin:10px 5%" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
       <div class="flex-1 relative">
         <div class="absolute inset-0 overflow-y-scroll">
             <van-radio-group v-model="resPoi">
@@ -36,28 +26,23 @@
         </div>
       </div>
 
-          
-
     </div>
-
   </div>
 </template>
 
 <script>
-
-import VueAMap from 'vue-amap';
-VueAMap.initAMapApiLoader({
-  key: '276923c83894386e499c8b979ee7f446',
-  plugin: ['AMap.Geolocation','AMap.ToolBar'],
-  // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.4'
-});
 
 export default {
   name: 'Map',
   data() {
     let self = this;
       return {
+        ding: {//自定义外观
+          url:'./ding.png',//图片地址
+          size:[48,48],  //要显示的点大小，将缩放图片
+          ancher:[24,40],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
+        },
+        dealerPosition: false,
         pois: {},
         resPoi: {},
         params : {
@@ -65,34 +50,48 @@ export default {
           lat: '',
           address: ''
         },
-        markerClick: {
-          click: (e) => {
-            let { lng, lat } = e.lnglat;//e.lnglat; //()
-            self.getInfo(lng, lat)
-          }
-        },
-        // icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576128884556&di=bec7a6edff8972abb223c4a92f70f68e&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F59%2F31%2F594d771606856_610.jpg',
-        dealerPosition: [121.59, 31.19],
-        markers:[],
+
         searchOption: {
-            city: '全国',
-            citylimit: true
-          },
+          city: '北京',
+          citylimit: false
+        },
+
+        map:null,
         events: {
-          click(e) {
-            let { lng, lat } = e.lnglat;  
-            self.getInfo(lng, lat)  
+          init (o) {
+            self.map=o;
+            o.getCurrentPosition && o.getCurrentPosition((status, result) => {
+              console.log(status, result, 333)
+            })
+
+            // let marker = new AMap.Marker({
+            //   position: [116.397451, 39.909187]
+            // });
+            // marker.setMap(o);
+
+            // this.$refs.map.$$getInstance()
+
+            // AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+            //     const marker = new SimpleMarker({
+            //       iconLabel: 'A',
+            //       iconStyle: 'red',
+            //       map: o,
+            //       position: o.getCenter()
+            //     });
+            //   });
+
           }
         },
         zoom: 15,
-        center: [121.59, 31.19],
-        address: '',
+        center: [116.397451, 39.909187],
         plugin: [{
           pName: 'Geolocation',
           events: !self.$route.query.lng ? {
             init(o) {
+              self.map=o;
               // o 是高德地图定位插件实例
               o.getCurrentPosition((status, result) => {
+                console.log(status, result, 555)
                 if (result && result.position) {
                   self.center = [result.position.lng, result.position.lat];
                   self.getInfo(result.position.lng, result.position.lat)
@@ -108,61 +107,85 @@ export default {
       }
   },
   watch: {
+    map:function(){
+      if(this.map!=null){
+        this.startDrag();
+      }
+    },
     resPoi(val){
-      this.params = {
+      this.params = val ? {
         lng: val.location.lng,
         lat: val.location.lat,
         address: this.pois.addressComponent.province + this.pois.addressComponent.city + this.pois.addressComponent.district + val.address + val.name
+      } : {
+        lng: '',
+        lat: '',
+        address: ''
       }
-      this.dealerPosition = [val.location.lng, val.location.lat]
-      this.center = [val.location.lng, val.location.lat];
     }
   },
   methods: {
+    startDrag(){//方法二
+        let self = this;
+        var map = this.$refs.map.$$getInstance()
+        AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+          var positionPicker = new PositionPicker({
+              mode: 'dragMap',
+              map: map,
+              iconStyle:self.ding
+          });
+          //定位
+          let geolocation;
+          map.plugin('AMap.Geolocation', function () {
+            geolocation=new AMap.Geolocation({
+              showButton: true,        //显示定位按钮，默认：true
+              showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+              extensions:'all'
+            })
+            map.addControl(geolocation);
+            geolocation.getCurrentPosition();
+            AMap.event.addListener(geolocation, 'complete', function(data){
+              console.log(data, 99)
+              positionPicker.start();
+            });//返回定位信息
+          })
+          positionPicker.on('success', function(positionResult){
+            let lt = positionResult.position
+            console.log('aaaaaaaaa')
+            self.getInfo(lt.lng, lt.lat)
+          })
+          positionPicker.on('fail', function(failResult){
+            console.log(failResult)
+          })
+          positionPicker.start();
+        })
+    },
+
+
     getInfo(lng ,lat){
       var geocoder = new AMap.Geocoder({
-        radius: 500,
+        radius: 100,
         extensions: "all"
       });        
       geocoder.getAddress([lng ,lat], (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
           if (result && result.regeocode) {
             this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
-            // this.params = {
-            //   lng: lng,
-            //   lat: lat,
-            //   address: result.regeocode.formattedAddress
-            // }
+            console.log(this.searchOption.city, 6543)
             this.pois = result.regeocode
+            this.pois.pois && this.pois.pois[0] && this.pois.pois[0].lng && (this.center = [this.pois.pois[0].lng, this.pois.pois[0].lat]);
             this.resPoi = this.pois.pois[0]
             this.$nextTick();
           }
         }
       }); 
     },
-    onSearchResult(pois, aa) {
-      console.log(pois, aa,43)
-
+    onSearchResult(pois) {
+      console.log(pois, 444)
       this.pois.pois = pois
+      this.center = [pois[0].lng, pois[0].lat];
       this.resPoi = pois[0]
-
-        // this.markers=[]
-        // let latSum = 0;
-        // let lngSum = 0;
-        // if (pois.length > 0) {
-        //   pois.forEach(poi => {
-        //     let {lng, lat} = poi;
-        //     lngSum += lng;
-        //     latSum += lat;
-        //     this.markers.push([poi.lng, poi.lat]);
-        //   });
-        //   let center = {
-        //     lng: lngSum / pois.length,
-        //     lat: latSum / pois.length
-        //   };
-        //   this.center = [center.lng, center.lat];
-        // }
-      },
+    },
     
     setSource(){
       // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
@@ -171,21 +194,24 @@ export default {
     setLocation(){
       this.setSource() // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
       // 赋值给NDparams 经纬度
-      let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
-      this.$store.getters.NDparams.longitude =  lng
-      this.$store.getters.NDparams.latitude = lat
-      // 赋值给NDparams 地理位置
-      this.$store.getters.NDparams.locationName = this.params.address
-      this.$router.go(-1)
+      if(this.params.lng){
+        let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
+        this.$store.getters.NDparams.longitude =  lng
+        this.$store.getters.NDparams.latitude = lat
+        // 赋值给NDparams 地理位置
+        this.$store.getters.NDparams.locationName = this.params.address
+        this.$router.go(-1)
+      }else{
+        this.$toast('请在地图选择位置');
+      }
     },
   },
   mounted() {
     delete sessionStorage.localMap;
-    //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
-      this.getInfo(lng, lat)
       this.center = [lng, lat];
+      this.dealerPosition = true
     }
   },
 }
@@ -238,5 +264,20 @@ export default {
 .checkBoxGroup /deep/ .el-vue-search-box-container input{
   margin-left: 10px;
 }
+
+.ding /deep/ img{
+  width: 48px;
+}
+
+
+.amapBox /deep/ .el-vue-search-box-container .search-tips{
+  left: -3px;
+  right: -3px;
+  border-radius: 5px;
+  box-shadow: 0 0px 2px #e5e5e5;
+  max-height: 248px;
+  border: none;
+}
+
 
 </style>

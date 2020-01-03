@@ -1,0 +1,242 @@
+<template>
+  <div class="flex-1 flex flex-col">
+    <van-nav-bar
+      title="地图位置"
+      left-text="返回"
+      :right-text="$route.query.lng && $route.query.edit ? '确定' : ($route.query.lng ? '' : '确定')"
+      @click-left="setSource(),$router.go(-1)"
+      @click-right="setLocation"
+    />
+    <div class="amap-page-container flex-1 flex flex-col relative">
+      <!-- <div class="text-sm font-bold p-2 absolute z-10 bg-white opacity-75 rounded text-white" style="top:5px; left:5px; right:5px;">占位</div>
+      <div class="text-sm border border-gray-300  font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
+        经销商位置: {{params.address}}
+      </div> -->
+      
+      <!-- v-if="$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)" -->
+      <!-- <el-amap-search-box v-if="$route.query.edit" class="search-box absolute z-10 w-full  shadow border-gray-300 " style="top:43px; left:5px; right:5px; width:auto; position:absolute; opacity: 0.8" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" :events="$route.query.lng && $route.query.edit ? events  : ($route.query.lng ? {} : events)" >
+        <!-- <template v-if="($route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)) && markers.length">
+          <el-amap-marker v-for="(marker,i) in markers" :events="markerClick" :key="i" :position="marker" :clickable="true"></el-amap-marker>
+        </template> -->
+        <el-amap-marker style="z-index: 9999999999;" :position="dealerPosition" icon="./flag.png" :offset="[-20,-43]"></el-amap-marker>
+      </el-amap>
+    </div>
+
+    <div style="height: 350px;" class="checkBoxGroup flex flex-col" >
+      <el-amap-search-box  style="width:90%;margin:10px 5%" placeholder="请输入姓名" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+      <div class="flex-1 relative">
+        <div class="absolute inset-0 overflow-y-scroll">
+            <van-radio-group v-model="resPoi">
+              <van-radio icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in pois.pois" :key="i" :name="r">
+                {{r.name}}<br />
+                <span class="text-sm text-gray-500">{{r.address}}</span>
+              </van-radio>
+            </van-radio-group>
+        </div>
+      </div>
+
+          
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+
+import VueAMap from 'vue-amap';
+VueAMap.initAMapApiLoader({
+  key: '276923c83894386e499c8b979ee7f446',
+  plugin: ['AMap.Geolocation','AMap.ToolBar'],
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.4'
+});
+
+export default {
+  name: 'Map',
+  data() {
+    let self = this;
+      return {
+        pois: {},
+        resPoi: {},
+        params : {
+          lng: '',
+          lat: '',
+          address: ''
+        },
+        markerClick: {
+          click: (e) => {
+            let { lng, lat } = e.lnglat;//e.lnglat; //()
+            self.getInfo(lng, lat)
+          }
+        },
+        // icon: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576128884556&di=bec7a6edff8972abb223c4a92f70f68e&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F59%2F31%2F594d771606856_610.jpg',
+        dealerPosition: [121.59, 31.19],
+        markers:[],
+        searchOption: {
+            city: '全国',
+            citylimit: true
+          },
+        events: {
+          click(e) {
+            let { lng, lat } = e.lnglat;  
+            self.getInfo(lng, lat)  
+          }
+        },
+        zoom: 15,
+        center: [121.59, 31.19],
+        address: '',
+        plugin: [{
+          pName: 'Geolocation',
+          events: !self.$route.query.lng ? {
+            init(o) {
+              // o 是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  self.center = [result.position.lng, result.position.lat];
+                  self.getInfo(result.position.lng, result.position.lat)
+                  self.$nextTick();
+                }
+              });
+            }
+          }: {}
+        },{
+          pName: 'ToolBar',
+          position: 'RB',
+        }]
+      }
+  },
+  watch: {
+    resPoi(val){
+      this.params = {
+        lng: val.location.lng,
+        lat: val.location.lat,
+        address: this.pois.addressComponent.province + this.pois.addressComponent.city + this.pois.addressComponent.district + val.address + val.name
+      }
+      this.dealerPosition = [val.location.lng, val.location.lat]
+      this.center = [val.location.lng, val.location.lat];
+    }
+  },
+  methods: {
+    getInfo(lng ,lat){
+      var geocoder = new AMap.Geocoder({
+        radius: 500,
+        extensions: "all"
+      });        
+      geocoder.getAddress([lng ,lat], (status, result) => {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.regeocode) {
+            this.searchOption.city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province
+            // this.params = {
+            //   lng: lng,
+            //   lat: lat,
+            //   address: result.regeocode.formattedAddress
+            // }
+            this.pois = result.regeocode
+            this.resPoi = this.pois.pois[0]
+            this.$nextTick();
+          }
+        }
+      }); 
+    },
+    onSearchResult(pois, aa) {
+      console.log(pois, aa,43)
+
+      this.pois.pois = pois
+      this.resPoi = pois[0]
+
+        // this.markers=[]
+        // let latSum = 0;
+        // let lngSum = 0;
+        // if (pois.length > 0) {
+        //   pois.forEach(poi => {
+        //     let {lng, lat} = poi;
+        //     lngSum += lng;
+        //     latSum += lat;
+        //     this.markers.push([poi.lng, poi.lat]);
+        //   });
+        //   let center = {
+        //     lng: lngSum / pois.length,
+        //     lat: latSum / pois.length
+        //   };
+        //   this.center = [center.lng, center.lat];
+        // }
+      },
+    
+    setSource(){
+      // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
+      sessionStorage.mapsource="true"
+    },
+    setLocation(){
+      this.setSource() // 记录页面来源，是为了编辑经销商时不重新渲染经销商数据
+      // 赋值给NDparams 经纬度
+      let { lng, lat } = this.$root.gps_bgps(this.params.lng, this.params.lat)
+      this.$store.getters.NDparams.longitude =  lng
+      this.$store.getters.NDparams.latitude = lat
+      // 赋值给NDparams 地理位置
+      this.$store.getters.NDparams.locationName = this.params.address
+      this.$router.go(-1)
+    },
+  },
+  mounted() {
+    delete sessionStorage.localMap;
+    //$route.query.lng && $route.query.edit ? true : ($route.query.lng ? false : true)
+    if(this.$route.query.lng){
+      let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
+      this.getInfo(lng, lat)
+      this.center = [lng, lat];
+    }
+  },
+}
+</script>
+
+<style scoped>
+.amap-demo {
+  height: 300px;
+}
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
+
+
+.checkBoxGroup /deep/ textarea::-webkit-input-placeholder {
+  color: #c4c6cc;
+}
+.checkBoxGroup /deep/ textarea::-moz-input-placeholder {
+  color: #c4c6cc;
+}
+.checkBoxGroup /deep/ textarea::-ms-input-placeholder {
+  color: #c4c6cc;
+}
+
+.checkBoxGroup /deep/ .el-vue-search-box-container{
+  border-radius: 20px;
+  box-shadow: 0 3px 5px #f5f5f5;
+  border: 1px solid #f1f1f1;
+  height: 40px;
+}
+.checkBoxGroup /deep/ .el-vue-search-box-container input{
+  margin-left: 10px;
+}
+
+</style>

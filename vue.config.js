@@ -58,6 +58,7 @@ if (testApi) {
 }
 
 module.exports = {
+  lintOnSave:false,
   // output:{
   //   filename:'[name].js',
   //   chunkFilename:'[name].js',// 设置按需加载后的chunk名字

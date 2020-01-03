@@ -14,6 +14,14 @@ Vue.use(VueAMap);
 // Vue.use(BaiduMap, {
 //   ak: 'VKoxtkFSuXPVRULh2ohYVQ9tubl99xss'
 // })
+VueAMap.initAMapApiLoader({
+  key: '276923c83894386e499c8b979ee7f446',
+  plugin: ['AMap.Geolocation','AMap.ToolBar'],
+  // 默认高德 sdk 版本为 1.4.4
+  v: '1.4.9',
+  uiVersion: "1.0.11"
+});
+
 
 Vue.config.productionTip = false
 
