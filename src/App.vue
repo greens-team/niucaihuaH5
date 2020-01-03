@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="fixed inset-0 flex flex-col bg-white">
+  <div id="app" class="absolute inset-0 flex flex-col bg-white">
     <!-- <div v-if="!loginStatus" class="bg-gray-100 flex-1 flex items-center justify-center">
       <van-loading size="24px" vertical>加载中...</van-loading>
     </div>-->
