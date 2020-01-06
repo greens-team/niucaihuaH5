@@ -79,7 +79,7 @@
         </div>
 
         <!-- 开始时间 -->
-        <van-popup v-model="establishTimeShow" position="bottom">
+        <van-popup v-model="establishTimeShow" position="bottom" class="dateBox">
           <van-datetime-picker
             :min-date="minDate"
             @cancel="establishTimeShow=false"
@@ -765,6 +765,19 @@ export default {
 }
 .checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
   margin-left: -25px;
+}
+
+.dateBox /deep/ .van-picker__cancel,
+.dateBox /deep/ .van-picker__confirm {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.dateBox /deep/ .van-picker__toolbar {
+  border-bottom: 1px solid #ededee;
+}
+.dateBox /deep/ .van-picker-column__item.van-picker-column__item--selected {
+  color: #252525;
+  font-size: 1.286rem;
 }
 
 </style>
