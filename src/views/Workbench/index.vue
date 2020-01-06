@@ -38,7 +38,7 @@
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
           <img
-            style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;"
             src="../../assets/workbench/my.png"
             alt
           />
@@ -82,11 +82,10 @@
             alt
           />
           <div
-            style="font-size:.5rem;max-width: 3.8rem;text-align: right;margin-left:.3rem;"
             v-if="$store.state.workbench.briefingDate.text"
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
-          <div v-else style="font-size:.5rem; line-height:.8rem;width: 5rem;text-align: right;">
+          <div v-else style="font-size:.5rem; line-height:.8rem;">
             {{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}
             <br />
             {{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}
