@@ -1,6 +1,6 @@
 <!-- 嵌套部门循环组件 -->
 <template>
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col clockIn">
 
     <van-nav-bar
       title="签到打卡"
@@ -16,8 +16,9 @@
       <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         您所在位置: {{address}}
       </div>
-      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1" :center="center" >
-        <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity"></el-amap-circle>
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="center" >
+	    <el-amap-marker style="z-index: 9999999999;" :position="center" :icon="dingIcon" :offset="[-24,-40]"></el-amap-marker>
+        <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" stroke-weight="1" stroke-opacity="0.2" fill-color="#66d6f5" stroke-color="#09a3ce"></el-amap-circle>
       </el-amap>
     </div>
 
@@ -38,6 +39,11 @@ export default {
   data() {
     let self = this;
       return {
+		dingIcon: new AMap.Icon({//自定义外观
+		  image: './ding.png',
+		  imageSize: new AMap.Size(48, 48),
+		  size: new AMap.Size(48, 48),
+        }),
         zoom: 15,
         circles: [ // 经销商位置
           {
@@ -59,6 +65,7 @@ export default {
                 if (result && result.position && !self.$route.query.lng) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
+				  console.log(result, 3321)
                   self.address = result.formattedAddress;
                   self.center = [self.lng, self.lat];
                   self.$nextTick();
@@ -126,5 +133,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+
+.clockIn /deep/ .amap-marker-content{
+	display: none;
 }
 </style>
