@@ -16,7 +16,7 @@
       <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         您所在位置: {{address}}
       </div>
-      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="center" >
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="$route.query.dealerInfo ? dealerCenter : center" >
 	    <el-amap-marker style="z-index: 9999999999;" :position="center" :icon="dingIcon" :offset="[-24,-40]"></el-amap-marker>
         <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" stroke-weight="1" stroke-opacity="0.2" fill-color="#66d6f5" stroke-color="#09a3ce"></el-amap-circle>
       </el-amap>
@@ -39,6 +39,7 @@ export default {
   data() {
     let self = this;
       return {
+		dealerCenter: [],
 		dingIcon: new AMap.Icon({//自定义外观
 		  image: './ding.png',
 		  imageSize: new AMap.Size(48, 48),
@@ -117,6 +118,7 @@ export default {
     //经销商位置赋值
     let { lng, lat } = this.$root.bgps_gps(this.$route.query.dealerLog, this.$route.query.dealerLat) 
     this.circles[0].center = [lng, lat]
+	this.dealerCenter = [lng, lat]
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
       this.center = [lng, lat];
@@ -134,7 +136,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 .clockIn /deep/ .amap-marker-content{
 	display: none;

@@ -18,7 +18,7 @@ export default {
         rgnPrCd: '',            // 省 代码
         rgnCyCd: '',            // 市 代码
         rgnArCd: '',            // 区 代码
-        ownerCd: 1,             // 公司归属（ 1自有 2 第三方）
+        ownerCd: 0,             // 公司归属（ 1自有 2 第三方）
         chkBusTypCdList: '',    // 多选 业务类型 查征信的业务类型List 代码逗号隔开 
   
         // idcardFrontPic: '',  // 身份证正面照片地址
@@ -40,7 +40,7 @@ export default {
         latitude: '',           // 纬度  double
         longitude: '',          // 纬度  double
         
-        level: 1,               // 经销商分级（1 一级  2 二级）
+        level: 0,               // 经销商分级（1 一级  2 二级）
         ownerUserGids: [],      // [1,2,3]负责人gid 集合
         followerUserGids: [],   // 跟进人gid集合
 
@@ -58,6 +58,9 @@ export default {
 
     },
     levelList: [{             // 经销商分级
+      text: '请选择',
+      value: 0
+    },{             // 经销商分级
       text: '一级',
       value: 1
     },{
@@ -66,6 +69,9 @@ export default {
     }],
     ownerCdTypes: [           // 公司归属
       {
+        text: '请选择',
+        value: 0
+      },{
         text: '自有',
         value: 1
       },{
@@ -143,7 +149,7 @@ export default {
         rgnPrCd: '',            // 省 代码
         rgnCyCd: '',            // 市 代码
         rgnArCd: '',            // 区 代码
-        ownerCd: 1,             // 公司归属（ 1自有 2 第三方）
+        ownerCd: 0,             // 公司归属（ 1自有 2 第三方）
         chkBusTypCdList: '',    // 多选 业务类型 查征信的业务类型List 代码逗号隔开 
   
         // idcardFrontPic: '',  // 身份证正面照片地址
@@ -165,7 +171,7 @@ export default {
         latitude: '',           // 纬度  double
         longitude: '',          // 纬度  double
         
-        level: 1,               // 经销商分级（1 一级  2 二级）
+        level: 0,               // 经销商分级（1 一级  2 二级）
         ownerUserGids: [],      // [1,2,3]负责人gid 集合
         followerUserGids: [],   // 跟进人gid集合
 

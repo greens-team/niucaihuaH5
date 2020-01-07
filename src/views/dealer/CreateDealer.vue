@@ -121,7 +121,7 @@
         />
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">公司归属</div>
-          <van-dropdown-menu class="border-0">
+          <van-dropdown-menu :class="['border-0', {'zeroCss':!$store.getters.NDparams.ownerCd}]">
             <van-dropdown-item
               :disabled="recordStatus"
               v-model="$store.getters.NDparams.ownerCd"
@@ -251,7 +251,7 @@
 
         <div class="flex border-b border-gray-200 ml-4 items-center">
           <div style="width:130px; color:#323233;">经销商分级</div>
-          <van-dropdown-menu class="border-0">
+          <van-dropdown-menu :class="['border-0', {'zeroCss':!$store.getters.NDparams.level}]">
             <van-dropdown-item
               v-model="$store.getters.NDparams.level"
               :options="$store.getters.NDlevelList"
@@ -778,6 +778,13 @@ export default {
 .dateBox /deep/ .van-picker-column__item.van-picker-column__item--selected {
   color: #252525;
   font-size: 1.286rem;
+}
+
+.CreateDealer /deep/ .van-dropdown-menu__title{
+	padding: 0 8px 0 0;
+}
+.zeroCss /deep/ .van-dropdown-menu__title{
+	color: rgba(69, 90, 100, 0.6);
 }
 
 </style>

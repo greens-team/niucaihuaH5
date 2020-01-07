@@ -188,7 +188,7 @@
           >经销商位置</div>
           <div
             class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
-            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
+            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud,dealerInfo:true}})"
           >
             <div class="flex-1">
               <span class="text-blue-500" style="color:#0885FF">{{$store.state.task.addEditTaskParams.locationName}}</span>

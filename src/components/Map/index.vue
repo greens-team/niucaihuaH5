@@ -80,9 +80,10 @@ export default {
         events: {
           init (o) {
             self.map=o;
-            o.getCurrentPosition && o.getCurrentPosition((status, result) => {
-              console.log(status, result, 333)
-            })
+			
+            // o.getCurrentPosition && o.getCurrentPosition((status, result) => {
+            //   console.log(status, result, 333)
+            // })
 
 
             // self.$refs.map.$$getInstance().plugin('AMap.Autocomplete', function(){
@@ -124,12 +125,8 @@ export default {
               self.map=o;
               // o 是高德地图定位插件实例
               o.getCurrentPosition((status, result) => {
-                console.log(status, result, 555)
                 if (result && result.position) {
-                  console.log(111)
                   self.center = [result.position.lng, result.position.lat];
-
-                  console.log(result, 998877)
                   self.getInfo(result.position.lng, result.position.lat)
                   self.$nextTick();
                 }
@@ -228,7 +225,6 @@ export default {
             map.addControl(geolocation);
             geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', function(data){
-              console.log(data, 99)
               positionPicker.start();
             });//返回定位信息
           })
@@ -237,7 +233,6 @@ export default {
             // console.log('aaaaaaaaa')
             // self.getInfo(lt.lng, lt.lat)
             if (positionResult.info === 'OK') {
-              console.log(positionResult, 11111122222)
               self.setAllVal(positionResult)
             }
           })
@@ -299,7 +294,7 @@ export default {
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
       this.center = [lng, lat];
-      this.dealerPosition = true
+      this.dealerPosition = !this.$route.query.edit;
     }
 
   },
