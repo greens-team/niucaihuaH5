@@ -150,9 +150,11 @@
       </div>
     </div>
 
+	
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
-      <div class="flex p-1 border-gray-200" swipeable>
+	   <div style="height:44px;" v-show="positioning"></div>
+      <div :class="['flex p-1 border-gray-200', {positioning:positioning}]"   swipeable>
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
@@ -176,6 +178,7 @@
       </div>
 
       <van-swipe
+		:style="{minHeight:positioning ? '1500px': 'auto'}"
         ref="swipe"
         :loop="false"
         :show-indicators="false"
@@ -395,6 +398,8 @@ export default {
   },
   data() {
     return {
+	  topVal: 286, // 滚动到238距离时 positioning设为true
+	  positioning: false,
       taskDateBox: false,
       taskTime: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
@@ -422,7 +427,15 @@ export default {
       this.$store.dispatch("getTaskList").then(msg => {
         resolve(msg);
       });
-    });
+    },
+	scrollTopVal => {
+	  if (scrollTopVal > this.topVal && !this.positioning) {
+		this.positioning = true;
+	  }
+	  if (scrollTopVal < this.topVal && this.positioning) {
+		this.positioning = false;
+	  }
+	});
 
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
@@ -437,23 +450,26 @@ export default {
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
-      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
-        if (!this.$store.state.workbench.workbenchTaskStatus) {
-          //0 我的任务
-          if (len) {
-            this.isShowNoData_my = false;
-          } else {
-            this.isShowNoData_my = true;
-          }
-        } else {
-          //1 全部任务
-          if (len) {
-            this.isShowNoData_other = false;
-          } else {
-            this.isShowNoData_other = true;
-          }
-        }
-      });
+		if (this.positioning) {
+			document.getElementById("taskListBox").scrollTop = this.topVal;
+		}
+		this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+			if (!this.$store.state.workbench.workbenchTaskStatus) {
+			  //0 我的任务
+			  if (len) {
+				this.isShowNoData_my = false;
+			  } else {
+				this.isShowNoData_my = true;
+			  }
+			} else {
+			  //1 全部任务
+			  if (len) {
+				this.isShowNoData_other = false;
+			  } else {
+				this.isShowNoData_other = true;
+			  }
+			}
+		});
     }
   },
   methods: {
@@ -619,5 +635,12 @@ export default {
 .dateBox /deep/ .van-picker-column__item.van-picker-column__item--selected {
   color: #252525;
   font-size: 1.286rem;
+}
+
+.Workbench /deep/ .positioning{
+	border: 0;
+	padding-top:8px;
+	top:0px;
+	left: 21px; right: 21px;
 }
 </style>
