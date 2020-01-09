@@ -53,7 +53,7 @@ export default {
             fillOpacity: 0.4
           }
         ],
-        center: [121.59996, 31.197646], // 当前地图 及 当前用户位置
+        center: [], // 当前地图 及 当前用户位置
         lng: 0,
         lat: 0,
         address: '',
@@ -62,11 +62,10 @@ export default {
           events: {
             init(o) {
               // o 是高德地图定位插件实例
-              o.getCurrentPosition((status, result) => {
+              !self.$route.query.dealerInfo && o.getCurrentPosition((status, result) => {
                 if (result && result.position && !self.$route.query.lng) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
-				  console.log(result, 3321)
                   self.address = result.formattedAddress;
                   self.center = [self.lng, self.lat];
                   self.$nextTick();
