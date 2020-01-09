@@ -151,22 +151,34 @@
         </van-cell>
 
         <div
-          v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
+          
           class="bg-gray-100 pt-2 pb-1"
         >
           <div
             class="relative formBar font-bold p-3 pl-4 mt-2 bg-white"
             style="font-size:1.143rem;"
           >打卡位置</div>
+
           <div
+            v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
             class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
             @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
           >
             <div class="flex-1">
               <span
                 style="color:#0885FF"
-                class="text-blue-500"
               >{{$store.state.task.addEditTaskParams.clockinPlaceAddress}}</span>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
+          >
+            <div class="flex-1">
+              <span
+                style="color:rgba(69, 90, 100, 0.6)"
+              >-</span>
             </div>
           </div>
         </div>
@@ -178,7 +190,6 @@
         >打卡点不在经销商附近</div>
 
         <div
-          v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && $store.state.task.addEditTaskParams.locationName"
           class="bg-gray-100 pt-1 pb-4"
         >
           <!-- @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" -->
@@ -187,6 +198,7 @@
             style="font-size:1.143rem;"
           >经销商位置</div>
           <div
+            v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && $store.state.task.addEditTaskParams.locationName"
             class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
             @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud,dealerInfo:true}})"
           >
@@ -194,6 +206,19 @@
               <span class="text-blue-500" style="color:#0885FF">{{$store.state.task.addEditTaskParams.locationName}}</span>
             </div>
           </div>
+
+          <div
+            v-else
+            class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
+          >
+            <div class="flex-1">
+             <span
+                style="color:rgba(69, 90, 100, 0.6)"
+              >-</span>
+            </div>
+          </div>
+
+
         </div>
 
         <div v-if="$store.state.task.addEditTaskParams.dealerDes">
