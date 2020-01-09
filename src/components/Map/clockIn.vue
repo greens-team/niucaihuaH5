@@ -18,7 +18,7 @@
       </div>
       <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="$route.query.dealerInfo ? dealerCenter : center" >
 	    <el-amap-marker style="z-index: 9999999999;" :position="center" :icon="dingIcon" :offset="[-24,-40]"></el-amap-marker>
-        <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" stroke-weight="1" stroke-opacity="0.2" fill-color="#66d6f5" stroke-color="#09a3ce"></el-amap-circle>
+        <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" stroke-weight="0" stroke-opacity=".3" fill-color="#5791fc" stroke-color="#5791fc"></el-amap-circle>
       </el-amap>
     </div>
 
@@ -50,10 +50,10 @@ export default {
           {
             center: [121.5273285, 31.21515044],
             radius: 500,
-            fillOpacity: 0.4
+            fillOpacity: 0.38
           }
         ],
-        center: [], // 当前地图 及 当前用户位置
+        center: [121.59996, 31.197646], // 当前地图 及 当前用户位置
         lng: 0,
         lat: 0,
         address: '',
@@ -117,7 +117,7 @@ export default {
     //经销商位置赋值
     let { lng, lat } = this.$root.bgps_gps(this.$route.query.dealerLog, this.$route.query.dealerLat) 
     this.circles[0].center = [lng, lat]
-	this.dealerCenter = [lng, lat]
+  this.dealerCenter = [lng, lat]
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
       this.center = [lng, lat];

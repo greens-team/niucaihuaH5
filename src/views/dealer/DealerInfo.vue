@@ -202,7 +202,10 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">公司归属</p>
-                    <p>{{$store.getters.NDownerCdTypes[info.ownerCd-1] && $store.getters.NDownerCdTypes[info.ownerCd-1].text}}</p>
+                    <p v-if="info.ownerCd">{{$store.getters.NDownerCdTypes[info.ownerCd] && $store.getters.NDownerCdTypes[info.ownerCd].text}}</p>
+                    <p v-else
+                      style="color:rgba(69, 90, 100, 0.6)"
+                    >-</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
@@ -282,7 +285,10 @@
                 <div v-show="showInfo2">
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">经销商分级</p>
-                    <p>{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
+                    <p v-if="info.level">{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
+                    <p v-else
+                      style="color:rgba(69, 90, 100, 0.6)"
+                    >-</p>
                   </div>
                   <div
                     v-if="info.ownerUserList && info.ownerUserList.length"
