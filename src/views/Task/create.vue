@@ -226,7 +226,7 @@
           <p
             :class="['p5  ',{'text-gray-800': $store.state.task.addEditTaskParams.comment}]"
             v-else
-          >{{$store.state.task.addEditTaskParams.comment || '-'}}</p>
+          >{{$store.state.task.addEditTaskParams.comment || '未备注'}}</p>
         </template>
       </van-cell>
       <div></div>
@@ -676,10 +676,10 @@ export default {
   methods: {
     mainUserGidsFun(vals, key, userType) {
       if (!vals.length && key == "refRlNm" && !userType) {
-        return this.editor ? "请选择拜访人" : '-';
+        return "请选择拜访人";
       }
       if (!vals.length && key == "refRlNm" && userType) {
-        return this.editor ? "请选择协访人" : '-';
+        return "请选择协访人";
       }
       return vals
         .map(r => {

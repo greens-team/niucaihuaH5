@@ -430,12 +430,11 @@ export default {
       this.$router.push({ name: "VisitRecord", query: { id: this.taskId } });
     },
     mainUserGidsFun(vals, key, userType) {
-      console.log(vals, key, userType);
       if (!vals.length && key == "refRlNm" && !userType) {
-        return "请选择拜访人";
+        return "-";
       }
       if (!vals.length && key == "refRlNm" && userType) {
-        return "请选择协访人";
+        return "-";
       }
       return vals
         .map(r => {
