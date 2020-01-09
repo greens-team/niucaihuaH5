@@ -85,9 +85,9 @@
             v-if="$store.state.workbench.briefingDate.text"
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
-          <div v-else class="text-xs" style="line-height:.8rem;">
-            <div style="font-size:.5rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
-            <div style="font-size:.5rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
+          <div v-else class="text-xs" style="line-height:.5rem;">
+            <div style="font-size:.75rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
+            <div style="font-size:.75rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
           </div>
         </div>
       </div>
