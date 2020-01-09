@@ -85,10 +85,9 @@
             v-if="$store.state.workbench.briefingDate.text"
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
-          <div v-else style="font-size:.5rem; line-height:.8rem;">
-            {{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}
-            <br />
-            {{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}
+          <div v-else class="text-xs" style="line-height:.8rem;">
+            <div style="font-size:.5rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
+            <div style="font-size:.5rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
           </div>
         </div>
       </div>
@@ -150,11 +149,10 @@
       </div>
     </div>
 
-	
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
-	   <div style="height:44px;" v-show="positioning"></div>
-      <div :class="['flex p-1 border-gray-200', {positioning:positioning}]"   swipeable>
+      <div style="height:44px;" v-show="positioning"></div>
+      <div :class="['flex p-1 border-gray-200', {positioning:positioning}]" swipeable>
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
@@ -178,7 +176,7 @@
       </div>
 
       <van-swipe
-		:style="{minHeight:positioning ? '1500px': 'auto'}"
+        :style="{minHeight:positioning ? '1500px': 'auto'}"
         ref="swipe"
         :loop="false"
         :show-indicators="false"
@@ -188,7 +186,10 @@
           <!-- 我的任务列表 -->
           <div>
             <!-- <CalendarControl /> -->
-            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1" style="color:#80848d;">
+            <div
+              class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1"
+              style="color:#80848d;"
+            >
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
                 style="color:#80848d;"
@@ -259,7 +260,8 @@
           <div>
             <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
               <div
-                class="text-sm text-gray-700 flex justify-center items-center" style="color:#80848d;"
+                class="text-sm text-gray-700 flex justify-center items-center"
+                style="color:#80848d;"
                 @click="taskDateBox= true;"
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
@@ -398,8 +400,8 @@ export default {
   },
   data() {
     return {
-	  topVal: 286, // 滚动到238距离时 positioning设为true
-	  positioning: false,
+      topVal: 286, // 滚动到238距离时 positioning设为true
+      positioning: false,
       taskDateBox: false,
       taskTime: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
@@ -418,24 +420,27 @@ export default {
   },
   mounted() {
     // 滚动加载
-    this.scrollLoad(document.getElementById("taskListBox"), resolve => {
-      if (this.$store.state.workbench.workbenchTaskStatus) {
-        this.$store.state.workbench.colleaguesTaskPageNum++;
-      } else {
-        this.$store.state.workbench.myTaskPageNum++;
+    this.scrollLoad(
+      document.getElementById("taskListBox"),
+      resolve => {
+        if (this.$store.state.workbench.workbenchTaskStatus) {
+          this.$store.state.workbench.colleaguesTaskPageNum++;
+        } else {
+          this.$store.state.workbench.myTaskPageNum++;
+        }
+        this.$store.dispatch("getTaskList").then(msg => {
+          resolve(msg);
+        });
+      },
+      scrollTopVal => {
+        if (scrollTopVal > this.topVal && !this.positioning) {
+          this.positioning = true;
+        }
+        if (scrollTopVal < this.topVal && this.positioning) {
+          this.positioning = false;
+        }
       }
-      this.$store.dispatch("getTaskList").then(msg => {
-        resolve(msg);
-      });
-    },
-	scrollTopVal => {
-	  if (scrollTopVal > this.topVal && !this.positioning) {
-		this.positioning = true;
-	  }
-	  if (scrollTopVal < this.topVal && this.positioning) {
-		this.positioning = false;
-	  }
-	});
+    );
 
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
@@ -450,26 +455,26 @@ export default {
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
-		if (this.positioning) {
-			document.getElementById("taskListBox").scrollTop = this.topVal;
-		}
-		this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
-			if (!this.$store.state.workbench.workbenchTaskStatus) {
-			  //0 我的任务
-			  if (len) {
-				this.isShowNoData_my = false;
-			  } else {
-				this.isShowNoData_my = true;
-			  }
-			} else {
-			  //1 全部任务
-			  if (len) {
-				this.isShowNoData_other = false;
-			  } else {
-				this.isShowNoData_other = true;
-			  }
-			}
-		});
+      if (this.positioning) {
+        document.getElementById("taskListBox").scrollTop = this.topVal;
+      }
+      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+        if (!this.$store.state.workbench.workbenchTaskStatus) {
+          //0 我的任务
+          if (len) {
+            this.isShowNoData_my = false;
+          } else {
+            this.isShowNoData_my = true;
+          }
+        } else {
+          //1 全部任务
+          if (len) {
+            this.isShowNoData_other = false;
+          } else {
+            this.isShowNoData_other = true;
+          }
+        }
+      });
     }
   },
   methods: {
@@ -637,10 +642,11 @@ export default {
   font-size: 1.286rem;
 }
 
-.Workbench /deep/ .positioning{
-	border: 0;
-	padding-top:8px;
-	top:0px;
-	left: 21px; right: 21px;
+.Workbench /deep/ .positioning {
+  border: 0;
+  padding-top: 8px;
+  top: 0px;
+  left: 21px;
+  right: 21px;
 }
 </style>
