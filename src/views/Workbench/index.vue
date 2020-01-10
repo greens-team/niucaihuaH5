@@ -77,7 +77,7 @@
         >
           <!-- <i class="iconfont iconcalendar mr-1"></i> -->
           <img
-            style="display:inline-block;width:1.286rem;height:1.286rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.2rem;"
             src="../../assets/workbench/calendar.png"
             alt
           />
@@ -86,8 +86,8 @@
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
           <div v-else class="text-xs">
-            <div style="font-size:.75rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
-            <div style="font-size:.75rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
+            <div style="font-size:.6rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
+            <div style="font-size:.6rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
           </div>
         </div>
       </div>
