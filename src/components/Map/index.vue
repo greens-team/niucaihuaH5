@@ -119,8 +119,8 @@ export default {
         zoom: 15,
         center: [116.397451, 39.909187],
         plugin: [{
-          pName: 'Geolocation',
-          events: !self.$route.query.lng ? {
+          pName: 'Geolocation', 
+          events: !Object.keys(self.$route.query).length ? {} : (!self.$route.query.lng ? {
             init(o) {
               self.map=o;
               // o 是高德地图定位插件实例
@@ -132,7 +132,7 @@ export default {
                 }
               });
             }
-          }: {}
+          }: {})
         },{
           pName: 'ToolBar',
           position: 'RB',
