@@ -25,6 +25,8 @@
         style="font-size:20px;"
       ></i>
     </div>
+{{$store.state.workbench.briefingColleagues}}
+    <div @click="$router.push({name:'UserDeptList', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})">aa</div>
 
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">

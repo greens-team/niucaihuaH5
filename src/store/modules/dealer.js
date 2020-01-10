@@ -116,7 +116,7 @@ export default {
         window.$ajax.auth.getOftenuselist(data).then( res => {
           if (!res.code) {
             state.oftenuselist = res.data
-            resolve()
+            resolve(res.data)
           }
         })
       })
@@ -143,7 +143,7 @@ export default {
                 refRlNm:userInfo.EMPLOYEE_NAME
               })
             }
-            resolve(res.data.resultList.length)
+            resolve(res.data.resultList)
           }
         })
       })

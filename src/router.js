@@ -334,6 +334,12 @@ export default new Router({
       // component: EditContacts
       component: () => import(/* webpackChunkName: "EditContacts" */ './views/Contacts/editContacts.vue')
     },
+    {
+      path: '/UserDeptList',       // 选择同事及组织
+      name: 'UserDeptList',
+      // component: UserDeptList
+      component: () => import(/* webpackChunkName: "UserDeptList" */ './components/UserDeptList')
+    }
 
 
 
