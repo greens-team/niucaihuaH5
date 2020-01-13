@@ -220,6 +220,7 @@ export default {
             geolocation=new AMap.Geolocation({
               showButton: false,        //显示定位按钮，默认：false
               showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+			  showCircle: false,
               extensions:'all'
             })
             map.addControl(geolocation);
