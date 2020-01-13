@@ -176,15 +176,15 @@
       </div>
 
       <van-swipe
-        :style="{minHeight:positioning ? '1500px': 'auto'}"
+        :style="{minHeight:positioning ? H : 'auto'}"
         ref="swipe"
         :loop="false"
         :show-indicators="false"
         @change="changeWorkbenchTaskStatus"
       >
-        <van-swipe-item class="bg-white">
+        <van-swipe-item >
           <!-- 我的任务列表 -->
-          <div>
+          <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <!-- <CalendarControl /> -->
             <div
               class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1"
@@ -255,9 +255,9 @@
             </div>
           </div>
         </van-swipe-item>
-        <van-swipe-item class="bg-white">
+        <van-swipe-item >
           <!-- 同事任务列表 -->
-          <div>
+          <div  class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
@@ -400,6 +400,7 @@ export default {
   },
   data() {
     return {
+	  H: '',
       topVal: 286, // 滚动到238距离时 positioning设为true
       positioning: false,
       taskDateBox: false,
@@ -419,6 +420,7 @@ export default {
     };
   },
   mounted() {
+    this.getHeight()
     // 滚动加载
     this.scrollLoad(
       document.getElementById("taskListBox"),
@@ -452,6 +454,7 @@ export default {
         this.isShowNoData_my = true;
       }
     });
+	
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
@@ -577,7 +580,10 @@ export default {
       delete sessionStorage.globalSearchVal;
       delete sessionStorage.globalModelType;
       this.$router.push({ name: "WorkbenchSearch" });
-    }
+    },
+	getHeight(){
+		this.H = (document.body.clientHeight - 110) + 'px'
+	}
   }
 };
 </script>
