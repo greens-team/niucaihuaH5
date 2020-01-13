@@ -219,11 +219,11 @@ export default {
           map.plugin('AMap.Geolocation', function () {
             geolocation=new AMap.Geolocation({
               showButton: false,        //显示定位按钮，默认：false
-              showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+              showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
               extensions:'all'
             })
             map.addControl(geolocation);
-            geolocation.getCurrentPosition();
+            // geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', function(data){
               positionPicker.start();
             });//返回定位信息
