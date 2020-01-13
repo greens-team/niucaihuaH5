@@ -162,7 +162,7 @@
           <div
             v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress"
             class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
-            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud}})"
+            @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud,dealerInfo:false}})"
           >
             <div class="flex-1">
               <span
@@ -198,7 +198,7 @@
             style="font-size:1.143rem;"
           >经销商位置</div>
           <div
-            v-if="$store.state.task.addEditTaskParams.clockinPlaceAddress && $store.state.task.addEditTaskParams.locationName"
+            v-if="$store.state.task.addEditTaskParams.locationName"
             class="flex items-center bg-white pl-5 pr-5 pt-4 pb-4 bg-white"
             @click="$router.push({path:'/ClockIn', query:{lng:$store.state.task.addEditTaskParams.longitude ,lat: $store.state.task.addEditTaskParams.latitude, dealerLog:$store.state.task.taskInfo.dealerLongitude,dealerLat:$store.state.task.taskInfo.dealerLatitud,dealerInfo:true}})"
           >

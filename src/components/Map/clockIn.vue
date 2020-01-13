@@ -16,7 +16,7 @@
       <div v-if="!$route.query.lng" class="text-sm text-gray-700 font-bold p-2 absolute z-10 ellipsis" style="top:5px; left:5px; right:5px;">
         您所在位置: {{address}}
       </div>
-      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="$route.query.dealerInfo ? dealerCenter : center" >
+      <el-amap vid="amap" :plugin="plugin" :zoom="zoom" class="flex-1 ding" :center="dealerCenter.length ? dealerCenter : center" >
 	    <el-amap-marker style="z-index: 9999999999;" :position="center" :icon="dingIcon" :offset="[-24,-40]"></el-amap-marker>
         <el-amap-circle v-for="circle in circles" :key="circle.center.toString()" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" stroke-weight="0" stroke-opacity=".3" fill-color="#5791fc" stroke-color="#5791fc"></el-amap-circle>
       </el-amap>
@@ -59,10 +59,13 @@ export default {
         address: '',
         plugin: [{
           pName: 'Geolocation',
+		  showButton: false,        //显示定位按钮，默认：false
+		  showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+		  showCircle: false,
           events: {
             init(o) {
               // o 是高德地图定位插件实例
-              !self.$route.query.dealerInfo && o.getCurrentPosition((status, result) => {
+              !self.dealerCenter.length && o.getCurrentPosition((status, result) => {
                 if (result && result.position && !self.$route.query.lng) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
@@ -117,10 +120,11 @@ export default {
     //经销商位置赋值
     let { lng, lat } = this.$root.bgps_gps(this.$route.query.dealerLog, this.$route.query.dealerLat) 
     this.circles[0].center = [lng, lat]
-  this.dealerCenter = [lng, lat]
+    this.$route.query.dealerInfo === true && (this.dealerCenter = [lng, lat])
     if(this.$route.query.lng){
       let { lng, lat } = this.$root.bgps_gps(this.$route.query.lng, this.$route.query.lat) 
       this.center = [lng, lat];
+	  this.$route.query.dealerInfo === false && (this.dealerCenter = [lng, lat])
     }
   },
 }
