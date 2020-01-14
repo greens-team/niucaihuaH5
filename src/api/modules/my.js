@@ -6,10 +6,10 @@
 export default (m) => {
   return {
     postJSON: {
-      submitFeedBack: m.POST + '/feedback/add', // 提交反馈意见
+      submitFeedBack: '/feedback/add', // 提交反馈意见
     },
     get: {
-      getAuthInfo: m.GET + '/auth/info', // 获取登录信息
+      getAuthInfo: '/auth/info', // 获取登录信息
     }
   }
 };

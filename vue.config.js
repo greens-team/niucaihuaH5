@@ -20,7 +20,7 @@ methods.map(r => {
   let pathRewrite = {}
   pathRewrite['/api/' + r] = '' // r
   proxy['/api/' + r] = {
-    target: testApi[0],// mockApi,
+    target: mockApi,// mockApi,
     changeOrigin: true,
     secure: false,  // 如果是https接口，需要配置这个参数
     // ws: true, // 是否启用websockets

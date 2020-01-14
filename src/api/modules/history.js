@@ -5,10 +5,10 @@
 export default (m)=>{
     return {
       postJSON: {
-        listNewslog: m.POST + '/newslog/listpage', // 获取动态记录列表
-        addNewslog: m.POST + '/newslog/add', // 添加动态记录列表
+        listNewslog:  '/newslog/listpage', // 获取动态记录列表
+        addNewslog:  '/newslog/add', // 添加动态记录列表
 
-        listOperatelog: m.POST + '/operatelog/listpage', // 获取操作记录列表
+        listOperatelog: '/operatelog/listpage', // 获取操作记录列表
       },
       upload: {
       }
