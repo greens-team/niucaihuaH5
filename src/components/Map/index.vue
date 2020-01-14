@@ -120,6 +120,9 @@ export default {
         center: [116.397451, 39.909187],
         plugin: [{
           pName: 'Geolocation', 
+			showButton:  (Object.keys(self.$route.query).length == 2 && self.$route.query.lng && self.$route.query.lat) ? false : true,
+			showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+			// showCircle: false,
           events: !Object.keys(self.$route.query).length ? {} : (!self.$route.query.lng ? {
             init(o) {
               self.map=o;
