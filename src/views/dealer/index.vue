@@ -153,16 +153,78 @@ export default {
     }
   },
   mounted() {
+    // this.scrollLoad(this.$refs.dealerListBox, resolve => {
+    //   this.$store
+    //     .dispatch("getListData", {
+    //       pageNum: this.$store.state.dealer.listParams.pageNum + 1
+    //     })
+    //     .then(msg => {
+    //       resolve(msg);
+    //     });
+    // });
+    // this.$store.dispatch("getListData", { pageNum: 1 });
+
+    let startTime = Number(this.$route.query.startTime);
+    let endTime = Number(this.$route.query.endTime);
+    let userType = Number(this.$route.query.userType);
+    let userGids = [];
+    if (
+      //选择了同事，详情页再跳回到列表
+      typeof this.$route.query.userGids == "string" &&
+      this.$route.query.userGids
+    ) {
+      userGids = [this.$route.query.userGids];
+    } else if (
+      //没有选择同事，详情页再跳回到列表
+      typeof this.$route.query.userGids == "undefined" &&
+      !this.$route.query.userGids
+    ) {
+      userGids = [];
+    } else {
+      //从简报每一次跳到列表
+      userGids = this.$route.query.userGids;
+    }
+
+    let deptGids = [];
+    if (
+      typeof this.$route.query.deptGids == "string" &&
+      this.$route.query.deptGids
+    ) {
+      deptGids = [this.$route.query.deptGids];
+    } else if (
+      typeof this.$route.query.deptGids == "undefined" &&
+      !this.$route.query.deptGids
+    ) {
+      deptGids = [];
+    } else {
+      deptGids = this.$route.query.deptGids;
+    }
+
+    console.log(startTime, endTime, userGids, deptGids);
     this.scrollLoad(this.$refs.dealerListBox, resolve => {
       this.$store
         .dispatch("getListData", {
-          pageNum: this.$store.state.dealer.listParams.pageNum + 1
+          pageNum: this.$store.state.dealer.listParams.pageNum + 1,
+          startTime: startTime,
+          endTime: endTime,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: userType,
+          onlyWrite: false
         })
         .then(msg => {
           resolve(msg);
         });
     });
-    this.$store.dispatch("getListData", { pageNum: 1 });
+    this.$store.dispatch("getListData", {
+      pageNum: 1,
+      startTime: startTime,
+      endTime: endTime,
+      userGids: userGids,
+      deptGids: deptGids,
+      userType: userType,
+      onlyWrite: false
+    });
   },
   methods: {
     onClickRight() {
@@ -172,7 +234,7 @@ export default {
       });
     },
     searchAll(data) {
-      console.log(data,"data")
+      console.log(data, "data");
       this.$store
         .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
         .then(res => {

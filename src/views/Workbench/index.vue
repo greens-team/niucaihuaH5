@@ -38,7 +38,7 @@
           @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
         >
           <img
-            style="display:inline-block;width:1.286rem;height:1.286rem;"
+            style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.2rem;"
             src="../../assets/workbench/my.png"
             alt
           />
@@ -86,18 +86,22 @@
             class="text-xs"
           >{{$store.state.workbench.briefingDate.text}}</div>
           <div v-else class="text-xs">
-            <div style="font-size:.6rem;">{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
-            <div style="font-size:.6rem;">{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
+            <div
+              style="font-size:.6rem;"
+            >{{$root.moment($store.state.workbench.briefingDate.startTime).format('YYYY-MM-DD')}}</div>
+            <div
+              style="font-size:.6rem;"
+            >{{$root.moment($store.state.workbench.briefingDate.endTime).format('YYYY-MM-DD')}}</div>
           </div>
         </div>
       </div>
 
       <div class="flex p-1 pt-2 justify-between">
-        <div class="text-center text-gray-800 text-sm">
+        <div class="text-center text-gray-800 text-sm" @click="goDealerList">
           <span class="text-base font-bold">{{briefing.addDealerCount}}</span>个
           <br />新增经销商
         </div>
-        <div class="text-center text-gray-800 text-sm">
+        <div class="text-center text-gray-800 text-sm" @click="goContactsList">
           <span class="text-base font-bold">{{briefing.addContactsCount}}</span>个
           <br />新增联系人
         </div>
@@ -105,7 +109,7 @@
           <span class="text-base font-bold">{{briefing.addVisitCount}}</span>个
           <br />新增拜访
         </div>
-        <div class="text-center text-gray-800 text-sm">
+        <div class="text-center text-gray-800 text-sm" @click="goDealerList">
           <span class="text-base font-bold">{{briefing.dealerChangeStateCount}}</span>个
           <br />阶段变化经销商
         </div>
@@ -182,7 +186,7 @@
         :show-indicators="false"
         @change="changeWorkbenchTaskStatus"
       >
-        <van-swipe-item >
+        <van-swipe-item>
           <!-- 我的任务列表 -->
           <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <!-- <CalendarControl /> -->
@@ -255,9 +259,9 @@
             </div>
           </div>
         </van-swipe-item>
-        <van-swipe-item >
+        <van-swipe-item>
           <!-- 同事任务列表 -->
-          <div  class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
+          <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
@@ -400,7 +404,7 @@ export default {
   },
   data() {
     return {
-	  H: '',
+      H: "",
       topVal: 286, // 滚动到238距离时 positioning设为true
       positioning: false,
       taskDateBox: false,
@@ -420,7 +424,7 @@ export default {
     };
   },
   mounted() {
-    this.getHeight()
+    this.getHeight();
     // 滚动加载
     this.scrollLoad(
       document.getElementById("taskListBox"),
@@ -454,7 +458,6 @@ export default {
         this.isShowNoData_my = true;
       }
     });
-	
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
@@ -581,9 +584,59 @@ export default {
       delete sessionStorage.globalModelType;
       this.$router.push({ name: "WorkbenchSearch" });
     },
-	getHeight(){
-		this.H = (document.body.clientHeight - 110) + 'px'
-	}
+    getHeight() {
+      this.H = document.body.clientHeight - 110 + "px";
+    },
+
+    //销售简报跳转到对应列表
+    goContactsList() {
+      let userGids = [];
+      this.$store.state.workbench.briefingColleagues.userGids.map(r => {
+        userGids.push(r.split(",")[1]);
+      });
+      let deptGids = [];
+      this.$store.state.workbench.briefingColleagues.deptGids.map(r => {
+        deptGids.push(r.split(",")[1]);
+      });
+      this.$router.push({
+        path: "/Contacts",
+        query: {
+          startTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.startTime) /
+            1000,
+          endTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.endTime) /
+            1000,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: this.$store.state.workbench.briefingColleagues.userType
+        }
+      });
+    },
+    goDealerList() {
+      let userGids = [];
+      this.$store.state.workbench.briefingColleagues.userGids.map(r => {
+        userGids.push(r.split(",")[1]);
+      });
+      let deptGids = [];
+      this.$store.state.workbench.briefingColleagues.deptGids.map(r => {
+        deptGids.push(r.split(",")[1]);
+      });
+      this.$router.push({
+        path: "/DealerManage",
+        query: {
+          startTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.startTime) /
+            1000,
+          endTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.endTime) /
+            1000,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: this.$store.state.workbench.briefingColleagues.userType
+        }
+      });
+    }
   }
 };
 </script>
