@@ -36,7 +36,7 @@
     </van-search>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-auto">
+      <div class="absolute inset-0 overflow-y-auto"  ref="listBox">
 
           <van-checkbox-group v-model="$store.state.lessee.selectedUserGids" class="bg-white checkBoxGroup"> 
             <van-checkbox v-for="(item, i) in $store.state.lessee.list" :key="i" icon-size="16px" 
@@ -73,14 +73,23 @@ export default {
   },
   watch: {
     '$store.state.lessee.listParams.queryString'(val){
-      this.$store.dispatch('listLessee', {queryString: val,onlyWrite:this.$route.query.onlyWrite ? true : false})
+      this.$store.dispatch('listLessee', {queryString: val,onlyWrite:this.$route.query.onlyWrite ? true : false, pageNum: 1})
     }
   },
   mounted () {
     this.$store.state.lessee.confirmUserGids=[];
     this.$store.state.lessee.jobsUser=[]; 
     this.$store.state.lessee.selectedUserGids = [];
-    this.$store.dispatch('listLessee', {onlyWrite:this.$route.query.onlyWrite ? true : false})
+    this.$store.dispatch('listLessee', {onlyWrite:this.$route.query.onlyWrite ? true : false, pageNum: 1})
+	
+	this.$refs.listBox && this.scrollLoad(this.$refs.listBox, resolve => {
+		this.$store.dispatch("listLessee", {
+			pageNum: this.$store.state.lessee.listParams.pageNum+1
+		})
+		.then(msg => {
+			resolve(msg);
+		});
+	});
   },
   methods: {
     selectedList(){

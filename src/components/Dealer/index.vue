@@ -34,7 +34,7 @@
     </van-search>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-auto">
+      <div class="absolute inset-0 overflow-y-auto"  ref="listBox">
         <van-checkbox-group v-model="$store.state.dealer.selectedUserGids" class="bg-white checkBoxGroup">
           <van-checkbox
             v-for="(item, i) in $store.state.dealer.listData"
@@ -72,14 +72,23 @@ export default {
   },
   watch: {
     "$store.state.dealer.listParams.queryString"(val) {
-      this.$store.dispatch("getListData", { queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false });
+      this.$store.dispatch("getListData", { queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false, pageNum: 1 });
     }
   },
   mounted() {
     this.$store.state.dealer.confirmUserGids = [];
     this.$store.state.dealer.jobsUser = [];
     this.$store.state.dealer.selectedUserGids = [];
-    this.$store.dispatch("getListData",{onlyWrite:this.$route.query.onlyWrite ? true : false});
+    this.$store.dispatch("getListData",{onlyWrite:this.$route.query.onlyWrite ? true : false, pageNum: 1});
+	
+	this.$refs.listBox && this.scrollLoad(this.$refs.listBox, resolve => {
+		this.$store.dispatch("getListData", {
+			pageNum: this.$store.state.dealer.listParams.pageNum+1
+		})
+		.then(msg => {
+			resolve(msg);
+		});
+	});
   },
   methods: {
     selectedList() {
