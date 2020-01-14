@@ -121,8 +121,8 @@
               >请选择竞对名称</span>
 
               <template slot="default" class="relative">
-                <van-dropdown-menu>
-                  <van-dropdown-item v-model="r.modelGid" :options="competitorList" />
+                <van-dropdown-menu >
+                  <van-dropdown-item @opened="openedCompetitorList" v-model="r.modelGid" :options="competitorList" />
                 </van-dropdown-menu>
               </template>
             </van-cell>
@@ -232,7 +232,7 @@ export default {
     });
 
     // 请求赋值competitorList
-    this.$store.dispatch("listCompetitor").then(() => {
+    this.$store.dispatch("listCompetitor", {pageNum: 1}).then(() => {
       this.competitorList = this.competitorList.concat(
         this.$store.state.competitor.list.map(r => {
           return {
@@ -258,6 +258,29 @@ export default {
   },
   watch: {},
   methods: {
+	  openedCompetitorList(){
+		  let scrollDom = document.getElementsByClassName('van-dropdown-item__content')
+		  Array.prototype.map.call(scrollDom, (dombox)=>{
+				this.scrollLoad(dombox, resolve => {
+				  this.$store.state.competitor.listParams.pageNum++;
+				  this.$store.dispatch('listCompetitor',{
+					pageNum: this.$store.state.competitor.listParams.pageNum,
+				  }).then((lastPage)=>{
+					  if(lastPage){
+						  this.competitorList = [{ text: "无", value: "0" }].concat(
+							this.$store.state.competitor.list.map(r => {
+							  return {
+								text: r.competorName,
+								value: r.gid
+							  };
+							})
+						  );
+					  }
+					resolve()
+				  })
+				})
+		  })
+	  },
     finishTask() {
       if (this.delaySend()) {
         return;
