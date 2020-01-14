@@ -18,7 +18,7 @@
         @click-right="clickright"
       />
       <van-search shape="round" placeholder="请输入姓名"  clearable v-model="searchKeyword" />
-      <div class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200" style="top:100px;" ref="userListDom">
+      <div class="absolute bottom-0 left-0 right-0 border-t border-gray-200  overflow-y-auto" ref="listBox" style="top:100px;" ref="userListDom">
         <van-checkbox-group v-model="userListValues">
           <van-checkbox icon-size="16px" class="border-b border-gray-100 ml-5 mr-5 pt-3 pb-3" v-for="(r,i) in $store.state.dealer.colleagueDataList" :key="i" :name="r">{{r.refRlNm}}</van-checkbox>
         </van-checkbox-group>

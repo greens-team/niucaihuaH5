@@ -77,7 +77,7 @@ export default {
       orderType: 1,
       lesseeStatus: 0,
       pageNum: 1,
-      pageSize: 10
+      pageSize: 15
     },
     list: [],
 
@@ -146,7 +146,7 @@ export default {
         orderType: 1,
         lesseeStatus: 0,
         pageNum: 1,
-        pageSize: 10
+        pageSize: 15
       }
     },
     // setInitParams_tabs(state) {
