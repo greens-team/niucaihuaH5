@@ -181,8 +181,9 @@ export default {
         window.$ajax.competitor.listCompetitor(params).then(res => {
           if (!res.code) {
             state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
-            if (res.data.list.length < params.pageSize)
+            if (res.data.list.length < params.pageSize){
               state.isLastPage = true
+			}
             resolve('操作成功')
           }
         })
