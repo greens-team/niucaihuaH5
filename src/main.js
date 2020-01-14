@@ -105,7 +105,9 @@ Vue.prototype.addRecentvisit = (data) => {
 Vue.prototype.scrollLoad = (domBox, callback, positionCallback = false) => {
   let isSend = false
   domBox.onscroll = function () {
+	  console.log(domBox.scrollTop)
     positionCallback && positionCallback(domBox.scrollTop)
+	
     if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
       isSend = true
       new Promise(resolve => {

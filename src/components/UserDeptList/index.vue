@@ -33,12 +33,12 @@
     </van-tabs>
 
 
-    <div class="flex-1 relative">
-      <div class="absolute inset-0" ref="colleagueListBox">
+    <div class="flex-1 relative bg-white" >
+      <div class="absolute inset-0" >
         <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="(num)=>{active=num}">
-          <van-swipe-item v-for="(tab,i) in tabs" :key="i" class="pt-2 overflow-y-scroll" :ref="active == 1 ? 'colleagueListBox' : ''">
+          <van-swipe-item v-for="(tab,i) in tabs" :key="i" class="pt-2  overflow-y-scroll colleagueListBox">
 
-            <van-search v-show="tab.search" shape="round" :placeholder="'请输入搜索关键词'+tab.name" v-model="searchKeyword" />
+            <van-search v-show="tab.search" class="-mt-2" shape="round" :placeholder="'请输入搜索关键词'+tab.name" v-model="searchKeyword" />
 
             <van-checkbox-group v-model="tab.values" class="bg-white checkBoxGroup">
               <van-checkbox
@@ -161,7 +161,9 @@ export default {
         }
       }],
       active: '',
-      searchKeyword: ''
+      searchKeyword: '',
+		colleagueLastPage: false,
+		getColleaguePageNum: 1,
     }
   },
   mounted () {
@@ -169,10 +171,51 @@ export default {
   },
   watch: {
     active(index){
-      this.getTabsData(index)
+		this.getColleaguePageNum = 1;
+		this.getTabsData(index)
+				
+		// 同事列表滚动加载
+		document.getElementsByClassName('colleagueListBox')[index].scrollTop = 0
+		this.scrollLoadData(document.getElementsByClassName('colleagueListBox')[1], resolve => {
+			if (!this.colleagueLastPage) {
+				this.getColleaguePageNum++;
+				this.colleagueLastPage = true;
+				this.$store
+					.dispatch(this.tabs[index].url, 
+						Object.assign(
+							this.tabs[index].getParams(this.searchKeyword), 
+							{pageNum: this.getColleaguePageNum, pageSize: 20},
+						)
+					)
+					.then(data => {
+						this.tabs[index].data = this.tabs[index].data.concat(this.tabs[index].filterData ? this.tabs[index].filterData(data) : data)
+						this.colleagueLastPage = false;
+						resolve();
+					});
+			} else {
+				resolve();
+			}
+		});
+ 
     },
   },
   methods: {
+	scrollLoadData (domBox, callback, positionCallback = false) {
+		let isSend = false
+		domBox.onscroll = function () {
+			console.log(domBox.scrollTop)
+			positionCallback && positionCallback(domBox.scrollTop)
+
+			if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
+				isSend = true
+				new Promise(resolve => {
+					callback(resolve)
+				}).then(() => {
+					isSend = false
+				})
+			}
+		}
+	},
     
     getTabsData(index){
       this.$store
