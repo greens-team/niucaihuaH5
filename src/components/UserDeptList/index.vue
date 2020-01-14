@@ -24,10 +24,10 @@
     </div>
 
     <van-tabs
-      v-model="active"
-      title-active-color="#FF9B02"
-      color="#FF9B02"
-      @click="()=>{$refs.swipe.swipeTo(active)}"
+		v-model="active"
+		title-active-color="#FF9B02"
+		color="#FF9B02"
+		@click="()=>{$refs.swipe.swipeTo(active)}"
     >
       <van-tab v-for="(tab,i) in tabs" :key="i" :title="tab.name" ></van-tab>
     </van-tabs>
@@ -40,7 +40,7 @@
 
             <van-search v-show="tab.search" class="-mt-2" shape="round" :placeholder="'请输入搜索关键词'+tab.name" v-model="searchKeyword" />
 
-            <van-checkbox-group v-model="tab.values" class="bg-white checkBoxGroup">
+            <van-checkbox-group v-model="tab.values" :class="['bg-white checkBoxGroup', {treeImg: tab.tree}]">
               <van-checkbox
                 v-for="(row, i) in tab.data"
                 :key="i"
@@ -48,8 +48,23 @@
                 class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200"
                 :name="row.value"
                 @click="()=>tab.changeCheck(row, tab.values)"
-              >{{row.lable}}</van-checkbox>
+              >
+			  {{tab.values}}
+				<div v-if="tab.tree" class="w-full flex items-center">
+					<div class="flex-1">{{row.lable}}</div>
+					<div class="flex items-center" @click="nextLevel">
+						<img width="15px" src="../../assets/workbench/nextLevel1.png" alt="下级" />
+						<span class="text-sm" :style="{'color': '#cccc'}">下级</span>
+					</div>
+				</div>
+				<span v-else>{{row.lable}}</span>
+			  </van-checkbox>
             </van-checkbox-group>
+			
+			<!-- <div v-else>
+				<img class="bar_icon back_icon" src="../../assets/workbench/nextLevel1.png" alt="下一级" />
+				<img class="bar_icon back_icon" src="../../assets/workbench/nextLevel2.png" alt="下一级" />
+			</div> -->
 
           </van-swipe-item>
         </van-swipe>
@@ -128,7 +143,8 @@ export default {
         }
       },{
         name: "部门",
-        search: false,
+        search: true,
+		tree: true,
         data: [],
         values: [],
         url: 'getDept',
@@ -139,7 +155,8 @@ export default {
           }
         },
         filterData: (data) => {
-          return data[0].children.map(r => {
+			data = this.searchKeyword ? data : data[0].children
+          return data.map(r => {
             return {
               lable: r.name,
               value: r.name + '_' + r.id,
@@ -170,6 +187,9 @@ export default {
     this.active = 0
   },
   watch: {
+	searchKeyword(){
+		this.getTabsData(this.active)
+	},
     active(index){
 		this.getColleaguePageNum = 1;
 		this.getTabsData(index)
@@ -188,6 +208,7 @@ export default {
 						)
 					)
 					.then(data => {
+						!data && (data = [])
 						this.tabs[index].data = this.tabs[index].data.concat(this.tabs[index].filterData ? this.tabs[index].filterData(data) : data)
 						this.colleagueLastPage = false;
 						resolve();
@@ -218,8 +239,10 @@ export default {
 	},
     
     getTabsData(index){
-      this.$store
-        .dispatch(this.tabs[index].url, this.tabs[index].getParams(this.searchKeyword))
+		let params = this.tabs[index].getParams(this.searchKeyword)
+		params.pageNum && (params.pageNum = 1)
+		this.$store
+        .dispatch(this.tabs[index].url, params)
         .then((data) => {
           this.tabs[index].data = this.tabs[index].filterData ? this.tabs[index].filterData(data) : data
         })
@@ -244,7 +267,11 @@ export default {
         });
       }
       this.$router.go(-1);
-    }
+    },
+	nextLevel(e){
+		e.stopPropagation()
+		console.log(e)
+	}
   }
 }
 </script>
@@ -271,5 +298,8 @@ export default {
 .userDeptList /deep/ .van-swipe{
   height: 100%;
 }
+
+
+.treeImg /deep/ .van-checkbox__label{width: 100%; padding-right: 5px;}
 
 </style>
