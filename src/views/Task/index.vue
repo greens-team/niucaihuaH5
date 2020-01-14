@@ -151,8 +151,8 @@
         </van-cell>
 
         <div
-          
           class="bg-gray-100 pt-2 pb-1"
+          v-if="$route.query.taskType == 1"
         >
           <div
             class="relative formBar font-bold p-3 pl-4 mt-2 bg-white"
@@ -190,6 +190,7 @@
         >打卡点不在经销商附近</div>
 
         <div
+          v-if="$route.query.taskType == 1"
           class="bg-gray-100 pt-1 pb-4"
         >
           <!-- @click="$router.push({name:'Map', query:{lng:$store.state.task.addEditTaskParams.dealerLongitude ,lat: $store.state.task.addEditTaskParams.dealerLatitud}})" -->
