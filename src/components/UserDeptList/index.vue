@@ -37,38 +37,54 @@
       <div class="absolute inset-0" >
         <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="(num)=>{active=num}">
           <van-swipe-item v-for="(tab,i) in tabs" :key="i" class="pt-2  overflow-y-scroll colleagueListBox">
-
             <van-search v-show="tab.search" class="-mt-2" shape="round" :placeholder="'请输入搜索关键词'+tab.name" v-model="searchKeyword" />
+
+            <div v-if="tab.tree && tab.data.length > 1" class="flex ml-5 mr-5 border-b border-gray-200 pb-2">
+              <div v-for="(row,i) in tab.data" :key="i" class="text-blue-600">
+                <span class="text-xs pl-1 pr-1 text-gray-500" v-if="i">></span>
+                <span @click="tab.data.splice(i+1,tab.data.length)" :class="['text-sm',{'text-gray-500': i == tab.data.length-1}]">{{row.lable}}</span>
+              </div>
+            </div>
 
             <van-checkbox-group v-model="tab.values" :class="['bg-white checkBoxGroup', {treeImg: tab.tree}]">
               <van-checkbox
-                v-for="(row, i) in tab.data"
+                v-for="(row, i) in (tab.tree && tab.data.length ? tab.data[tab.data.length - 1]['children'] : tab.data)"
                 :key="i"
                 icon-size="16px"
                 class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200"
                 :name="row.value"
                 @click="()=>tab.changeCheck(row, tab.values)"
               >
-			  {{tab.values}}
-				<div v-if="tab.tree" class="w-full flex items-center">
-					<div class="flex-1">{{row.lable}}</div>
-					<div class="flex items-center" @click="nextLevel">
-						<img width="15px" src="../../assets/workbench/nextLevel1.png" alt="下级" />
-						<span class="text-sm" :style="{'color': '#cccc'}">下级</span>
-					</div>
-				</div>
-				<span v-else>{{row.lable}}</span>
-			  </van-checkbox>
+                <div v-if="tab.tree" class="w-full flex items-center">
+                  <div class="flex-1">{{row.lable}}</div>
+                  <div v-if="row.children && row.children.length">
+                    <div v-if="tab.values.includes(row.value)" class="flex items-center" @click="nextLevel">
+                      <img width="15px" src="../../assets/workbench/nextLevel1.png" alt="下级" />
+                      <span class="text-sm" :style="{'color': '#cccc'}">下级</span>
+                    </div>
+                    <div v-else @click="(e)=>{tab.data.push(row);nextLevel(e, tab.data);}" class="flex items-center" >
+                      <img width="15px" src="../../assets/workbench/nextLevel2.png" alt="下级" />
+                      <span class="text-sm text-blue-500">下级</span>
+                    </div>
+                  </div>
+                </div>
+                <span v-else>{{row.lable}}</span>
+                </van-checkbox>
             </van-checkbox-group>
 			
-			<!-- <div v-else>
-				<img class="bar_icon back_icon" src="../../assets/workbench/nextLevel1.png" alt="下一级" />
-				<img class="bar_icon back_icon" src="../../assets/workbench/nextLevel2.png" alt="下一级" />
-			</div> -->
+			
 
           </van-swipe-item>
         </van-swipe>
       </div>
+    </div>
+<!-- {{tabs.filter((r,i)=>i && r).map(r=>r.values)}} -->
+    <div class="bg-gray-100 p-1 pl-5 flex items-center">
+      <div>已选择：</div>
+      <div class="ellipsis flex-1" v-if="tabs[1].values.concat(tabs[2].values).length">{{tabs[1].values.concat(tabs[2].values).map(r=>r.split('_')[0]).toString()}}</div>
+      <div class="ellipsis flex-1 text-gray-500" v-else>无</div>
+      <van-icon v-if="tabs[1].values.concat(tabs[2].values).length" name="arrow-up" class="text-orange-400 pr-2" style="font-weight: 600;" />
+      <div class="sendBtn ml-2" style="width: 60px; padding: 12px;">确定</div>
     </div>
 
 
@@ -144,7 +160,7 @@ export default {
       },{
         name: "部门",
         search: true,
-		tree: true,
+        tree: true,
         data: [],
         values: [],
         url: 'getDept',
@@ -155,14 +171,20 @@ export default {
           }
         },
         filterData: (data) => {
-			data = this.searchKeyword ? data : data[0].children
-          return data.map(r => {
-            return {
-              lable: r.name,
-              value: r.name + '_' + r.id,
-              children: r.children
-            }
-          })
+          let eachmap = (data)=>{
+            return data.map(r => {
+              let res = {children: []}
+              if(r.children){
+                res.children = eachmap(r.children)
+              }
+              res.lable = r.name;
+              res.value = r.name + '_' + r.id;
+              return res
+            })
+          }
+          data = eachmap(data)
+          console.log(data, 11111)
+          return data
         },
         changeCheck(row, values){
           if(values.includes(row.value)){
@@ -221,27 +243,27 @@ export default {
     },
   },
   methods: {
-	scrollLoadData (domBox, callback, positionCallback = false) {
-		let isSend = false
-		domBox.onscroll = function () {
-			console.log(domBox.scrollTop)
-			positionCallback && positionCallback(domBox.scrollTop)
+    scrollLoadData (domBox, callback, positionCallback = false) {
+      let isSend = false
+      domBox.onscroll = function () {
+        console.log(domBox.scrollTop)
+        positionCallback && positionCallback(domBox.scrollTop)
 
-			if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
-				isSend = true
-				new Promise(resolve => {
-					callback(resolve)
-				}).then(() => {
-					isSend = false
-				})
-			}
-		}
-	},
+        if (domBox.scrollTop > domBox.scrollHeight - domBox.clientHeight - 10 && !isSend) {
+          isSend = true
+          new Promise(resolve => {
+            callback(resolve)
+          }).then(() => {
+            isSend = false
+          })
+        }
+      }
+    },
     
     getTabsData(index){
-		let params = this.tabs[index].getParams(this.searchKeyword)
-		params.pageNum && (params.pageNum = 1)
-		this.$store
+      let params = this.tabs[index].getParams(this.searchKeyword)
+      params.pageNum && (params.pageNum = 1)
+      this.$store
         .dispatch(this.tabs[index].url, params)
         .then((data) => {
           this.tabs[index].data = this.tabs[index].filterData ? this.tabs[index].filterData(data) : data
@@ -268,9 +290,9 @@ export default {
       }
       this.$router.go(-1);
     },
-	nextLevel(e){
+	nextLevel(e, data = []){
 		e.stopPropagation()
-		console.log(e)
+		console.log(data, 1111)
 	}
   }
 }
@@ -301,5 +323,11 @@ export default {
 
 
 .treeImg /deep/ .van-checkbox__label{width: 100%; padding-right: 5px;}
+
+.ellipsis{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 
 </style>
