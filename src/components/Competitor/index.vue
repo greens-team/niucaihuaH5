@@ -37,8 +37,7 @@
     </van-search>
 
     <div class="flex-1 relative">
-      <div class="absolute inset-0 overflow-y-auto">
-
+      <div class="absolute inset-0 overflow-y-auto" ref="listBox">
           <van-checkbox-group v-model="$store.state.competitor.selectedUserGids" class="bg-white checkBoxGroup"> 
             <van-checkbox v-for="(item, i) in $store.state.competitor.list" :key="i" icon-size="16px" 
               class="ml-5 mr-5 pt-3 pb-3 border-b border-gray-200" 
@@ -74,14 +73,23 @@ export default {
   },
   watch: {
     '$store.state.competitor.listParams.queryString'(val){
-      this.$store.dispatch('listCompetitor', {queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false})
+      this.$store.dispatch('listCompetitor', {queryString: val, onlyWrite:this.$route.query.onlyWrite ? true : false,pageNum: 1})
     }
   },
   mounted () {
     this.$store.state.competitor.confirmUserGids=[];
     this.$store.state.competitor.jobsUser=[]; 
     this.$store.state.competitor.selectedUserGids = [];
-    this.$store.dispatch('listCompetitor',{onlyWrite:this.$route.query.onlyWrite ? true : false})
+    this.$store.dispatch('listCompetitor',{onlyWrite:this.$route.query.onlyWrite ? true : false,pageNum: 1})
+
+	this.$refs.listBox && this.scrollLoad(this.$refs.listBox, resolve => {
+		this.$store.dispatch("listCompetitor", {
+			pageNum: this.$store.state.competitor.listParams.pageNum+1
+		})
+		.then(msg => {
+			resolve(msg);
+		});
+	});
   },
   methods: {
     selectedList(){
