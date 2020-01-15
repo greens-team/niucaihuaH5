@@ -15,6 +15,8 @@ export default (m) => {
       workbenchSearch: '/workbench/search',          // 工作台搜索
       recentvisitlist: '/workbench/recentvisitlist', // 最近访问列表
       addRecentvisit: '/workbench/addrecentvisit',   // 埋点-最近访问的数据
+
+      changeDealerList: '/dealer/change/listpage',   // 阶段变化经销商列表
     },
     upload: {
       // upload: '/lbccrm/common/upload' 

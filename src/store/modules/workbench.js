@@ -35,6 +35,19 @@ export default {
 
     myTaskTime: new Date(moment().format('YYYY-MM-DD')), // 我的任务时间
     colleaguesTaskTime: new Date(moment().format('YYYY-MM-DD')), // 同事任务时间
+
+    listParams: {
+      userType: 0,
+      startTime: 0,
+      endTime: 0,
+      userGids: [],
+      deptGids: [],
+      pageNum: 1,
+      pageSize: 20
+    },
+    changeDealerList: [],
+    newMyTasklist: [],
+    newTaskPageNum: 1
   },
   mutations: {
     setLoginState(state, val) {
@@ -79,7 +92,6 @@ export default {
     // 获取任务列表
     getTaskList({ state }, data = {}) {
       return new Promise(resolve => {
-
         let userGids = []
         state.taskColleagues.userGids.map(r => {
           userGids.push(r.split(',')[1])
@@ -102,6 +114,7 @@ export default {
             pageSize: 20
           }
           apiUrlKey = 'tasklistpage'
+          
         } else {
           params = {
             startTime: this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 00:00:00')) / 1000,
@@ -114,13 +127,18 @@ export default {
           }
           apiUrlKey = 'taskmylistpage'
         }
-        Object.assign(params, data)
 
+        if(data.pageNum === 1){
+          state.myTaskPageNum = 1
+          state.colleaguesTaskPageNum = 1
+        }
+        
         if (params.pageNum == 1) {
           state.isLastPage = false
         }
 
         if (state.isLastPage) {
+          resolve()
           return
         }
 
@@ -148,5 +166,60 @@ export default {
       })
     },
 
+    // 获取阶段性变化的经销商列表
+    changeDealerList({ state }, data = {}) {
+
+      let params = Object.assign(state.listParams, data)
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
+      return new Promise(resolve => {
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.workbench.changeDealerList(params).then(res => {
+          if (!res.code) {
+            state.changeDealerList = params.pageNum == 1 ? (res.data.list || []) : state.changeDealerList.concat(res.data.list);
+            if (res.data.list && res.data.list.length < params.pageSize) {
+              state.isLastPage = true;
+            }
+            resolve('操作成功')
+          }
+        })
+      })
+    },
+
+
+    //新增的拜访记录
+    newTaskList({ state }, data = {}) {
+      let params = {
+        userType: 0,
+        startTime: 0,
+        endTime: 0,
+        userGids: [],
+        deptGids: [],
+        pageNum: state.newTaskPageNum,
+        pageSize: 20
+      }
+      if (params.pageNum == 1) {
+        state.isLastPage = false;
+      }
+      return new Promise(resolve => {
+        if (state.isLastPage) {
+          resolve();
+          return;
+        }
+        window.$ajax.workbench.tasklistpage(Object.assign(params, data)).then(res => {
+          if (!res.code) {
+            state.newMyTasklist = params.pageNum == 1 ? res.data.list : state.newMyTasklist.concat(res.data.list)
+            resolve(res.data.list.length)
+            if (res.data.list.length < params.pageSize) {
+              state.isLastPage = true
+            }
+          }
+        })
+      })
+    }
   }
 }

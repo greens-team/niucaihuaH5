@@ -213,10 +213,7 @@ export default {
       return arr.toString();
     }
   },
-  mounted() {
-    this.params.startTime = this.$root.moment(this.$route.query.startTime*1000).format('YYYY-MM-DD');
-    this.params.endTime = this.$root.moment(this.$route.query.endTime*1000).format('YYYY-MM-DD')
-  },
+  mounted() {},
   watch: {
     screeningShow(val) {
       if (val) {

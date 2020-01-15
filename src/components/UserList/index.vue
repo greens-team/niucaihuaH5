@@ -100,6 +100,7 @@ export default {
     clickright(){
       this.userListShow = false; 
       this.$emit('setParams',this.userListValues)
+      // console.log(this.userListValues)
     }
   }
 }

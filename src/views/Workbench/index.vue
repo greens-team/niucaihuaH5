@@ -105,11 +105,11 @@
           <span class="text-base font-bold">{{briefing.addContactsCount}}</span>个
           <br />新增联系人
         </div>
-        <div class="text-center text-gray-800 text-sm">
+        <div class="text-center text-gray-800 text-sm" @click="goMyTaskList">
           <span class="text-base font-bold">{{briefing.addVisitCount}}</span>个
           <br />新增拜访
         </div>
-        <div class="text-center text-gray-800 text-sm" @click="goDealerList">
+        <div class="text-center text-gray-800 text-sm" @click="goChangeDealerList">
           <span class="text-base font-bold">{{briefing.dealerChangeStateCount}}</span>个
           <br />阶段变化经销商
         </div>
@@ -609,7 +609,8 @@ export default {
             1000,
           userGids: userGids,
           deptGids: deptGids,
-          userType: this.$store.state.workbench.briefingColleagues.userType
+          userType: this.$store.state.workbench.briefingColleagues.userType,
+          flag: 1
         }
       });
     },
@@ -624,6 +625,55 @@ export default {
       });
       this.$router.push({
         path: "/DealerManage",
+        query: {
+          startTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.startTime) /
+            1000,
+          endTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.endTime) /
+            1000,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: this.$store.state.workbench.briefingColleagues.userType,
+          flag: 1
+        }
+      });
+    },
+    goChangeDealerList() {
+      let userGids = [];
+      this.$store.state.workbench.briefingColleagues.userGids.map(r => {
+        userGids.push(r.split(",")[1]);
+      });
+      let deptGids = [];
+      this.$store.state.workbench.briefingColleagues.deptGids.map(r => {
+        deptGids.push(r.split(",")[1]);
+      });
+      this.$router.push({
+        path: "/ChangeDealer",
+        query: {
+          startTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.startTime) /
+            1000,
+          endTime:
+            this.timeStamp(this.$store.state.workbench.briefingDate.endTime) /
+            1000,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: this.$store.state.workbench.briefingColleagues.userType
+        }
+      });
+    },
+    goMyTaskList() {
+      let userGids = [];
+      this.$store.state.workbench.briefingColleagues.userGids.map(r => {
+        userGids.push(r.split(",")[1]);
+      });
+      let deptGids = [];
+      this.$store.state.workbench.briefingColleagues.deptGids.map(r => {
+        deptGids.push(r.split(",")[1]);
+      });
+      this.$router.push({
+        path: "/newTaskList",
         query: {
           startTime:
             this.timeStamp(this.$store.state.workbench.briefingDate.startTime) /

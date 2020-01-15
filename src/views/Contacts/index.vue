@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="flex-1 text-center font-bold bar_title">联系人</div>
-        <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <!-- 搜索图标 -->
           <img
@@ -31,6 +31,7 @@
             alt="添加"
           />
         </div>
+        <div class="flex-1 items-center flex text-xl" v-else></div>
       </div>
       <div v-show="searchBar" :class="['flex items-center pl-3 pr-3 flex', {'pr-0': homeSearch }]">
         <div
@@ -59,7 +60,7 @@
       </div>
     </div>
 
-    <div class="border-b border-gray-200 flex pl-5">
+    <div class="border-b border-gray-200 flex pl-5" v-if="!flag">
       <div style="position:relative;margin-left: 1.286rem;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -71,6 +72,7 @@
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
     </div>
+    <div class="border-b border-gray-200 flex pl-5" v-else></div>
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="contactsListBox">
         <div>
@@ -99,7 +101,7 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      firstName: ""
+      flag: 0
     };
   },
 
@@ -121,6 +123,7 @@ export default {
     let startTime = Number(this.$route.query.startTime);
     let endTime = Number(this.$route.query.endTime);
     let userType = Number(this.$route.query.userType);
+    this.flag = this.$route.query.flag;
     let userGids = [];
     if (
       //选择了同事，详情页再跳回到列表

@@ -335,6 +335,19 @@ export default new Router({
       component: () => import(/* webpackChunkName: "EditContacts" */ './views/Contacts/editContacts.vue')
     },
 
+    {
+      path: '/ChangeDealer',     // 阶段变化经销商列表
+      name: 'ChangeDealer',
+      component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Dealer/changeDealer')
+    },
+
+    {
+      path: '/newTaskList',     // 新增拜访列表
+      name: 'newTaskList',
+      component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Workbench/newTaskList')
+    },
+
+
 
 
 

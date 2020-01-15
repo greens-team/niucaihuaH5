@@ -25,7 +25,7 @@
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
         <span class="text-center font-bold bar_title">经销商</span>
-        <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <img
             class="bar_icon search_icon"
@@ -43,6 +43,7 @@
           <!-- <van-icon name="search"  @click="searchBar = true" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600" />
           <van-icon name="plus" @click="$store.commit('setNewDealerParams'); $router.push('/CreateDealer')" slot="right" class="pt-5 pb-4 pl-1 pr-1 hover:text-blue-600"/>-->
         </div>
+        <div class="flex-1 items-center flex text-xl" v-else></div>
       </div>
       <div
         v-show="searchBar"
@@ -75,6 +76,7 @@
     </div>
 
     <van-tabs
+      v-if="!flag"
       v-model="$store.state.dealer.listParams.followStatus"
       @click="$refs.swipe.swipeTo($store.state.dealer.listParams.followStatus)"
     >
@@ -86,7 +88,7 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="border-b border-gray-200 flex items-center justify-around">
+    <div class="border-b border-gray-200 flex items-center justify-around" v-if="!flag">
       <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -99,6 +101,7 @@
       </div>
       <Screening @onSearch="searchAll" />
     </div>
+    <div class="border-b border-gray-200 flex items-center justify-around" v-else></div>
 
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll" ref="dealerListBox">
@@ -144,7 +147,8 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      isShowData: false
+      isShowData: false,
+      flag: 0
     };
   },
   watch: {
@@ -167,6 +171,7 @@ export default {
     let startTime = Number(this.$route.query.startTime);
     let endTime = Number(this.$route.query.endTime);
     let userType = Number(this.$route.query.userType);
+    this.flag = this.$route.query.flag;
     let userGids = [];
     if (
       //选择了同事，详情页再跳回到列表
@@ -200,7 +205,6 @@ export default {
       deptGids = this.$route.query.deptGids;
     }
 
-    console.log(startTime, endTime, userGids, deptGids);
     this.scrollLoad(this.$refs.dealerListBox, resolve => {
       this.$store
         .dispatch("getListData", {
