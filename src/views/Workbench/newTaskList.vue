@@ -98,7 +98,7 @@ export default {
     this.scrollLoad(this.$refs.taskListBox, resolve => {
       this.$store
         .dispatch("newTaskList", {
-          pageNum: this.$store.state.workbench.newTaskPageNum + 1,
+          pageNum: this.$store.state.workbench.newTaskParams.pageNum + 1,
           startTime: startTime,
           endTime: endTime,
           userGids: userGids,
