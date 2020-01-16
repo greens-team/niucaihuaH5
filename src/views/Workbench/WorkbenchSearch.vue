@@ -154,6 +154,7 @@ export default {
                 : this.listData.concat(res.data.list);
             if (res.data.list.length < this.params.pageSize) {
               this.isEnd = true;
+              this.isShowData = false;
             }
 
             if (!res.data.list.length) {
@@ -167,6 +168,8 @@ export default {
             this.isShowData = false;
           }
         });
+      } else {
+        this.isShowData = false;
       }
     }
   }
