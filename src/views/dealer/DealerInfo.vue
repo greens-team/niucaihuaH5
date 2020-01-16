@@ -202,10 +202,10 @@
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">公司归属</p>
-                    <p v-if="info.ownerCd">{{$store.getters.NDownerCdTypes[info.ownerCd] && $store.getters.NDownerCdTypes[info.ownerCd].text}}</p>
-                    <p v-else
-                      style="color:rgba(69, 90, 100, 0.6)"
-                    >-</p>
+                    <p
+                      v-if="info.ownerCd"
+                    >{{$store.getters.NDownerCdTypes[info.ownerCd] && $store.getters.NDownerCdTypes[info.ownerCd].text}}</p>
+                    <p v-else style="color:rgba(69, 90, 100, 0.6)">-</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">业务类型</p>
@@ -286,9 +286,7 @@
                   <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">经销商分级</p>
                     <p v-if="info.level">{{info.level | getLevelText($store.getters.NDlevelList)}}</p>
-                    <p v-else
-                      style="color:rgba(69, 90, 100, 0.6)"
-                    >-</p>
+                    <p v-else style="color:rgba(69, 90, 100, 0.6)">-</p>
                   </div>
                   <div
                     v-if="info.ownerUserList && info.ownerUserList.length"
@@ -570,7 +568,10 @@
                     </div>-->
 
                     <div class="flex justify-space">
-                      <div v-if="r.idcardFrontPic" style="width:130px;height:100px;margin-right:.5rem;">
+                      <div
+                        v-if="r.idcardFrontPic"
+                        style="width:130px;height:100px;margin-right:.5rem;"
+                      >
                         <img
                           :src="r.idcardFrontPic ? picServer + r.idcardFrontPic : r.idcardFrontPic"
                           alt="身份证正面"
@@ -974,7 +975,7 @@ export default {
       }
       if (num === 1) {
         this.$store.dispatch("getcontactslist", this.id).then(res => {
-          this.info = this.$store.state.dealerInfo.baseInfo;
+          // this.info = this.$store.state.dealerInfo.baseInfo;
 
           this.contactslist = this.$store.state.dealerInfo.contactslist;
           this.currentContacts = this.contactslist.length
@@ -985,6 +986,10 @@ export default {
           } else {
             this.isShowNoData = true;
           }
+
+          this.$store.dispatch("getinfo", this.id).then(res => {
+            this.info = this.$store.state.dealerInfo.baseInfo;
+          });
         });
       }
       if (num === 2) {
@@ -1000,6 +1005,10 @@ export default {
           } else {
             this.isShowNoData_competitor = true;
           }
+
+          this.$store.dispatch("getinfo", this.id).then(res => {
+            this.info = this.$store.state.dealerInfo.baseInfo;
+          });
         });
       }
       if (num === 3) {
@@ -1015,6 +1024,10 @@ export default {
           } else {
             this.isShowNoData_lessee = true;
           }
+
+          this.$store.dispatch("getinfo", this.id).then(res => {
+            this.info = this.$store.state.dealerInfo.baseInfo;
+          });
         });
       }
       if (num === 4) {
@@ -1033,6 +1046,9 @@ export default {
             } else {
               this.isShowNoData_newslog = true;
             }
+            this.$store.dispatch("getinfo", this.id).then(res => {
+              this.info = this.$store.state.dealerInfo.baseInfo;
+            });
           });
       }
       if (num === 5) {
@@ -1051,6 +1067,10 @@ export default {
             } else {
               this.isShowNoData_operatelog = true;
             }
+
+            this.$store.dispatch("getinfo", this.id).then(res => {
+              this.info = this.$store.state.dealerInfo.baseInfo;
+            });
           });
       }
     },
