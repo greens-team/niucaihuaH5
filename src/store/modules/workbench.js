@@ -200,7 +200,7 @@ export default {
     },
 
 
-    //新增的拜访记录
+    // 新增的拜访记录列表
     newTaskList({ state }, data = {}) {
       let params = Object.assign(state.newTaskParams, data)
       if (params.pageNum == 1) {
