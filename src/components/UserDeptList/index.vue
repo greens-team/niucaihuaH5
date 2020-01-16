@@ -1,5 +1,5 @@
 <template>
-<div class="userDeptList flex-1 flex flex-col">
+<div class="userDeptList flex-1 flex flex-col fixed inset-0 z-50">
   <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
         <div class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600">
@@ -39,6 +39,7 @@
           <van-swipe-item v-for="(tab,i) in tabs" :key="i" class="pt-2  overflow-y-scroll colleagueListBox">
             <van-search v-show="tab.search" class="-mt-2" shape="round" :placeholder="'请输入搜索关键词'+tab.name" v-model="searchKeyword" />
 
+            <!-- 面包屑 -->
             <div v-if="tab.tree && tab.data.length > 1" class="flex ml-5 mr-5 border-b border-gray-200 pb-2">
               <div v-for="(row,i) in tab.data" :key="i" class="text-blue-600">
                 <span class="text-xs pl-1 pr-1 text-gray-500" v-if="i">></span>
@@ -68,8 +69,8 @@
                     </div>
                   </div>
                 </div>
-                <span v-else>{{row.lable}}</span>
-                </van-checkbox>
+                <div v-else>{{row.lable}}</div>
+              </van-checkbox>
             </van-checkbox-group>
 			
 			
@@ -78,14 +79,51 @@
         </van-swipe>
       </div>
     </div>
-<!-- {{tabs.filter((r,i)=>i && r).map(r=>r.values)}} -->
+
     <div class="bg-gray-100 p-1 pl-5 flex items-center">
       <div>已选择：</div>
-      <div class="ellipsis flex-1" v-if="tabs[1].values.concat(tabs[2].values).length">{{tabs[1].values.concat(tabs[2].values).map(r=>r.split('_')[0]).toString()}}</div>
-      <div class="ellipsis flex-1 text-gray-500" v-else>无</div>
-      <van-icon v-if="tabs[1].values.concat(tabs[2].values).length" name="arrow-up" class="text-orange-400 pr-2" style="font-weight: 600;" />
-      <div class="sendBtn ml-2" style="width: 60px; padding: 12px;">确定</div>
+      <div class="ellipsis flex-1 pr-16" v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length">{{[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).map(r=>r.split('_')[0]).toString()}}</div>
+      <div class="flex-1 text-gray-500" v-else>无</div>
+      <van-icon @click="showResults=true" v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length" name="arrow-up" class="text-orange-400 pr-2" style="font-weight: 600;" />
+      <div class="sendBtn ml-2" @click="getResults" style="width: 60px; padding: 12px;">确定</div>
     </div>
+
+
+    <van-popup
+      v-model="showResults"
+      position="bottom"
+      :style="{ height: '50%' }"
+    >
+      <van-nav-bar
+        title="已选择"
+        left-text="取消"
+        right-text="确定"
+        @click-left="showResults=false"
+        @click-right="showResults=false"
+      />
+      <div class="absolute inset-0 overflow-y-scroll" style="top:46px;">
+        <template v-if="tabs[2] && tabs[2].tree">
+          <div v-for="(row, i) in tabs[2].values" :key="'a'+i">
+            <div class="flex items-center pt-3 pb-3 ml-5 mr-5 border-b border-gray-200">
+              <img width="20" src="../../assets/workbench/deptIcon.png" />
+              <div class="flex-1 ml-2">
+                {{row.split('_')[0]}}
+              </div> 
+              <img @click="deleteRow(2,i)" width="18" src="../../assets/workbench/deleteIcon.png" />
+            </div>
+          </div>
+        </template>
+        <div v-for="(row, i) in tabs[1].values" :key="'b'+i">
+          <div class="flex items-center pt-3 pb-3 ml-5 mr-5 border-b border-gray-200">
+            <img width="20" src="../../assets/workbench/memberIcon.png" />
+            <div class="flex-1 ml-2">
+              {{row.split('_')[0]}}
+            </div>
+            <img @click="deleteRow(1,i)" width="18" src="../../assets/workbench/deleteIcon.png" />
+          </div>
+        </div>
+      </div>
+    </van-popup>
 
 
 </div>
@@ -93,12 +131,27 @@
 
 <script>
 export default {
-  props:[],
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    },
+    memberList: {
+      type: Array,
+      default: ()=>[]
+    },
+    deptList: {
+      type: Array,
+      default: ()=>[]
+    }
+  },
   name: 'UserDeptList',
   data () {
     let self = this
     return {
-      tabs: [{
+      showResults: false,
+      tabs: [
+        {
         name: "常用",
         search: false,
         data: [],
@@ -108,6 +161,12 @@ export default {
           return {}
         },
         filterData: (data) => {
+          // 如果tabs长度为2时，只处理常用的同事，不处理常用部门
+          if(this.tabs.length == 2){
+            data = data.filter(r=>{
+              return r.type === 1
+            })
+          }
           return data.map(r => {
             return {
               lable: r.modelnName,
@@ -123,7 +182,8 @@ export default {
             self.tabs[index].values.push(row.value.substr(2))
           }
         }
-      },{
+      },
+      {
         name: "同事",
         search: true,
         data: [],
@@ -157,7 +217,8 @@ export default {
             })
           }
         }
-      },{
+      },
+      {
         name: "部门",
         search: true,
         tree: true,
@@ -183,7 +244,6 @@ export default {
             })
           }
           data = eachmap(data)
-          console.log(data, 11111)
           return data
         },
         changeCheck(row, values){
@@ -198,51 +258,70 @@ export default {
             })
           }
         }
-      }],
+      }
+      ],
       active: '',
       searchKeyword: '',
-		colleagueLastPage: false,
-		getColleaguePageNum: 1,
+      colleagueLastPage: false,
+      getColleaguePageNum: 1,
     }
   },
   mounted () {
     this.active = 0
+
+    this.tabs[1].values = Object.assign([],this.memberList)
+
+    
+    this.memberList.map(r=>{
+      this.tabs[0].values.push('1_'+r)
+    })
+
+    if(this.tabs.length == 3){
+      this.tabs[2].values = Object.assign([],this.deptList)
+      this.deptList.map(r=>{
+        this.tabs[0].values.push('2_'+r)
+      })
+    }
+
   },
   watch: {
-	searchKeyword(){
-		this.getTabsData(this.active)
-	},
+    searchKeyword(){
+      this.getTabsData(this.active)
+    },
     active(index){
-		this.getColleaguePageNum = 1;
-		this.getTabsData(index)
-				
-		// 同事列表滚动加载
-		document.getElementsByClassName('colleagueListBox')[index].scrollTop = 0
-		this.scrollLoadData(document.getElementsByClassName('colleagueListBox')[1], resolve => {
-			if (!this.colleagueLastPage) {
-				this.getColleaguePageNum++;
-				this.colleagueLastPage = true;
-				this.$store
-					.dispatch(this.tabs[index].url, 
-						Object.assign(
-							this.tabs[index].getParams(this.searchKeyword), 
-							{pageNum: this.getColleaguePageNum, pageSize: 20},
-						)
-					)
-					.then(data => {
-						!data && (data = [])
-						this.tabs[index].data = this.tabs[index].data.concat(this.tabs[index].filterData ? this.tabs[index].filterData(data) : data)
-						this.colleagueLastPage = false;
-						resolve();
-					});
-			} else {
-				resolve();
-			}
-		});
- 
+      this.getColleaguePageNum = 1;
+      this.getTabsData(index)
+      // 同事列表滚动加载
+      document.getElementsByClassName('colleagueListBox')[index].scrollTop = 0
+      this.scrollLoadData(document.getElementsByClassName('colleagueListBox')[1], resolve => {
+        if (!this.colleagueLastPage) {
+          this.getColleaguePageNum++;
+          this.colleagueLastPage = true;
+          this.$store
+            .dispatch(this.tabs[index].url, 
+              Object.assign(
+                this.tabs[index].getParams(this.searchKeyword), 
+                {pageNum: this.getColleaguePageNum, pageSize: 20},
+              )
+            )
+            .then(data => {
+              !data && (data = [])
+              this.tabs[index].data = this.tabs[index].data.concat(this.tabs[index].filterData ? this.tabs[index].filterData(data) : data)
+              this.colleagueLastPage = false;
+              resolve();
+            });
+        } else {
+          resolve();
+        }
+      });
     },
   },
   methods: {
+    deleteRow(rowIndex, index){
+      let resIndex = this.tabs[0].values.indexOf(rowIndex+'_'+this.tabs[rowIndex].values[index])
+      resIndex > -1 && (this.tabs[0].values.splice(resIndex, 1))
+      this.tabs[rowIndex].values.splice(index,1)
+    },
     scrollLoadData (domBox, callback, positionCallback = false) {
       let isSend = false
       domBox.onscroll = function () {
@@ -271,29 +350,32 @@ export default {
     },
 
     onClickLeft() {
-      this.$router.go(-1);
+      this.$emit('cancel')
     },
     onClickRight() {
-      if (this.$route.params.type == "briefing") {
-        this.$store.commit("setBriefingColleagues", {
-          userGids: [],
-          deptGids: [],
-          userType: 0
-        });
-      }
-      if (this.$route.params.type == "task") {
-        this.$store.commit("setTaskColleagues", {
-          userGids: [],
-          deptGids: [],
-          userType: 1
-        });
-      }
-      this.$router.go(-1);
+      // if (this.$route.params.type == "briefing") {
+      //   this.$store.commit("setBriefingColleagues", {
+      //     userGids: [],
+      //     deptGids: [],
+      //     userType: 0
+      //   });
+      // }
+      // if (this.$route.params.type == "task") {
+      //   this.$store.commit("setTaskColleagues", {
+      //     userGids: [],
+      //     deptGids: [],
+      //     userType: 1
+      //   });
+      // }
+      this.$emit('reset')
     },
-	nextLevel(e, data = []){
-		e.stopPropagation()
-		console.log(data, 1111)
-	}
+    nextLevel(e, data = []){
+      e.stopPropagation()
+      console.log(data, 1111)
+    },
+    getResults(){
+      this.$emit('confirm',this.tabs[1].values, this.tabs[2] ? this.tabs[2].values : [])
+    }
   }
 }
 </script>
@@ -328,6 +410,10 @@ export default {
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+}
+
+.userDeptList /deep/ .van-nav-bar__text{
+  color: #ff9b02;
 }
 
 </style>

@@ -25,8 +25,16 @@
         style="font-size:20px;"
       ></i>
     </div>
-{{$store.state.workbench.briefingColleagues}}
-    <div @click="$router.push({name:'UserDeptList', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})">aa</div>
+
+    <UserDeptList 
+        v-if="showUserDeptListBox" 
+        @cancel="showUserDeptListBox=false"
+        @reset="briefingReset"
+        @confirm="briefingConfirm"
+        :memberList="$store.state.workbench.briefingColleagues.userGids.map(r=>r.replace(/,/,'_'))" 
+        :deptList="$store.state.workbench.briefingColleagues.deptGids.map(r=>r.replace(/,/,'_'))" 
+    />
+
 
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
@@ -37,8 +45,9 @@
           class="flex items-center text-base text-gray-600 hover:text-blue-500 ellipsis"
           style="
           max-width:9rem;"
-          @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})"
+          @click="showUserDeptListBox=true"
         >
+        <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})" -->
           <img
             style="display:inline-block;width:1.286rem;height:1.286rem;"
             src="../../assets/workbench/my.png"
@@ -275,11 +284,15 @@
                 {{$root.moment($store.state.workbench.colleaguesTaskTime).format('YYYY-MM-DD')}}
               </div>
               <div class="flex-1"></div>
+
+              
+            
               <div
                 class="text-xs hover:text-blue-500 ellipsis flex items-center"
                 style="color: rgb(128, 132, 141);text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
-                @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})"
+                @click="taskUserDeptListBox = true"
               >
+              <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})" -->
                 <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
                 <img
                   style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
@@ -390,19 +403,33 @@
         >取 消</div>
       </div>
     </van-popup>
+
+
+    <UserDeptList 
+                v-if="taskUserDeptListBox" 
+                @cancel="taskUserDeptListBox=false"
+                @reset="taskReset"
+                @confirm="taskConfirm"
+                :memberList="$store.state.workbench.taskColleagues.userGids.map(r=>r.replace(/,/,'_'))" 
+                :deptList="$store.state.workbench.taskColleagues.deptGids.map(r=>r.replace(/,/,'_'))" 
+            />
+
   </div>
 </template>
 
 <script>
 // import CalendarControl from '@/components/CalendarControl'
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "Workbench",
   components: {
-    // CalendarControl
+    UserDeptList
   },
   data() {
     return {
-	  H: '',
+      taskUserDeptListBox: false,
+      showUserDeptListBox: false,
+      H: '',
       topVal: 286, // 滚动到238距离时 positioning设为true
       positioning: false,
       taskDateBox: false,
@@ -449,13 +476,7 @@ export default {
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
     this.getBriefing();
-    this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
-      if (len) {
-        this.isShowNoData_my = false;
-      } else {
-        this.isShowNoData_my = true;
-      }
-    });
+    this.getTaskList()
 	
   },
   watch: {
@@ -483,6 +504,15 @@ export default {
     }
   },
   methods: {
+    getTaskList(){
+      this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
+        if (len) {
+          this.isShowNoData_my = false;
+        } else {
+          this.isShowNoData_my = true;
+        }
+      });
+    },
     changeWorkbenchTaskStatus(index) {
       this.$store.commit("setWorkbenchTaskStatus", index);
     },
@@ -583,9 +613,47 @@ export default {
       delete sessionStorage.globalModelType;
       this.$router.push({ name: "WorkbenchSearch" });
     },
-	getHeight(){
-		this.H = (document.body.clientHeight - 110) + 'px'
-	}
+    getHeight(){
+      this.H = (document.body.clientHeight - 110) + 'px'
+    },
+    briefingReset(){
+      this.showUserDeptListBox=false;
+      this.$store.commit("setBriefingColleagues", {
+        userGids: [],
+        deptGids: [],
+        userType: 1
+      });
+      this.getBriefing()
+    },
+    briefingConfirm(userGids,deptGids){
+      this.showUserDeptListBox=false;
+      this.$store.commit("setBriefingColleagues", {
+        userGids: userGids.map(r=>r.replace(/_/,',')),
+        deptGids: deptGids.map(r=>r.replace(/_/,',')),
+        userType: 1
+      });
+      this.getBriefing()
+    },
+
+    taskReset(){
+      this.taskUserDeptListBox=false;
+      this.$store.commit("setTaskColleagues", {
+        userGids: [],
+        deptGids: [],
+        userType: 1
+      });
+      this.getTaskList()
+    },
+    taskConfirm(userGids,deptGids){
+      this.taskUserDeptListBox=false;
+      this.$store.commit("setTaskColleagues", {
+        userGids: userGids.map(r=>r.replace(/_/,',')),
+        deptGids: deptGids.map(r=>r.replace(/_/,',')),
+        userType: 1
+      });
+      this.getTaskList()
+    },
+    
   }
 };
 </script>
