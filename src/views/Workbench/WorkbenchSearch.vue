@@ -155,26 +155,21 @@ export default {
             if (res.data.list.length < this.params.pageSize) {
               this.isEnd = true;
               this.isShowData = false;
-              console.log(888)
             }
 
             if (!res.data.list.length) {
               //没有搜到相关数据
               this.isShowData = true;
-              console.log(444)
             } else {
               this.isShowData = false;
-              console.log(333)
             }
           } else {
             this.listData = [];
             this.isShowData = false;
-            console.log(222)
           }
         });
       } else {
         this.isShowData = false;
-        console.log(111)
       }
     }
   }
