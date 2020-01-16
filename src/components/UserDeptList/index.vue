@@ -15,6 +15,7 @@
       <div class="flex-1 items-center flex text-xl">
         <div class="flex-1"></div>
         <div
+          v-if="tabs.length === 3"
           slot="right"
           class="text-center"
           style="font-size:1.143rem;color:#1989fa;"
@@ -143,6 +144,10 @@ export default {
     deptList: {
       type: Array,
       default: ()=>[]
+    },
+    deptTree: {
+      type: Boolean,
+      default: true
     }
   },
   name: 'UserDeptList',
@@ -267,6 +272,12 @@ export default {
     }
   },
   mounted () {
+
+    console.log(this.memberList, 88996)
+
+    // 是否对部门进行处理
+    !this.deptTree && this.tabs.splice(2,1)
+
     this.active = 0
 
     this.tabs[1].values = Object.assign([],this.memberList)

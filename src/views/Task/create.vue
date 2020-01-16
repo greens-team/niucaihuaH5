@@ -160,6 +160,7 @@
           <span class="custom-title">{{$route.query.taskType == 2 ? '负责人' : '拜访人'}}</span>
         </template>
         <template slot="default">
+          {{mainUserGids}}
           <UserList
             :title="$route.query.taskType == 2 ? '选择负责人' : '选择拜访人'"
             v-if="editor"
@@ -172,8 +173,27 @@
             v-else
             :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
           >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
+
+
+          <!-- <div class="flex-1 flex" v-if="editor" @click="showUserDeptA = true">
+            <div class="flex-1" v-if="mainUserGids.length">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">{{$route.query.taskType == 2 ? '选择负责人' : '选择拜访人'}}</div>
+          </div>
+          <div
+            v-else
+            :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
+          >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div> -->
+
         </template>
       </van-cell>
+
+      <!-- <UserDeptList 
+          v-if="showUserDeptA" 
+          :deptTree="false"
+          @cancel="showUserDeptA=false"
+          @confirm="(data)=>{showUserDeptA = false; $store.state.newDealer.params.ownerUserList = ownerUserGidsA = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
+          :memberList="ownerUserGidsA.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        /> -->
 
       <van-cell clickable>
         <template slot="title">
@@ -445,10 +465,12 @@
 
 <script>
 import UserList from "@/components/UserList/index.vue";
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "taskCreate",
   components: {
-    UserList
+    UserList,
+    UserDeptList
   },
   data() {
     return {
