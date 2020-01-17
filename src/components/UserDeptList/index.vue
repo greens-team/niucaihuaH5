@@ -300,6 +300,7 @@ export default {
       this.getTabsData(this.active)
     },
     active(index){
+      this.searchKeyword = ''
       this.getColleaguePageNum = 1;
       this.getTabsData(index)
       // 同事列表滚动加载
