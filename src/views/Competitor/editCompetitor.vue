@@ -55,7 +55,7 @@
           v-if="showUserDeptA" 
           :deptTree="false"
           @cancel="showUserDeptA=false"
-          @confirm="(data)=>{showUserDeptA = false; ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
+          @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
           :memberList="ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
         />
         <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
