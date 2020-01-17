@@ -268,7 +268,7 @@
             @setParams="val=>{$store.state.newDealer.params.ownerUserList = val, ownerUserGidsA = val}"
             class="flex-1"
           /> -->
-          <div class="flex-1 flex" @click="showUserDeptA = true">
+          <div class="flex-1 flex pl-1" @click="showUserDeptA = true">
             <div class="flex-1" v-if="ownerUserGidsA.length">{{ownerUserGidsA.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择</div>
           </div>
@@ -291,7 +291,7 @@
             @setParams="val=>{$store.state.newDealer.params.followerUserList=val,ownerUserGidsB = val}"
             class="flex-1"
           /> -->
-          <div class="flex-1 flex" @click="showUserDeptB = true">
+          <div class="flex-1 flex pl-1" @click="showUserDeptB = true">
             <div class="flex-1" v-if="ownerUserGidsB.length">{{ownerUserGidsB.map(r=>r.refRlNm || r.ownerUserName).join(',')}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择</div>
           </div>
