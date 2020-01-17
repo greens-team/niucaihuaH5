@@ -34,7 +34,7 @@
     </van-tabs>
 
 
-    <div class="flex-1 relative bg-white" >
+    <div class="flex-1 relative bg-white topB" >
       <div class="absolute inset-0" >
         <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="(num)=>{active=num}">
           <van-swipe-item v-for="(tab,i) in tabs" :key="i" class="pt-2  overflow-y-scroll colleagueListBox">
@@ -83,7 +83,7 @@
 
     <div class="bg-gray-100 p-1 pl-5 flex items-center">
       <div>已选择：</div>
-      <div class="ellipsis flex-1 pr-16" v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length">{{[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).map(r=>r.split('_')[0]).toString()}}</div>
+      <div class="ellipsis flex-1 pr-2" v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length">{{[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).map(r=>r.split('_')[0]).toString()}}</div>
       <div class="flex-1 text-gray-500" v-else>无</div>
       <van-icon @click="showResults=true" v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length" name="arrow-up" class="text-orange-400 pr-2" style="font-weight: 600;" />
       <div class="sendBtn ml-2" @click="getResults" style="width: 60px; padding: 12px;">确定</div>
@@ -426,6 +426,10 @@ export default {
 
 .userDeptList /deep/ .van-nav-bar__text{
   color: #ff9b02;
+}
+
+.userDeptList /deep/ .van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after {
+    border-width: 1px 0;
 }
 
 </style>
