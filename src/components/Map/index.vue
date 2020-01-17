@@ -119,11 +119,22 @@ export default {
         zoom: 15,
         center: [116.397451, 39.909187],
         plugin: [{
-          pName: 'Geolocation', 
-			showButton:  (Object.keys(self.$route.query).length == 2 && self.$route.query.lng && self.$route.query.lat) ? false : true,
-			showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
-			// showCircle: false,
-          events: !Object.keys(self.$route.query).length ? {} : (!self.$route.query.lng ? {
+          pName: 'Geolocation',
+          showButton:  (Object.keys(self.$route.query).length == 2 && self.$route.query.lng && self.$route.query.lat) ? false : true,
+          showMarker: false,        //定位成功后在定位到的位置显示点标记，默认：true
+          enableHighAccuracy: true,
+          // showCircle: false,
+          events: !Object.keys(self.$route.query).length ? {
+            init(o){
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  self.center = [result.position.lng, result.position.lat];
+                  self.getInfo(result.position.lng, result.position.lat)
+                  self.$nextTick();
+                }
+              });
+            }
+          } : (!self.$route.query.lng ? {
             init(o) {
               self.map=o;
               // o 是高德地图定位插件实例

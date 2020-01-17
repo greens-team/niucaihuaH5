@@ -65,7 +65,8 @@ export default {
           events: {
             init(o) {
               // o 是高德地图定位插件实例
-              !self.dealerCenter.length && o.getCurrentPosition((status, result) => {
+              // self.$route.query.length == 3时为打卡状态
+              (!self.dealerCenter.length || self.$route.query.length == 3) && o.getCurrentPosition((status, result) => {
                 if (result && result.position && !self.$route.query.lng) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
