@@ -160,7 +160,7 @@
           <span class="custom-title">{{$route.query.taskType == 2 ? '负责人' : '拜访人'}}</span>
         </template>
         <template slot="default">
-          <UserList
+          <!-- <UserList
             :title="$route.query.taskType == 2 ? '选择负责人' : '选择拜访人'"
             v-if="editor"
             :paramsVal="mainUserGids"
@@ -171,9 +171,27 @@
           <div
             v-else
             :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
+          >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div> -->
+
+          <div class="flex-1 flex p5" v-if="editor" @click="showUserDeptA = true">
+            <div class="flex-1 text-gray-800" v-if="mainUserGids.length">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">{{$route.query.taskType == 2 ? '请选择负责人' : '请选择拜访人'}}</div>
+          </div>
+          <div
+            v-else
+            :class="['p5  ',{'text-gray-800': mainUserGids.length}]"
           >{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
+
         </template>
       </van-cell>
+
+      <UserDeptList 
+          v-if="showUserDeptA" 
+          :deptTree="false"
+          @cancel="showUserDeptA=false"
+          @confirm="(data)=>{data.length ? (showUserDeptA = false,mainUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast(($route.query.taskType == 2 ? '负责人' : '拜访人') + '不能为空')}"
+          :memberList="mainUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
 
       <van-cell clickable>
         <template slot="title">
@@ -181,7 +199,8 @@
           <span class="custom-title">{{$route.query.taskType == 2 ? '参与人' : '协访人'}}</span>
         </template>
         <template slot="default">
-          <UserList
+
+          <!-- <UserList
             v-if="editor"
             :title="$route.query.taskType == 2 ? '选择参与人' : '选择协访人'"
             :paramsVal="otherUserGids"
@@ -192,9 +211,30 @@
           <div
             v-else
             :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
+          >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div> -->
+
+
+          <div class="flex-1 flex p5" v-if="editor" @click="showUserDeptB = true">
+            <div class="flex-1 text-gray-800" v-if="otherUserGids.length">{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">{{$route.query.taskType == 2 ? '请选择参与人' : '请选择协访人'}}</div>
+          </div>
+          <div
+            v-else
+            :class="['p5  ',{'text-gray-800': otherUserGids.length}]"
           >{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
+
+
         </template>
       </van-cell>
+
+      <UserDeptList 
+          v-if="showUserDeptB" 
+          :deptTree="false"
+          @cancel="showUserDeptB=false"
+          @confirm="(data)=>{showUserDeptB = false; otherUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
+          :memberList="otherUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
+
 
       <van-cell clickable v-if="$route.query.taskType == 1">
         <template slot="title">
@@ -445,13 +485,18 @@
 
 <script>
 import UserList from "@/components/UserList/index.vue";
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "taskCreate",
   components: {
-    UserList
+    UserList,
+    UserDeptList
   },
   data() {
     return {
+      showUserDeptA:false,
+      showUserDeptB:false,
+
       empty1: false,
       empty2: false,
       empty3: false,

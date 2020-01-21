@@ -49,14 +49,27 @@
           style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
         >
           <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
-          <UserList
+
+          <!-- <UserList
             title="选择负责人"
             :paramsVal="ownerUserGids"
             @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList>
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
+          <div class="flex-1 flex p5"  @click="showUserDeptA = true">
+            <div class="flex-1 text-gray-800" v-if="ownerUserGids.length">{{mainUserGidsFun(ownerUserGids)}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择负责人</div>
+          </div>
+
         </div>
+        <UserDeptList 
+          v-if="showUserDeptA" 
+          :deptTree="false"
+          @cancel="showUserDeptA=false"
+          @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) :  $toast('负责人不能为空')}"
+          :memberList="ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
         <div class="checkContent" v-show="isShowErrorOwnerMsg">负责人不能为空</div>
 
         <div
@@ -64,14 +77,30 @@
           style="border-bottom:1px solid #ededee; margin-left:1rem;"
         >
           <div style="width:130px; color:#323233;">参与人</div>
-          <UserList
+
+          <!-- <UserList
             title="选择参与人"
             :paramsVal="followerUserGids"
             @setParams="val=>followerUserGids = val"
             :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
             soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
+
+          <div class="flex-1 flex p5"  @click="showUserDeptB = true">
+            <div class="flex-1 text-gray-800" v-if="followerUserGids.length">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择参与人</div>
+          </div>
+
         </div>
+
+        <UserDeptList 
+          v-if="showUserDeptB" 
+          :deptTree="false"
+          @cancel="showUserDeptB=false"
+          @confirm="(data)=>{showUserDeptB = false; followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
+          :memberList="followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
+
 
         <van-field
           v-model="$store.state.contacts.createContactsParams.weichatNum"
@@ -98,13 +127,17 @@
 </template>
 <script>
 import UserList from "@/components/UserList/index.vue";
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "CreateContacts",
   components: {
-    UserList
+    UserList,
+    UserDeptList
   },
   data() {
     return {
+      showUserDeptA: false,
+      showUserDeptB: false,
       isShowErrorPhoneMsg: false,
       isShowErrorNameMsg: false,
       isShowErrorChatMsg: false,

@@ -97,14 +97,32 @@
 
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
+              <!-- {{params.ownerUserGids}}
               <UserList
                 title="选择负责人"
                 :paramsVal="params.ownerUserGids"
                 @setParams="val=>params.ownerUserGids = val"
                 class="text-gray-600  ellipsis flex-1 ml-3"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
-              />
+              /> -->
+
+              <div class="flex-1 ml-3 flex pl-1" @click="showUserDeptA = true" style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;">
+                <div class="flex-1" v-if="params.ownerUserGids.length">{{params.ownerUserGids.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
+                <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择负责人</div>
+              </div>
+
             </div>
+
+             
+        
+            <UserDeptList 
+              class="userListDeptBox"
+              v-if="showUserDeptA" 
+              :deptTree="false"
+              @cancel="showUserDeptA=false"
+              @confirm="(data)=>{showUserDeptA = false, params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              :memberList="params.ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+            />
 
             <div class="text-gray-700 font-bold mt-5">未拜访天数</div>
 
@@ -163,13 +181,16 @@
 
 <script>
 import UserList from "@/components/UserList/index.vue";
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "Screening",
   components: {
-    UserList
+    UserList,
+    UserDeptList
   },
   data() {
     return {
+      showUserDeptA: false,
       screeningShow: false,
       params: {
         dealerName: "",
@@ -217,6 +238,7 @@ export default {
   watch: {
     screeningShow(val) {
       if (val) {
+        this.showUserDeptA = false
         !this.params.provinceVal &&
           this.$store.dispatch("getProvinces").then(data => {
             this.$store.state.dealer.provincesList.unshift({
@@ -479,4 +501,5 @@ export default {
 .Screening /deep/ .van-field__control{
   color: #252525
 }
+.userListDeptBox /deep/ .topB{border-top: 1px solid #eee;}
 </style>

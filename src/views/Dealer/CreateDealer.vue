@@ -262,23 +262,48 @@
         <div class="flex border-b border-gray-200 ml-2 items-center pt-3 pb-3">
           <span class="text-red-500">*</span>
           <div style="width:130px; color:#323233;">负责人</div>
-          <UserList
+          <!-- <UserList
             title="选择负责人"
             :paramsVal="ownerUserGidsA"
             @setParams="val=>{$store.state.newDealer.params.ownerUserList = val, ownerUserGidsA = val}"
             class="flex-1"
-          />
+          /> -->
+          <div class="flex-1 flex pl-1" @click="showUserDeptA = true">
+            <div class="flex-1" v-if="ownerUserGidsA.length">{{ownerUserGidsA.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择</div>
+          </div>
         </div>
+        
+        <UserDeptList 
+          v-if="showUserDeptA" 
+          :deptTree="false"
+          @cancel="showUserDeptA=false"
+          @confirm="(data)=>{data.length ? (showUserDeptA = false, $store.state.newDealer.params.ownerUserList = ownerUserGidsA = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
+          :memberList="ownerUserGidsA.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
+        
 
         <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
           <div style="width:130px; color:#323233;">参与人</div>
-          <UserList
+          <!-- <UserList
             title="选择参与人"
             :paramsVal="ownerUserGidsB"
             @setParams="val=>{$store.state.newDealer.params.followerUserList=val,ownerUserGidsB = val}"
             class="flex-1"
-          />
+          /> -->
+          <div class="flex-1 flex pl-1" @click="showUserDeptB = true">
+            <div class="flex-1" v-if="ownerUserGidsB.length">{{ownerUserGidsB.map(r=>r.refRlNm || r.ownerUserName).join(',')}}</div>
+            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择</div>
+          </div>
         </div>
+
+        <UserDeptList 
+          v-if="showUserDeptB" 
+          :deptTree="false"
+          @cancel="showUserDeptB=false"
+          @confirm="(data)=>{showUserDeptB = false; $store.state.newDealer.params.followerUserList = ownerUserGidsB = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
+          :memberList="ownerUserGidsB.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+        />
 
         <van-field
           v-model="$store.getters.NDparams.comment"
@@ -334,14 +359,18 @@
 </template>
 
 <script>
-import UserList from "@/components/UserList/index.vue";
+// import UserList from "@/components/UserList/index.vue";
+import UserDeptList from '@/components/UserDeptList'
 export default {
   name: "CreateDealer",
   components: {
-    UserList
+    // UserList,
+    UserDeptList
   },
   data() {
     return {
+      showUserDeptA: false,
+      showUserDeptB: false,
       minDate: new Date(1899, 12, 1),
       showNext: false,
       businessTypesShow: false,
