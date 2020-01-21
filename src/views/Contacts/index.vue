@@ -12,7 +12,7 @@
           </div>
         </div>
         <div class="flex-1 text-center font-bold bar_title">联系人</div>
-        <div class="flex-1 items-center flex text-xl">
+        <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <!-- 搜索图标 -->
           <img
@@ -24,13 +24,14 @@
 
           <!-- 添加图标 -->
           <img
-            v-show="$root.checkRole('CONTACTS_CREATE')" 
+            v-show="$root.checkRole('CONTACTS_CREATE')"
             class="bar_icon plus_icon"
             @click="$store.commit('setCreateContactsParamsEmpty');$router.push('/CreateContacts')"
             src="../../assets/topBarIcon/add_icon.png"
             alt="添加"
           />
         </div>
+        <div class="flex-1 items-center flex text-xl" v-else></div>
       </div>
       <div v-show="searchBar" :class="['flex items-center pl-3 pr-3 flex', {'pr-0': homeSearch }]">
         <div
@@ -59,7 +60,7 @@
       </div>
     </div>
 
-    <div class="border-b border-gray-200 flex pl-5">
+    <div class="border-b border-gray-200 flex pl-5" v-if="!flag">
       <div style="position:relative;margin-left: 1.286rem;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -71,17 +72,20 @@
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
     </div>
+    <div class="border-b border-gray-200 flex pl-5" v-else></div>
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="contactsListBox">
         <div>
           <div
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"
-            class="flex m-4  items-center last_child"
+            class="flex m-4 items-center last_child"
             style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
             @click="$store.state.contacts.currentTabsIndex = 0;$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
-            <div class="circleBg font-bold mr-4 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
+            <div
+              class="circleBg font-bold mr-4 text-xl"
+            >{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
             <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>
           </div>
         </div>
@@ -97,7 +101,7 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      firstName:''
+      flag: 0
     };
   },
 
@@ -105,16 +109,78 @@ export default {
     this.$store.commit("setInitParams");
   },
   mounted() {
+    // this.scrollLoad(this.$refs.contactsListBox, resolve => {
+    //   this.$store
+    //     .dispatch("listContacts", {
+    //       pageNum: this.$store.state.contacts.listContactsParams.pageNum + 1
+    //     })
+    //     .then(msg => {
+    //       resolve(msg);
+    //     });
+    // });
+    // this.$store.dispatch("listContacts", { pageNum: 1 });
+
+    let startTime = Number(this.$route.query.startTime);
+    let endTime = Number(this.$route.query.endTime);
+    let userType = Number(this.$route.query.userType);
+    this.flag = this.$route.query.flag;
+    let userGids = [];
+    if (
+      //选择了同事，详情页再跳回到列表
+      typeof this.$route.query.userGids == "string" &&
+      this.$route.query.userGids
+    ) {
+      userGids = [this.$route.query.userGids];
+    } else if (
+      //没有选择同事，详情页再跳回到列表
+      typeof this.$route.query.userGids == "undefined" &&
+      !this.$route.query.userGids
+    ) {
+      userGids = [];
+    } else {
+      //从简报每一次跳到列表
+      userGids = this.$route.query.userGids;
+    }
+
+    let deptGids = [];
+    if (
+      typeof this.$route.query.deptGids == "string" &&
+      this.$route.query.deptGids
+    ) {
+      deptGids = [this.$route.query.deptGids];
+    } else if (
+      typeof this.$route.query.deptGids == "undefined" &&
+      !this.$route.query.deptGids
+    ) {
+      deptGids = [];
+    } else {
+      deptGids = this.$route.query.deptGids;
+    }
+
     this.scrollLoad(this.$refs.contactsListBox, resolve => {
       this.$store
         .dispatch("listContacts", {
-          pageNum: this.$store.state.contacts.listContactsParams.pageNum + 1
+          pageNum: this.$store.state.contacts.listContactsParams.pageNum + 1,
+          startTime: startTime,
+          endTime: endTime,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: userType,
+          onlyWrite: false
         })
         .then(msg => {
           resolve(msg);
         });
     });
-    this.$store.dispatch("listContacts", { pageNum: 1 });
+    this.$store.dispatch("listContacts", {
+      pageNum: 1,
+      startTime: startTime,
+      endTime: endTime,
+      userGids: userGids,
+      deptGids: deptGids,
+      userType: userType,
+      onlyWrite: false
+    });
   },
 
   methods: {}

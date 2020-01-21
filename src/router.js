@@ -339,7 +339,20 @@ export default new Router({
       name: 'UserDeptList',
       // component: UserDeptList
       component: () => import(/* webpackChunkName: "UserDeptList" */ './components/UserDeptList')
-    }
+    },
+
+    {
+      path: '/ChangeDealer',     // 阶段变化经销商列表
+      name: 'ChangeDealer',
+      component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Dealer/changeDealer')
+    },
+
+    {
+      path: '/newTaskList',     // 新增拜访列表
+      name: 'newTaskList',
+      component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Workbench/newTaskList')
+    },
+
 
 
 
