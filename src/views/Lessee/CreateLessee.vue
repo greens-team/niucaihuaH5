@@ -5,11 +5,11 @@
       <div slot="right" @click="createLessee">保存</div>
     </van-nav-bar>-->
 
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+    <div class="items-center pl-4 pr-4 flex bg-white" style="border-bottom:1px solid #f8f8f8">
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -48,14 +48,14 @@
           <div
             style="color:#252525"
             class="flex-1"
-            :style="{color:birthday?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            :style="{color:birthday?'#252525':'#80848d'}"
             @click="birthdayTimeShow = true;"
           >{{ birthday ? birthday : '请选择日期'}}</div>
         </div>
 
         <div
           class="date-time-input-wrap"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #f8f8f8; margin-left:1rem;"
         >
           <van-popup v-model="birthdayTimeShow" position="bottom" :overlay="true">
             <van-datetime-picker
@@ -70,7 +70,7 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
+          style="border-bottom:1px solid #f8f8f8; margin-left:1rem;position:relative;"
         >
           <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
           <!-- <UserList
@@ -79,14 +79,17 @@
             @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptA = true">
-            <div class="flex-1 text-gray-800" v-if="ownerUserGids.length">{{mainUserGidsFun(ownerUserGids)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择负责人</div>
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptA = true">
+            <div
+              class="flex-1 text-gray-800"
+              v-if="ownerUserGids.length"
+            >{{mainUserGidsFun(ownerUserGids)}}</div>
+            <div class="flex-1" v-else style="color:#80848d;">请选择负责人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptA" 
+        <UserDeptList
+          v-if="showUserDeptA"
           :deptTree="false"
           @cancel="showUserDeptA=false"
           @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
@@ -96,7 +99,7 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #f8f8f8; margin-left:1rem;"
         >
           <div style="width:130px; color:#323233;">参与人</div>
           <!-- <UserList
@@ -105,14 +108,17 @@
             @setParams="val=>followerUserGids = val"
             :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
             soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptB = true">
-            <div class="flex-1 text-gray-800" v-if="followerUserGids.length">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择参与人</div>
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptB = true">
+            <div
+              class="flex-1 text-gray-800"
+              v-if="followerUserGids.length"
+            >{{mainFollowerUserGidsFun(followerUserGids)}}</div>
+            <div class="flex-1" v-else style="color:#80848d;">请选择参与人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptB" 
+        <UserDeptList
+          v-if="showUserDeptB"
           :deptTree="false"
           @cancel="showUserDeptB=false"
           @confirm="(data)=>{showUserDeptB = false; followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
@@ -123,7 +129,7 @@
           <div style="width:130px; color:#252525;">承租人状态</div>
           <div
             class="flex-1"
-            :style="{color:selectLesseeStatus?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            :style="{color:selectLesseeStatus?'#252525':'#80848d'}"
             @click="lesseeStatusShow = true;"
           >{{selectLesseeStatus}}</div>
         </div>
@@ -175,7 +181,7 @@
             class="flex-1"
             style="color:#252525"
             @click="lesseeTypeShow = true;"
-            :style="{color:selectLesseeType?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            :style="{color:selectLesseeType?'#252525':'#80848d'}"
           >{{selectLesseeType ? selectLesseeType : '请选择类型'}}</div>
         </div>
         <van-popup
@@ -226,7 +232,7 @@
             style="color:#252525"
             class="flex-1"
             @click="genderShow = true;"
-            :style="{color:selectGender?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            :style="{color:selectGender?'#252525':'#80848d'}"
           >{{selectGender ? selectGender : '请选择性别'}}</div>
         </div>
         <van-popup
@@ -357,7 +363,7 @@
 </template>
 <script>
 import UserList from "@/components/UserList/index.vue";
-import UserDeptList from '@/components/UserDeptList'
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "CreateLessee",
   components: {
@@ -586,7 +592,7 @@ export default {
 .date-time-input-wrap /deep/ .van-cell.van-field {
   padding-left: 0px;
 }
-.CreateLessee .date-time-input-wrap /deep/ .van-cell:not(:last-child)::after {
+/* .CreateLessee .date-time-input-wrap /deep/ .van-cell:not(:last-child)::after {
   border-bottom: 0px solid #ededee;
   -webkit-transform: scaleY(0);
   transform: scaleY(0);
@@ -596,9 +602,9 @@ export default {
   border-bottom: 1px solid #ededee;
   -webkit-transform: scaleY(1);
   transform: scaleY(1);
-}
+} */
 .border_line {
-  border-bottom: 1px solid #ededee;
+  border-bottom: 1px solid #f8f8f8;
 }
 .checkContent {
   background: #f7f8f9;
@@ -656,5 +662,15 @@ export default {
 }
 .radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
   margin-left: -25px;
+}
+
+.CreateLessee /deep/  input::-webkit-input-placeholder {
+  color: #80848d;
+}
+.CreateLessee /deep/  input::-moz-input-placeholder {
+  color: #80848d;
+}
+.CreateLessee /deep/ input::-ms-input-placeholder {
+  color: #80848d;
 }
 </style>

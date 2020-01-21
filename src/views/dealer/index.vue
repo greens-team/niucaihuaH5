@@ -9,7 +9,7 @@
 <template>
   <div class="DealerManage flex-1 flex flex-col bg-white">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar">
+      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar" style="border-bottom:1px solid #f8f8f8;">
         <div class="flex-1 flex">
           <!-- <div @click="$router.go(-1)" class="flex  text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600" >
             <van-icon  class="" name="arrow-left" />
@@ -18,7 +18,7 @@
 
           <div
             @click="$router.push('/')"
-            class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+            class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
           >
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
@@ -86,7 +86,7 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="border-b border-gray-200 flex items-center justify-around">
+    <div class="flex items-center justify-around" style="border-bottom:1px solid #f8f8f8;">
       <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item

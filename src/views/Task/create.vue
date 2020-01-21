@@ -21,7 +21,7 @@
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -46,7 +46,7 @@
           alt="编辑"
         />
 
-        <div @click="editorFun" v-if="editor && taskId" slot="right">保存</div>
+        <div @click="editorFun" v-if="editor && taskId" slot="right" style="font-size:1.143rem;">保存</div>
       </div>
     </div>
 
@@ -63,7 +63,7 @@
         </template>
         <template slot="default">
           <van-field
-            style="height:36px;"
+            style="height:36px;padding:5px 5px 5px 10px;"
             autosize
             @blur="()=>{ empty1 = !Boolean($store.state.task.addEditTaskParams.taskName)}"
             type="textarea"
@@ -175,7 +175,7 @@
 
           <div class="flex-1 flex p5" v-if="editor" @click="showUserDeptA = true">
             <div class="flex-1 text-gray-800" v-if="mainUserGids.length">{{mainUserGidsFun(mainUserGids, 'refRlNm', 0)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">{{$route.query.taskType == 2 ? '请选择负责人' : '请选择拜访人'}}</div>
+            <div class="flex-1" v-else style="color:#80848d;">{{$route.query.taskType == 2 ? '请选择负责人' : '请选择拜访人'}}</div>
           </div>
           <div
             v-else
@@ -216,7 +216,7 @@
 
           <div class="flex-1 flex p5" v-if="editor" @click="showUserDeptB = true">
             <div class="flex-1 text-gray-800" v-if="otherUserGids.length">{{mainUserGidsFun(otherUserGids, 'refRlNm', 1)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">{{$route.query.taskType == 2 ? '请选择参与人' : '请选择协访人'}}</div>
+            <div class="flex-1" v-else style="color:#80848d;">{{$route.query.taskType == 2 ? '请选择参与人' : '请选择协访人'}}</div>
           </div>
           <div
             v-else
@@ -262,6 +262,7 @@
             type="textarea"
             rows="15"
             placeholder="请输入任务描述"
+            style="padding:5px 5px 5px 10px;"
           />
           <p
             :class="['p5  ',{'text-gray-800': $store.state.task.addEditTaskParams.comment}]"
@@ -963,7 +964,7 @@ export default {
   height: 100%;
 }
 .taskCreate .taskCreateRow /deep/ .van-cell {
-  padding: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 5px;
   /* background-color: inherit; */
 }
 .taskCreate .taskCreateRow /deep/ .van-cell__title {

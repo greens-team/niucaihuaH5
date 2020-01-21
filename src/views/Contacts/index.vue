@@ -2,11 +2,11 @@
 <template>
   <div class="ListContacts flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-3 pr-3 flex" v-show="!searchBar">
+      <div class="flex-1 items-center flex pl-4 pr-4" style="border-bottom:1px solid #f8f8f8;" v-show="!searchBar">
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
-            class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+            class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
           >
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="border-b border-gray-200 flex pl-5">
+    <div class="flex pl-5" style="border-bottom:1px solid #f8f8f8;">
       <div style="position:relative;margin-left: 1.286rem;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -78,7 +78,7 @@
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"
             class="flex m-4  items-center last_child"
-            style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
+            style="border-bottom:1px solid #f8f8f8;padding-bottom:1rem;"
             @click="$store.state.contacts.currentTabsIndex = 0;$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
             <div class="circleBg font-bold mr-4 text-xl">{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
