@@ -38,8 +38,8 @@
             </template>
           </van-cell>
         </van-cell-group>
-        <!-- <p v-else class="text-center mt-10 text-gray-600">没有找到相关的关键词</p> -->
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有找到相关的关键词</p>
+        <p v-else class="text-center mt-10 text-gray-600" style="color:#80848d" v-show="isShowData">没有找到相关的关键词</p>
+        <!-- <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有找到相关的关键词</p> -->
       </div>
     </div>
   </div>
@@ -154,7 +154,7 @@ export default {
                 : this.listData.concat(res.data.list);
             if (res.data.list.length < this.params.pageSize) {
               this.isEnd = true;
-              this.isShowData = false;
+              // this.isShowData = false;
             }
 
             if (!res.data.list.length) {
@@ -169,7 +169,7 @@ export default {
           }
         });
       } else {
-        this.isShowData = false;
+        // this.isShowData = false;
       }
     }
   }
