@@ -35,7 +35,7 @@
       </div>
       <div
         v-show="searchBar"
-        :class="['flex items-center pl-3 pr-3 flex border-b border-gray-200', {'pr-0': homeSearch }]"
+        :class="['flex items-center pl-4 pr-4 flex border-b border-gray-200', {'pr-0': homeSearch }]"
       >
         <div
           v-if="homeSearch"
@@ -255,5 +255,11 @@ export default {
 }
 .last_child:last-child {
   border-bottom: 0px !important;
+}
+.LesseeList /deep/ .van-search {
+  padding: 10px 0px;
+}
+.LesseeList /deep/ .van-search__action {
+  padding: 0 0 0 8px;
 }
 </style>

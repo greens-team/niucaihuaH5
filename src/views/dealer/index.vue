@@ -46,7 +46,7 @@
       </div>
       <div
         v-show="searchBar"
-        :class="['flex items-center pl-3 pr-3 flex border-b border-gray-200', {'pr-0': homeSearch }]"
+        :class="['flex items-center pl-4 pr-4 flex border-b border-gray-200', {'pr-0': homeSearch }]"
       >
         <div
           v-if="homeSearch"
@@ -256,5 +256,11 @@ export default {
   color: #f42929;
   font-size: 14px;
   content: "*";
+}
+.DealerManage /deep/ .van-search {
+  padding: 10px 0px;
+}
+.DealerManage /deep/ .van-search__action {
+  padding: 0 0 0 8px;
 }
 </style>

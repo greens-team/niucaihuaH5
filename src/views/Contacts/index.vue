@@ -32,7 +32,7 @@
           />
         </div>
       </div>
-      <div v-show="searchBar" :class="['flex items-center pl-3 pr-3 flex', {'pr-0': homeSearch }]">
+      <div v-show="searchBar" :class="['flex items-center pl-4 pr-4 flex', {'pr-0': homeSearch }]">
         <div
           v-if="homeSearch"
           @click="$router.go(-1)"
@@ -198,5 +198,11 @@ export default {
 }
 .last_child:last-child {
   border-bottom: 0px !important;
+}
+.ListContacts /deep/ .van-search {
+  padding: 10px 0px;
+}
+.ListContacts /deep/ .van-search__action {
+  padding: 0 0 0 8px;
 }
 </style>
