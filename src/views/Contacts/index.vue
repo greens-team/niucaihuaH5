@@ -2,7 +2,11 @@
 <template>
   <div class="ListContacts flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center flex pl-4 pr-4" style="border-bottom:1px solid #f8f8f8;" v-show="!searchBar">
+      <div
+        class="flex-1 items-center flex pl-4 pr-4"
+        style="border-bottom:1px solid #f8f8f8;"
+        v-show="!searchBar"
+      >
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
@@ -79,14 +83,21 @@
           <div
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"
-            class="flex m-4  items-center last_child"
+            class="flex m-4 items-center last_child"
             style="border-bottom:1px solid #f8f8f8;padding-bottom:1rem;"
             @click="$store.state.contacts.currentTabsIndex = 0;$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
-            <div
+            <!-- <div
               class="circleBg font-bold mr-4 text-xl"
             >{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
-            <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>
+            <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>-->
+            <div
+              class="circleBg font-bold mr-4 text-xl"
+            >{{r.contactsName != null ? r.contactsName.trim().substring(0,1).toUpperCase(): ''}}</div>
+            <div
+              class="text-base contactsDetail font-bold"
+            >{{r.contactsName != null ?r.contactsName:'' }}</div>
+            
           </div>
         </div>
       </div>
