@@ -2,12 +2,12 @@
 <template>
   <div class="LesseeInfo bg-gray-100 absolute inset-0 overflow-y-scroll" ref="listBox">
     <div
-      class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white fixed top-0 left-0 right-0 z-10"
+      class="items-center pl-4 pr-4 flex bg-white fixed top-0 left-0 right-0 z-10"
     >
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -827,7 +827,7 @@ export default {
   transform: scaleY(1);
 }
 .border_line {
-  border-bottom: 1px solid #ededee;
+  border-bottom: 1px solid #f8f8f8;
 }
 .lessee_name {
   width: 16rem;

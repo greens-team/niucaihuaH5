@@ -2,11 +2,11 @@
 <template>
   <div class="CompetitorList flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar">
+      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar" style="border-bottom:1px solid #f8f8f8;">
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
-            class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+            class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
           >
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
@@ -35,7 +35,7 @@
       </div>
       <div
         v-show="searchBar"
-        :class="['flex items-center pl-3 pr-3 flex border-b border-gray-200', {'pr-0': homeSearch }]"
+        :class="['flex items-center pl-4 pr-4 flex border-b border-gray-200', {'pr-0': homeSearch }]"
       >
         <div
           v-if="homeSearch"
@@ -74,7 +74,7 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="border-b border-gray-200 flex items-center justify-start px-4">
+    <div class="flex items-center justify-start px-4" style="border-bottom:1px solid #f8f8f8;">
       <div style="position:relative;margin-left: 1.286rem;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -98,7 +98,7 @@
           <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
             <div
               class="flex flex-col m-4 bg-white last_child"
-              style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
+              style="border-bottom:1px solid #f8f8f8;padding-bottom:1rem;"
               v-for="(r,i) in $store.state.competitor.list"
               :key="i"
               @click="getInfo(r.gid)"
@@ -302,5 +302,11 @@ export default {
 }
 .last_child:last-child {
   border-bottom: 0px !important;
+}
+.CompetitorList /deep/ .van-search {
+  padding: 10px 0px;
+}
+.CompetitorList /deep/ .van-search__action {
+  padding: 0 0 0 8px;
 }
 </style>

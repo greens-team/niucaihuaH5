@@ -11,11 +11,11 @@
       <div v-else slot="right" @click="nextStep">下一步</div>
     </van-nav-bar>-->
 
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+    <div class="items-center pl-4 pr-4 flex bg-white" style="border-bottom:1px solid #f8f8f8;">
       <div class="flex-1 flex">
         <div
           @click="delmapsource(),$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -69,7 +69,7 @@
           label-width="130"
         />-->
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex ml-4 items-center pt-3 pb-3" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">成立日期</div>
           <div
             class="flex-1"
@@ -90,7 +90,7 @@
           />
         </van-popup>
 
-        <div class="flex border-b border-gray-200 ml-4 items-center">
+        <div class="flex ml-4 items-center" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">所属地区</div>
           <van-dropdown-menu class="flex-1 border-0 pr-3">
             <van-dropdown-item
@@ -119,7 +119,7 @@
           placeholder="请填写注册地址"
           label-width="130"
         />
-        <div class="flex border-b border-gray-200 ml-4 items-center">
+        <div class="flex ml-4 items-center" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">公司归属</div>
           <van-dropdown-menu :class="['border-0', {'zeroCss':!$store.getters.NDparams.ownerCd}]">
             <van-dropdown-item
@@ -130,7 +130,7 @@
           </van-dropdown-menu>
         </div>
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex ml-4 items-center pt-3 pb-3" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">业务类型</div>
           <div
             class="flex-1"
@@ -229,7 +229,7 @@
           <div></div>
         </div>
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex ml-4 items-center pt-3 pb-3" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">地理位置</div>
           <div
             class="flex-1"
@@ -249,7 +249,7 @@
           label-width="130"
         />-->
 
-        <div class="flex border-b border-gray-200 ml-4 items-center">
+        <div class="flex ml-4 items-center" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">经销商分级</div>
           <van-dropdown-menu :class="['border-0', {'zeroCss':!$store.getters.NDparams.level}]">
             <van-dropdown-item
@@ -259,7 +259,7 @@
           </van-dropdown-menu>
         </div>
 
-        <div class="flex border-b border-gray-200 ml-2 items-center pt-3 pb-3">
+        <div class="flex ml-2 items-center pt-3 pb-3" style="border-bottom:1px solid #f8f8f8;">
           <span class="text-red-500">*</span>
           <div style="width:130px; color:#323233;">负责人</div>
           <!-- <UserList
@@ -283,7 +283,7 @@
         />
         
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex ml-4 items-center pt-3 pb-3" style="border-bottom:1px solid #f8f8f8;">
           <div style="width:130px; color:#323233;">参与人</div>
           <!-- <UserList
             title="选择参与人"

@@ -9,7 +9,7 @@
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -202,5 +202,8 @@ export default {
 }
 .footerx {
   padding-bottom: 34px;
+}
+.feedBack /deep/ .van-cell {
+  padding: 10px 14px;
 }
 </style>

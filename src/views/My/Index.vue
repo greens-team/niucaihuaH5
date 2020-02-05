@@ -6,7 +6,7 @@
  <!-- 我的模块首页 -->
 <template>
   <div class="My">
-    <div class="baseinfo m-5 rounded-lg relative">
+    <div class="baseinfo m-4 rounded-lg relative">
       <div class="p-6 pl-8">
         <div class="flex justify-between items-center">
           <p>
@@ -161,5 +161,13 @@ export default {
   line-height: 4.5rem;
   color: #252525;
   font-size: 1.3rem;
+}
+.My /deep/ .van-cell {
+  padding: 14px;
+}
+.My /deep/ .van-cell:not(:last-child)::after {
+  border-bottom: 1px solid #ebedf0;
+  -webkit-transform: scaleY(0);
+  transform: scaleY(0);
 }
 </style>

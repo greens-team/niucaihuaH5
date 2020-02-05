@@ -1,13 +1,11 @@
  <!-- 联系人 内容页 -->
 <template>
   <div class="ContactsInfo bg-gray-100 absolute inset-0 overflow-y-scroll" ref="listBox">
-    <div
-      class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white fixed top-0 left-0 right-0 z-10"
-    >
+    <div class="items-center pl-4 pr-4 flex bg-white fixed top-0 left-0 right-0 z-10">
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -194,8 +192,8 @@
                   </div>
                 </div>
                 <div
-                  class="border-b last_child"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
+                  class="last_child"
+                  style="padding-top: 1rem;padding-bottom: 1rem;border-bottom:1px solid #f8f8f8;"
                   v-for="(r,i) in $store.state.contacts.listNewslog"
                   :key="i"
                 >
@@ -260,13 +258,13 @@
                   </div>
                 </div>
                 <div
-                  class="border-b last_child"
-                  style="padding-top: 1rem;padding-bottom: 1rem;"
+                  class="last_child"
+                  style="padding-top: 1rem;padding-bottom: 1rem;border-bottom:1px solid #f8f8f8;"
                   v-for="(r,i) in $store.state.contacts.listOperatelog"
                   :key="i"
                 >
                   <!-- <span class="text-ms" style="color:#252525;padding-right:1rem;">{{r.userName}}</span> -->
-                   <span
+                  <span
                     class="text-gray-600"
                     style="padding-right:1rem;word-wrap:break-word;color:#252525"
                   >{{r.content}}</span>
@@ -615,7 +613,7 @@ export default {
     0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
 .border_line {
-  border-bottom: 1px solid #ededee;
+  border-bottom: 1px solid #f8f8f8;
 }
 .text_title {
   color: #80848d;
