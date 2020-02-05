@@ -424,7 +424,8 @@ export default {
   color: #ff9b02;
 }
 .DealerManage /deep/ .titleDropdown .van-dropdown-item__option {
-  justify-content: center;
+  /* justify-content: center; */
+  text-align: center;
   color: #252525;
 }
 .DealerManage
