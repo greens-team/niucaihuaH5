@@ -83,10 +83,17 @@
             style="border-bottom:1px solid #f8f8f8;padding-bottom:1rem;"
             @click="$store.state.contacts.currentTabsIndex = 0;$router.push({name:'ContactsInfo',query:{gid:r.gid}})"
           >
-            <div
+            <!-- <div
               class="circleBg font-bold mr-4 text-xl"
             >{{r.contactsName.trim().substring(0,1).toUpperCase()}}</div>
-            <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div>
+            <div class="text-base contactsDetail font-bold">{{r.contactsName}}</div> -->
+            <div
+              class="circleBg font-bold mr-4 text-xl"
+            >{{r.contactsName != null ? r.contactsName.trim().substring(0,1).toUpperCase(): ''}}</div>
+            <div
+              class="text-base contactsDetail font-bold"
+            >{{r.contactsName != null ?r.contactsName:'' }}</div>
+
           </div>
         </div>
       </div>
