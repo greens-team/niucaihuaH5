@@ -36,6 +36,8 @@
             <van-dropdown-item
               title-class="dropDown_title"
               @change="getDiffDealerList"
+              @open="open"
+              @close="close"
               v-model="$store.state.dealer.dropDownValue"
               :options="$store.state.dealer.dropDownType"
             />
@@ -314,6 +316,12 @@ export default {
           pageNum: 1
         });
       }
+    },
+    open(){
+      this.dropDown = true;
+    },
+    close(){
+      this.dropDown = false;
     }
   }
 };
@@ -412,7 +420,9 @@ export default {
   font-size: 1.286rem;
   font-weight: bold;
 }
-
+.icon_toggle {
+  transition: .3s;
+}
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
