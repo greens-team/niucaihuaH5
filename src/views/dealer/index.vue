@@ -9,7 +9,11 @@
 <template>
   <div class="DealerManage flex-1 flex flex-col bg-white">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar" style="border-bottom:1px solid #f8f8f8;">
+      <div
+        class="flex-1 items-center pl-4 pr-4 flex"
+        v-show="!searchBar"
+        style="border-bottom:1px solid #f8f8f8;"
+      >
         <div class="flex-1 flex">
           <!-- <div @click="$router.go(-1)" class="flex  text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600" >
             <van-icon  class="" name="arrow-left" />
@@ -24,7 +28,26 @@
           </div>
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
-        <span class="text-center font-bold bar_title">经销商</span>
+
+        <!-- <span class="text-center font-bold bar_title">经销商</span> -->
+
+        <div class="titleDropdown" style="position:relative;">
+          <van-dropdown-menu>
+            <van-dropdown-item
+              title-class="dropDown_title"
+              @change="getDiffDealerList"
+              v-model="$store.state.dealer.dropDownValue"
+              :options="$store.state.dealer.dropDownType"
+            />
+          </van-dropdown-menu>
+          <img
+            class="dropdown_icon icon_toggle"
+            :class="{ active: dropDown}"
+            src="../../assets/dealer/dropdownMenu.png"
+            alt
+          />
+        </div>
+
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <img
@@ -88,7 +111,11 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="flex items-center justify-around" style="border-bottom:1px solid #f8f8f8;" v-if="!flag">
+    <div
+      class="flex items-center justify-around"
+      style="border-bottom:1px solid #f8f8f8;"
+      v-if="!flag"
+    >
       <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item
@@ -141,14 +168,19 @@ export default {
       this.homeSearch = true;
       this.searchBar = true;
     }
-    this.$store.commit("setInitParams");
+    if (this.$store.state.dealer.dropDownValue == 0) {
+      this.$store.commit("setInitParams");
+    }
+    // this.$store.commit("setInitParams");
+    // console.log(this.$store.state.dealer.dropDownValue, "----");
   },
   data() {
     return {
       searchBar: false,
       homeSearch: false,
       isShowData: false,
-      flag: 0
+      flag: 0,
+      dropDown: false
     };
   },
   watch: {
@@ -238,7 +270,6 @@ export default {
       });
     },
     searchAll(data) {
-      console.log(data, "data");
       this.$store
         .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
         .then(res => {
@@ -248,6 +279,41 @@ export default {
             this.isShowData = true;
           }
         });
+    },
+    getDiffDealerList(value) {
+      let userInfo = JSON.parse(sessionStorage.userInfo);
+      let ownerUserGids = [];
+      ownerUserGids = [
+        {
+          id: userInfo.EMPLOYEE_ID,
+          refRlNm: userInfo.EMPLOYEE_NAME
+        }
+      ];
+
+      if (value == 0) {
+        // 全部
+        this.$store.dispatch("getListData", {
+          followerUserGids: [],
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+      if (value == 1) {
+        // 我负责的
+        this.$store.dispatch("getListData", {
+          followerUserGids: [],
+          ownerUserGids: ownerUserGids,
+          pageNum: 1
+        });
+      }
+      if (value == 2) {
+        // 我参与的
+        this.$store.dispatch("getListData", {
+          followerUserGids: ownerUserGids,
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
     }
   }
 };
@@ -328,5 +394,55 @@ export default {
 }
 .DealerManage /deep/ .van-search__action {
   padding: 0 0 0 8px;
+}
+/* 经销商顶部下拉筛选 */
+.dropdown_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
+.DealerManage /deep/ .titleDropdown .van-dropdown-menu__title {
+  padding: 0 25px 0 0;
+  color: #252525;
+  line-height: normal;
+}
+.DealerManage /deep/ .titleDropdown .van-dropdown-menu__title .van-ellipsis {
+  font-size: 1.286rem;
+  font-weight: bold;
+}
+
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.DealerManage
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option.van-dropdown-item__option--active {
+  color: #ff9b02;
+}
+.DealerManage /deep/ .titleDropdown .van-dropdown-item__option {
+  justify-content: center;
+  color: #252525;
+}
+.DealerManage
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option
+  .van-cell__title
+  span {
+  font-size: 1.143rem;
+}
+.DealerManage
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option--active
+  .van-cell__value {
+  flex: none;
+}
+.DealerManage /deep/ .titleDropdown .van-icon-success:before {
+  display: none;
 }
 </style>

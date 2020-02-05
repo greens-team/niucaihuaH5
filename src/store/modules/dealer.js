@@ -24,7 +24,7 @@ export default {
       "startTime": 0,             // 开始时间 时间戳 秒
       "visitCount": '',            // 拜访次数
       "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-      "visitConditions": 0       // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+      "visitConditions": 0,      // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
     },
     status: [
       '稳定型', '已终止', '合作中', '深入沟通', '进行中'
@@ -58,6 +58,12 @@ export default {
       { text: '大于等于', value: 4 },
       { text: '小于等于', value: 5 },
     ],
+    dropDownType: [
+      { text: '全部经销商', value: 0 },
+      { text: '我负责的', value: 1 },
+      { text: '我参与的', value: 2 }
+    ],
+    dropDownValue: 0,
     // 经销商列表数据
     listData: [],
 
@@ -111,9 +117,9 @@ export default {
     }
   },
   actions: {
-    getOftenuselist ({state}, data={}) {
+    getOftenuselist({ state }, data = {}) {
       return new Promise(resolve => {
-        window.$ajax.auth.getOftenuselist(data).then( res => {
+        window.$ajax.auth.getOftenuselist(data).then(res => {
           if (!res.code) {
             state.oftenuselist = res.data
             resolve(res.data)
@@ -121,9 +127,9 @@ export default {
         })
       })
     },
-    getDept ({state}, data={}) {
+    getDept({ state }, data = {}) {
       return new Promise(resolve => {
-        window.$ajax.auth.dept(data).then( res => {
+        window.$ajax.auth.dept(data).then(res => {
           if (!res.code) {
             state.deptDataList = res.data.content
             resolve(res.data.content)
@@ -131,16 +137,16 @@ export default {
         })
       })
     },
-    getColleague ({state}, data={}) {
+    getColleague({ state }, data = {}) {
       return new Promise(resolve => {
         window.$ajax.auth.colleague(data).then(res => {
           if (!res.code) {
             state.colleagueDataList = data.pageNum == 1 ? res.data.resultList : state.colleagueDataList.concat(res.data.resultList)
-            if(data.pageNum == 1 && !data.rlNm){
+            if (data.pageNum == 1 && !data.rlNm) {
               let userInfo = JSON.parse(sessionStorage.userInfo)
               state.colleagueDataList.unshift({
-                id: userInfo.EMPLOYEE_ID, 
-                refRlNm:userInfo.EMPLOYEE_NAME
+                id: userInfo.EMPLOYEE_ID,
+                refRlNm: userInfo.EMPLOYEE_NAME
               })
             }
             resolve(res.data.resultList)
@@ -150,8 +156,18 @@ export default {
     },
     getListData({ state }, data = {}) {
       let params = Object.assign(state.listParams, data)
-      if(params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id){
+
+      //负责人
+      if (params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id) {
         params.ownerUserGids = params.ownerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+
+
+      //参与人
+      if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
+        params.followerUserGids = params.followerUserGids.map(r => {
           return String(r.id)
         })
       }
@@ -163,11 +179,11 @@ export default {
           resolve()
           return
         }
-        let timevals ={
-          startTime: String(params.startTime).length == 13 ? params.startTime/1000 : params.startTime,
-          endTime: String(params.endTime).length == 13 ? params.endTime/1000 : params.endTime
-        }  
-        window.$ajax.dealer.listData(Object.assign({},params,timevals)).then(res => {
+        let timevals = {
+          startTime: String(params.startTime).length == 13 ? params.startTime / 1000 : params.startTime,
+          endTime: String(params.endTime).length == 13 ? params.endTime / 1000 : params.endTime
+        }
+        window.$ajax.dealer.listData(Object.assign({}, params, timevals)).then(res => {
           if (!res.code) {
             state.listData = params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
             if (res.data.list && res.data.list.length < params.pageSize) {
@@ -224,24 +240,24 @@ export default {
         })
       })
     },
-    addlegal ({state}, data) { // 经销商添加法人信息 
+    addlegal({ state }, data) { // 经销商添加法人信息 
       return new Promise(resolve => {
         window.$ajax.dealer.addlegal(data).then(res => {
-          if(!res.code){
+          if (!res.code) {
             resolve('操作成功')
           }
         })
       })
     },
-    editlegal ({state}, data) { // 经销商编辑法人信息
+    editlegal({ state }, data) { // 经销商编辑法人信息
       return new Promise(resolve => {
         window.$ajax.dealer.editlegal(data).then(res => {
-          if(!res.code){
+          if (!res.code) {
             resolve('操作成功')
           }
         })
       })
     },
-    
+
   }
 }

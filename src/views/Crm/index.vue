@@ -6,7 +6,7 @@
 <template>
   <div class="Crm">
     <div class="flex justify-around pt-8 pb-6">
-      <div @click="$root.checkRole('DEALER_SELECT', 'tipText') && $router.push('/DealerManage')">
+      <div @click="$root.checkRole('DEALER_SELECT', 'tipText') && $router.push('/DealerManage');$store.state.dealer.dropDownValue = 0;">
         <img src="../../assets/crm/icon1.png" class="w-16" alt />
         <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">经销商</p>
       </div>
