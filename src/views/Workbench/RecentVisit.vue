@@ -5,10 +5,7 @@
 
     <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
       <div class="flex-1 flex">
-        <div
-          @click="onClickLeft"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
-        >
+        <div @click="onClickLeft" class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600">
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
       </div>
@@ -22,7 +19,6 @@
       <div class="absolute inset-0 overflow-y-scroll">
         <van-cell-group v-if="listData.length">
           <van-cell
-            is-link
             v-for="(row,i) in listData"
             :key="i"
             :ss="row.modelGid"
@@ -33,8 +29,8 @@
               <p class="leading-snug font-bold">
                 {{row.someName}}
                 <br />
-                <span class="text-gray-500">{{row.modelName}}</span>
               </p>
+              <span style="color:#80848d">{{row.modelName}}</span>
             </template>
           </van-cell>
         </van-cell-group>
@@ -64,39 +60,46 @@ export default {
   },
   methods: {
     goDetails(row) {
-      
       switch (row.modelObjType) {
         case 1:
-          this.$root.selectdpcheck({modelObjType:1, modelId: row.modelGid}, ()=>
-            this.$router.push({
-              name: "DealerInfo",
-              query: { id: row.modelGid }
-            })
-          )
+          this.$root.selectdpcheck(
+            { modelObjType: 1, modelId: row.modelGid },
+            () =>
+              this.$router.push({
+                name: "DealerInfo",
+                query: { id: row.modelGid }
+              })
+          );
           break;
         case 2:
-          this.$root.selectdpcheck({modelObjType:2, modelId: row.modelGid}, ()=>
-            this.$router.push({
-              name: "ContactsInfo",
-              query: { gid: row.modelGid }
-            })
-          )
+          this.$root.selectdpcheck(
+            { modelObjType: 2, modelId: row.modelGid },
+            () =>
+              this.$router.push({
+                name: "ContactsInfo",
+                query: { gid: row.modelGid }
+              })
+          );
           break;
         case 3:
-          this.$root.selectdpcheck({modelObjType:3, modelId: row.modelGid}, ()=>
-            this.$router.push({
-              name: "LesseeInfo",
-              query: { id: row.modelGid }
-            })
-          )
+          this.$root.selectdpcheck(
+            { modelObjType: 3, modelId: row.modelGid },
+            () =>
+              this.$router.push({
+                name: "LesseeInfo",
+                query: { id: row.modelGid }
+              })
+          );
           break;
         case 4:
-          this.$root.selectdpcheck({modelObjType:4, modelId: row.modelGid}, ()=>
-            this.$router.push({
-              name: "CompetitorInfo",
-              query: { id: row.modelGid }
-            })
-          )
+          this.$root.selectdpcheck(
+            { modelObjType: 4, modelId: row.modelGid },
+            () =>
+              this.$router.push({
+                name: "CompetitorInfo",
+                query: { id: row.modelGid }
+              })
+          );
           break;
       }
     },
@@ -120,5 +123,8 @@ export default {
 }
 .bar_title {
   font-size: 1.286rem;
+}
+.RecentVisit /deep/ .van-cell {
+  padding: 14px;
 }
 </style>

@@ -5,11 +5,11 @@
       <div slot="right" @click="createCompetitor">保存</div>
     </van-nav-bar>-->
 
-    <div class="items-center pl-4 pr-4 flex border-b border-gray-200 bg-white">
+    <div class="items-center pl-4 pr-4 flex border_line bg-white">
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1)"
-          class="flex text-xl pt-5 pb-4 pl-1 pr-1 items-center hover:text-blue-600"
+          class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
         </div>
@@ -37,7 +37,7 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;position:relative;"
+          style="border-bottom:1px solid #f8f8f8; margin-left:1rem;position:relative;"
         >
           <div class="ownerUser" style="width:130px; color:#323233;">负责人</div>
           <!-- <UserList
@@ -49,7 +49,7 @@
           >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
           <div class="flex-1 flex p5"  @click="showUserDeptA = true">
             <div class="flex-1 text-gray-800" v-if="ownerUserGids.length">{{mainUserGidsFun(ownerUserGids)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择负责人</div>
+            <div class="flex-1" v-else style="color:#80848d;">请选择负责人</div>
           </div>
         </div>
         <UserDeptList 
@@ -63,7 +63,7 @@
 
         <div
           class="flex ml-4 items-center pt-3 pb-3"
-          style="border-bottom:1px solid #ededee; margin-left:1rem;"
+          style="border-bottom:1px solid #f8f8f8; margin-left:1rem;"
         >
           <div style="width:130px; color:#323233;">参与人</div>
           <!-- <UserList
@@ -75,7 +75,7 @@
           >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
           <div class="flex-1 flex p5"  @click="showUserDeptB = true">
             <div class="flex-1 text-gray-800" v-if="followerUserGids.length">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
-            <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择参与人</div>
+            <div class="flex-1" v-else style="color:#80848d;">请选择参与人</div>
           </div>
         </div>
         <UserDeptList 
@@ -86,12 +86,12 @@
           :memberList="followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
         />
 
-        <div class="flex border-b border-gray-200 ml-4 items-center pt-3 pb-3">
+        <div class="flex ml-4 items-center pt-3 pb-3 border_line">
           <div style="width:130px; color:#323233;">竞对类型</div>
           <div
             class="flex-1"
             @click="competorTypeShow = true;"
-            :style="{color:selectCompetorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
+            :style="{color:selectCompetorType?'#252525':'#80848d'}"
           >{{selectCompetorType ? selectCompetorType : '请选择类型'}}</div>
         </div>
         <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
@@ -276,12 +276,12 @@ export default {
 </script>
 <style scoped>
 .CreateCompetitor /deep/ .van-cell:not(:last-child)::after {
-  border-bottom: 1px solid #ededee;
+  /* border-bottom: 1px solid #ededee;
   -webkit-transform: scaleY(1);
-  transform: scaleY(1);
+  transform: scaleY(1); */
 }
 .border_line {
-  border-bottom: 1px solid #ededee;
+  border-bottom: 1px solid #f8f8f8;
 }
 .checkContent {
   background: #f7f8f9;
