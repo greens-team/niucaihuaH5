@@ -4,11 +4,10 @@
   <div class="Screening">
     <div
       @click="screeningShow = true"
-      class="screeningText flex items-center  pr-3 cursor-pointer text-gray-800 hover:text-blue-500"
+      class="screeningText flex items-center pr-3 cursor-pointer text-gray-800 hover:text-blue-500"
     >
-     
       <img class="order_icon" src="../../assets/dealer/select.png" alt />
-       <span>筛选</span>
+      <span>筛选</span>
     </div>
     <van-overlay :show="screeningShow" @click="screeningShow = false" />
     <van-popup
@@ -30,13 +29,13 @@
             </div>
 
             <div class="text-gray-700 font-bold mt-5">创建时间</div>
-            <div class="flex justify-between items-center text-gray-600  mt-2">
+            <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
                 @click="showTime = !showTime; timeType=0;"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
                 :style="{color: params.startTime ? '#252525' : '#80848d'}"
               >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
-              <div class="ml-2 mr-2 ">-</div>
+              <div class="ml-2 mr-2">-</div>
               <div
                 @click="showTime = !showTime; timeType=1;"
                 :style="{color: params.endTime ? '#252525' : '#80848d'}"
@@ -56,9 +55,9 @@
             </van-popup>
 
             <div class="text-gray-700 font-bold mt-5">所属区域</div>
-            <div class="flex flex-wrap  mt-2">
+            <div class="flex flex-wrap mt-2">
               <van-dropdown-menu
-                class="mr-1 flex-1 "
+                class="mr-1 flex-1"
                 :style="{color: params.provinceVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
@@ -68,7 +67,7 @@
               </van-dropdown-menu>
               <van-dropdown-menu
                 v-if="$store.state.dealer.citysList.length"
-                class="text-gray-600 mr-1 flex-1 "
+                class="text-gray-600 mr-1 flex-1"
                 :style="{color: params.cityVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
@@ -78,7 +77,7 @@
               </van-dropdown-menu>
               <van-dropdown-menu
                 v-if="$store.state.dealer.areasList.length"
-                class="text-gray-600 mr-1 flex-1 "
+                class="text-gray-600 mr-1 flex-1"
                 :style="{color: params.areaVal ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
@@ -88,47 +87,82 @@
               </van-dropdown-menu>
             </div>
 
-            <!-- <div class="text-gray-700 font-bold  mt-5">经销商分级</div>
+            <div class="text-gray-700 font-bold mt-5">经销商分级</div>
             <div class="flex flex-wrap text-center text-gray-600">
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]" @click="params.level = params.level == 1 ? '' : 1">一级经销商</div>
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]" @click="params.level = params.level == 2 ? '' : 2">二级经销商</div>
-              <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div>
-            </div>-->
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]"
+                @click="params.level = params.level == 1 ? '' : 1"
+              >一级经销商</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]"
+                @click="params.level = params.level == 2 ? '' : 2"
+              >二级经销商</div>
+
+              <!-- <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div> -->
+            </div>
 
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
-              <!-- {{params.ownerUserGids}}
-              <UserList
+              <!-- {{params.ownerUserGids}} -->
+              <!-- <UserList
                 title="选择负责人"
                 :paramsVal="params.ownerUserGids"
                 @setParams="val=>params.ownerUserGids = val"
                 class="text-gray-600  ellipsis flex-1 ml-3"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
-              /> -->
+              />-->
 
-              <div class="flex-1 ml-3 flex pl-1" @click="showUserDeptA = true" style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;">
-                <div class="flex-1" v-if="params.ownerUserGids.length">{{params.ownerUserGids.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
+              <div
+                class="flex-1 ml-3 flex pl-1"
+                @click="showUserDeptA = true"
+                style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
+              >
+                <div
+                  class="flex-1"
+                  v-if="params.ownerUserGids.length"
+                >{{params.ownerUserGids.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
                 <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择负责人</div>
               </div>
-
             </div>
 
-             
-        
-            <UserDeptList 
+            <UserDeptList
               class="userListDeptBox"
-              v-if="showUserDeptA" 
+              v-if="showUserDeptA"
               :deptTree="false"
               @cancel="showUserDeptA=false"
               @confirm="(data)=>{showUserDeptA = false, params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
               :memberList="params.ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
-            <div class="text-gray-700 font-bold mt-5">未拜访天数</div>
+            <div class="flex justify-between items-center mt-5">
+              <div class="text-gray-700 font-bold">参与人</div>
 
-            <div class="flex items-center  mt-2">
+              <div
+                class="flex-1 ml-3 flex pl-1"
+                @click="showUserDeptB = true"
+                style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
+              >
+                <div
+                  class="flex-1"
+                  v-if="params.followerUserGids.length"
+                >{{params.followerUserGids.map(r=>r.refRlNm|| r.ownerUserName).join(',')}}</div>
+                <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6)">请选择参与人</div>
+              </div>
+            </div>
+
+            <UserDeptList
+              class="userListDeptBox"
+              v-if="showUserDeptB"
+              :deptTree="false"
+              @cancel="showUserDeptB=false"
+              @confirm="(data)=>{showUserDeptB = false, params.followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              :memberList="params.followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
+            />
+
+            <div class="text-gray-700 font-bold mt-5">未拜访天数</div>
+            <div class="flex items-center mt-2">
               <van-dropdown-menu
-                class="text-gray-600  flex-1 "
+                class="text-gray-600 flex-1"
                 :style="{color: params.notVisitConditions ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
               >
                 <van-dropdown-item
@@ -148,16 +182,215 @@
               </div>
             </div>
 
-            <!-- <div class="flex items-center mt-5">
-              <div class="text-gray-700 font-bold">拜访次数</div>
-              <div class="flex-1"></div>
-              <van-dropdown-menu class="text-gray-600 ml-3 p-3 w-32" style="background-color: #F8FAFB; height: 2.5rem; text-align:right;">
-                <van-dropdown-item v-model="params.visitConditions" :options="$store.state.dealer.conditions" />
+            <div class="text-gray-700 font-bold mt-5">拜访次数</div>
+            <div class="flex items-center mt-2">
+              <!-- <div class="flex-1"></div> -->
+              <van-dropdown-menu
+                class="text-gray-600 flex-1"
+                :style="{color: params.visitConditions ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
+              >
+                <van-dropdown-item
+                  v-model="params.visitConditions"
+                  :options="$store.state.dealer.conditions"
+                />
               </van-dropdown-menu>
-              <div class="bg-gray-200 w-24 ml-1">
-                <van-field type="number" v-model="params.visitCount" pattern='[0-9]*' @input="val=>!/^[0-9]+$/.test(val) && (this.params.visitCount = '')" style="background-color: inherit; height:39px; padding:0 10px; line-height: 39px;" placeholder="天数" />
+              <div class="bg-gray-200 flex-1 ml-1">
+                <van-field
+                  type="number"
+                  v-model="params.visitCount"
+                  pattern="[0-9]*"
+                  @input="val=>!/^[0-9]+$/.test(val) && (this.params.visitCount = '')"
+                  style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                  placeholder="次数"
+                />
               </div>
-            </div>-->
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">公司归属</div>
+            <div class="flex items-center mt-2">
+              <!-- <van-dropdown-menu
+                class="text-gray-600 flex-1"
+                :style="{color: params.ownerCd ? '#252525' : '#80848d', backgroundColor: '#F8FAFB',  height: '2.5rem', paddingLeft:'10px'}"
+              >
+                <van-dropdown-item
+                  v-model="params.ownerCd"
+                  :options="$store.state.dealer.ownerCdTypes"
+                />
+              </van-dropdown-menu>-->
+              <div
+                @click="ownerCdShow = !ownerCdShow"
+                class="bg-gray-200 flex-1 items-center flex px-3"
+                :style="{color: params.ownerCd.length ? '#252525' : '#80848d'}"
+              >{{params.ownerCd.length ? params.ownerCd.map(r=>$store.state.dealer.ownerCdTypes[r]).join(',') : '请选择'}}</div>
+
+              <van-popup
+                v-model="ownerCdShow"
+                position="bottom"
+                :style="{ height: '40%'}"
+                class="checkBoxGroup"
+              >
+                <van-nav-bar
+                  title="请选择公司归属"
+                  left-text="取消"
+                  right-text="确定"
+                  left-arrow
+                  @click-left="ownerCdShow = false"
+                  @click-right="ownerCdShow = false"
+                />
+
+                <van-checkbox-group v-model="params.ownerCd" style="height: 100%;overflow: scroll;">
+                  <van-cell-group>
+                    <van-cell
+                      v-for="(r,i) in $store.state.dealer.ownerCdTypes"
+                      :key="i"
+                      :title="r"
+                      clickable
+                    >
+                      <van-checkbox :name="i" slot="right-icon" />
+                    </van-cell>
+                  </van-cell-group>
+                </van-checkbox-group>
+              </van-popup>
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">法人姓名</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.contactsName"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                placeholder="请输入"
+              />
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">统一社会信用代码</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.creditCode"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                placeholder="请输入"
+              />
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">注册地址</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.address"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                placeholder="请输入"
+              />
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">业务类型</div>
+            <div class="flex flex-wrap text-center text-gray-600">
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.businessType == 1}]"
+                @click="params.businessType = params.businessType == 1 ? '' : 1"
+              >线索入库</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.businessType == 2}]"
+                @click="params.businessType = params.businessType == 2 ? '' : 2"
+              >合作中</div>
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">成立日期</div>
+            <div class="flex justify-between items-center text-gray-600 mt-2">
+              <div
+                @click="showEstablishTime = !showEstablishTime; timeType=2;"
+                class="bg-gray-200 flex-1 items-center flex px-3"
+                :style="{color: params.establishTime ? '#252525' : '#80848d'}"
+              >{{params.establishTime ? $root.moment(params.establishTime).format('YYYY-MM-DD') : '请选择'}}</div>
+            </div>
+
+            <van-popup v-model="showEstablishTime" position="bottom" :style="{ height: '40%'}">
+              <van-datetime-picker
+                title="请选择时间"
+                :formatter="formatter"
+                v-model="establishTimeStr"
+                type="date"
+                @confirm="confirmEstablishTime"
+                @cancel="showEstablishTime=false"
+              />
+            </van-popup>
+
+            <div class="text-gray-700 font-bold mt-5">证件类型</div>
+            <div class="flex justify-between items-center text-gray-600 mt-2">
+              <div
+                @click="certTypCdShow = !certTypCdShow"
+                class="bg-gray-200 flex-1 items-center flex px-3"
+                :style="{color: params.certTypCd.length ? '#252525' : '#80848d'}"
+              >{{params.certTypCd.length ? params.certTypCd.map(r=>$store.state.record.certTypCd[r]).join(',') : '请选择'}}</div>
+            </div>
+            <van-popup
+              v-model="certTypCdShow"
+              position="bottom"
+              :style="{ height: '40%'}"
+              class="checkBoxGroup"
+            >
+              <van-nav-bar
+                title="请选择法人证件类型"
+                left-text="取消"
+                right-text="确定"
+                left-arrow
+                @click-left="certTypCdShow = false"
+                @click-right="certTypCdShow = false;"
+              />
+              <!-- <van-radio-group v-model="certTypCdVal" style="height: 100%;overflow: scroll;">
+                <van-cell-group>
+                  <van-cell
+                    v-for="(r,i) in $store.state.record.certTypCd"
+                    :key="i"
+                    :title="r"
+                    clickable
+                    @click="certTypCdVal = i"
+                  >
+                    <van-radio slot="right-icon" :name="i" />
+                  </van-cell>
+                </van-cell-group>
+              </van-radio-group>-->
+
+              <van-checkbox-group v-model="params.certTypCd" style="height: 100%;overflow: scroll;">
+                <van-cell-group>
+                  <van-cell
+                    v-for="(r,i) in $store.state.record.certTypCd"
+                    :key="i"
+                    :title="r"
+                    clickable
+                  >
+                    <van-checkbox :name="i" slot="right-icon" />
+                  </van-cell>
+                </van-cell-group>
+              </van-checkbox-group>
+            </van-popup>
+
+            <div class="text-gray-700 font-bold mt-5">证件号码</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.certNo"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                placeholder="请输入"
+              />
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">手机号码</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.contactsPhone"
+                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                placeholder="请输入"
+              />
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">备注信息</div>
+            <div class="bg-gray-200 mt-2">
+              <van-field
+                v-model="params.comment"
+                :rows="5"
+                style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
+                placeholder="请输入"
+                type="textarea"
+                maxlength="300"
+              />
+            </div>
 
             <!-- <div class="text-gray-700 font-bold  mt-5">关系健康度</div>
             <div class="flex flex-wrap justify-start text-center text-gray-600">
@@ -171,8 +404,16 @@
         </div>
 
         <div class="flex text-center">
-          <div class="w-2/5 bg-gray-300 p-3 text-xl font-bold" style="background:#EFF1F3;color:#252525;" @click="reset">重置</div>
-          <div class="flex-1 bg-orange p-3 text-xl font-bold text-white" style="background-image: linear-gradient( to left, #FF9505, #FEC43A);" @click="finish">完成</div>
+          <div
+            class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
+            style="background:#EFF1F3;color:#252525;"
+            @click="reset"
+          >重置</div>
+          <div
+            class="flex-1 bg-orange p-3 text-xl font-bold text-white"
+            style="background-image: linear-gradient( to left, #FF9505, #FEC43A);"
+            @click="finish"
+          >完成</div>
         </div>
       </div>
     </van-popup>
@@ -181,7 +422,7 @@
 
 <script>
 import UserList from "@/components/UserList/index.vue";
-import UserDeptList from '@/components/UserDeptList'
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "Screening",
   components: {
@@ -191,6 +432,7 @@ export default {
   data() {
     return {
       showUserDeptA: false,
+      showUserDeptB: false,
       screeningShow: false,
       params: {
         dealerName: "",
@@ -208,7 +450,18 @@ export default {
         city: "",
         cityVal: "",
         province: "",
-        provinceVal: ""
+        provinceVal: "",
+        followerUserGids: [], // 参与人id
+        ownerCd: [], // 公司归属（ 1自有 2 第三方）
+        contactsName: "", // 法人姓名
+        creditCode: "", // 统一社会社会信用代码
+        address: "", // 详细地址
+        businessType: "", // 业务类型
+        establishTime: "", // 成立日期
+        certTypCd: [], // 法人证件类型
+        certNo: "", // 证件号码
+        contactsPhone: "", //手机号码
+        comment: ""
       },
       value1: 0,
       option1: [
@@ -219,7 +472,15 @@ export default {
 
       showTime: false,
       timeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
-      timeType: 0
+      timeType: 0,
+
+      //成立日期
+      showEstablishTime: false,
+      establishTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
+
+      certTypCdShow: false,
+      ownerCdShow: false,
+      certTypCdVal: []
     };
   },
   filters: {
@@ -238,7 +499,7 @@ export default {
   watch: {
     screeningShow(val) {
       if (val) {
-        this.showUserDeptA = false
+        this.showUserDeptA = false;
         !this.params.provinceVal &&
           this.$store.dispatch("getProvinces").then(data => {
             this.$store.state.dealer.provincesList.unshift({
@@ -282,7 +543,7 @@ export default {
       if (val) {
         this.$store.dispatch("getAreas", val).then(data => {
           this.$store.state.dealer.areasList.length &&
-            (this.$store.state.dealer.areasList[0].text = "请选择县")
+            (this.$store.state.dealer.areasList[0].text = "请选择县");
         });
         this.$store.state.dealer.citysList.some(r => {
           if (r.value == val) {
@@ -340,7 +601,7 @@ export default {
         this.params.endTime &&
         timeStr > this.params.endTime
       ) {
-        this.$toast('开始时间要小于结束时间')
+        this.$toast("开始时间要小于结束时间");
         // this.$notify({ type: "warning", message: "开始时间要小于结束时间" });
         return;
       }
@@ -349,7 +610,7 @@ export default {
         this.params.startTime &&
         timeStr < this.params.startTime
       ) {
-        this.$toast('结束时间要大于开始时间')
+        this.$toast("结束时间要大于开始时间");
         // this.$notify({ type: "warning", message: "结束时间要大于开始时间" });
         return;
       }
@@ -376,9 +637,32 @@ export default {
         city: "",
         cityVal: "",
         province: "",
-        provinceVal: ""
+        provinceVal: "",
+
+        followerUserGids: [], // 参与人id
+        ownerCd: [], // 公司归属（ 1自有 2 第三方）
+        contactsName: "", // 法人姓名
+        creditCode: "", // 统一社会社会信用代码
+        address: "", // 详细地址
+        businessType: "", // 业务类型
+        establishTime: "", // 成立日期
+        certTypCd: [], // 法人证件类型
+        certNo: "", // 证件号码
+        contactsPhone: "", //手机号码
+        comment: ""
       };
       // this.finish();
+    },
+
+    // 成立时间确认
+    confirmEstablishTime() {
+      if (this.timeType == 2) {
+        this.params.establishTime = this.$root
+          .moment(this.establishTimeStr)
+          .startOf("day")
+          .valueOf();
+      }
+      this.showEstablishTime = false;
     }
   }
 };
@@ -417,7 +701,7 @@ export default {
   );
 }
 
-.Screening /deep/ .van-dropdown-menu__item{
+.Screening /deep/ .van-dropdown-menu__item {
   -webkit-justify-content: left;
   justify-content: left;
 }
@@ -436,7 +720,22 @@ export default {
   content: "";
 }
 
-.Screening /deep/ .van-picker__cancel, .Screening /deep/ .van-picker__confirm{
+.businessCardStatus {
+  background-color: #fff2e6;
+  position: relative;
+  color: #ff9b02;
+}
+.businessCardStatus::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border: 6px solid;
+  border-color: transparent #ff9b02 #ff9b02 transparent;
+  content: "";
+}
+
+.Screening /deep/ .van-picker__cancel,
+.Screening /deep/ .van-picker__confirm {
   color: #ff9b02;
   font-size: 1.143rem;
 }
@@ -462,44 +761,66 @@ export default {
   width: 1.286rem;
   height: 1.286rem;
   display: inline-block;
-  margin-right: .3rem;
+  margin-right: 0.3rem;
 }
 
-.Screening .bg-gray-200{
-  background:#F8FAFB;
+.Screening .bg-gray-200 {
+  background: #f8fafb;
   height: 2.5rem;
 }
-.Screening .text-gray-700{
+.Screening .text-gray-700 {
   color: #252525;
 }
-.DealerManage .Screening /deep/ .van-dropdown-menu__title{
-  padding:0;
+.DealerManage .Screening /deep/ .van-dropdown-menu__title {
+  padding: 0;
   color: inherit;
 }
 
-
-.Screening /deep/ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+.Screening /deep/ input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
   color: #80848d;
   font-size: 14px;
 }
 
-.Screening /deep/ input:-moz-placeholder, textarea:-moz-placeholder {
+.Screening /deep/ input:-moz-placeholder,
+textarea:-moz-placeholder {
   color: #80848d;
   font-size: 14px;
 }
 
-.Screening /deep/ input::-moz-placeholder, textarea::-moz-placeholder {
+.Screening /deep/ input::-moz-placeholder,
+textarea::-moz-placeholder {
   color: #80848d;
   font-size: 14px;
 }
 
-.Screening /deep/ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+.Screening /deep/ input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
   color: #80848d;
   font-size: 14px;
 }
 
-.Screening /deep/ .van-field__control{
-  color: #252525
+.Screening /deep/ .van-field__control {
+  color: #252525;
 }
-.userListDeptBox /deep/ .topB{border-top: 1px solid #eee;}
+.userListDeptBox /deep/ .topB {
+  border-top: 1px solid #eee;
+}
+
+.checkBoxGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.checkBoxGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.checkBoxGroup /deep/ .van-checkbox__icon--checked .van-icon {
+  background-color: #ff9b02;
+  border-color: #ff9b02;
+}
+.checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
 </style>

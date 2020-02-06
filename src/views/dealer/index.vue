@@ -174,7 +174,6 @@ export default {
       this.$store.commit("setInitParams");
     }
     // this.$store.commit("setInitParams");
-    // console.log(this.$store.state.dealer.dropDownValue, "----");
   },
   data() {
     return {
@@ -272,6 +271,10 @@ export default {
       });
     },
     searchAll(data) {
+
+      // 列表下拉筛选只为初始值（全部经销商）
+      this.$store.commit("setInitParams");
+      this.$store.state.dealer.dropDownValue = 0;
       this.$store
         .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
         .then(res => {
@@ -317,10 +320,10 @@ export default {
         });
       }
     },
-    open(){
+    open() {
       this.dropDown = true;
     },
-    close(){
+    close() {
       this.dropDown = false;
     }
   }
@@ -421,7 +424,7 @@ export default {
   font-weight: bold;
 }
 .icon_toggle {
-  transition: .3s;
+  transition: 0.3s;
 }
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);

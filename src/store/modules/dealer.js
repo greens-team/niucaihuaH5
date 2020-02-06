@@ -25,6 +25,16 @@ export default {
       "visitCount": '',            // 拜访次数
       "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
       "visitConditions": 0,      // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+
+      "ownerCd": [],              // 公司归属（ 1自有 2 第三方）
+      "contactsName": "",        //法人姓名
+      "creditCode": '',          // 统一社会社会信用代码
+      "address": '',             // 详细地址
+      "establishTime": 0,      // 成立日期时间戳
+      "certTypCd": [],         // 法人证件类型
+      "certNo": '',              // 证件号码
+      "contactsPhone": '',          // 手机号码
+      "comment": '',            // 备注
     },
     status: [
       '稳定型', '已终止', '合作中', '深入沟通', '进行中'
@@ -79,6 +89,11 @@ export default {
     jobsUser1: [],
     selectedUserGids: [],
 
+    ownerCdTypes: {     // 公司归属
+      1: '自有',
+      2: '第三方'
+    }
+
 
   },
   mutations: {
@@ -112,7 +127,16 @@ export default {
         "startTime": 0,             // 开始时间 时间戳 秒
         "visitCount": '',            // 拜访次数
         "notVisitConditions": 0,    // 未拜访天数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
-        "visitConditions": 0        // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "visitConditions": 0,        // 拜访次数的条件（1大于 2 等于 3 小于 4 大于等于 5小于等于）
+        "ownerCd": [],              // 公司归属（ 1自有 2 第三方）
+        "contactsName": "",        //法人姓名
+        "creditCode": '',          // 统一社会社会信用代码
+        "address": '',             // 详细地址
+        "establishTime": 0,      // 成立日期时间戳
+        "certTypCd": [],         // 法人证件类型
+        "certNo": '',              // 证件号码
+        "contactsPhone": '',          // 手机号码
+        "comment": '',            // 备注
       }
     }
   },
@@ -163,8 +187,6 @@ export default {
           return String(r.id)
         })
       }
-
-
       //参与人
       if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
         params.followerUserGids = params.followerUserGids.map(r => {
@@ -181,9 +203,13 @@ export default {
         }
         let timevals = {
           startTime: String(params.startTime).length == 13 ? params.startTime / 1000 : params.startTime,
-          endTime: String(params.endTime).length == 13 ? params.endTime / 1000 : params.endTime
+          endTime: String(params.endTime).length == 13 ? params.endTime / 1000 : params.endTime,
+          establishTime: String(params.establishTime).length == 13 ? params.establishTime / 1000 : params.establishTime
         }
-        window.$ajax.dealer.listData(Object.assign({}, params, timevals)).then(res => {
+
+        let ownerCdNum = { ownerCd: params.ownerCd.map(i => +i) }
+
+        window.$ajax.dealer.listData(Object.assign({}, params, timevals, ownerCdNum)).then(res => {
           if (!res.code) {
             state.listData = params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
             if (res.data.list && res.data.list.length < params.pageSize) {
