@@ -90,14 +90,11 @@
             <div class="text-gray-700 font-bold mt-5">经销商分级</div>
             <div class="flex flex-wrap text-center text-gray-600">
               <div
-                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 1}]"
-                @click="params.level = params.level == 1 ? '' : 1"
-              >一级经销商</div>
-              <div
-                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 2}]"
-                @click="params.level = params.level == 2 ? '' : 2"
-              >二级经销商</div>
-
+                v-for="(r,i) of levelValue"
+                :key="i"
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus:params.level.includes(i+1)}]"
+                @click="changeStatus(i+1)"
+              >{{r}}</div>
               <!-- <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div> -->
             </div>
 
@@ -283,13 +280,24 @@
             <div class="text-gray-700 font-bold mt-5">业务类型</div>
             <div class="flex flex-wrap text-center text-gray-600">
               <div
-                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.businessType == 1}]"
-                @click="params.businessType = params.businessType == 1 ? '' : 1"
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 0}]"
+                @click="params.followStatus = params.followStatus == 0 ? '' : 0"
+              >全部</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 1}]"
+                @click="params.followStatus = params.followStatus == 1 ? '' : 1"
               >线索入库</div>
               <div
-                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.businessType == 2}]"
-                @click="params.businessType = params.businessType == 2 ? '' : 2"
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 2}]"
+                @click="params.followStatus = params.followStatus == 2 ? '' : 2"
               >合作中</div>
+
+              <!-- <div
+                v-for="(r,i) of followStatusVal"
+                :key="i"
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus:params.followStatus.includes(i+1)}]"
+                @click="changefollowStatus(i+1)"
+              >{{r}}</div>-->
             </div>
 
             <div class="text-gray-700 font-bold mt-5">成立日期</div>
@@ -429,6 +437,7 @@ export default {
     UserList,
     UserDeptList
   },
+  props: ["followStatusValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -443,7 +452,7 @@ export default {
         visitCount: "",
         notVisitConditions: 0,
         visitConditions: 0,
-        level: "",
+        level: [],
         ownerUserGids: [],
         area: "",
         areaVal: "",
@@ -456,7 +465,7 @@ export default {
         contactsName: "", // 法人姓名
         creditCode: "", // 统一社会社会信用代码
         address: "", // 详细地址
-        businessType: "", // 业务类型
+        followStatus: 0, // 业务类型
         establishTime: "", // 成立日期
         certTypCd: [], // 法人证件类型
         certNo: "", // 证件号码
@@ -480,7 +489,9 @@ export default {
 
       certTypCdShow: false,
       ownerCdShow: false,
-      certTypCdVal: []
+      certTypCdVal: [],
+      levelValue: ["一级经销商", "二级经销商"]
+      // followStatusVal: ["线索入库", "合作中"]
     };
   },
   filters: {
@@ -498,6 +509,7 @@ export default {
   mounted() {},
   watch: {
     screeningShow(val) {
+      this.params.followStatus = this.followStatusValue;
       if (val) {
         this.showUserDeptA = false;
         !this.params.provinceVal &&
@@ -630,7 +642,7 @@ export default {
         visitCount: "",
         notVisitConditions: 0,
         visitConditions: 0,
-        level: "",
+        level: [],
         ownerUserGids: [],
         area: "",
         areaVal: "",
@@ -644,7 +656,7 @@ export default {
         contactsName: "", // 法人姓名
         creditCode: "", // 统一社会社会信用代码
         address: "", // 详细地址
-        businessType: "", // 业务类型
+        followStatus: 0, // 业务类型
         establishTime: "", // 成立日期
         certTypCd: [], // 法人证件类型
         certNo: "", // 证件号码
@@ -663,7 +675,31 @@ export default {
           .valueOf();
       }
       this.showEstablishTime = false;
+    },
+    //经销商分级
+    changeStatus(i) {
+      if (this.params.level.includes(i)) {
+        //includes()方法判断是否包含某一元素,返回true或false表示是否包含元素，对NaN一样有效
+        //filter()方法用于把Array的某些元素过滤掉，filter()把传入的函数依次作用于每个元素，然后根据返回值是true还是false决定保留还是丢弃该元素：生成新的数组
+        // this.params.level = this.params.level.filter(function(ele) {
+        //   return ele != i;
+        // });
+        this.params.level = this.params.level.filter(ele => ele != i);
+      } else {
+        this.params.level.push(i);
+      }
     }
+    // 业务类型
+    // changefollowStatus(i) {
+    //   if (this.params.followStatus.includes(i)) {
+    //     this.params.followStatus = this.params.followStatus.filter(
+    //       ele => ele != i
+    //     );
+    //   } else {
+    //     this.params.followStatus.push(i);
+    //   }
+    //   console.log(this.params.followStatus, "follow");
+    // }
   }
 };
 </script>

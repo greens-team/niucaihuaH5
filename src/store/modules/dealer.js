@@ -12,7 +12,7 @@ export default {
       "endTime": 0,               // 结束时间 时间戳 秒
       "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
       "followerUserGids": [],     // 跟进人gid 集合
-      "level": 0,                 // 经销商分级（1 一级 2 二级）
+      "level": [],                 // 经销商分级（1 一级 2 二级）
       "notVisitDays": '',          // 没有拜访的天数
       "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
       "ownerUserGids": [],        // 负责人gid 集合
@@ -115,7 +115,7 @@ export default {
         "endTime": 0,               // 结束时间 时间戳 秒
         "followStatus": 0,          // 跟进状态（0 全部 1 线索入库  2 合作中  3  备案准入 4 达成合作   5 放弃）
         "followerUserGids": [],     // 跟进人gid 集合
-        "level": 0,                 // 经销商分级（1 一级 2 二级）
+        "level": [],                 // 经销商分级（1 一级 2 二级）
         "notVisitDays": '',          // 没有拜访的天数
         "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
         "ownerUserGids": [],        // 负责人gid 集合

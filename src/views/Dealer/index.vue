@@ -128,7 +128,10 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
-      <Screening @onSearch="searchAll" />
+      <Screening
+        @onSearch="searchAll"
+        :followStatusValue="$store.state.dealer.listParams.followStatus"
+      />
     </div>
     <div class="border-b border-gray-200 flex items-center justify-around" v-else></div>
 
@@ -253,6 +256,7 @@ export default {
           resolve(msg);
         });
     });
+    console.log(222);
     this.$store.dispatch("getListData", {
       pageNum: 1,
       startTime: startTime,
@@ -271,8 +275,7 @@ export default {
       });
     },
     searchAll(data) {
-
-      // 列表下拉筛选只为初始值（全部经销商）
+      // 列表下拉筛选置为初始值（全部经销商）
       this.$store.commit("setInitParams");
       this.$store.state.dealer.dropDownValue = 0;
       this.$store
@@ -288,12 +291,15 @@ export default {
     getDiffDealerList(value) {
       let userInfo = JSON.parse(sessionStorage.userInfo);
       let ownerUserGids = [];
+
       ownerUserGids = [
         {
           id: userInfo.EMPLOYEE_ID,
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
+
+      this.$store.commit("setInitParams");
 
       if (value == 0) {
         // 全部
