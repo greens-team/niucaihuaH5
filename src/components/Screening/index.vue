@@ -300,8 +300,35 @@
               >{{r}}</div>-->
             </div>
 
+            <!-- 时间段 -->
             <div class="text-gray-700 font-bold mt-5">成立日期</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
+              <div
+                @click="showEstablishTime = !showEstablishTime; establishTimeType=0;"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+                :style="{color: params.startEstablishTime ? '#252525' : '#80848d'}"
+              >{{params.startEstablishTime ? $root.moment(params.startEstablishTime).format('YYYY-MM-DD') : '开始时间'}}</div>
+              <div class="ml-2 mr-2">-</div>
+              <div
+                @click="showEstablishTime = !showEstablishTime; establishTimeType=1;"
+                :style="{color: params.endEstablishTime ? '#252525' : '#80848d'}"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+              >{{params.endEstablishTime ? $root.moment(params.endEstablishTime).format('YYYY-MM-DD') : '结束时间'}}</div>
+            </div>
+
+            <van-popup v-model="showEstablishTime" position="bottom" :style="{ height: '40%'}">
+              <van-datetime-picker
+                title="请选择时间"
+                :formatter="formatter"
+                v-model="establishTimeStr"
+                type="date"
+                @confirm="confirmEstablishTime"
+                @cancel="showEstablishTime=false"
+              />
+            </van-popup>
+
+            <!-- 一个时间点 -->
+            <!-- <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
                 @click="showEstablishTime = !showEstablishTime; timeType=2;"
                 class="bg-gray-200 flex-1 items-center flex px-3"
@@ -318,7 +345,7 @@
                 @confirm="confirmEstablishTime"
                 @cancel="showEstablishTime=false"
               />
-            </van-popup>
+            </van-popup>-->
 
             <div class="text-gray-700 font-bold mt-5">证件类型</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
@@ -466,7 +493,8 @@ export default {
         creditCode: "", // 统一社会社会信用代码
         address: "", // 详细地址
         followStatus: 0, // 业务类型
-        establishTime: "", // 成立日期
+        startEstablishTime: "", // 成立日期
+        endEstablishTime: "",
         certTypCd: [], // 法人证件类型
         certNo: "", // 证件号码
         contactsPhone: "", //手机号码
@@ -484,6 +512,7 @@ export default {
       timeType: 0,
 
       //成立日期
+      establishTimeType: 0,
       showEstablishTime: false,
       establishTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
@@ -657,7 +686,8 @@ export default {
         creditCode: "", // 统一社会社会信用代码
         address: "", // 详细地址
         followStatus: 0, // 业务类型
-        establishTime: "", // 成立日期
+        startEstablishTime: "", // 成立日期
+        endEstablishTime: "",
         certTypCd: [], // 法人证件类型
         certNo: "", // 证件号码
         contactsPhone: "", //手机号码
@@ -667,15 +697,15 @@ export default {
     },
 
     // 成立时间确认
-    confirmEstablishTime() {
-      if (this.timeType == 2) {
-        this.params.establishTime = this.$root
-          .moment(this.establishTimeStr)
-          .startOf("day")
-          .valueOf();
-      }
-      this.showEstablishTime = false;
-    },
+    // confirmEstablishTime() {
+    //   if (this.timeType == 2) {
+    //     this.params.establishTime = this.$root
+    //       .moment(this.establishTimeStr)
+    //       .startOf("day")
+    //       .valueOf();
+    //   }
+    //   this.showEstablishTime = false;
+    // },
     //经销商分级
     changeStatus(i) {
       if (this.params.level.includes(i)) {
@@ -688,7 +718,7 @@ export default {
       } else {
         this.params.level.push(i);
       }
-    }
+    },
     // 业务类型
     // changefollowStatus(i) {
     //   if (this.params.followStatus.includes(i)) {
@@ -699,7 +729,47 @@ export default {
     //     this.params.followStatus.push(i);
     //   }
     //   console.log(this.params.followStatus, "follow");
-    // }
+    // },
+     confirmEstablishTime() {
+      let timeStr = !this.establishTimeType
+        ? this.$root
+            .moment(this.establishTimeStr)
+            .startOf("day")
+            .valueOf()
+        : this.$root
+            .moment(this.establishTimeStr)
+            .endOf("day")
+            .valueOf();
+      !this.establishTimeType
+        ? new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 00:00:00")
+          ).getTime()
+        : new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 23:59:59")
+          ).getTime();
+      if (
+        !this.establishTimeType &&
+        this.params.endEstablishTime &&
+        timeStr > this.params.endEstablishTime
+      ) {
+        this.$toast("开始时间要小于结束时间");
+        // this.$notify({ type: "warning", message: "开始时间要小于结束时间" });
+        return;
+      }
+      if (
+        this.establishTimeType &&
+        this.params.startEstablishTime &&
+        timeStr < this.params.startEstablishTime
+      ) {
+        this.$toast("结束时间要大于开始时间");
+        // this.$notify({ type: "warning", message: "结束时间要大于开始时间" });
+        return;
+      }
+      this.establishTimeType
+        ? (this.params.endEstablishTime= timeStr)
+        : (this.params.startEstablishTime = timeStr);
+      this.showEstablishTime = false;
+    },
   }
 };
 </script>

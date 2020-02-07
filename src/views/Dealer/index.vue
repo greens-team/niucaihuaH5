@@ -29,9 +29,9 @@
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
 
-        <!-- <span class="text-center font-bold bar_title">经销商</span> -->
+        
 
-        <div class="titleDropdown" style="position:relative;">
+        <div class="titleDropdown" style="position:relative;" v-if="!flag">
           <van-dropdown-menu>
             <van-dropdown-item
               title-class="dropDown_title"
@@ -49,6 +49,8 @@
             alt
           />
         </div>
+
+        <span class="text-center font-bold bar_title" v-else>经销商</span>
 
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
@@ -256,7 +258,6 @@ export default {
           resolve(msg);
         });
     });
-    console.log(222);
     this.$store.dispatch("getListData", {
       pageNum: 1,
       startTime: startTime,

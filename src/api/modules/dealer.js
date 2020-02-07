@@ -16,7 +16,7 @@ export default (m) => {
     },
     postJSON: {
       add: '/dealer/add',                              // 新建经销商
-      listData: '/dealer/listpage',                    // 获取经销商 - 列表
+      listData: m.POST + '/dealer/listpage',                    // 获取经销商 - 列表
       associatedcontacts: '/dealer/associatedcontacts',// 关联和解除关联联系人
       associatedlessee: '/dealer/associatedlessee',    // 关联和解除关联承租人
       associatedcompetitor: '/dealer/associatedcompetitor', // 关联和解除关联合作竞对

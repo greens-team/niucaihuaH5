@@ -30,7 +30,8 @@ export default {
       "contactsName": "",        //法人姓名
       "creditCode": '',          // 统一社会社会信用代码
       "address": '',             // 详细地址
-      "establishTime": 0,      // 成立日期时间戳
+      "startEstablishTime": 0,      // 成立日期时间戳
+      "endEstablishTime": 0,
       "certTypCd": [],         // 法人证件类型
       "certNo": '',              // 证件号码
       "contactsPhone": '',          // 手机号码
@@ -132,7 +133,8 @@ export default {
         "contactsName": "",        //法人姓名
         "creditCode": '',          // 统一社会社会信用代码
         "address": '',             // 详细地址
-        "establishTime": 0,      // 成立日期时间戳
+        "startEstablishTime": 0,      // 成立日期时间戳
+        "endEstablishTime": 0,
         "certTypCd": [],         // 法人证件类型
         "certNo": '',              // 证件号码
         "contactsPhone": '',          // 手机号码
@@ -204,7 +206,8 @@ export default {
         let timevals = {
           startTime: String(params.startTime).length == 13 ? params.startTime / 1000 : params.startTime,
           endTime: String(params.endTime).length == 13 ? params.endTime / 1000 : params.endTime,
-          establishTime: String(params.establishTime).length == 13 ? params.establishTime / 1000 : params.establishTime
+          startEstablishTime: String(params.startEstablishTime).length == 13 ? params.startEstablishTime / 1000 : params.startEstablishTime,
+          endEstablishTime: String(params.endEstablishTime).length == 13 ? params.endEstablishTime / 1000 : params.endEstablishTime,
         }
 
         let ownerCdNum = { ownerCd: params.ownerCd.map(i => +i) }

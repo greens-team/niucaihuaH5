@@ -15,7 +15,28 @@
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
-        <div class="flex-1 text-center font-bold bar_title">联系人</div>
+
+         <div class="titleDropdown" style="position:relative;" v-if="!flag">
+          <van-dropdown-menu>
+            <van-dropdown-item
+              title-class="dropDown_title"
+              @change="getDiffTyleList"
+              @open="open"
+              @close="close"
+              v-model="$store.state.contacts.dropDownValue"
+              :options="$store.state.contacts.dropDownType"
+            />
+          </van-dropdown-menu>
+          <img
+            class="dropdown_icon icon_toggle"
+            :class="{ active: dropDown}"
+            src="../../assets/dealer/dropdownMenu.png"
+            alt
+          />
+        </div>
+        <div class="flex-1 text-center font-bold bar_title" v-else>联系人</div>
+
+       
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <!-- 搜索图标 -->
@@ -97,7 +118,6 @@
             <div
               class="text-base contactsDetail font-bold"
             >{{r.contactsName != null ?r.contactsName:'' }}</div>
-            
           </div>
         </div>
       </div>
@@ -112,7 +132,8 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      flag: 0
+      flag: 0,
+      dropDown: false
     };
   },
 
@@ -194,7 +215,52 @@ export default {
     });
   },
 
-  methods: {}
+  methods: {
+    getDiffTyleList(value) {
+      let userInfo = JSON.parse(sessionStorage.userInfo);
+      let ownerUserGids = [];
+
+      ownerUserGids = [
+        {
+          id: userInfo.EMPLOYEE_ID,
+          refRlNm: userInfo.EMPLOYEE_NAME
+        }
+      ];
+
+      this.$store.commit("setInitParams");
+
+      if (value == 0) {
+        // 全部
+        this.$store.dispatch("listContacts", {
+          followerUserGids: [],
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+      if (value == 1) {
+        // 我负责的
+        this.$store.dispatch("listContacts", {
+          followerUserGids: [],
+          ownerUserGids: ownerUserGids,
+          pageNum: 1
+        });
+      }
+      if (value == 2) {
+        // 我参与的
+        this.$store.dispatch("listContacts", {
+          followerUserGids: ownerUserGids,
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+    },
+    open() {
+      this.dropDown = true;
+    },
+    close() {
+      this.dropDown = false;
+    }
+  }
 };
 </script>
 
@@ -281,5 +347,59 @@ export default {
 }
 .ListContacts /deep/ .van-search__action {
   padding: 0 0 0 8px;
+}
+
+/* 经销商顶部下拉筛选 */
+.dropdown_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
+.ListContacts /deep/ .titleDropdown .van-dropdown-menu__title {
+  padding: 0 25px 0 0;
+  color: #252525;
+  line-height: normal;
+}
+.ListContacts /deep/ .titleDropdown .van-dropdown-menu__title .van-ellipsis {
+  font-size: 1.286rem;
+  font-weight: bold;
+}
+.icon_toggle {
+  transition: 0.3s;
+}
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.ListContacts
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option.van-dropdown-item__option--active {
+  color: #ff9b02;
+}
+.ListContacts /deep/ .titleDropdown .van-dropdown-item__option {
+  /* justify-content: center; */
+  text-align: center;
+  color: #252525;
+}
+.ListContacts
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option
+  .van-cell__title
+  span {
+  font-size: 1.143rem;
+}
+.ListContacts
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option--active
+  .van-cell__value {
+  flex: none;
+}
+.ListContacts /deep/ .titleDropdown .van-icon-success:before {
+  display: none;
 }
 </style>

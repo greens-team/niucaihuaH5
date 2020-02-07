@@ -11,7 +11,9 @@ export default {
       queryString: '',
       orderType: 1,
       pageNum: 1,
-      pageSize: 20
+      pageSize: 20,
+      followerUserGids: [],     // 跟进人gid 集合
+      ownerUserGids: [],        // 负责人gid 集合
     },
     listContacts: [],
     total: 0,
@@ -70,7 +72,14 @@ export default {
     listNewslog: [],
 
     // 获取操作记录
-    listOperatelog: []
+    listOperatelog: [],
+
+    dropDownType: [
+      { text: '全部联系人', value: 0 },
+      { text: '我负责的', value: 1 },
+      { text: '我参与的', value: 2 }
+    ],
+    dropDownValue: 0,
 
   },
   mutations: {
@@ -95,7 +104,9 @@ export default {
         queryString: '',
         orderType: 1,
         pageNum: 1,
-        pageSize: 20
+        pageSize: 20,
+        followerUserGids: [],     // 跟进人gid 集合
+        ownerUserGids: [],        // 负责人gid 集合
       }
     },
     //编辑页面初始显示
@@ -106,7 +117,19 @@ export default {
   actions: {
     listContacts({ state }, data = {}) {  // 获取联系人列表
 
-      let params = Object.assign(state.listContactsParams, data)
+      let params = Object.assign(state.listContactsParams, data);
+      //负责人
+      if (params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id) {
+        params.ownerUserGids = params.ownerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+      //参与人
+      if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
+        params.followerUserGids = params.followerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
       if (params.pageNum == 1) {
         state.isLastPage = false;
       }
