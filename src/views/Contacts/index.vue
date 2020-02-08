@@ -16,7 +16,7 @@
           </div>
         </div>
 
-         <div class="titleDropdown" style="position:relative;" v-if="!flag">
+        <div class="titleDropdown" style="position:relative;" v-if="!flag">
           <van-dropdown-menu>
             <van-dropdown-item
               title-class="dropDown_title"
@@ -36,7 +36,6 @@
         </div>
         <div class="flex-1 text-center font-bold bar_title" v-else>联系人</div>
 
-       
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>
           <!-- 搜索图标 -->
@@ -138,8 +137,14 @@ export default {
   },
 
   created() {
-    this.$store.commit("setInitParams");
+    // 如果是全部经销商 清空参数值
+    if (this.$store.state.contacts.dropDownValue == 0) {
+      this.$store.commit("setInitParams");
+      console.log("00000")
+    }
+    // this.$store.commit("setInitParams");
   },
+
   mounted() {
     // this.scrollLoad(this.$refs.contactsListBox, resolve => {
     //   this.$store

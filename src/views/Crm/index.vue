@@ -10,7 +10,7 @@
         <img src="../../assets/crm/icon1.png" class="w-16" alt />
         <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">经销商</p>
       </div>
-      <div @click="$root.checkRole('CONTACTS_SELECT', 'tipText') && $router.push('/Contacts')">
+      <div @click="$root.checkRole('CONTACTS_SELECT', 'tipText') && $router.push('/Contacts');$store.state.contacts.dropDownValue = 0">
         <img src="../../assets/crm/icon2.png" class="w-16" alt />
         <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">联系人</p>
       </div>

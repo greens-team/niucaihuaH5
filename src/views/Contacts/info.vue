@@ -4,7 +4,7 @@
     <div class="items-center pl-4 pr-4 flex bg-white fixed top-0 left-0 right-0 z-10">
       <div class="flex-1 flex">
         <div
-          @click="$router.go(-1)"
+          @click="$router.go(-1);$store.state.contacts.dropDownValue = 0"
           class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
