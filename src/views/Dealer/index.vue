@@ -29,8 +29,6 @@
         </div>
         <!-- <div class="flex-1 text-center text-lg font-medium pt-2">经销商</div> -->
 
-        
-
         <div class="titleDropdown" style="position:relative;" v-if="!flag">
           <van-dropdown-menu>
             <van-dropdown-item
@@ -175,6 +173,8 @@ export default {
       this.homeSearch = true;
       this.searchBar = true;
     }
+
+    // 如果是全部经销商 清空参数值
     if (this.$store.state.dealer.dropDownValue == 0) {
       this.$store.commit("setInitParams");
     }
@@ -191,6 +191,9 @@ export default {
   },
   watch: {
     "$store.state.dealer.listParams.followStatus"() {
+      this.$refs.dealerListBox.scrollTop = 0;
+    },
+    "$store.state.dealer.dropDownValue"() {
       this.$refs.dealerListBox.scrollTop = 0;
     }
   },
@@ -258,6 +261,7 @@ export default {
           resolve(msg);
         });
     });
+
     this.$store.dispatch("getListData", {
       pageNum: 1,
       startTime: startTime,
@@ -276,7 +280,7 @@ export default {
       });
     },
     searchAll(data) {
-      // 列表下拉筛选置为初始值（全部经销商）
+      // 从全部经销商列表中进行筛选
       this.$store.commit("setInitParams");
       this.$store.state.dealer.dropDownValue = 0;
       this.$store
