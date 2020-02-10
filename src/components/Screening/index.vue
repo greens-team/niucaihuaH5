@@ -541,6 +541,7 @@ export default {
       this.params.followStatus = this.followStatusValue;
       if (val) {
         this.showUserDeptA = false;
+        this.showUserDeptB = false;
         !this.params.provinceVal &&
           this.$store.dispatch("getProvinces").then(data => {
             this.$store.state.dealer.provincesList.unshift({

@@ -15,7 +15,7 @@
     >
       <div class="flex-1 flex">
         <div
-          @click="$router.go(-1)"
+          @click="$router.go(-1);$store.state.competitor.dropDownValue = 0"
           class="flex text-xl pt-5 pb-4 items-center hover:text-blue-600"
         >
           <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />

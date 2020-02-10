@@ -140,6 +140,7 @@ export default {
         "contactsPhone": '',          // 手机号码
         "comment": '',            // 备注
       }
+      console.log(state.listParams.followStatus)
     }
   },
   actions: {
@@ -185,14 +186,12 @@ export default {
 
       //负责人
       if (params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id) {
-        console.log("我负责的")
         params.ownerUserGids = params.ownerUserGids.map(r => {
           return String(r.id)
         })
       }
       //参与人
       if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
-        console.log("我参与")
         params.followerUserGids = params.followerUserGids.map(r => {
           return String(r.id)
         })

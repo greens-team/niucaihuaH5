@@ -28,7 +28,9 @@ export default {
       orderType: 1,
       competorType: 1,
       pageNum: 1,
-      pageSize: 15
+      pageSize: 15,
+      followerUserGids: [],
+      ownerUserGids: []
     },
 
     list: [],
@@ -91,6 +93,13 @@ export default {
     }],
     currentTabsIndex: 0,
 
+    dropDownType: [
+      { text: '全部竞对', value: 0 },
+      { text: '我负责的', value: 1 },
+      { text: '我参与的', value: 2 }
+    ],
+    dropDownValue: 0,
+
     // 获取动态记录
     listNewslog: [],
 
@@ -108,7 +117,10 @@ export default {
         orderType: 1,
         competorType: 0,   //竞对类型 0全部 1第三方 2厂商金融
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
+        followerUserGids: [],
+        ownerUserGids: []
+
       }
     },
     // setInitParams_tabs(state) {
@@ -170,6 +182,20 @@ export default {
     },
     listCompetitor({ state }, data = {}) {   // 获取合作竞对列表
       let params = Object.assign(state.listParams, data);
+
+      //负责人
+      if (params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id) {
+        params.ownerUserGids = params.ownerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+      //参与人
+      if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
+        params.followerUserGids = params.followerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+
       if (params.pageNum == 1) {
         state.isLastPage = false;
       }
@@ -181,9 +207,9 @@ export default {
         window.$ajax.competitor.listCompetitor(params).then(res => {
           if (!res.code) {
             state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
-            if (res.data.list.length < params.pageSize){
+            if (res.data.list.length < params.pageSize) {
               state.isLastPage = true
-			}
+            }
             resolve('操作成功')
           }
         })

@@ -281,8 +281,10 @@ export default {
     },
     searchAll(data) {
       // 从全部经销商列表中进行筛选
+      console.log(22222)
       this.$store.commit("setInitParams");
       this.$store.state.dealer.dropDownValue = 0;
+      this.$refs.dealerListBox.scrollTop = 0;
       this.$store
         .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
         .then(res => {
@@ -303,9 +305,7 @@ export default {
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
-
       this.$store.commit("setInitParams");
-
       if (value == 0) {
         // 全部
         this.$store.dispatch("getListData", {

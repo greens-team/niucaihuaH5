@@ -44,7 +44,7 @@
           <template slot="title">
             <div
               class="flex items-center justify-between"
-              @click="$root.checkRole('COMPETITOR_SELECT', 'tipText') && $router.push('/Competitor')"
+              @click="$root.checkRole('COMPETITOR_SELECT', 'tipText') && $router.push('/Competitor');$store.state.competitor.dropDownValue = 0"
             >
               <div class="flex-1 flex items-center">
                 <img style="width:1.57rem;height:1.57rem;" class="mr-1" src="../../assets/crm/icon6.png" alt />

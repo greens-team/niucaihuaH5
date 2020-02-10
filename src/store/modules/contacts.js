@@ -11,9 +11,13 @@ export default {
       queryString: '',
       orderType: 1,
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 10,
       followerUserGids: [],     // 跟进人gid 集合
       ownerUserGids: [],        // 负责人gid 集合
+      contactsName: "",
+      contactsPhone: "",
+      weichatNum: "",
+      comment: ""
     },
     listContacts: [],
     total: 0,
@@ -104,9 +108,14 @@ export default {
         queryString: '',
         orderType: 1,
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         followerUserGids: [],     // 跟进人gid 集合
         ownerUserGids: [],        // 负责人gid 集合
+        
+        contactsName: "",
+        contactsPhone: "",
+        weichatNum: "",
+        comment: ""
       }
     },
     //编辑页面初始显示

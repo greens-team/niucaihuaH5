@@ -2,7 +2,11 @@
 <template>
   <div class="CompetitorList flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar" style="border-bottom:1px solid #f8f8f8;">
+      <div
+        class="flex-1 items-center pl-4 pr-4 flex"
+        v-show="!searchBar"
+        style="border-bottom:1px solid #f8f8f8;"
+      >
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
@@ -11,7 +15,25 @@
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
-        <div class="flex-1 text-center font-bold bar_title">竞争对手</div>
+
+        <div class="titleDropdown" style="position:relative;">
+          <van-dropdown-menu>
+            <van-dropdown-item
+              @change="getDiffList"
+              @open="open"
+              @close="close"
+              v-model="$store.state.competitor.dropDownValue"
+              :options="$store.state.competitor.dropDownType"
+            />
+          </van-dropdown-menu>
+          <img
+            class="dropdown_icon icon_toggle"
+            :class="{ active: dropDown}"
+            src="../../assets/dealer/dropdownMenu.png"
+            alt
+          />
+        </div>
+
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
 
@@ -74,8 +96,8 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="flex items-center justify-start px-4" style="border-bottom:1px solid #f8f8f8;">
-      <div style="position:relative;margin-left: 1.286rem;">
+    <div class="flex items-center justify-around" style="border-bottom:1px solid #f8f8f8;">
+      <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item
             @change="(num)=>$store.dispatch('listCompetitor',{orderType: num,pageNum:1})"
@@ -85,6 +107,11 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
+
+      <Screening
+        @onSearch="searchAll"
+        :competorTypeValue="$store.state.competitor.listParams.competorType"
+      />
     </div>
 
     <div class="flex-1 relative h-full competitorList">
@@ -114,63 +141,39 @@
             </div>
           </van-swipe-item>
         </van-swipe>
-
-
-        <!-- <van-swipe ref="swipe" :loop="false" :show-indicators="false" @change="onChange">
-          <van-swipe-item v-for="(row,index) in $store.state.competitor.competorType" :key="index">
-            <van-list
-              v-model="loading"
-              :finished="finished"
-              :immediate-check="false"
-              finished-text="已全部加载"
-              @load="onLoad(swipeNum)"
-              :offset="20"
-            >
-              <div
-                class="flex flex-col m-4 bg-white last_child"
-                style="border-bottom:1px solid #ededee;padding-bottom:1rem;"
-                v-for="(r,i) in itemList"
-                :key="i"
-                @click="getInfo(r.gid)"
-              >
-                <van-cell is-link>
-                  <template slot="title">
-                    <p class="custom-title text-lg font-bold">{{r.competorName}}</p>
-                    <p
-                      class="text-gray-800"
-                    >{{$store.state.competitor.competorStatus_1[r.competorType-1]}}</p>
-                  </template>
-                </van-cell>
-              </div>
-            </van-list>
-          </van-swipe-item>
-        </van-swipe> -->
+        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
       </div>
     </div>
-
-    <!-- <div @click="$router.push('/CompetitorInfo')">详情页</div> -->
   </div>
 </template>
 
 <script>
+import Screening from "@/components/Screening/competitorSrceen";
 export default {
   name: "CompetitorList",
+  components: {
+    Screening
+  },
   data() {
     return {
       searchBar: false,
       homeSearch: false,
-
-      loading: false,
-      finished: false,
-      page: 1, //请求第几页
-      total: 0, //总共的数据条数
-      itemList: [],
-      swipeNum: 0
+      dropDown: false,
+      isShowData: false
     };
   },
+
+  watch: {
+    "$store.state.competitor.dropDownValue"() {
+      this.$refs.competitorListBox.scrollTop = 0;
+    }
+  },
   created() {
-    //设置为初始值
-    this.$store.commit("setInitParams");
+    // 如果是全部经销商 清空参数值
+    if (this.$store.state.competitor.dropDownValue == 0) {
+      this.$store.commit("setInitParams");
+    }
+    // this.$store.commit("setInitParams");
   },
   mounted() {
     this.scrollLoad(this.$refs.competitorListBox, resolve => {
@@ -183,48 +186,69 @@ export default {
         });
     });
     this.$store.dispatch("listCompetitor", { pageNum: 1 });
-
-    // this.getListData(this.swipeNum);
   },
   methods: {
-    // onChange(num) {
-    //   this.swipeNum = num;
-    //   this.page = 1;
-    //   this.finished = false;
-    //   this.itemList = [];
-    //   this.getListData(this.swipeNum);
-    // },
-    // getListData(num) {
-    //   console.log(this.page)
-    //   this.$store
-    //     .dispatch("listCompetitor", { pageNum: this.page, competorType: num })
-    //     .then(res => {
-    //       let rows = res;
-    //       this.loading = false;
-    //       this.total = this.$store.state.competitor.total;
+    getDiffList(value) {
+      let userInfo = JSON.parse(sessionStorage.userInfo);
+      let ownerUserGids = [];
 
-    //       // if (rows.length === 0) {
-    //       //   // 加载结束
-    //       //   this.finished = true;
-    //       //   return;
-    //       // }
+      ownerUserGids = [
+        {
+          id: userInfo.EMPLOYEE_ID,
+          refRlNm: userInfo.EMPLOYEE_NAME
+        }
+      ];
+      this.$store.commit("setInitParams");
 
-    //       // 将新数据与老数据进行合并
-    //       this.itemList = this.itemList.concat(rows);
-    //       //如果列表数据条数>=总条数，不再触发滚动加载
-    //       if (this.itemList.length >= this.total) {
-    //         this.finished = true;
-    //       }
-    //     });
-    // },
-    //滚动加载时触发
-    // onLoad() {
-    //   this.page++;
-    //   this.getListData(this.swipeNum);
-    // },
+      if (value == 0) {
+        // 全部
+        this.$store.dispatch("listCompetitor", {
+          followerUserGids: [],
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+      if (value == 1) {
+        // 我负责的
+        this.$store.dispatch("listCompetitor", {
+          followerUserGids: [],
+          ownerUserGids: ownerUserGids,
+          pageNum: 1
+        });
+      }
+      if (value == 2) {
+        // 我参与的
+        this.$store.dispatch("listCompetitor", {
+          followerUserGids: ownerUserGids,
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+    },
+    open() {
+      this.dropDown = true;
+    },
+    close() {
+      this.dropDown = false;
+    },
     getInfo(id) {
       this.$store.state.competitor.currentTabsIndex = 0;
       this.$router.push({ name: "CompetitorInfo", query: { id: id } });
+    },
+    searchAll(data) {
+      // 从全部列表中进行筛选
+      this.$store.commit("setInitParams");
+      this.$store.state.competitor.dropDownValue = 0;
+      this.$refs.competitorListBox.scrollTop = 0;
+      this.$store
+        .dispatch("listCompetitor", Object.assign(data, { pageNum: 1 }))
+        .then(res => {
+          if (res.length) {
+            this.isShowData = false;
+          } else {
+            this.isShowData = true;
+          }
+        });
     }
   }
 };
@@ -308,5 +332,58 @@ export default {
 }
 .CompetitorList /deep/ .van-search__action {
   padding: 0 0 0 8px;
+}
+/* 经销商顶部下拉筛选 */
+.dropdown_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
+.CompetitorList /deep/ .titleDropdown .van-dropdown-menu__title {
+  padding: 0 25px 0 0;
+  color: #252525;
+  line-height: normal;
+}
+.CompetitorList /deep/ .titleDropdown .van-dropdown-menu__title .van-ellipsis {
+  font-size: 1.286rem;
+  font-weight: bold;
+}
+.icon_toggle {
+  transition: 0.3s;
+}
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.CompetitorList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option.van-dropdown-item__option--active {
+  color: #ff9b02;
+}
+.CompetitorList /deep/ .titleDropdown .van-dropdown-item__option {
+  /* justify-content: center; */
+  text-align: center;
+  color: #252525;
+}
+.CompetitorList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option
+  .van-cell__title
+  span {
+  font-size: 1.143rem;
+}
+.CompetitorList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option--active
+  .van-cell__value {
+  flex: none;
+}
+.CompetitorList /deep/ .titleDropdown .van-icon-success:before {
+  display: none;
 }
 </style>

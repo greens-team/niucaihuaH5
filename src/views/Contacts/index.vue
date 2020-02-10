@@ -84,8 +84,12 @@
       </div>
     </div>
 
-    <div class="flex pl-5" style="border-bottom:1px solid #f8f8f8;" v-if="!flag">
-      <div style="position:relative;margin-left: 1.286rem;">
+    <div
+      class="flex items-center justify-around"
+      style="border-bottom:1px solid #f8f8f8;"
+      v-if="!flag"
+    >
+      <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item
             @change="(num)=>$store.dispatch('listContacts',{orderType: num,pageNum:1})"
@@ -95,8 +99,11 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
+
+      <Screening @onSearch="searchAll" />
     </div>
     <div class="border-b border-gray-200 flex pl-5" v-else></div>
+
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="contactsListBox">
         <div>
@@ -119,20 +126,27 @@
             >{{r.contactsName != null ?r.contactsName:'' }}</div>
           </div>
         </div>
+
+        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Screening from "@/components/Screening/contactsScreen";
 export default {
   name: "ListContacts",
+  components: {
+    Screening
+  },
   data() {
     return {
       searchBar: false,
       homeSearch: false,
       flag: 0,
-      dropDown: false
+      dropDown: false,
+      isShowData: false
     };
   },
 
@@ -140,9 +154,13 @@ export default {
     // 如果是全部经销商 清空参数值
     if (this.$store.state.contacts.dropDownValue == 0) {
       this.$store.commit("setInitParams");
-      console.log("00000")
     }
     // this.$store.commit("setInitParams");
+  },
+  watch: {
+    "$store.state.contacts.dropDownValue"() {
+      this.$refs.contactsListBox.scrollTop = 0;
+    }
   },
 
   mounted() {
@@ -264,6 +282,21 @@ export default {
     },
     close() {
       this.dropDown = false;
+    },
+    searchAll(data) {
+      // 从全部列表中进行筛选
+      this.$store.commit("setInitParams");
+      this.$store.state.contacts.dropDownValue = 0;
+      this.$refs.contactsListBox.scrollTop = 0;
+      this.$store
+        .dispatch("listContacts", Object.assign(data, { pageNum: 1 }))
+        .then(res => {
+          if (res.length) {
+            this.isShowData = false;
+          } else {
+            this.isShowData = true;
+          }
+        });
     }
   }
 };
