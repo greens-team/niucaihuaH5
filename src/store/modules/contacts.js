@@ -153,7 +153,7 @@ export default {
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
-            resolve('操作成功')
+            resolve(state.listContacts)
           }
         })
       })

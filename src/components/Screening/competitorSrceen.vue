@@ -22,7 +22,7 @@
             <div class="text-gray-700 font-bold">竞争对手名称</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.contactsName"
+                v-model="params.competorName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
