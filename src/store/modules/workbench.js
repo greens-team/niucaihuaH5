@@ -57,6 +57,17 @@ export default {
     },
     newMyTasklist: [],
 
+    taskFinishStatus: [
+      { name: '全部', id: 0 },
+      { name: '已完成', id: 1 },
+      { name: '未完成', id: 2 }
+    ],
+    ativeMyTaskStatus: 0,
+    myTaskListCount: {
+      "sumFinish": 0,
+      "sumNotFinish": 0,
+      "sumAll": 0
+    }
   },
   mutations: {
     setLoginState(state, val) {
@@ -120,7 +131,8 @@ export default {
             deptGids: deptGids,
             userType: 1,
             pageNum: state.colleaguesTaskPageNum,
-            pageSize: 20
+            pageSize: 20,
+            finishType:state.ativeMyTaskStatus
           }
           apiUrlKey = 'tasklistpage'
 
@@ -132,7 +144,8 @@ export default {
             deptGids: [],
             userType: 0,
             pageNum: state.myTaskPageNum,
-            pageSize: 20
+            pageSize: 20,
+            finishType:state.ativeMyTaskStatus
           }
           apiUrlKey = 'taskmylistpage'
         }
@@ -159,13 +172,11 @@ export default {
             if (state.workbenchTaskStatus) {
               state.myTaskList = []
               state.colleaguesTaskList = params.pageNum == 1 ? res.data.list : state.colleaguesTaskList.concat(res.data.list)
-              // console.log(res.data.list.length,state.workbenchTaskStatus)
               resolve(res.data.list.length)
             } else {
               state.colleaguesTaskList = []
               state.myTaskList = params.pageNum == 1 ? res.data.list : state.myTaskList.concat(res.data.list)
               resolve(res.data.list.length)
-              // console.log(res.data.list.length,state.workbenchTaskStatus)
             }
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true
@@ -221,6 +232,39 @@ export default {
           }
         })
       })
-    }
+    },
+
+
+    mylistpagecount({ state }, data = {}) {
+      return new Promise(resolve => {
+        let userGids = []
+        state.taskColleagues.userGids.map(r => {
+          userGids.push(r.split(',')[1])
+        })
+        let deptGids = []
+        state.taskColleagues.deptGids.map(r => {
+          deptGids.push(r.split(',')[1])
+        })
+
+        let params = {}
+
+        params = {
+          startTime: this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 00:00:00')) / 1000,
+          endTime: this._vm.$root.timeStamp(moment(state.myTaskTime).format('YYYY-MM-DD 23:59:59')) / 1000,
+          userGids: [String(JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID)],
+          deptGids: [],
+          userType: 0,
+          pageNum: state.myTaskPageNum,
+          pageSize: 20,
+          finishType: state.ativeMyTaskStatus
+        }
+        window.$ajax.workbench.mylistpagecount(params).then(res => {
+          if (!res.code) {
+            state.myTaskListCount = res.data;
+            resolve(res.data)
+          }
+        })
+      })
+    },
   }
 }

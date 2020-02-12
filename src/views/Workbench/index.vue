@@ -26,15 +26,14 @@
       ></i>
     </div>
 
-    <UserDeptList 
-        v-if="showUserDeptListBox" 
-        @cancel="showUserDeptListBox=false"
-        @reset="briefingReset"
-        @confirm="briefingConfirm"
-        :memberList="$store.state.workbench.briefingColleagues.userGids.map(r=>r.replace(/,/,'_'))" 
-        :deptList="$store.state.workbench.briefingColleagues.deptGids.map(r=>r.replace(/,/,'_'))" 
+    <UserDeptList
+      v-if="showUserDeptListBox"
+      @cancel="showUserDeptListBox=false"
+      @reset="briefingReset"
+      @confirm="briefingConfirm"
+      :memberList="$store.state.workbench.briefingColleagues.userGids.map(r=>r.replace(/,/,'_'))"
+      :deptList="$store.state.workbench.briefingColleagues.deptGids.map(r=>r.replace(/,/,'_'))"
     />
-
 
     <!-- 销售简报 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
@@ -47,7 +46,7 @@
           max-width:9rem;"
           @click="showUserDeptListBox=true"
         >
-        <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})" -->
+          <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.briefingColleagues,{type: 'briefing'})})" -->
           <img
             style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.2rem;"
             src="../../assets/workbench/my.png"
@@ -202,7 +201,7 @@
           <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <!-- <CalendarControl /> -->
             <div
-              class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1"
+              class="flex mt-2 justify-center items-center pl-2 pr-2 pb-5"
               style="color:#80848d;"
             >
               <div
@@ -211,6 +210,8 @@
                 @click="taskDateBox= true;"
               >
                 <!-- <i class="iconfont iconcalendar mr-1"></i> -->
+
+                <!-- 日历 -->
                 <img
                   style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
                   src="../../assets/workbench/calendar.png"
@@ -228,29 +229,88 @@
                 已完成：3
                 <span class="pl-3 text-xs">未完成：3</span>
             </div>-->
-            <div
-              class="flex flex-col p-2 relative rowBox"
-              v-for="(row, i) in $store.state.workbench.myTaskList"
-              :key="'t'+i"
-              @click="TaskDetail(row.gid)"
+
+            <van-tabs
+              v-model="$store.state.workbench.ativeMyTaskStatus"
+              @click="getMylistpagecount"
+              type="card"
             >
-              <div class="flex">
-                <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                <div class="flex-1"></div>
-                <span
-                  class="text-xs text-gray-600"
-                >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
-              </div>
-              <span class="text-base text-gray-900">{{row.dealerName}}</span>
-              <!-- {{row.positionName}} > -->
-              <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
-              <img
-                v-show="row.isFinish"
-                class="absolute bottom-0 right-0 mr-2 w-16"
-                src="../../assets/workbench/icon5.png"
-                alt
-              />
-            </div>
+              <van-tab :title="'全部：'+$store.state.workbench.myTaskListCount.sumAll" name="0">
+                <div
+                  class="flex flex-col p-2 relative rowBox"
+                  v-for="(row, i) in $store.state.workbench.myTaskList"
+                  :key="'t'+i"
+                  @click="TaskDetail(row.gid)"
+                >
+                  <div class="flex">
+                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <div class="flex-1"></div>
+                    <span
+                      class="text-xs text-gray-600"
+                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
+                  </div>
+                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
+                  <!-- {{row.positionName}} > -->
+                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
+                  <img
+                    v-show="row.isFinish"
+                    class="absolute bottom-0 right-0 mr-2 w-16"
+                    src="../../assets/workbench/icon5.png"
+                    alt
+                  />
+                </div>
+              </van-tab>
+              <van-tab :title="'已完成：'+$store.state.workbench.myTaskListCount.sumFinish" name="1">
+                <div
+                  class="flex flex-col p-2 relative rowBox"
+                  v-for="(row, i) in $store.state.workbench.myTaskList"
+                  :key="'t'+i"
+                  @click="TaskDetail(row.gid)"
+                >
+                  <div class="flex">
+                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <div class="flex-1"></div>
+                    <span
+                      class="text-xs text-gray-600"
+                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
+                  </div>
+                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
+                  <!-- {{row.positionName}} > -->
+                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
+                  <img
+                    v-show="row.isFinish"
+                    class="absolute bottom-0 right-0 mr-2 w-16"
+                    src="../../assets/workbench/icon5.png"
+                    alt
+                  />
+                </div>
+              </van-tab>
+              <van-tab :title="'未完成：'+$store.state.workbench.myTaskListCount.sumNotFinish" name="2">
+                <div
+                  class="flex flex-col p-2 relative rowBox"
+                  v-for="(row, i) in $store.state.workbench.myTaskList"
+                  :key="'t'+i"
+                  @click="TaskDetail(row.gid)"
+                >
+                  <div class="flex">
+                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <div class="flex-1"></div>
+                    <span
+                      class="text-xs text-gray-600"
+                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
+                  </div>
+                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
+                  <!-- {{row.positionName}} > -->
+                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
+                  <img
+                    v-show="row.isFinish"
+                    class="absolute bottom-0 right-0 mr-2 w-16"
+                    src="../../assets/workbench/icon5.png"
+                    alt
+                  />
+                </div>
+              </van-tab>
+            </van-tabs>
           </div>
 
           <div
@@ -289,14 +349,12 @@
               </div>
               <div class="flex-1"></div>
 
-              
-            
               <div
                 class="text-xs hover:text-blue-500 ellipsis flex items-center"
                 style="color: rgb(128, 132, 141);text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
                 @click="taskUserDeptListBox = true"
               >
-              <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})" -->
+                <!-- @click="$router.push({name:'Colleague', params: Object.assign({},$store.state.workbench.taskColleagues,{type: 'task'})})" -->
                 <!-- <i class="iconfont iconwo" style="font-size: 0.6rem"></i> -->
                 <img
                   style="display:inline-block;width:1.286rem;height:1.286rem;margin-right:.3rem;"
@@ -408,22 +466,20 @@
       </div>
     </van-popup>
 
-
-    <UserDeptList 
-                v-if="taskUserDeptListBox" 
-                @cancel="taskUserDeptListBox=false"
-                @reset="taskReset"
-                @confirm="taskConfirm"
-                :memberList="$store.state.workbench.taskColleagues.userGids.map(r=>r.replace(/,/,'_'))" 
-                :deptList="$store.state.workbench.taskColleagues.deptGids.map(r=>r.replace(/,/,'_'))" 
-            />
-
+    <UserDeptList
+      v-if="taskUserDeptListBox"
+      @cancel="taskUserDeptListBox=false"
+      @reset="taskReset"
+      @confirm="taskConfirm"
+      :memberList="$store.state.workbench.taskColleagues.userGids.map(r=>r.replace(/,/,'_'))"
+      :deptList="$store.state.workbench.taskColleagues.deptGids.map(r=>r.replace(/,/,'_'))"
+    />
   </div>
 </template>
 
 <script>
 // import CalendarControl from '@/components/CalendarControl'
-import UserDeptList from '@/components/UserDeptList'
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "Workbench",
   components: {
@@ -433,7 +489,7 @@ export default {
     return {
       taskUserDeptListBox: false,
       showUserDeptListBox: false,
-      H: '',
+      H: "",
       topVal: 286, // 滚动到238距离时 positioning设为true
       positioning: false,
       taskDateBox: false,
@@ -480,8 +536,9 @@ export default {
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
     this.getBriefing();
-    this.getTaskList()
-	
+    this.getTaskList();
+
+    this.$store.dispatch("mylistpagecount", { pageNum: 1 });
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
@@ -508,7 +565,7 @@ export default {
     }
   },
   methods: {
-    getTaskList(){
+    getTaskList() {
       this.$store.dispatch("getTaskList", { pageNum: 1 }).then(len => {
         if (len) {
           this.isShowNoData_my = false;
@@ -617,45 +674,45 @@ export default {
       delete sessionStorage.globalModelType;
       this.$router.push({ name: "WorkbenchSearch" });
     },
-    getHeight(){
-      this.H = (document.body.clientHeight - 110) + 'px'
+    getHeight() {
+      this.H = document.body.clientHeight - 110 + "px";
     },
-    briefingReset(){
-      this.showUserDeptListBox=false;
+    briefingReset() {
+      this.showUserDeptListBox = false;
       this.$store.commit("setBriefingColleagues", {
         userGids: [],
         deptGids: [],
         userType: 1
       });
-      this.getBriefing()
+      this.getBriefing();
     },
-    briefingConfirm(userGids,deptGids){
-      this.showUserDeptListBox=false;
+    briefingConfirm(userGids, deptGids) {
+      this.showUserDeptListBox = false;
       this.$store.commit("setBriefingColleagues", {
-        userGids: userGids.map(r=>r.replace(/_/,',')),
-        deptGids: deptGids.map(r=>r.replace(/_/,',')),
+        userGids: userGids.map(r => r.replace(/_/, ",")),
+        deptGids: deptGids.map(r => r.replace(/_/, ",")),
         userType: 1
       });
-      this.getBriefing()
+      this.getBriefing();
     },
 
-    taskReset(){
-      this.taskUserDeptListBox=false;
+    taskReset() {
+      this.taskUserDeptListBox = false;
       this.$store.commit("setTaskColleagues", {
         userGids: [],
         deptGids: [],
         userType: 1
       });
-      this.getTaskList()
+      this.getTaskList();
     },
-    taskConfirm(userGids,deptGids){
-      this.taskUserDeptListBox=false;
+    taskConfirm(userGids, deptGids) {
+      this.taskUserDeptListBox = false;
       this.$store.commit("setTaskColleagues", {
-        userGids: userGids.map(r=>r.replace(/_/,',')),
-        deptGids: deptGids.map(r=>r.replace(/_/,',')),
+        userGids: userGids.map(r => r.replace(/_/, ",")),
+        deptGids: deptGids.map(r => r.replace(/_/, ",")),
         userType: 1
       });
-      this.getTaskList()
+      this.getTaskList();
     },
 
     //销售简报跳转到对应列表
@@ -756,6 +813,11 @@ export default {
           userType: this.$store.state.workbench.briefingColleagues.userType
         }
       });
+    },
+
+    //工作台 任务状态切换
+    getMylistpagecount() {
+      this.getTaskList();
     }
   }
 };
@@ -827,5 +889,25 @@ export default {
   top: 0px;
   left: 21px;
   right: 21px;
+}
+.Workbench /deep/ .van-tabs__nav--card {
+  margin: 0;
+  border: 0;
+  width: 90%;
+}
+.Workbench /deep/ .van-tabs__nav--card .van-tab {
+  color: #979797;
+  line-height: 28px;
+  border: 1px solid #DBDBDB;
+  margin: 0 5px;
+  border-radius: 20px;
+}
+.Workbench /deep/ .van-tabs__nav--card .van-tab.van-tab--active {
+  background: rgba(255, 250, 242, 1);
+  color: #ff9b02;
+  border: 1px solid #ff9b02;
+}
+.Workbench .rowBox:first-child {
+  padding-top: 1rem;
 }
 </style>

@@ -17,6 +17,9 @@ export default (m) => {
       addRecentvisit: '/workbench/addrecentvisit',   // 埋点-最近访问的数据
 
       changeDealerList: '/dealer/change/listpage',   // 阶段变化经销商列表
+
+      mylistpagecount: '/task/mylistpagecount',   // 获取我的任务列表 数量
+      listpagecount: '/task/listpagecount'   // 获取全部任务列表 数量
     },
     upload: {
       // upload: '/lbccrm/common/upload' 
