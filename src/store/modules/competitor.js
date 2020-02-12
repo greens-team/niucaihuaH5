@@ -120,7 +120,6 @@ export default {
         pageSize: 15,
         followerUserGids: [],
         ownerUserGids: []
-
       }
     },
     // setInitParams_tabs(state) {

@@ -10,7 +10,7 @@ export default (m) => {
     postJSON: {
       addCompetitor: '/competitor/add', // 新建合作竞对
       editCompetitor: '/competitor/edit', // 编辑合作竞对信息
-      listCompetitor: m.POST + '/competitor/listpage', // 获取合作竞对列表
+      listCompetitor: '/competitor/listpage', // 获取合作竞对列表
       associatedCompetitor: '/competitor/associated', // 关联和解除关联经销商
     },
     upload: {

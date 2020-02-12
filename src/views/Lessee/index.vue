@@ -2,7 +2,11 @@
 <template>
   <div class="LesseeList flex-1 flex flex-col">
     <div class="flex flex-col">
-      <div class="flex-1 items-center pl-4 pr-4 flex" v-show="!searchBar" style="border-bottom:1px solid #f8f8f8;">
+      <div
+        class="flex-1 items-center pl-4 pr-4 flex"
+        v-show="!searchBar"
+        style="border-bottom:1px solid #f8f8f8;"
+      >
         <div class="flex-1 flex">
           <div
             @click="$router.go(-1)"
@@ -11,7 +15,25 @@
             <img class="bar_icon back_icon" src="../../assets/topBarIcon/back_icon.png" alt="返回" />
           </div>
         </div>
-        <span class="text-center font-bold bar_title">承租人</span>
+        <!-- <span class="text-center font-bold bar_title">承租人</span> -->
+
+        <div class="titleDropdown" style="position:relative;">
+          <van-dropdown-menu>
+            <van-dropdown-item
+              @change="getDiffList"
+              @open="open"
+              @close="close"
+              v-model="$store.state.lessee.dropDownValue"
+              :options="$store.state.lessee.dropDownType"
+            />
+          </van-dropdown-menu>
+          <img
+            class="dropdown_icon icon_toggle"
+            :class="{ active: dropDown}"
+            src="../../assets/dealer/dropdownMenu.png"
+            alt
+          />
+        </div>
         <div class="flex-1 items-center flex text-xl">
           <div class="flex-1"></div>
 
@@ -26,7 +48,7 @@
           <!-- 添加图标 -->
           <img
             class="bar_icon plus_icon"
-            v-show="$root.checkRole('LESSEE_CREATE')" 
+            v-show="$root.checkRole('LESSEE_CREATE')"
             @click="$store.commit('setInitAddParams');$router.push('/CreateLessee')"
             src="../../assets/topBarIcon/add_icon.png"
             alt="添加"
@@ -75,8 +97,8 @@
       ></van-tab>
     </van-tabs>
 
-    <div class="flex items-center justify-start" style="border-bottom:1px solid #f8f8f8;">
-      <div style="position:relative;margin-left: 1.286rem;">
+    <div class="flex items-center justify-around" style="border-bottom:1px solid #f8f8f8;">
+      <div style="position:relative;">
         <van-dropdown-menu>
           <van-dropdown-item
             @change="(num)=>$store.dispatch('listLessee',{orderType: num,pageNum:1})"
@@ -86,6 +108,10 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
+       <Screening
+        @onSearch="searchAll"
+        :lesseeStatusValue="$store.state.lessee.listParams.lesseeStatus"
+      />
     </div>
 
     <div class="flex-1 relative h-full">
@@ -96,7 +122,11 @@
           :show-indicators="false"
           @change="(num)=>$store.dispatch('listLessee',{lesseeStatus: num,pageNum:1})"
         >
-          <van-swipe-item v-for="(row,index) in $store.state.lessee.lesseeStatus" :key="index" class="bg-white">
+          <van-swipe-item
+            v-for="(row,index) in $store.state.lessee.lesseeStatus"
+            :key="index"
+            class="bg-white"
+          >
             <div
               class="flex flex-col m-4 bg-white last_child"
               style="border-bottom:1px solid #f8f8f8;padding-bottom:1rem;"
@@ -105,7 +135,9 @@
               @click="goInfo(r.gid)"
             >
               <div class="flex items-center">
-                <div class="w-12 h-12 text-center rounded-full mr-4 text-xl font-bold baseName">{{r.lesseeName.trim().substring(0,1).toUpperCase()}}</div>
+                <div
+                  class="w-12 h-12 text-center rounded-full mr-4 text-xl font-bold baseName"
+                >{{r.lesseeName.trim().substring(0,1).toUpperCase()}}</div>
                 <div style="flex:1">
                   <div class="flex items-center">
                     <div class="flex-1 text-base font-bold">{{r.lesseeName}}</div>
@@ -135,6 +167,8 @@
             </div>
           </van-swipe-item>
         </van-swipe>
+
+        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
       </div>
     </div>
     <!-- <div @click="$router.push('/LesseeInfo')">详情页</div> -->
@@ -142,16 +176,30 @@
 </template>
 
 <script>
+import Screening from "@/components/Screening/lesseeScreen";
 export default {
   name: "LesseeList",
+  components: {
+    Screening
+  },
   data() {
     return {
       searchBar: false,
-      homeSearch: false
+      homeSearch: false,
+      dropDown: false,
+      isShowData: false
     };
   },
+  watch: {
+    "$store.state.lessee.dropDownValue"() {
+      this.$refs.lesseeListBox.scrollTop = 0;
+    }
+  },
   created() {
-    this.$store.commit("setInitParams");
+    // 如果是全部经销商 清空参数值
+    if (this.$store.state.lessee.dropDownValue == 0) {
+      this.$store.commit("setInitParams");
+    }
   },
   mounted() {
     this.scrollLoad(this.$refs.lesseeListBox, resolve => {
@@ -169,8 +217,65 @@ export default {
   methods: {
     goInfo(id) {
       this.$store.state.lessee.currentTabsIndex = 0;
-      // console.log(this.$store.state.lessee.currentTabsIndex)
       this.$router.push({ name: "LesseeInfo", query: { id: id } });
+    },
+    getDiffList(value) {
+      let userInfo = JSON.parse(sessionStorage.userInfo);
+      let ownerUserGids = [];
+
+      ownerUserGids = [
+        {
+          id: userInfo.EMPLOYEE_ID,
+          refRlNm: userInfo.EMPLOYEE_NAME
+        }
+      ];
+      this.$store.commit("setInitParams");
+
+      if (value == 0) {
+        // 全部
+        this.$store.dispatch("listLessee", {
+          followerUserGids: [],
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+      if (value == 1) {
+        // 我负责的
+        this.$store.dispatch("listLessee", {
+          followerUserGids: [],
+          ownerUserGids: ownerUserGids,
+          pageNum: 1
+        });
+      }
+      if (value == 2) {
+        // 我参与的
+        this.$store.dispatch("listLessee", {
+          followerUserGids: ownerUserGids,
+          ownerUserGids: [],
+          pageNum: 1
+        });
+      }
+    },
+    open() {
+      this.dropDown = true;
+    },
+    close() {
+      this.dropDown = false;
+    },
+     searchAll(data) {
+      // 从全部列表中进行筛选
+      this.$store.commit("setInitParams");
+      this.$store.state.lessee.dropDownValue = 0;
+      this.$refs.lesseeListBox.scrollTop = 0;
+      this.$store
+        .dispatch("listLessee", Object.assign(data, { pageNum: 1 }))
+        .then(res => {
+          if (res.length) {
+            this.isShowData = false;
+          } else {
+            this.isShowData = true;
+          }
+        });
     }
   }
 };
@@ -186,7 +291,7 @@ export default {
   border-radius: 6px;
   margin-top: 0.3rem;
   background-color: #ff9505;
-  height: 4px;;
+  height: 4px;
 }
 .LesseeList /deep/ .van-hairline--top-bottom::after,
 .LesseeList /deep/ .van-hairline-unset--top-bottom::after {
@@ -261,5 +366,59 @@ export default {
 }
 .LesseeList /deep/ .van-search__action {
   padding: 0 0 0 8px;
+}
+
+/* 经销商顶部下拉筛选 */
+.dropdown_icon {
+  width: 1.286rem;
+  height: 1.286rem;
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
+.LesseeList /deep/ .titleDropdown .van-dropdown-menu__title {
+  padding: 0 25px 0 0;
+  color: #252525;
+  line-height: normal;
+}
+.LesseeList /deep/ .titleDropdown .van-dropdown-menu__title .van-ellipsis {
+  font-size: 1.286rem;
+  font-weight: bold;
+}
+.icon_toggle {
+  transition: 0.3s;
+}
+.icon_toggle.active {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); /*顺时针旋转90°*/
+}
+.LesseeList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option.van-dropdown-item__option--active {
+  color: #ff9b02;
+}
+.LesseeList /deep/ .titleDropdown .van-dropdown-item__option {
+  /* justify-content: center; */
+  text-align: center;
+  color: #252525;
+}
+.LesseeList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option
+  .van-cell__title
+  span {
+  font-size: 1.143rem;
+}
+.LesseeList
+  /deep/
+  .titleDropdown
+  .van-dropdown-item__option--active
+  .van-cell__value {
+  flex: none;
+}
+.LesseeList /deep/ .titleDropdown .van-icon-success:before {
+  display: none;
 }
 </style>

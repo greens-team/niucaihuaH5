@@ -14,7 +14,7 @@
         <img src="../../assets/crm/icon2.png" class="w-16" alt />
         <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">联系人</p>
       </div>
-      <div @click="$root.checkRole('LESSEE_SELECT', 'tipText') && $router.push('/Lessee')">
+      <div @click="$root.checkRole('LESSEE_SELECT', 'tipText') && $router.push('/Lessee');$store.state.lessee.dropDownValue = 0">
         <img src="../../assets/crm/icon3.png" class="w-16" alt />
         <p class="text-center text-gray-700" style="font-size:1.1rem;line-height:3rem;">承租人</p>
       </div>

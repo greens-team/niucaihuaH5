@@ -140,7 +140,6 @@ export default {
         "contactsPhone": '',          // 手机号码
         "comment": '',            // 备注
       }
-      console.log(state.listParams.followStatus)
     }
   },
   actions: {

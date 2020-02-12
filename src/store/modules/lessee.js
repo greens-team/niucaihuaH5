@@ -17,7 +17,7 @@ export default {
       idcardNum: '',
       lesseeName: '',
       lesseePhone: '',
-      lesseeType: null,
+      lesseeType: [],
       marry: 0,    //婚否
       ownerUserGids: [],
       userPic: '',
@@ -47,6 +47,12 @@ export default {
         value: 1
       }
     ],
+
+    lesseeTypes: {     // 
+      0: '自然人',
+      1: '法人'
+    },
+
     info: {},
 
     editParams: {
@@ -61,7 +67,7 @@ export default {
       idcardNum: '',
       lesseeName: '',
       lesseePhone: '',
-      lesseeType: '',
+      lesseeType: [],
       marry: 0,
       ownerUserGids: [],
       userPic: '',
@@ -77,7 +83,21 @@ export default {
       orderType: 1,
       lesseeStatus: 0,
       pageNum: 1,
-      pageSize: 15
+      pageSize: 15,
+
+      lesseeName: '',
+      idcardNum: '',
+      birthday: 0,
+      gender: 0,
+      followerUserGids: [],
+      ownerUserGids: [],
+      lesseeType: [],
+      lesseePhone: '',
+      domicilePlace: '',
+      homeAddress: '',
+      workingYears: '',
+      comment: ''
+
     },
     list: [],
 
@@ -126,6 +146,13 @@ export default {
     }],
     currentTabsIndex: 0,
 
+    dropDownType: [
+      { text: '全部承租人', value: 0 },
+      { text: '我负责的', value: 1 },
+      { text: '我参与的', value: 2 }
+    ],
+    dropDownValue: 0,
+
     // 获取动态记录
     listNewslog: [],
 
@@ -137,7 +164,7 @@ export default {
     setInfo(state, data = {}) {
       Object.assign(state.info, data)
     },
-    setCurrentTabsIndex_lessee(state, num){
+    setCurrentTabsIndex_lessee(state, num) {
       state.currentTabsIndex = num
     },
     setInitParams(state) {
@@ -146,7 +173,19 @@ export default {
         orderType: 1,
         lesseeStatus: 0,
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
+        lesseeName: '',
+        idcardNum: '',
+        birthday: 0,
+        gender: 0,
+        followerUserGids: [],
+        ownerUserGids: [],
+        lesseeType: [],
+        lesseePhone: '',
+        domicilePlace: '',
+        homeAddress: '',
+        workingYears: '',
+        comment: ''
       }
     },
     // setInitParams_tabs(state) {
@@ -166,7 +205,7 @@ export default {
         idcardNum: '',
         lesseeName: '',
         lesseePhone: '',
-        lesseeType: null,
+        lesseeType: [],
         marry: 0,
         ownerUserGids: [],
         userPic: '',
@@ -213,7 +252,25 @@ export default {
       })
     },
     listLessee({ state }, data = {}) {   // 获取承租人列表
-      let params = Object.assign(state.listParams, data)
+      let params = Object.assign(state.listParams, data);
+
+      //负责人
+      if (params.ownerUserGids && params.ownerUserGids.length && params.ownerUserGids[0].id) {
+        params.ownerUserGids = params.ownerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+      //参与人
+      if (params.followerUserGids && params.followerUserGids.length && params.followerUserGids[0].id) {
+        params.followerUserGids = params.followerUserGids.map(r => {
+          return String(r.id)
+        })
+      }
+      let timevals = {
+        birthday: String(params.birthday).length == 13 ? params.birthday / 1000 : params.birthday
+      }
+      let lesseeTypeNum = { lesseeType: params.lesseeType.map(i => +i) }
+
       if (params.pageNum == 1) {
         state.isLastPage = false;
       }
@@ -222,7 +279,7 @@ export default {
           resolve();
           return;
         }
-        window.$ajax.lessee.listLessee(params).then(res => {
+        window.$ajax.lessee.listLessee(Object.assign({}, params, timevals, lesseeTypeNum)).then(res => {
           if (!res.code) {
             state.list = params.pageNum == 1 ? res.data.list : state.list.concat(res.data.list);
             if (res.data.list.length < params.pageSize) {
