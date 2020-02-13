@@ -231,86 +231,52 @@
             </div>-->
 
             <van-tabs
-              v-model="$store.state.workbench.ativeMyTaskStatus"
-              @click="getMylistpagecount"
               type="card"
+              v-model="$store.state.workbench.myTaskStatus"
+              @click="$refs.myTask.swipeTo($store.state.workbench.myTaskStatus)"
             >
-              <van-tab :title="'全部：'+$store.state.workbench.myTaskListCount.sumAll" name="0">
-                <div
-                  class="flex flex-col p-2 relative rowBox"
-                  v-for="(row, i) in $store.state.workbench.myTaskList"
-                  :key="'t'+i"
-                  @click="TaskDetail(row.gid)"
-                >
-                  <div class="flex">
-                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                    <div class="flex-1"></div>
-                    <span
-                      class="text-xs text-gray-600"
-                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
-                  </div>
-                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
-                  <!-- {{row.positionName}} > -->
-                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
-                  <img
-                    v-show="row.isFinish"
-                    class="absolute bottom-0 right-0 mr-2 w-16"
-                    src="../../assets/workbench/icon5.png"
-                    alt
-                  />
-                </div>
-              </van-tab>
-              <van-tab :title="'已完成：'+$store.state.workbench.myTaskListCount.sumFinish" name="1">
-                <div
-                  class="flex flex-col p-2 relative rowBox"
-                  v-for="(row, i) in $store.state.workbench.myTaskList"
-                  :key="'t'+i"
-                  @click="TaskDetail(row.gid)"
-                >
-                  <div class="flex">
-                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                    <div class="flex-1"></div>
-                    <span
-                      class="text-xs text-gray-600"
-                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
-                  </div>
-                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
-                  <!-- {{row.positionName}} > -->
-                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
-                  <img
-                    v-show="row.isFinish"
-                    class="absolute bottom-0 right-0 mr-2 w-16"
-                    src="../../assets/workbench/icon5.png"
-                    alt
-                  />
-                </div>
-              </van-tab>
-              <van-tab :title="'未完成：'+$store.state.workbench.myTaskListCount.sumNotFinish" name="2">
-                <div
-                  class="flex flex-col p-2 relative rowBox"
-                  v-for="(row, i) in $store.state.workbench.myTaskList"
-                  :key="'t'+i"
-                  @click="TaskDetail(row.gid)"
-                >
-                  <div class="flex">
-                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                    <div class="flex-1"></div>
-                    <span
-                      class="text-xs text-gray-600"
-                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
-                  </div>
-                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
-                  <!-- {{row.positionName}} > -->
-                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
-                  <img
-                    v-show="row.isFinish"
-                    class="absolute bottom-0 right-0 mr-2 w-16"
-                    src="../../assets/workbench/icon5.png"
-                    alt
-                  />
-                </div>
-              </van-tab>
+              <van-tab :title="'全部：'+$store.state.workbench.myTaskListCount.sumAll" name="0"></van-tab>
+              <van-tab :title="'已完成：'+$store.state.workbench.myTaskListCount.sumFinish" name="1"></van-tab>
+              <van-tab :title="'未完成：'+$store.state.workbench.myTaskListCount.sumNotFinish" name="2"></van-tab>
             </van-tabs>
+
+            <van-swipe
+              ref="myTask"
+              :loop="false"
+              :show-indicators="false"
+              :touchable="false"
+              @change="()=>$store.dispatch('getTaskList',{pageNum:1})"
+            >
+              <van-swipe-item
+                class="bg-white"
+                v-for="(row,index) in $store.state.workbench.taskFinishStatus"
+                :key="index"
+              >
+                <div
+                  class="flex flex-col p-2 relative rowBox"
+                  v-for="(row, i) in $store.state.workbench.myTaskList"
+                  :key="'t'+i"
+                  @click="TaskDetail(row.gid)"
+                >
+                  <div class="flex">
+                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <div class="flex-1"></div>
+                    <span
+                      class="text-xs text-gray-600"
+                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
+                  </div>
+                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
+                  <!-- {{row.positionName}} > -->
+                  <div class="text-sm text-gray-600 mt-1">{{row.deptName}} > {{row.userName}}</div>
+                  <img
+                    v-show="row.isFinish"
+                    class="absolute bottom-0 right-0 mr-2 w-16"
+                    src="../../assets/workbench/icon5.png"
+                    alt
+                  />
+                </div>
+              </van-swipe-item>
+            </van-swipe>
           </div>
 
           <div
@@ -333,7 +299,7 @@
         <van-swipe-item>
           <!-- 同事任务列表 -->
           <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
-            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-1">
+            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-5">
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
                 style="color:#80848d;"
@@ -391,30 +357,66 @@
                 已完成：3
                 <span class="pl-3 text-xs">未完成：3</span>
             </div>-->
-            <div
-              class="flex flex-col p-2 relative rowBox"
-              v-for="(row, i) in $store.state.workbench.colleaguesTaskList"
-              :key="'c'+i"
-              @click="TaskDetail(row.gid)"
+
+            <van-tabs
+              type="card"
+              v-model="$store.state.workbench.colleaguesTaskStatus"
+              @click="$refs.colleagueTask.swipeTo($store.state.workbench.colleaguesTaskStatus)"
             >
-              <div class="flex">
-                <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                <div class="flex-1"></div>
-                <span
-                  class="text-xs"
-                  style="color: #80848D;"
-                >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
-              </div>
-              <span class="text-base text-gray-900">{{row.dealerName}}</span>
-              <!-- {{row.positionName}} >  -->
-              <div class="text-sm mt-1" style="color: #80848D;">{{row.deptName}} > {{row.userName}}</div>
-              <img
-                v-show="row.isFinish"
-                class="absolute bottom-0 right-0 mr-2 w-16"
-                src="../../assets/workbench/icon5.png"
-                alt
-              />
-            </div>
+              <van-tab
+                :title="'全部：'+$store.state.workbench.colleaguesTaskListCount.sumAll"
+                name="0"
+              ></van-tab>
+              <van-tab
+                :title="'已完成：'+$store.state.workbench.colleaguesTaskListCount.sumFinish"
+                name="1"
+              ></van-tab>
+              <van-tab
+                :title="'未完成：'+$store.state.workbench.colleaguesTaskListCount.sumNotFinish"
+                name="2"
+              ></van-tab>
+            </van-tabs>
+
+            <van-swipe
+              ref="colleagueTask"
+              :loop="false"
+              :show-indicators="false"
+              :touchable="false"
+              @change="()=>$store.dispatch('getTaskList',{pageNum:1})"
+            >
+              <van-swipe-item
+                class="bg-white"
+                v-for="(row,index) in $store.state.workbench.taskFinishStatus"
+                :key="index"
+              >
+                <div
+                  class="flex flex-col p-2 relative rowBox"
+                  v-for="(row, i) in $store.state.workbench.colleaguesTaskList"
+                  :key="'c'+i"
+                  @click="TaskDetail(row.gid)"
+                >
+                  <div class="flex">
+                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <div class="flex-1"></div>
+                    <span
+                      class="text-xs"
+                      style="color: #80848D;"
+                    >{{$root.moment(row.taskTime * 1000).format('YYYY-MM-DD HH:mm')}}</span>
+                  </div>
+                  <span class="text-base text-gray-900">{{row.dealerName}}</span>
+                  <div
+                    class="text-sm mt-1"
+                    style="color: #80848D;"
+                  >{{row.deptName}} > {{row.userName}}</div>
+                  <img
+                    v-show="row.isFinish"
+                    class="absolute bottom-0 right-0 mr-2 w-16"
+                    src="../../assets/workbench/icon5.png"
+                    alt
+                  />
+                </div>
+              </van-swipe-item>
+            </van-swipe>
           </div>
           <div
             class="flex justify-center items-center text-center"
@@ -535,10 +537,12 @@ export default {
 
     delete sessionStorage.localMap;
     this.$refs.swipe.swipeTo(this.$store.state.workbench.workbenchTaskStatus);
+
     this.getBriefing();
     this.getTaskList();
 
-    this.$store.dispatch("mylistpagecount", { pageNum: 1 });
+    this.$store.dispatch("mylistpagecount");
+    this.$store.dispatch("listpagecount");
   },
   watch: {
     "$store.state.workbench.workbenchTaskStatus"() {
@@ -562,6 +566,14 @@ export default {
           }
         }
       });
+      this.$store.dispatch("mylistpagecount");
+      this.$store.dispatch("listpagecount");
+    },
+    "$store.state.workbench.myTaskStatus"() {
+      this.$store.dispatch("getTaskList", { pageNum: 1 });
+    },
+    "$store.state.workbench.colleaguesTaskStatus"() {
+      this.$store.dispatch("getTaskList", { pageNum: 1 });
     }
   },
   methods: {
@@ -601,6 +613,10 @@ export default {
           }
         }
       });
+
+      // 获取 任务数量
+      this.$store.dispatch("mylistpagecount");
+      this.$store.dispatch("listpagecount");
     },
     // 获取简报信息
     getBriefing() {
@@ -704,6 +720,9 @@ export default {
         userType: 1
       });
       this.getTaskList();
+
+      this.$store.dispatch("mylistpagecount");
+      this.$store.dispatch("listpagecount");
     },
     taskConfirm(userGids, deptGids) {
       this.taskUserDeptListBox = false;
@@ -713,6 +732,9 @@ export default {
         userType: 1
       });
       this.getTaskList();
+
+      this.$store.dispatch("mylistpagecount");
+      this.$store.dispatch("listpagecount");
     },
 
     //销售简报跳转到对应列表
@@ -813,11 +835,6 @@ export default {
           userType: this.$store.state.workbench.briefingColleagues.userType
         }
       });
-    },
-
-    //工作台 任务状态切换
-    getMylistpagecount() {
-      this.getTaskList();
     }
   }
 };
@@ -898,7 +915,7 @@ export default {
 .Workbench /deep/ .van-tabs__nav--card .van-tab {
   color: #979797;
   line-height: 28px;
-  border: 1px solid #DBDBDB;
+  border: 1px solid #dbdbdb;
   margin: 0 5px;
   border-radius: 20px;
 }

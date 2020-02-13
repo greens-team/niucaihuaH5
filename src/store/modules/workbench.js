@@ -62,8 +62,15 @@ export default {
       { name: '已完成', id: 1 },
       { name: '未完成', id: 2 }
     ],
-    ativeMyTaskStatus: 0,
+    myTaskStatus: 0,
     myTaskListCount: {
+      "sumFinish": 0,
+      "sumNotFinish": 0,
+      "sumAll": 0
+    },
+
+    colleaguesTaskStatus: 0,
+    colleaguesTaskListCount: {
       "sumFinish": 0,
       "sumNotFinish": 0,
       "sumAll": 0
@@ -124,6 +131,7 @@ export default {
         let params = {}
         let apiUrlKey = '';
         if (state.workbenchTaskStatus) {
+
           params = {
             startTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 00:00:00')) / 1000,
             endTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 23:59:59')) / 1000,
@@ -132,7 +140,7 @@ export default {
             userType: 1,
             pageNum: state.colleaguesTaskPageNum,
             pageSize: 20,
-            finishType:state.ativeMyTaskStatus
+            finishType: Number(state.colleaguesTaskStatus)
           }
           apiUrlKey = 'tasklistpage'
 
@@ -145,11 +153,13 @@ export default {
             userType: 0,
             pageNum: state.myTaskPageNum,
             pageSize: 20,
-            finishType:state.ativeMyTaskStatus
+            finishType: Number(state.myTaskStatus)
           }
           apiUrlKey = 'taskmylistpage'
         }
 
+
+        
         if (data.pageNum === 1) {
           state.myTaskPageNum = 1
           state.colleaguesTaskPageNum = 1
@@ -256,7 +266,7 @@ export default {
           userType: 0,
           pageNum: state.myTaskPageNum,
           pageSize: 20,
-          finishType: state.ativeMyTaskStatus
+          finishType: Number(state.myTaskStatus)
         }
         window.$ajax.workbench.mylistpagecount(params).then(res => {
           if (!res.code) {
@@ -266,5 +276,37 @@ export default {
         })
       })
     },
+    listpagecount({ state }, data = {}) {
+      return new Promise(resolve => {
+        let userGids = []
+        state.taskColleagues.userGids.map(r => {
+          userGids.push(r.split(',')[1])
+        })
+        let deptGids = []
+        state.taskColleagues.deptGids.map(r => {
+          deptGids.push(r.split(',')[1])
+        })
+
+        let params = {}
+
+        params = {
+          startTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 00:00:00')) / 1000,
+          endTime: this._vm.$root.timeStamp(moment(state.colleaguesTaskTime).format('YYYY-MM-DD 23:59:59')) / 1000,
+          userGids: userGids,
+          deptGids: deptGids,
+          userType: 1,
+          pageNum: state.colleaguesTaskPageNum,
+          pageSize: 20,
+          finishType: Number(state.colleaguesTaskStatus)
+        }
+
+        window.$ajax.workbench.listpagecount(params).then(res => {
+          if (!res.code) {
+            state.colleaguesTaskListCount = res.data;
+            resolve(res.data)
+          }
+        })
+      })
+    }
   }
 }
