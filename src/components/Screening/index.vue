@@ -88,7 +88,7 @@
             </div>
 
             <div class="text-gray-700 font-bold mt-5">经销商分级</div>
-            <div class="flex flex-wrap text-center text-gray-600">
+            <div class="flex flex-wrap text-center text-gray-600 mt-2">
               <div
                 v-for="(r,i) of levelValue"
                 :key="i"
@@ -223,8 +223,8 @@
               <van-popup
                 v-model="ownerCdShow"
                 position="bottom"
-                :style="{ height: '40%'}"
-                class="checkBoxGroup"
+                :style="{ height: '30%'}"
+                class="flex flex-col checkBoxGroup"
               >
                 <van-nav-bar
                   title="请选择公司归属"
@@ -278,18 +278,18 @@
             </div>
 
             <div class="text-gray-700 font-bold mt-5">业务类型</div>
-            <div class="flex flex-wrap text-center text-gray-600">
+            <div class="flex flex-wrap text-center text-gray-600 mt-2">
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 0}]"
-                @click="params.followStatus = params.followStatus == 0 ? '' : 0"
+                @click="params.followStatus = 0"
               >全部</div>
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 1}]"
-                @click="params.followStatus = params.followStatus == 1 ? '' : 1"
+                @click="params.followStatus = 1"
               >线索入库</div>
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 2}]"
-                @click="params.followStatus = params.followStatus == 2 ? '' : 2"
+                @click="params.followStatus = 2"
               >合作中</div>
 
               <!-- <div
@@ -359,7 +359,7 @@
               v-model="certTypCdShow"
               position="bottom"
               :style="{ height: '40%'}"
-              class="checkBoxGroup"
+              class="flex flex-col checkBoxGroup"
             >
               <van-nav-bar
                 title="请选择法人证件类型"
@@ -383,18 +383,25 @@
                 </van-cell-group>
               </van-radio-group>-->
 
-              <van-checkbox-group v-model="params.certTypCd" style="height: 100%;overflow: scroll;">
-                <van-cell-group>
-                  <van-cell
-                    v-for="(r,i) in $store.state.record.certTypCd"
-                    :key="i"
-                    :title="r"
-                    clickable
+              <div class="flex-1 relative h-full">
+                <div class="absolute inset-0 overflow-y-auto">
+                  <van-checkbox-group
+                    v-model="params.certTypCd"
+                    style="height: 100%;overflow: scroll;"
                   >
-                    <van-checkbox :name="i" slot="right-icon" />
-                  </van-cell>
-                </van-cell-group>
-              </van-checkbox-group>
+                    <van-cell-group>
+                      <van-cell
+                        v-for="(r,i) in $store.state.record.certTypCd"
+                        :key="i"
+                        :title="r"
+                        clickable
+                      >
+                        <van-checkbox :name="i" slot="right-icon" />
+                      </van-cell>
+                    </van-cell-group>
+                  </van-checkbox-group>
+                </div>
+              </div>
             </van-popup>
 
             <div class="text-gray-700 font-bold mt-5">证件号码</div>
@@ -731,7 +738,7 @@ export default {
     //   }
     //   console.log(this.params.followStatus, "follow");
     // },
-     confirmEstablishTime() {
+    confirmEstablishTime() {
       let timeStr = !this.establishTimeType
         ? this.$root
             .moment(this.establishTimeStr)
@@ -767,10 +774,10 @@ export default {
         return;
       }
       this.establishTimeType
-        ? (this.params.endEstablishTime= timeStr)
+        ? (this.params.endEstablishTime = timeStr)
         : (this.params.startEstablishTime = timeStr);
       this.showEstablishTime = false;
-    },
+    }
   }
 };
 </script>

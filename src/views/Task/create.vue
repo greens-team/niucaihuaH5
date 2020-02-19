@@ -366,7 +366,7 @@
       :style="{ height: '50%',}"
     >
       <van-nav-bar
-        title="选择经销商"
+        title="请选择经销商"
         left-text="取消"
         right-text="确定"
         left-arrow

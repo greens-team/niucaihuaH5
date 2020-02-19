@@ -244,7 +244,6 @@ export default {
       })
     },
 
-
     mylistpagecount({ state }, data = {}) {
       return new Promise(resolve => {
         let userGids = []

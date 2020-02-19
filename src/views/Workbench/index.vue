@@ -166,7 +166,7 @@
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       <div style="height:44px;" v-show="positioning"></div>
-      <div :class="['flex p-1 border-gray-200', {positioning:positioning}]" swipeable>
+      <div :class="['flex p-1 border-gray-200 items-center', {positioning:positioning}]" swipeable>
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
@@ -181,12 +181,25 @@
           </div>-->
         </div>
         <div class="flex-1"></div>
-        <van-icon
+        <img
+          @click="$router.push('/MoreTaskList');$store.state.moreTask.dropDownValue = 0"
+          style="display:inline-block;width:1.43rem;height:1.43rem;margin-right:.8rem;"
+          src="../../assets/workbench/more.png"
+          alt
+        />
+        <img
+          v-show="$root.checkRole('TASK_CREATE')"
+          @click="newTask = true"
+          style="display:inline-block;width:1.286rem;height:1.286rem;"
+          src="../../assets/workbench/plus.png"
+          alt
+        />
+        <!-- <van-icon
           v-show="$root.checkRole('TASK_CREATE')"
           size="20px"
           name="plus"
           @click="newTask = true"
-        />
+        />-->
       </div>
 
       <van-swipe
