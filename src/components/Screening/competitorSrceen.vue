@@ -78,18 +78,18 @@
             />
 
             <div class="text-gray-700 font-bold mt-5">竞对类型</div>
-            <div class="flex flex-wrap text-center text-gray-600">
+            <div class="flex flex-wrap text-center text-gray-600 mt-2">
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.competorType == 0}]"
-                @click="params.competorType = params.competorType == 0 ? '' : 0"
+                @click="params.competorType = 0"
               >全部</div>
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.competorType == 1}]"
-                @click="params.competorType = params.competorType == 1 ? '' : 1"
+                @click="params.competorType = 1"
               >第三方</div>
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.competorType == 2}]"
-                @click="params.competorType = params.competorType == 2 ? '' : 2"
+                @click="params.competorType = 2"
               >厂商金融</div>
 
               <!-- <div

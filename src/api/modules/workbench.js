@@ -19,7 +19,9 @@ export default (m) => {
       changeDealerList: '/dealer/change/listpage',   // 阶段变化经销商列表
 
       mylistpagecount: '/task/mylistpagecount',   // 获取我的任务列表 数量
-      listpagecount: '/task/listpagecount'   // 获取全部任务列表 数量
+      listpagecount: '/task/listpagecount',   // 获取全部任务列表 数量
+
+      morelistpage: '/task/morelistpage',       // 获取更多任务列表
     },
     upload: {
       // upload: '/lbccrm/common/upload' 

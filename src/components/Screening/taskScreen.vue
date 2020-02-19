@@ -1,6 +1,5 @@
-<!-- 承租人筛选组件 -->
+<!-- 工作台更多任务筛选组件 -->
 <template>
-  <!--  -->
   <div class="Screening">
     <div
       @click="screeningShow = true"
@@ -18,48 +17,82 @@
     >
       <div class="absolute inset-0 flex flex-col flex-1">
         <div class="flex-1 p-2 relative">
-          <div class="absolute inset-0 overflow-y-scroll p-5">
-            <div class="text-gray-700 font-bold">承租人名称</div>
+          <div class="absolute inset-0 overflow-y-scroll pl-3 pr-3 pt-5 pb-5">
+            <div class="text-gray-700 font-bold">任务主题</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.lesseeName"
+                v-model="params.taskName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
             </div>
 
-            <div class="text-gray-700 font-bold mt-5">身份证号码</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.idcardNum"
-                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                placeholder="请输入"
-              />
-            </div>
-            <div class="text-gray-700 font-bold mt-5">出生日期</div>
-            <!-- 一个时间点 -->
+            <div class="text-gray-700 font-bold mt-5">拜访时间</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showBirthdayTime = !showBirthdayTime; timeType=0;"
-                class="bg-gray-200 flex-1 items-center flex px-3"
-                :style="{color: params.birthday ? '#252525' : '#80848d'}"
-              >{{params.birthday ? $root.moment(params.birthday).format('YYYY-MM-DD') : '请选择'}}</div>
+                @click="showTime = !showTime; timeType=0;"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+                :style="{color: params.startTime ? '#252525' : '#80848d'}"
+              >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
+              <div class="ml-2 mr-2">-</div>
+              <div
+                @click="showTime = !showTime; timeType=1;"
+                :style="{color: params.endTime ? '#252525' : '#80848d'}"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+              >{{params.endTime ? $root.moment(params.endTime).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
-            <van-popup v-model="showBirthdayTime" position="bottom" :style="{ height: '40%'}">
+            <van-popup v-model="showTime" position="bottom" :style="{ height: '40%'}">
               <van-datetime-picker
                 title="请选择时间"
                 :formatter="formatter"
-                v-model="birthdayTimeStr"
+                v-model="timeStr"
                 type="date"
-                @confirm="confirmBirthdayTime"
-                @cancel="showBirthdayTime=false"
+                @confirm="confirmTaskTime"
+                @cancel="showTime=false"
               />
             </van-popup>
 
+            <div class="text-gray-700 font-bold mt-5">任务类型</div>
+            <div class="flex flex-wrap text-center text-gray-600 mt-2">
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{taskTypeCardStatus: params.taskType == 0}]"
+                style="color:#80848d"
+                @click="params.taskType = 0"
+              >全部</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{taskTypeCardStatus: params.taskType == 1}]"
+                style="color:#80848d"
+                @click="params.taskType = 1"
+              >经销商拜访</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{taskTypeCardStatus: params.taskType == 2}]"
+                style="color:#80848d"
+                @click="params.taskType = 2"
+              >任务事项</div>
+            </div>
+
+            <div class="text-gray-700 font-bold mt-5">完成情况</div>
+            <div class="flex flex-wrap text-center text-gray-600 mt-2">
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.finishType == 0}]"
+                style="color:#80848d"
+                @click="params.finishType = 0"
+              >全部</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.finishType == 1}]"
+                style="color:#80848d"
+                @click="params.finishType = 1"
+              >已完成</div>
+              <div
+                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.finishType == 2}]"
+                style="color:#80848d"
+                @click="params.finishType = 2"
+              >未完成</div>
+            </div>
+
             <div class="flex justify-between items-center mt-5">
               <div class="text-gray-700 font-bold">负责人</div>
-
               <div
                 class="flex-1 ml-3 flex pl-1"
                 @click="showUserDeptA = true"
@@ -107,109 +140,44 @@
               :memberList="params.followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
-            <div class="text-gray-700 font-bold mt-5">客户类型</div>
+            <div class="text-gray-700 font-bold mt-5">相关经销商</div>
             <div class="flex items-center mt-2">
               <div
-                @click="lesseeTypeShow = !lesseeTypeShow"
+                @click="dealerListShow = !dealerListShow"
                 class="bg-gray-200 flex-1 items-center flex px-3"
-                :style="{color: params.lesseeType.length ? '#252525' : '#80848d'}"
-              >{{params.lesseeType.length ? params.lesseeType.map(r=>$store.state.lessee.lesseeTypes[r]).join(',') : '请选择'}}</div>
-
+                :style="{color: params.dealerGids.length ? '#252525' : '#80848d'}"
+              >{{params.dealerGids.length ? params.dealerGids.map(r=>r.dealerName).join(',') : '请选择'}}</div>
               <van-popup
-                v-model="lesseeTypeShow"
+                v-model="dealerListShow"
                 position="bottom"
-                :style="{ height: '30%'}"
+                :style="{ height: '40%'}"
                 class="flex flex-col checkBoxGroup"
               >
                 <van-nav-bar
-                  title="请选择客户类型"
+                  title="请选择经销商"
                   left-text="取消"
                   right-text="确定"
                   left-arrow
-                  @click-left="lesseeTypeShow = false"
-                  @click-right="lesseeTypeShow = false"
+                  @click-left="dealerListShow = false"
+                  @click-right="dealerListShow = false;"
                 />
                 <div class="flex-1 relative h-full">
-                  <div class="absolute inset-0 overflow-y-auto">
-                    <van-checkbox-group v-model="params.lesseeType">
+                  <div class="absolute inset-0 overflow-y-auto" ref="dealerListsBox">
+                    <van-checkbox-group v-model="params.dealerGids">
                       <van-cell-group>
                         <van-cell
-                          v-for="(r,i) in $store.state.lessee.lesseeTypes"
+                          v-for="(r,i) in $store.state.dealer.listData"
                           :key="i"
-                          :title="r"
+                          :title="r.dealerName"
                           clickable
                         >
-                          <van-checkbox :name="i" slot="right-icon" />
+                          <van-checkbox :name="r" slot="right-icon" />
                         </van-cell>
                       </van-cell-group>
                     </van-checkbox-group>
                   </div>
                 </div>
               </van-popup>
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">承租人状态</div>
-            <div class="flex flex-wrap text-center text-gray-600">
-              <div
-                :class="['p-2 bg-gray-200 w-24 mr-2 mb-1 mt-2 flex-1',{lesseeStatus: params.lesseeStatus == 0}]"
-                @click="params.lesseeStatus = 0"
-              >全部</div>
-              <div
-                :class="['p-2 bg-gray-200 w-24 mr-2 mb-1 mt-2 flex-1',{lesseeStatus: params.lesseeStatus == 1}]"
-                @click="params.lesseeStatus = 1"
-              >线索承租人</div>
-              <div
-                :class="['p-2 bg-gray-200 w-24 mr-2 mb-1 mt-2 flex-1',{lesseeStatus: params.lesseeStatus == 2}]"
-                @click="params.lesseeStatus = 2"
-              >已出单</div>
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">手机号码</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.lesseePhone"
-                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                placeholder="请输入"
-              />
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">户口所在地</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.domicilePlace"
-                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                placeholder="请输入"
-              />
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">家庭住址</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.homeAddress"
-                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                placeholder="请输入"
-              />
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">从业年限</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.workingYears"
-                style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                placeholder="请输入"
-              />
-            </div>
-
-            <div class="text-gray-700 font-bold mt-5">备注信息</div>
-            <div class="bg-gray-200 mt-2">
-              <van-field
-                v-model="params.comment"
-                :rows="5"
-                style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
-                placeholder="请输入"
-                type="textarea"
-                maxlength="300"
-              />
             </div>
           </div>
         </div>
@@ -240,44 +208,55 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["lesseeStatusValue"],
+  props: ["taskTypeValue"],
   data() {
     return {
       showUserDeptA: false,
       showUserDeptB: false,
       screeningShow: false,
       params: {
-        lesseeName: "",
-        idcardNum: "",
-        birthday: "",
-        lesseeStatus: 0,
-        gender: "",
-        followerUserGids: [],
+        taskType: 0,
+        taskName: "",
+        startTime: 0,
+        endTime: 0,
         ownerUserGids: [],
-        lesseeType: [],
-        lesseePhone: "",
-        domicilePlace: "",
-        homeAddress: "",
-        workingYears: "",
-        comment: ""
+        followerUserGids: [],
+        dealerGids: [],
+        finishType: 0
       },
 
-      // 出生日期
+      showTime: false,
+      timeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
       timeType: 0,
-      showBirthdayTime: false,
-      birthdayTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
-      lesseeTypeShow: false
+      dealerListShow: false,
+      visitingRolesValue: ["大区/省总", "区域经理", "城市经理", "客户经理"]
     };
   },
-  mounted() {},
+  mounted() {
+    this.$store.dispatch("getListData", { pageNum: 1 });
+  },
   watch: {
     screeningShow(val) {
-      this.params.lesseeStatus = this.lesseeStatusValue;
+      this.params.taskType = this.taskTypeValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
       }
+    },
+    dealerListShow(val) {
+      setTimeout(() => {
+        val &&
+          this.scrollLoad(this.$refs.dealerListsBox, resolve => {
+            this.$store
+              .dispatch("getListData", {
+                pageNum: this.$store.state.dealer.listParams.pageNum + 1
+              })
+              .then(msg => {
+                resolve(msg);
+              });
+          });
+      }, 0);
     }
   },
   methods: {
@@ -288,35 +267,60 @@ export default {
       this.screeningShow = false;
       this.$emit("onSearch", this.params);
     },
+    // 确定时间
+    confirmTaskTime() {
+      let timeStr = !this.timeType
+        ? this.$root
+            .moment(this.timeStr)
+            .startOf("day")
+            .valueOf()
+        : this.$root
+            .moment(this.timeStr)
+            .endOf("day")
+            .valueOf();
+      !this.timeType
+        ? new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 00:00:00")
+          ).getTime()
+        : new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 23:59:59")
+          ).getTime();
+      if (
+        !this.timeType &&
+        this.params.endTime &&
+        timeStr > this.params.endTime
+      ) {
+        this.$toast("开始时间要小于结束时间");
+        // this.$notify({ type: "warning", message: "开始时间要小于结束时间" });
+        return;
+      }
+      if (
+        this.timeType &&
+        this.params.startTime &&
+        timeStr < this.params.startTime
+      ) {
+        this.$toast("结束时间要大于开始时间");
+        // this.$notify({ type: "warning", message: "结束时间要大于开始时间" });
+        return;
+      }
+      this.timeType
+        ? (this.params.endTime = timeStr)
+        : (this.params.startTime = timeStr);
+      this.showTime = false;
+    },
     // 重置
     reset() {
       this.params = {
-        lesseeName: "",
-        idcardNum: "",
-        birthday: "",
-        gender: "",
-        followerUserGids: [],
+        taskType: 0,
+        taskName: "",
+        startTime: 0,
+        endTime: 0,
         ownerUserGids: [],
-        lesseeType: [],
-        lesseePhone: "",
-        domicilePlace: "",
-        homeAddress: "",
-        workingYears: "",
-        comment: "",
-        lesseeStatus: 0
+        followerUserGids: [],
+        dealerGids: [],
+        finishType: 0
       };
       // this.finish();
-    },
-
-    // 出生日期确认
-    confirmBirthdayTime() {
-      if (this.timeType == 0) {
-        this.params.birthday = this.$root
-          .moment(this.birthdayTimeStr)
-          .startOf("day")
-          .valueOf();
-      }
-      this.showBirthdayTime = false;
     }
   }
 };
@@ -360,12 +364,26 @@ export default {
   justify-content: left;
 }
 
-.lesseeStatus {
+.taskTypeCardStatus {
   background-color: #fff2e6;
   position: relative;
   color: #ff9b02;
 }
-.lesseeStatus::after {
+.taskTypeCardStatus::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border: 6px solid;
+  border-color: transparent #ff9b02 #ff9b02 transparent;
+  content: "";
+}
+
+.businessCardStatus {
+  background-color: #fff2e6;
+  position: relative;
+  color: #ff9b02;
+}
+.businessCardStatus::after {
   position: absolute;
   right: 0;
   bottom: 0;

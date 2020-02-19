@@ -353,6 +353,13 @@ export default new Router({
       component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Workbench/newTaskList')
     },
 
+    {
+      path: '/MoreTaskList',     // 新增拜访列表
+      name: 'MoreTaskList',
+      component: () => import(/* webpackChunkName: "ChangeDealer" */ './views/Workbench/MoreTaskList')
+    },
+
+
 
 
 
