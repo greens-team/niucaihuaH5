@@ -445,7 +445,7 @@
           </div>
         </div>
 
-        <div class="flex text-center" style="z-index:2001">
+        <div class="flex text-center" style="transform:translateZ(1px);">
           <div
             class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
             style="background:#EFF1F3;color:#252525;"
