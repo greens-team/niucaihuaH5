@@ -30,26 +30,31 @@
             <div class="text-gray-700 font-bold mt-5">拜访时间</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showTime = !showTime; timeType=0;"
+                @click="showTime = !showTime; timeType=0;isShowBtnGroup=false;"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
                 :style="{color: params.startTime ? '#252525' : '#80848d'}"
               >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
               <div class="ml-2 mr-2">-</div>
               <div
-                @click="showTime = !showTime; timeType=1;"
+                @click="showTime = !showTime; timeType=1;isShowBtnGroup=false;"
                 :style="{color: params.endTime ? '#252525' : '#80848d'}"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
               >{{params.endTime ? $root.moment(params.endTime).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
-            <van-popup v-model="showTime" position="bottom" :style="{ height: '40%'}">
+            <van-popup
+              v-model="showTime"
+              position="bottom"
+              :style="{ height: '40%'}"
+              @click-overlay="closeOverlay"
+            >
               <van-datetime-picker
                 title="请选择时间"
                 :formatter="formatter"
                 v-model="timeStr"
                 type="date"
                 @confirm="confirmTaskTime"
-                @cancel="showTime=false"
+                @cancel="showTime=false;isShowBtnGroup=true;"
               />
             </van-popup>
 
@@ -143,14 +148,15 @@
             <div class="text-gray-700 font-bold mt-5">相关经销商</div>
             <div class="flex items-center mt-2">
               <div
-                @click="dealerListShow = !dealerListShow"
+                @click="dealerListShow = !dealerListShow; isShowBtnGroup=false; dealerRow=dealerRowArr.map(item => item)"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.dealerGids.length ? '#252525' : '#80848d'}"
-              >{{params.dealerGids.length ? params.dealerGids.map(r=>r.dealerName).join(',') : '请选择'}}</div>
+              >{{params.dealerGids.length ? dealerNames.toString() : '请选择'}}</div>
               <van-popup
                 v-model="dealerListShow"
                 position="bottom"
                 :style="{ height: '40%'}"
+                @click-overlay="closeOverlay"
                 class="flex flex-col checkBoxGroup"
               >
                 <van-nav-bar
@@ -158,12 +164,12 @@
                   left-text="取消"
                   right-text="确定"
                   left-arrow
-                  @click-left="dealerListShow = false"
-                  @click-right="dealerListShow = false;"
+                  @click-left="dealerListShow = false;isShowBtnGroup = true;"
+                  @click-right="confirm"
                 />
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto" ref="dealerListsBox">
-                    <van-checkbox-group v-model="params.dealerGids">
+                    <van-checkbox-group v-model="dealerRow">
                       <van-cell-group>
                         <van-cell
                           v-for="(r,i) in $store.state.dealer.listData"
@@ -182,7 +188,7 @@
           </div>
         </div>
 
-        <div class="flex text-center">
+        <div class="flex text-center" v-show="isShowBtnGroup">
           <div
             class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
             style="background:#EFF1F3;color:#252525;"
@@ -214,6 +220,7 @@ export default {
       showUserDeptA: false,
       showUserDeptB: false,
       screeningShow: false,
+      isShowBtnGroup: true,
       params: {
         taskType: 0,
         taskName: "",
@@ -230,6 +237,9 @@ export default {
       timeType: 0,
 
       dealerListShow: false,
+      dealerRow: [],
+      dealerNames: [],
+      dealerRowArr: [],
       visitingRolesValue: ["大区/省总", "区域经理", "城市经理", "客户经理"]
     };
   },
@@ -267,8 +277,12 @@ export default {
       this.screeningShow = false;
       this.$emit("onSearch", this.params);
     },
+    closeOverlay() {
+      this.isShowBtnGroup = true; // 点击遮罩层时显示按钮
+    },
     // 确定时间
     confirmTaskTime() {
+      this.isShowBtnGroup = true;
       let timeStr = !this.timeType
         ? this.$root
             .moment(this.timeStr)
@@ -320,7 +334,18 @@ export default {
         dealerGids: [],
         finishType: 0
       };
+      this.dealerRowArr = [];
       // this.finish();
+    },
+    // 相关经销商取消
+    confirm() {
+      this.dealerListShow = false;
+      this.isShowBtnGroup = true;
+
+      this.params.dealerGids = this.dealerRow.map(r => r.gid);
+      this.dealerNames = this.dealerRow.map(r => r.dealerName);
+
+      this.dealerRowArr = this.dealerRow.map(item => item);
     }
   }
 };

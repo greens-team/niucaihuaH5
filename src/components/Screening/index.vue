@@ -220,10 +220,10 @@
                 />
               </van-dropdown-menu>-->
               <div
-                @click="ownerCdShow = !ownerCdShow; isShowBtnGroup = false;"
+                @click="ownerCdShow = !ownerCdShow; isShowBtnGroup = false;ownerCdRow=ownerCdRowArr.map(item => item)"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.ownerCd.length ? '#252525' : '#80848d'}"
-              >{{params.ownerCd.length ? params.ownerCd.map(r=>$store.state.dealer.ownerCdTypes[r]).join(',') : '请选择'}}</div>
+              >{{params.ownerCd.length ? ownerCdNames.toString(): '请选择'}}</div>
 
               <van-popup
                 v-model="ownerCdShow"
@@ -238,18 +238,18 @@
                   right-text="确定"
                   left-arrow
                   @click-left="ownerCdShow = false;isShowBtnGroup = true;"
-                  @click-right="ownerCdShow = false;isShowBtnGroup = true;"
+                  @click-right="confirm"
                 />
 
-                <van-checkbox-group v-model="params.ownerCd" style="height: 100%;overflow: scroll;">
+                <van-checkbox-group v-model="ownerCdRow" style="height: 100%;overflow: scroll;">
                   <van-cell-group>
                     <van-cell
                       v-for="(r,i) in $store.state.dealer.ownerCdTypes"
                       :key="i"
-                      :title="r"
+                      :title="r.text"
                       clickable
                     >
-                      <van-checkbox :name="i" slot="right-icon" />
+                      <van-checkbox :name="r" slot="right-icon" />
                     </van-cell>
                   </van-cell-group>
                 </van-checkbox-group>
@@ -361,7 +361,7 @@
             <div class="text-gray-700 font-bold mt-5">证件类型</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="certTypCdShow = !certTypCdShow; isShowBtnGroup=false;"
+                @click="certTypCdShow = !certTypCdShow; isShowBtnGroup=false; certTypCdRow=certTypCdRowArr.map(r=>r)"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.certTypCd.length ? '#252525' : '#80848d'}"
               >{{params.certTypCd.length ? params.certTypCd.map(r=>$store.state.record.certTypCd[r]).join(',') : '请选择'}}</div>
@@ -379,7 +379,7 @@
                 right-text="确定"
                 left-arrow
                 @click-left="certTypCdShow = false;isShowBtnGroup=true;"
-                @click-right="certTypCdShow = false;isShowBtnGroup=true;"
+                @click-right="confirmCertTypCd"
               />
               <!-- <van-radio-group v-model="certTypCdVal" style="height: 100%;overflow: scroll;">
                 <van-cell-group>
@@ -397,10 +397,7 @@
 
               <div class="flex-1 relative h-full">
                 <div class="absolute inset-0 overflow-y-auto">
-                  <van-checkbox-group
-                    v-model="params.certTypCd"
-                    style="height: 100%;overflow: scroll;"
-                  >
+                  <van-checkbox-group v-model="certTypCdRow">
                     <van-cell-group>
                       <van-cell
                         v-for="(r,i) in $store.state.record.certTypCd"
@@ -537,7 +534,13 @@ export default {
       establishTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
       certTypCdShow: false,
+      certTypCdRow: [],
+      certTypCdRowArr: [],
+
       ownerCdShow: false,
+      ownerCdRow: [],
+      ownerCdNames: [],
+      ownerCdRowArr: [],
       certTypCdVal: [],
       levelValue: ["一级经销商", "二级经销商"]
       // followStatusVal: ["线索入库", "合作中"]
@@ -719,6 +722,8 @@ export default {
         contactsPhone: "", //手机号码
         comment: ""
       };
+      this.ownerCdRowArr = [];
+      this.certTypCdRowArr = [];
       // this.finish();
     },
 
@@ -796,6 +801,26 @@ export default {
         ? (this.params.endEstablishTime = timeStr)
         : (this.params.startEstablishTime = timeStr);
       this.showEstablishTime = false;
+    },
+
+    confirm() {
+      this.ownerCdShow = false;
+      this.isShowBtnGroup = true;
+
+      this.params.ownerCd = this.ownerCdRow.map(r => {
+        return Number(r.value);
+      });
+      this.ownerCdNames = this.ownerCdRow.map(r => r.text);
+
+      this.ownerCdRowArr = this.ownerCdRow.map(item => item);
+    },
+
+    confirmCertTypCd() {
+      this.certTypCdShow = false;
+      this.isShowBtnGroup = true;
+
+      this.params.certTypCd = this.certTypCdRow.map(r => r);
+      this.certTypCdRowArr = this.certTypCdRow.map(item => item);
     }
   }
 };

@@ -115,10 +115,10 @@
             <div class="text-gray-700 font-bold mt-5">客户类型</div>
             <div class="flex items-center mt-2">
               <div
-                @click="lesseeTypeShow = !lesseeTypeShow;isShowBtnGroup=false;"
+                @click="lesseeTypeShow = !lesseeTypeShow;isShowBtnGroup=false;lesseeTypeRow=lesseeTypeRowArr.map(item => item)"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.lesseeType.length ? '#252525' : '#80848d'}"
-              >{{params.lesseeType.length ? params.lesseeType.map(r=>$store.state.lessee.lesseeTypes[r]).join(',') : '请选择'}}</div>
+              >{{params.lesseeType.length ? lesseeTypeNames.toString(): '请选择'}}</div>
 
               <van-popup
                 v-model="lesseeTypeShow"
@@ -133,19 +133,19 @@
                   right-text="确定"
                   left-arrow
                   @click-left="lesseeTypeShow = false;isShowBtnGroup=true;"
-                  @click-right="lesseeTypeShow = false;isShowBtnGroup=true;"
+                  @click-right="confirm"
                 />
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto">
-                    <van-checkbox-group v-model="params.lesseeType">
+                    <van-checkbox-group v-model="lesseeTypeRow">
                       <van-cell-group>
                         <van-cell
-                          v-for="(r,i) in $store.state.lessee.lesseeTypes"
+                          v-for="(r,i) in $store.state.lessee.lesseeTypeList"
                           :key="i"
-                          :title="r"
+                          :title="r.text"
                           clickable
                         >
-                          <van-checkbox :name="i" slot="right-icon" />
+                          <van-checkbox :name="r" slot="right-icon" />
                         </van-cell>
                       </van-cell-group>
                     </van-checkbox-group>
@@ -274,7 +274,10 @@ export default {
       showBirthdayTime: false,
       birthdayTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
-      lesseeTypeShow: false
+      lesseeTypeShow: false,
+      lesseeTypeRow: [],
+      lesseeTypeNames: [],
+      lesseeTypeRowArr: []
     };
   },
   mounted() {},
@@ -315,6 +318,7 @@ export default {
         comment: "",
         lesseeStatus: 0
       };
+      this.lesseeTypeRowArr = [];
       // this.finish();
     },
 
@@ -328,6 +332,16 @@ export default {
           .valueOf();
       }
       this.showBirthdayTime = false;
+    },
+
+    confirm() {
+      this.lesseeTypeShow = false;
+      this.isShowBtnGroup = true;
+
+      this.params.lesseeType = this.lesseeTypeRow.map(r => r.value);
+      this.lesseeTypeNames = this.lesseeTypeRow.map(r => r.text);
+
+      this.lesseeTypeRowArr = this.lesseeTypeRow.map(item => item);
     }
   }
 };
