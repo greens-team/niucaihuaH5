@@ -67,7 +67,7 @@
 
               <div
                 class="flex-1 ml-3 flex pl-1"
-                @click="showUserDeptA = true"
+                @click="showUserDeptA = true;isShowBtnGroup=false;"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
               >
                 <div
@@ -82,8 +82,8 @@
               class="userListDeptBox"
               v-if="showUserDeptA"
               :deptTree="false"
-              @cancel="showUserDeptA=false"
-              @confirm="(data)=>{showUserDeptA = false, params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              @cancel="showUserDeptA=false;isShowBtnGroup=true;"
+              @confirm="(data)=>{showUserDeptA = false, isShowBtnGroup=true,params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
               :memberList="params.ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
@@ -92,7 +92,7 @@
 
               <div
                 class="flex-1 ml-3 flex pl-1"
-                @click="showUserDeptB = true"
+                @click="showUserDeptB = true;isShowBtnGroup=false;"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
               >
                 <div
@@ -107,8 +107,8 @@
               class="userListDeptBox"
               v-if="showUserDeptB"
               :deptTree="false"
-              @cancel="showUserDeptB=false"
-              @confirm="(data)=>{showUserDeptB = false, params.followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              @cancel="showUserDeptB=false;isShowBtnGroup=true;"
+              @confirm="(data)=>{showUserDeptB = false, isShowBtnGroup=true,params.followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
               :memberList="params.followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
