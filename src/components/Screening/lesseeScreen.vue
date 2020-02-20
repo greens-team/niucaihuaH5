@@ -40,20 +40,25 @@
             <!-- 一个时间点 -->
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showBirthdayTime = !showBirthdayTime; timeType=0;"
+                @click="showBirthdayTime = !showBirthdayTime; timeType=0;isShowBtnGroup=false;"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.birthday ? '#252525' : '#80848d'}"
               >{{params.birthday ? $root.moment(params.birthday).format('YYYY-MM-DD') : '请选择'}}</div>
             </div>
 
-            <van-popup v-model="showBirthdayTime" position="bottom" :style="{ height: '40%'}">
+            <van-popup
+              v-model="showBirthdayTime"
+              position="bottom"
+              :style="{ height: '40%'}"
+              @click-overlay="closeOverlay"
+            >
               <van-datetime-picker
                 title="请选择时间"
                 :formatter="formatter"
                 v-model="birthdayTimeStr"
                 type="date"
                 @confirm="confirmBirthdayTime"
-                @cancel="showBirthdayTime=false"
+                @cancel="showBirthdayTime=false;isShowBtnGroup=true;"
               />
             </van-popup>
 
@@ -110,7 +115,7 @@
             <div class="text-gray-700 font-bold mt-5">客户类型</div>
             <div class="flex items-center mt-2">
               <div
-                @click="lesseeTypeShow = !lesseeTypeShow"
+                @click="lesseeTypeShow = !lesseeTypeShow;isShowBtnGroup=false;"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.lesseeType.length ? '#252525' : '#80848d'}"
               >{{params.lesseeType.length ? params.lesseeType.map(r=>$store.state.lessee.lesseeTypes[r]).join(',') : '请选择'}}</div>
@@ -119,6 +124,7 @@
                 v-model="lesseeTypeShow"
                 position="bottom"
                 :style="{ height: '30%'}"
+                @click-overlay="closeOverlay"
                 class="flex flex-col checkBoxGroup"
               >
                 <van-nav-bar
@@ -126,8 +132,8 @@
                   left-text="取消"
                   right-text="确定"
                   left-arrow
-                  @click-left="lesseeTypeShow = false"
-                  @click-right="lesseeTypeShow = false"
+                  @click-left="lesseeTypeShow = false;isShowBtnGroup=true;"
+                  @click-right="lesseeTypeShow = false;isShowBtnGroup=true;"
                 />
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto">
@@ -214,7 +220,7 @@
           </div>
         </div>
 
-        <div class="flex text-center">
+        <div class="flex text-center" v-show="isShowBtnGroup">
           <div
             class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
             style="background:#EFF1F3;color:#252525;"
@@ -246,6 +252,7 @@ export default {
       showUserDeptA: false,
       showUserDeptB: false,
       screeningShow: false,
+      isShowBtnGroup: true,
       params: {
         lesseeName: "",
         idcardNum: "",
@@ -288,6 +295,9 @@ export default {
       this.screeningShow = false;
       this.$emit("onSearch", this.params);
     },
+    closeOverlay() {
+      this.isShowBtnGroup = true; // 点击遮罩层时显示按钮
+    },
     // 重置
     reset() {
       this.params = {
@@ -310,6 +320,7 @@ export default {
 
     // 出生日期确认
     confirmBirthdayTime() {
+      this.isShowBtnGroup = true;
       if (this.timeType == 0) {
         this.params.birthday = this.$root
           .moment(this.birthdayTimeStr)

@@ -31,13 +31,13 @@
             <div class="text-gray-700 font-bold mt-5">创建时间</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showTime = !showTime; timeType=0; isShowBtnGroup = false"
+                @click="showTime = !showTime; timeType=0; isShowBtnGroup = false;"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
                 :style="{color: params.startTime ? '#252525' : '#80848d'}"
               >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
               <div class="ml-2 mr-2">-</div>
               <div
-                @click="showTime = !showTime; timeType=1;"
+                @click="showTime = !showTime; timeType=1; isShowBtnGroup = false;"
                 :style="{color: params.endTime ? '#252525' : '#80848d'}"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
               >{{params.endTime ? $root.moment(params.endTime).format('YYYY-MM-DD') : '结束时间'}}</div>
@@ -220,7 +220,7 @@
                 />
               </van-dropdown-menu>-->
               <div
-                @click="ownerCdShow = !ownerCdShow"
+                @click="ownerCdShow = !ownerCdShow; isShowBtnGroup = false;"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.ownerCd.length ? '#252525' : '#80848d'}"
               >{{params.ownerCd.length ? params.ownerCd.map(r=>$store.state.dealer.ownerCdTypes[r]).join(',') : '请选择'}}</div>
@@ -230,14 +230,15 @@
                 position="bottom"
                 :style="{ height: '30%'}"
                 class="flex flex-col checkBoxGroup"
+                @click-overlay="closeOverlay"
               >
                 <van-nav-bar
                   title="请选择公司归属"
                   left-text="取消"
                   right-text="确定"
                   left-arrow
-                  @click-left="ownerCdShow = false"
-                  @click-right="ownerCdShow = false"
+                  @click-left="ownerCdShow = false;isShowBtnGroup = true;"
+                  @click-right="ownerCdShow = false;isShowBtnGroup = true;"
                 />
 
                 <van-checkbox-group v-model="params.ownerCd" style="height: 100%;overflow: scroll;">
@@ -309,26 +310,31 @@
             <div class="text-gray-700 font-bold mt-5">成立日期</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showEstablishTime = !showEstablishTime; establishTimeType=0;"
+                @click="showEstablishTime = !showEstablishTime; establishTimeType=0; isShowBtnGroup=false;"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
                 :style="{color: params.startEstablishTime ? '#252525' : '#80848d'}"
               >{{params.startEstablishTime ? $root.moment(params.startEstablishTime).format('YYYY-MM-DD') : '开始时间'}}</div>
               <div class="ml-2 mr-2">-</div>
               <div
-                @click="showEstablishTime = !showEstablishTime; establishTimeType=1;"
+                @click="showEstablishTime = !showEstablishTime; establishTimeType=1; isShowBtnGroup=false;"
                 :style="{color: params.endEstablishTime ? '#252525' : '#80848d'}"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
               >{{params.endEstablishTime ? $root.moment(params.endEstablishTime).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
-            <van-popup v-model="showEstablishTime" position="bottom" :style="{ height: '40%'}">
+            <van-popup
+              v-model="showEstablishTime"
+              position="bottom"
+              :style="{ height: '40%'}"
+              @click-overlay="closeOverlay"
+            >
               <van-datetime-picker
                 title="请选择时间"
                 :formatter="formatter"
                 v-model="establishTimeStr"
                 type="date"
                 @confirm="confirmEstablishTime"
-                @cancel="showEstablishTime=false"
+                @cancel="showEstablishTime=false;isShowBtnGroup=true;"
               />
             </van-popup>
 
@@ -355,7 +361,7 @@
             <div class="text-gray-700 font-bold mt-5">证件类型</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="certTypCdShow = !certTypCdShow"
+                @click="certTypCdShow = !certTypCdShow; isShowBtnGroup=false;"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.certTypCd.length ? '#252525' : '#80848d'}"
               >{{params.certTypCd.length ? params.certTypCd.map(r=>$store.state.record.certTypCd[r]).join(',') : '请选择'}}</div>
@@ -364,6 +370,7 @@
               v-model="certTypCdShow"
               position="bottom"
               :style="{ height: '40%'}"
+              @click-overlay="closeOverlay"
               class="flex flex-col checkBoxGroup"
             >
               <van-nav-bar
@@ -371,8 +378,8 @@
                 left-text="取消"
                 right-text="确定"
                 left-arrow
-                @click-left="certTypCdShow = false"
-                @click-right="certTypCdShow = false;"
+                @click-left="certTypCdShow = false;isShowBtnGroup=true;"
+                @click-right="certTypCdShow = false;isShowBtnGroup=true;"
               />
               <!-- <van-radio-group v-model="certTypCdVal" style="height: 100%;overflow: scroll;">
                 <van-cell-group>
@@ -450,7 +457,7 @@
           </div>
         </div>
 
-        <div class="flex text-center" v-if="isShowBtnGroup">
+        <div class="flex text-center" v-show="isShowBtnGroup">
           <div
             class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
             style="background:#EFF1F3;color:#252525;"
@@ -676,7 +683,7 @@ export default {
       this.showTime = false;
     },
     closeOverlay() {
-      this.isShowBtnGroup = true;  // 点击遮罩层时显示按钮
+      this.isShowBtnGroup = true; // 点击遮罩层时显示按钮
     },
 
     // 重置
@@ -750,6 +757,7 @@ export default {
     //   console.log(this.params.followStatus, "follow");
     // },
     confirmEstablishTime() {
+      this.isShowBtnGroup = true;
       let timeStr = !this.establishTimeType
         ? this.$root
             .moment(this.establishTimeStr)
