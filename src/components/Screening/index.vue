@@ -31,7 +31,7 @@
             <div class="text-gray-700 font-bold mt-5">创建时间</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showTime = !showTime; timeType=0;"
+                @click="showTime = !showTime; timeType=0; isShowBtnGroup = false"
                 class="bg-gray-200 flex-1 justify-center items-center flex"
                 :style="{color: params.startTime ? '#252525' : '#80848d'}"
               >{{params.startTime ? $root.moment(params.startTime).format('YYYY-MM-DD') : '开始时间'}}</div>
@@ -43,14 +43,19 @@
               >{{params.endTime ? $root.moment(params.endTime).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
-            <van-popup v-model="showTime" position="bottom" :style="{ height: '40%'}">
+            <van-popup
+              v-model="showTime"
+              position="bottom"
+              :style="{ height: '40%'}"
+              @click-overlay="closeOverlay"
+            >
               <van-datetime-picker
                 title="请选择时间"
                 :formatter="formatter"
                 v-model="timeStr"
                 type="date"
                 @confirm="confirmTaskTime"
-                @cancel="showTime=false"
+                @cancel="showTime=false;isShowBtnGroup=true;"
               />
             </van-popup>
 
@@ -445,7 +450,7 @@
           </div>
         </div>
 
-        <div class="flex text-center" style=" transform: translateZ(100px);">
+        <div class="flex text-center" v-if="isShowBtnGroup">
           <div
             class="w-2/5 bg-gray-300 p-3 text-xl font-bold"
             style="background:#EFF1F3;color:#252525;"
@@ -477,6 +482,7 @@ export default {
       showUserDeptA: false,
       showUserDeptB: false,
       screeningShow: false,
+      isShowBtnGroup: true,
       params: {
         dealerName: "",
         startTime: "",
@@ -629,6 +635,7 @@ export default {
     },
     // 确定时间
     confirmTaskTime() {
+      this.isShowBtnGroup = true;
       let timeStr = !this.timeType
         ? this.$root
             .moment(this.timeStr)
@@ -668,6 +675,10 @@ export default {
         : (this.params.startTime = timeStr);
       this.showTime = false;
     },
+    closeOverlay() {
+      this.isShowBtnGroup = true;  // 点击遮罩层时显示按钮
+    },
+
     // 重置
     reset() {
       this.params = {
