@@ -79,12 +79,12 @@ export default {
                 })
             }
 
-            // 相关经销商
-            if (params.dealerGids && params.dealerGids.length && params.dealerGids[0].gid) {
-                params.dealerGids = params.dealerGids.map(r => {
-                    return String(r.gid)
-                })
-            }
+            // // 相关经销商
+            // if (params.dealerGids && params.dealerGids.length && params.dealerGids[0].gid) {
+            //     params.dealerGids = params.dealerGids.map(r => {
+            //         return String(r.gid)
+            //     })
+            // }
 
             if (params.pageNum == 1) {
                 state.isLastPage = false;

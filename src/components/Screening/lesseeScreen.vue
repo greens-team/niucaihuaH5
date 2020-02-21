@@ -67,7 +67,7 @@
 
               <div
                 class="flex-1 ml-3 flex pl-1"
-                @click="showUserDeptA = true"
+                @click="showUserDeptA = true;isShowBtnGroup=false;"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
               >
                 <div
@@ -82,8 +82,8 @@
               class="userListDeptBox"
               v-if="showUserDeptA"
               :deptTree="false"
-              @cancel="showUserDeptA=false"
-              @confirm="(data)=>{showUserDeptA = false, params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              @cancel="showUserDeptA=false;isShowBtnGroup=true;"
+              @confirm="(data)=>{showUserDeptA = false, isShowBtnGroup=true,params.ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
               :memberList="params.ownerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
@@ -92,7 +92,7 @@
 
               <div
                 class="flex-1 ml-3 flex pl-1"
-                @click="showUserDeptB = true"
+                @click="showUserDeptB = true;isShowBtnGroup=false;"
                 style="background-color: #F8FAFB; height: 2.5rem; line-height: 2.5rem; padding-left:10px;"
               >
                 <div
@@ -107,18 +107,18 @@
               class="userListDeptBox"
               v-if="showUserDeptB"
               :deptTree="false"
-              @cancel="showUserDeptB=false"
-              @confirm="(data)=>{showUserDeptB = false, params.followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
+              @cancel="showUserDeptB=false;isShowBtnGroup=true;"
+              @confirm="(data)=>{showUserDeptB = false, isShowBtnGroup=true,params.followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})}"
               :memberList="params.followerUserGids.map(r=>(r.refRlNm || r.ownerUserName) +'_'+(r.id || r.ownerUserGid))"
             />
 
             <div class="text-gray-700 font-bold mt-5">客户类型</div>
             <div class="flex items-center mt-2">
               <div
-                @click="lesseeTypeShow = !lesseeTypeShow;isShowBtnGroup=false;"
+                @click="lesseeTypeShow = !lesseeTypeShow;isShowBtnGroup=false;lesseeTypeRow=lesseeTypeRowArr.map(item => item)"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.lesseeType.length ? '#252525' : '#80848d'}"
-              >{{params.lesseeType.length ? params.lesseeType.map(r=>$store.state.lessee.lesseeTypes[r]).join(',') : '请选择'}}</div>
+              >{{params.lesseeType.length ? lesseeTypeNames.toString(): '请选择'}}</div>
 
               <van-popup
                 v-model="lesseeTypeShow"
@@ -133,19 +133,19 @@
                   right-text="确定"
                   left-arrow
                   @click-left="lesseeTypeShow = false;isShowBtnGroup=true;"
-                  @click-right="lesseeTypeShow = false;isShowBtnGroup=true;"
+                  @click-right="confirm"
                 />
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto">
-                    <van-checkbox-group v-model="params.lesseeType">
+                    <van-checkbox-group v-model="lesseeTypeRow">
                       <van-cell-group>
                         <van-cell
-                          v-for="(r,i) in $store.state.lessee.lesseeTypes"
+                          v-for="(r,i) in $store.state.lessee.lesseeTypeList"
                           :key="i"
-                          :title="r"
+                          :title="r.text"
                           clickable
                         >
-                          <van-checkbox :name="i" slot="right-icon" />
+                          <van-checkbox :name="r" slot="right-icon" />
                         </van-cell>
                       </van-cell-group>
                     </van-checkbox-group>
@@ -274,7 +274,10 @@ export default {
       showBirthdayTime: false,
       birthdayTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
-      lesseeTypeShow: false
+      lesseeTypeShow: false,
+      lesseeTypeRow: [],
+      lesseeTypeNames: [],
+      lesseeTypeRowArr: []
     };
   },
   mounted() {},
@@ -315,6 +318,7 @@ export default {
         comment: "",
         lesseeStatus: 0
       };
+      this.lesseeTypeRowArr = [];
       // this.finish();
     },
 
@@ -328,6 +332,16 @@ export default {
           .valueOf();
       }
       this.showBirthdayTime = false;
+    },
+
+    confirm() {
+      this.lesseeTypeShow = false;
+      this.isShowBtnGroup = true;
+
+      this.params.lesseeType = this.lesseeTypeRow.map(r => r.value);
+      this.lesseeTypeNames = this.lesseeTypeRow.map(r => r.text);
+
+      this.lesseeTypeRowArr = this.lesseeTypeRow.map(item => item);
     }
   }
 };

@@ -90,11 +90,14 @@ export default {
     jobsUser1: [],
     selectedUserGids: [],
 
-    ownerCdTypes: {     // 公司归属
-      1: '自有',
-      2: '第三方'
-    }
-
+    ownerCdTypes: [  // 公司归属
+      {
+        text: '自有', value: 1
+      },
+      {
+        text: '第三方', value: 2
+      }
+    ]
 
   },
   mutations: {
@@ -210,9 +213,9 @@ export default {
           endEstablishTime: String(params.endEstablishTime).length == 13 ? params.endEstablishTime / 1000 : params.endEstablishTime,
         }
 
-        let ownerCdNum = { ownerCd: params.ownerCd.map(i => +i) }
+        // let ownerCdNum = { ownerCd: params.ownerCd.map(i => +i) }
 
-        window.$ajax.dealer.listData(Object.assign({}, params, timevals, ownerCdNum)).then(res => {
+        window.$ajax.dealer.listData(Object.assign({}, params, timevals)).then(res => {
           if (!res.code) {
             state.listData = params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
             if (res.data.list && res.data.list.length < params.pageSize) {
