@@ -131,6 +131,8 @@
       <Screening
         @onSearch="searchAll"
         :followStatusValue="$store.state.dealer.listParams.followStatus"
+        :ownerUserGidsValue="ownerUserGids"
+        :followerUserGidsValue="followerUserGids"
       />
     </div>
     <div class="border-b border-gray-200 flex items-center justify-around" v-else></div>
@@ -152,7 +154,11 @@
           </van-swipe-item>
         </van-swipe>
 
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
+        <p
+          v-show="!$store.state.dealer.listData.length"
+          class="text-center mt-10"
+          style="color:#80848d"
+        >没有筛选到相关的数据</p>
       </div>
     </div>
   </div>
@@ -184,9 +190,10 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      isShowData: false,
       flag: 0,
-      dropDown: false
+      dropDown: false,
+      followerUserGids: [],
+      ownerUserGids: []
     };
   },
   watch: {
@@ -198,6 +205,9 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit("setInitParams");
+    this.$store.state.dealer.dropDownValue = 0;
+
     // this.scrollLoad(this.$refs.dealerListBox, resolve => {
     //   this.$store
     //     .dispatch("getListData", {
@@ -280,20 +290,42 @@ export default {
       });
     },
     searchAll(data) {
-      // 从全部经销商列表中进行筛选
-      console.log(22222)
-      this.$store.commit("setInitParams");
-      this.$store.state.dealer.dropDownValue = 0;
       this.$refs.dealerListBox.scrollTop = 0;
-      this.$store
-        .dispatch("getListData", Object.assign(data, { pageNum: 1 }))
-        .then(res => {
-          if (res.length) {
-            this.isShowData = false;
-          } else {
-            this.isShowData = true;
-          }
-        });
+      this.$refs.swipe.swipeTo(data.followStatus);
+
+      this.$store.dispatch("getListData", Object.assign(data, { pageNum: 1 }));
+
+      let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
+      
+      this.ownerUserGids = data.ownerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+      this.followerUserGids = data.followerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+
+      if (data.ownerUserGids.length != 0 && data.followerUserGids.length != 0) {
+        this.$store.state.dealer.dropDownValue = 0;
+      }
+      if (this.$store.state.dealer.dropDownValue == 1) {
+        if (
+          !(
+            data.ownerUserGids.length == 1 && data.ownerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.dealer.dropDownValue = 0;
+        }
+      }
+      if (this.$store.state.dealer.dropDownValue == 2) {
+        if (
+          !(
+            data.followerUserGids.length == 1 &&
+            data.followerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.dealer.dropDownValue = 0;
+        }
+      }
     },
     getDiffDealerList(value) {
       let userInfo = JSON.parse(sessionStorage.userInfo);
@@ -305,30 +337,77 @@ export default {
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
-      this.$store.commit("setInitParams");
+      // this.$store.commit("setInitParams");
+      let params = {
+        dealerName: "",
+        startTime: "",
+        endTime: "",
+        relationHealth: "",
+        notVisitDays: "",
+        visitCount: "",
+        notVisitConditions: 0,
+        visitConditions: 0,
+        level: [],
+        // ownerUserGids: [],
+        area: "",
+        areaVal: "",
+        city: "",
+        cityVal: "",
+        province: "",
+        provinceVal: "",
+        // followerUserGids: [], // 参与人id
+        ownerCd: [], // 公司归属（ 1自有 2 第三方）
+        contactsName: "", // 法人姓名
+        creditCode: "", // 统一社会社会信用代码
+        address: "", // 详细地址
+        // followStatus: 0, // 业务类型
+        startEstablishTime: "", // 成立日期
+        endEstablishTime: "",
+        certTypCd: [], // 法人证件类型
+        certNo: "", // 证件号码
+        contactsPhone: "", //手机号码
+        comment: ""
+      };
       if (value == 0) {
         // 全部
-        this.$store.dispatch("getListData", {
-          followerUserGids: [],
-          ownerUserGids: [],
-          pageNum: 1
-        });
+        this.$store.dispatch(
+          "getListData",
+          Object.assign({}, params, {
+            followerUserGids: [],
+            ownerUserGids: [],
+            pageNum: 1
+          })
+        );
+
+        this.followerUserGids = [];
+        this.ownerUserGids = [];
       }
       if (value == 1) {
         // 我负责的
-        this.$store.dispatch("getListData", {
-          followerUserGids: [],
-          ownerUserGids: ownerUserGids,
-          pageNum: 1
-        });
+        this.$store.dispatch(
+          "getListData",
+          Object.assign({}, params, {
+            followerUserGids: [],
+            ownerUserGids: ownerUserGids,
+            pageNum: 1
+          })
+        );
+
+        this.followerUserGids = [];
+        this.ownerUserGids = ownerUserGids;
       }
       if (value == 2) {
         // 我参与的
-        this.$store.dispatch("getListData", {
-          followerUserGids: ownerUserGids,
-          ownerUserGids: [],
-          pageNum: 1
-        });
+        this.$store.dispatch(
+          "getListData",
+          Object.assign({}, params, {
+            followerUserGids: ownerUserGids,
+            ownerUserGids: [],
+            pageNum: 1
+          })
+        );
+        this.followerUserGids = ownerUserGids;
+        this.ownerUserGids = [];
       }
     },
     open() {

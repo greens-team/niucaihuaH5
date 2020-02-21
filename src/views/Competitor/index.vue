@@ -141,7 +141,11 @@
             </div>
           </van-swipe-item>
         </van-swipe>
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
+        <p
+          v-show="!$store.state.competitor.list.length"
+          class="text-center mt-10"
+          style="color:#80848d"
+        >没有筛选到相关的数据</p>
       </div>
     </div>
   </div>
@@ -158,8 +162,7 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      dropDown: false,
-      isShowData: false
+      dropDown: false
     };
   },
 
@@ -240,15 +243,10 @@ export default {
       this.$store.commit("setInitParams");
       this.$store.state.competitor.dropDownValue = 0;
       this.$refs.competitorListBox.scrollTop = 0;
-      this.$store
-        .dispatch("listCompetitor", Object.assign(data, { pageNum: 1 }))
-        .then(res => {
-          if (res.length) {
-            this.isShowData = false;
-          } else {
-            this.isShowData = true;
-          }
-        });
+      this.$store.dispatch(
+        "listCompetitor",
+        Object.assign(data, { pageNum: 1 })
+      );
     }
   }
 };

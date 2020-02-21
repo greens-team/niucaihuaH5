@@ -127,7 +127,11 @@
           </div>
         </div>
 
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
+        <p
+          v-show="!$store.state.contacts.listContacts.length"
+          class="text-center mt-10"
+          style="color:#80848d"
+        >没有筛选到相关的数据</p>
       </div>
     </div>
   </div>
@@ -145,8 +149,7 @@ export default {
       searchBar: false,
       homeSearch: false,
       flag: 0,
-      dropDown: false,
-      isShowData: false
+      dropDown: false
     };
   },
 
@@ -288,15 +291,7 @@ export default {
       this.$store.commit("setInitParams");
       this.$store.state.contacts.dropDownValue = 0;
       this.$refs.contactsListBox.scrollTop = 0;
-      this.$store
-        .dispatch("listContacts", Object.assign(data, { pageNum: 1 }))
-        .then(res => {
-          if (res.length) {
-            this.isShowData = false;
-          } else {
-            this.isShowData = true;
-          }
-        });
+      this.$store.dispatch("listContacts", Object.assign(data, { pageNum: 1 }));
     }
   }
 };
