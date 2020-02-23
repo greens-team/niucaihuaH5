@@ -283,7 +283,7 @@
               />
             </div>
 
-            <div class="text-gray-700 font-bold mt-5">业务类型</div>
+            <div class="text-gray-700 font-bold mt-5">业务状态</div>
             <div class="flex flex-wrap text-center text-gray-600 mt-2">
               <div
                 :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{businessCardStatus: params.followStatus == 0}]"
@@ -480,7 +480,7 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["followStatusValue"],
+  props: ["followStatusValue","followerUserGidsValue","ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -562,6 +562,8 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.followStatus = this.followStatusValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;

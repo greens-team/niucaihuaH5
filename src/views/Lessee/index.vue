@@ -108,7 +108,7 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
-       <Screening
+      <Screening
         @onSearch="searchAll"
         :lesseeStatusValue="$store.state.lessee.listParams.lesseeStatus"
       />
@@ -168,7 +168,11 @@
           </van-swipe-item>
         </van-swipe>
 
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
+        <p
+          v-show="!$store.state.lessee.list.length"
+          class="text-center mt-10"
+          style="color:#80848d"
+        >没有筛选到相关的数据</p>
       </div>
     </div>
     <!-- <div @click="$router.push('/LesseeInfo')">详情页</div> -->
@@ -186,8 +190,7 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      dropDown: false,
-      isShowData: false
+      dropDown: false
     };
   },
   watch: {
@@ -262,20 +265,12 @@ export default {
     close() {
       this.dropDown = false;
     },
-     searchAll(data) {
+    searchAll(data) {
       // 从全部列表中进行筛选
       this.$store.commit("setInitParams");
       this.$store.state.lessee.dropDownValue = 0;
       this.$refs.lesseeListBox.scrollTop = 0;
-      this.$store
-        .dispatch("listLessee", Object.assign(data, { pageNum: 1 }))
-        .then(res => {
-          if (res.length) {
-            this.isShowData = false;
-          } else {
-            this.isShowData = true;
-          }
-        });
+      this.$store.dispatch("listLessee", Object.assign(data, { pageNum: 1 }));
     }
   }
 };
