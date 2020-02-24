@@ -19,8 +19,8 @@ export default {
         taskList: [],
         dropDownType: [
             { text: '全部活动', value: 0 },
-            { text: '我负责拜访的', value: 1 },
-            { text: '我参与协访的', value: 2 }
+            { text: '我负责的', value: 1 },
+            { text: '我参与的', value: 2 }
         ],
         dropDownValue: 0,
         taskType: [
@@ -29,8 +29,8 @@ export default {
             { name: '任务事项', id: 2 }
         ],
         orderType: [
-            { text: '按结束时间倒序', value: 0 },
-            { text: '按开始时间倒序', value: 1 },
+            { text: '默认排序', value: 0 },
+            { text: '按截止/拜访时间', value: 1 },
             { text: '按名称排序', value: 2 }
         ],
         taskTypeArr: [

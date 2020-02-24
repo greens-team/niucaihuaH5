@@ -109,10 +109,7 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
-      <Screening
-        @onSearch="searchAll"
-        :taskTypeValue="$store.state.moreTask.listParams.taskType"
-      />
+      <Screening @onSearch="searchAll" :taskTypeValue="$store.state.moreTask.listParams.taskType" />
     </div>
 
     <div class="flex-1 relative h-full">
@@ -403,7 +400,8 @@ export default {
 .MoreTaskList /deep/ .van-tag {
   color: #0885ff;
   justify-content: center;
-  width: 3rem;
+  width: 2.8rem;
+  height: 1.5rem;
 }
 .text_ellipsis {
   max-width: 55%;

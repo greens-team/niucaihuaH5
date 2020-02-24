@@ -266,9 +266,13 @@ export default {
           return String(r.id)
         })
       }
+
       let timevals = {
-        birthday: String(params.birthday).length == 13 ? params.birthday / 1000 : params.birthday
+        startBirthday: String(params.startBirthday).length == 13 ? params.startBirthday / 1000 : params.startBirthday,
+        endBirthday: String(params.endBirthday).length == 13 ? params.endBirthday / 1000 : params.endBirthday,
       }
+
+
       let lesseeTypeNum = { lesseeType: params.lesseeType.map(i => +i) }
 
       if (params.pageNum == 1) {

@@ -339,34 +339,34 @@ export default {
       ];
       // this.$store.commit("setInitParams");
       let params = {
-        dealerName: "",
-        startTime: "",
-        endTime: "",
-        relationHealth: "",
-        notVisitDays: "",
-        visitCount: "",
-        notVisitConditions: 0,
-        visitConditions: 0,
-        level: [],
-        // ownerUserGids: [],
-        area: "",
-        areaVal: "",
-        city: "",
-        cityVal: "",
-        province: "",
-        provinceVal: "",
-        // followerUserGids: [], // 参与人id
-        ownerCd: [], // 公司归属（ 1自有 2 第三方）
-        contactsName: "", // 法人姓名
-        creditCode: "", // 统一社会社会信用代码
-        address: "", // 详细地址
-        // followStatus: 0, // 业务类型
-        startEstablishTime: "", // 成立日期
-        endEstablishTime: "",
-        certTypCd: [], // 法人证件类型
-        certNo: "", // 证件号码
-        contactsPhone: "", //手机号码
-        comment: ""
+        // dealerName: "",
+        // startTime: "",
+        // endTime: "",
+        // relationHealth: "",
+        // notVisitDays: "",
+        // visitCount: "",
+        // notVisitConditions: 0,
+        // visitConditions: 0,
+        // level: [],
+        // // ownerUserGids: [],
+        // area: "",
+        // areaVal: "",
+        // city: "",
+        // cityVal: "",
+        // province: "",
+        // provinceVal: "",
+        // // followerUserGids: [], // 参与人id
+        // ownerCd: [], // 公司归属（ 1自有 2 第三方）
+        // contactsName: "", // 法人姓名
+        // creditCode: "", // 统一社会社会信用代码
+        // address: "", // 详细地址
+        // // followStatus: 0, // 业务类型
+        // startEstablishTime: "", // 成立日期
+        // endEstablishTime: "",
+        // certTypCd: [], // 法人证件类型
+        // certNo: "", // 证件号码
+        // contactsPhone: "", //手机号码
+        // comment: ""
       };
       if (value == 0) {
         // 全部
@@ -378,7 +378,6 @@ export default {
             pageNum: 1
           })
         );
-
         this.followerUserGids = [];
         this.ownerUserGids = [];
       }
