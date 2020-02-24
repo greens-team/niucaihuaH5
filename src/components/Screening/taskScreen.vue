@@ -148,7 +148,7 @@
             <div class="text-gray-700 font-bold mt-5">相关经销商</div>
             <div class="flex items-center mt-2">
               <div
-                @click="dealerListShow = !dealerListShow; isShowBtnGroup=false; dealerRow=dealerRowArr.map(item => item)"
+                @click="dealerListShow = !dealerListShow; isShowBtnGroup=false; dealerRow=dealerRowArr.map(item => item);$store.state.dealer.listParams.queryString=''"
                 class="bg-gray-200 flex-1 items-center flex px-3"
                 :style="{color: params.dealerGids.length ? '#252525' : '#80848d'}"
               >{{params.dealerGids.length ? dealerNames.toString() : '请选择'}}</div>
@@ -166,6 +166,13 @@
                   left-arrow
                   @click-left="dealerListShow = false;isShowBtnGroup = true;"
                   @click-right="confirm"
+                />
+                <van-search
+                  shape="round"
+                  placeholder="请输入经销商名称"
+                  clearable
+                  v-model="$store.state.dealer.listParams.queryString"
+                  class="m-2"
                 />
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto" ref="dealerListsBox">
@@ -244,6 +251,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.commit("setInitParams");
     this.$store.dispatch("getListData", { pageNum: 1 });
   },
   watch: {
@@ -267,6 +275,10 @@ export default {
               });
           });
       }, 0);
+    },
+    "$store.state.dealer.listParams.queryString"(keyword) {
+      this.dealerRow = []
+      this.$store.dispatch("getListData", { pageNum: 1 });
     }
   },
   methods: {
@@ -344,7 +356,6 @@ export default {
 
       this.params.dealerGids = this.dealerRow.map(r => r.gid);
       this.dealerNames = this.dealerRow.map(r => r.dealerName);
-
       this.dealerRowArr = this.dealerRow.map(item => item);
     }
   }

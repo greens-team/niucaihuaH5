@@ -242,7 +242,7 @@
           class="radioGroup"
         >
           <van-nav-bar
-            title="性别"
+            title="请选择性别"
             left-text="取消"
             right-text="确定"
             left-arrow
@@ -302,8 +302,11 @@
         <van-field
           v-model="$store.state.lessee.addParams.workingYears"
           label="从业年限"
-          placeholder="请填写信息"
           label-width="130"
+          type="number"
+          pattern="[0-9]*"
+          placeholder="请填写信息"
+          @input="$store.state.lessee.addParams.workingYears=$store.state.lessee.addParams.workingYears.replace(/\D/g,'')"
         />
 
         <div>
@@ -664,10 +667,10 @@ export default {
   margin-left: -25px;
 }
 
-.CreateLessee /deep/  input::-webkit-input-placeholder {
+.CreateLessee /deep/ input::-webkit-input-placeholder {
   color: #80848d;
 }
-.CreateLessee /deep/  input::-moz-input-placeholder {
+.CreateLessee /deep/ input::-moz-input-placeholder {
   color: #80848d;
 }
 .CreateLessee /deep/ input::-ms-input-placeholder {

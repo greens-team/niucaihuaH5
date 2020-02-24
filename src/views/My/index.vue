@@ -101,7 +101,7 @@
               <img
                 style="width:1.57rem;height:1.57rem;"
                 class="mr-1"
-                src="../../assets/my/icon5.png"
+                src="../../assets/my/icon_5.png"
                 alt
               />
               <p style="font-size:1.143rem;">设置信息</p>

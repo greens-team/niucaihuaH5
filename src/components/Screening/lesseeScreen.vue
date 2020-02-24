@@ -36,14 +36,20 @@
                 placeholder="请输入"
               />
             </div>
+
             <div class="text-gray-700 font-bold mt-5">出生日期</div>
-            <!-- 一个时间点 -->
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
-                @click="showBirthdayTime = !showBirthdayTime; timeType=0;isShowBtnGroup=false;"
-                class="bg-gray-200 flex-1 items-center flex px-3"
-                :style="{color: params.birthday ? '#252525' : '#80848d'}"
-              >{{params.birthday ? $root.moment(params.birthday).format('YYYY-MM-DD') : '请选择'}}</div>
+                @click="showBirthdayTime = !showBirthdayTime; timeType=0; isShowBtnGroup = false;"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+                :style="{color: params.startBirthday ? '#252525' : '#80848d'}"
+              >{{params.startBirthday ? $root.moment(params.startBirthday).format('YYYY-MM-DD') : '开始时间'}}</div>
+              <div class="ml-2 mr-2">-</div>
+              <div
+                @click="showBirthdayTime = !showBirthdayTime; timeType=1; isShowBtnGroup = false;"
+                :style="{color: params.endBirthday ? '#252525' : '#80848d'}"
+                class="bg-gray-200 flex-1 justify-center items-center flex"
+              >{{params.endBirthday ? $root.moment(params.endBirthday).format('YYYY-MM-DD') : '结束时间'}}</div>
             </div>
 
             <van-popup
@@ -56,6 +62,7 @@
                 title="请选择时间"
                 :formatter="formatter"
                 v-model="birthdayTimeStr"
+                :min-date="minDate"
                 type="date"
                 @confirm="confirmBirthdayTime"
                 @cancel="showBirthdayTime=false;isShowBtnGroup=true;"
@@ -154,6 +161,50 @@
               </van-popup>
             </div>
 
+            <div class="text-gray-700 font-bold mt-5">性别</div>
+            <div class="flex items-center mt-2">
+              <div
+                @click="genderShow = true;isShowBtnGroup=false;"
+                class="bg-gray-200 flex-1 items-center flex px-3"
+                :style="{color: selectGender ? '#252525' : '#80848d'}"
+              >{{selectGender ? selectGender: '请选择'}}</div>
+
+              <van-popup
+                v-model="genderShow"
+                position="bottom"
+                :style="{ height: '40%'}"
+                @click-overlay="closeOverlay"
+                class="radioGroup"
+              >
+                <van-nav-bar
+                  title="请选择性别"
+                  left-text="取消"
+                  right-text="确定"
+                  left-arrow
+                  @click-left="genderShow = false;isShowBtnGroup=true;"
+                  @click-right="genderShow = false;selectGender = defultGender;isShowBtnGroup = true;params.gender = genderValus"
+                />
+                <div
+                  class="absolute bottom-0 left-0 right-0 overflow-y-scroll border-t border-gray-200"
+                  style="top:46px;"
+                >
+                  <van-radio-group v-model="genderValus">
+                    <van-cell-group>
+                      <van-cell
+                        :title="r.text"
+                        clickable
+                        @click="genderValus = r.value"
+                        v-for="(r,i) in $store.state.lessee.genderList"
+                        :key="i"
+                      >
+                        <van-radio slot="right-icon" :name="r.value" />
+                      </van-cell>
+                    </van-cell-group>
+                  </van-radio-group>
+                </div>
+              </van-popup>
+            </div>
+
             <div class="text-gray-700 font-bold mt-5">承租人状态</div>
             <div class="flex flex-wrap text-center text-gray-600">
               <div
@@ -200,9 +251,12 @@
             <div class="text-gray-700 font-bold mt-5">从业年限</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.workingYears"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
+                v-model="params.workingYears"
+                type="number"
+                pattern="[0-9]*"
                 placeholder="请输入"
+                @input="params.workingYears=params.workingYears.replace(/\D/g,'')"
               />
             </div>
 
@@ -256,9 +310,10 @@ export default {
       params: {
         lesseeName: "",
         idcardNum: "",
-        birthday: "",
+        endBirthday: "",
+        startBirthday: "",
         lesseeStatus: 0,
-        gender: "",
+        gender: null,
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -273,11 +328,17 @@ export default {
       timeType: 0,
       showBirthdayTime: false,
       birthdayTimeStr: new Date(this.$root.moment().format("YYYY-MM-DD")),
+      minDate: new Date(1899, 12, 1),
 
       lesseeTypeShow: false,
       lesseeTypeRow: [],
       lesseeTypeNames: [],
-      lesseeTypeRowArr: []
+      lesseeTypeRowArr: [],
+
+      genderShow: false,
+      genderValus: "",
+      defultGender: "",
+      selectGender: ""
     };
   },
   mounted() {},
@@ -288,6 +349,9 @@ export default {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
       }
+    },
+    genderValus(type) {
+      this.defultGender = this.$store.state.lessee.genderList[type].text;
     }
   },
   methods: {
@@ -306,8 +370,9 @@ export default {
       this.params = {
         lesseeName: "",
         idcardNum: "",
-        birthday: "",
-        gender: "",
+        endBirthday: "",
+        startBirthday: "",
+        gender: null,
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -325,12 +390,41 @@ export default {
     // 出生日期确认
     confirmBirthdayTime() {
       this.isShowBtnGroup = true;
-      if (this.timeType == 0) {
-        this.params.birthday = this.$root
-          .moment(this.birthdayTimeStr)
-          .startOf("day")
-          .valueOf();
+      let timeStr = !this.timeType
+        ? this.$root
+            .moment(this.birthdayTimeStr)
+            .startOf("day")
+            .valueOf()
+        : this.$root
+            .moment(this.birthdayTimeStr)
+            .endOf("day")
+            .valueOf();
+      !this.timeType
+        ? new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 00:00:00")
+          ).getTime()
+        : new Date(
+            this.$root.moment(timeStr).format("YYYY-MM-DD 23:59:59")
+          ).getTime();
+      if (
+        !this.timeType &&
+        this.params.endBirthday &&
+        timeStr > this.params.endBirthday
+      ) {
+        this.$toast("开始时间要小于结束时间");
+        return;
       }
+      if (
+        this.timeType &&
+        this.params.startBirthday &&
+        timeStr < this.params.startBirthday
+      ) {
+        this.$toast("结束时间要大于开始时间");
+        return;
+      }
+      this.timeType
+        ? (this.params.endBirthday = timeStr)
+        : (this.params.startBirthday = timeStr);
       this.showBirthdayTime = false;
     },
 
@@ -486,6 +580,36 @@ textarea:-ms-input-placeholder {
   border-color: #ff9b02;
 }
 .checkBoxGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
+  margin-left: -25px;
+}
+
+.radioGroup /deep/ .van-radio__icon--checked .van-icon {
+  background-color: transparent;
+  border-color: transparent;
+  color: #ff9b02;
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon .van-icon {
+  border: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.radioGroup /deep/ .van-radio__icon {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-icon-success:before {
+  font-size: 1.5rem;
+}
+.radioGroup /deep/ .van-nav-bar__text {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+.radioGroup /deep/ .van-nav-bar .van-icon {
+  color: #ff9b02;
+  font-size: 1.143rem;
+  display: none;
+}
+.radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
   margin-left: -25px;
 }
 </style>

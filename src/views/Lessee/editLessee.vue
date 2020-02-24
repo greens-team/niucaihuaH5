@@ -76,14 +76,18 @@
             @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptA = true">
-            <div class="flex-1" v-if="ownerUserGids.length" style="color:#252525;">{{mainUserGidsFun(ownerUserGids)}}</div>
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptA = true">
+            <div
+              class="flex-1"
+              v-if="ownerUserGids.length"
+              style="color:#252525;"
+            >{{mainUserGidsFun(ownerUserGids)}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择负责人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptA" 
+        <UserDeptList
+          v-if="showUserDeptA"
           :deptTree="false"
           @cancel="showUserDeptA=false"
           @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
@@ -101,14 +105,18 @@
             @setParams="val=>followerUserGids = val"
             :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
             soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptB = true">
-            <div class="flex-1" v-if="followerUserGids.length" style="color:#252525;">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptB = true">
+            <div
+              class="flex-1"
+              v-if="followerUserGids.length"
+              style="color:#252525;"
+            >{{mainFollowerUserGidsFun(followerUserGids)}}</div>
             <div class="flex-1" v-else style="color:#80848d;">请选择参与人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptB" 
+        <UserDeptList
+          v-if="showUserDeptB"
           :deptTree="false"
           @cancel="showUserDeptB=false"
           @confirm="(data)=>{showUserDeptB = false; followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
@@ -231,7 +239,7 @@
           class="radioGroup"
         >
           <van-nav-bar
-            title="性别"
+            title="请选择性别"
             left-text="取消"
             right-text="确定"
             left-arrow
@@ -288,11 +296,15 @@
           placeholder="请填写信息"
           label-width="130"
         />
+
         <van-field
           v-model="$store.state.lessee.editParams.workingYears"
           label="从业年限"
-          placeholder="请填写信息"
           label-width="130"
+          type="number"
+          pattern="[0-9]*"
+          placeholder="请填写信息"
+          @input="$store.state.lessee.editParams.workingYears=$store.state.lessee.editParams.workingYears.replace(/\D/g,'')"
         />
 
         <div>
@@ -353,7 +365,7 @@
 <script>
 import UserList from "@/components/UserList/index.vue";
 import { userInfo } from "os";
-import UserDeptList from '@/components/UserDeptList'
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "editLessee",
   components: {

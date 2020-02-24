@@ -272,7 +272,12 @@
                   @click="TaskDetail(row.gid)"
                 >
                   <div class="flex">
-                    <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <span class="text-base font-bold text_ellipsis">{{row.taskName}}</span>
+                    <van-tag round medium type="primary" class="text-sm mx-2">
+                      {{
+                      $store.state.task.taskTypeArr[row.taskType-1] ? $store.state.task.taskTypeArr[row.taskType-1].text : ''
+                      }}
+                    </van-tag>
                     <div class="flex-1"></div>
                     <span
                       class="text-xs text-gray-600"
@@ -284,6 +289,7 @@
                   <img
                     v-show="row.isFinish"
                     class="absolute bottom-0 right-0 mr-2 w-16"
+                    style="bottom:-.5rem;"
                     src="../../assets/workbench/icon5.png"
                     alt
                   />
@@ -327,7 +333,6 @@
                 {{$root.moment($store.state.workbench.colleaguesTaskTime).format('YYYY-MM-DD')}}
               </div>
               <div class="flex-1"></div>
-
               <div
                 class="text-xs hover:text-blue-500 ellipsis flex items-center"
                 style="color: rgb(128, 132, 141);text-overflow: ellipsis;overflow: hidden;white-space: nowrap;"
@@ -410,6 +415,11 @@
                 >
                   <div class="flex">
                     <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
+                    <van-tag round medium type="primary" class="text-sm mx-2">
+                      {{
+                      $store.state.task.taskTypeArr[row.taskType-1] ? $store.state.task.taskTypeArr[row.taskType-1].text : ''
+                      }}
+                    </van-tag>
                     <div class="flex-1"></div>
                     <span
                       class="text-xs"
@@ -423,6 +433,7 @@
                   >{{row.deptName}} > {{row.userName}}</div>
                   <img
                     v-show="row.isFinish"
+                    style="bottom:-.5rem;"
                     class="absolute bottom-0 right-0 mr-2 w-16"
                     src="../../assets/workbench/icon5.png"
                     alt
@@ -891,7 +902,7 @@ export default {
   white-space: nowrap;
 }
 .text_ellipsis {
-  width: 65%;
+  max-width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -939,5 +950,15 @@ export default {
 }
 .Workbench .rowBox:first-child {
   padding-top: 1rem;
+}
+.Workbench /deep/ .van-tag--primary {
+  background: #fff;
+  border: 1px solid #0885ff;
+}
+.Workbench /deep/ .van-tag {
+  color: #0885ff;
+  justify-content: center;
+  width: 2.8rem;
+  height: 1.5rem;
 }
 </style>
