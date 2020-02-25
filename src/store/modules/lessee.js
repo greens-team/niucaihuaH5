@@ -268,7 +268,6 @@ export default {
           return String(r.id)
         })
       }
-
       let timevals = {
         startBirthday: params.startBirthday / 1000,
         endBirthday: params.endBirthday / 1000,

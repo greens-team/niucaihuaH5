@@ -54,11 +54,13 @@
           class="date-time-input-wrap"
           style="border-bottom:1px solid #f8f8f8; margin-left:1rem;"
         >
-          <van-popup v-model="birthdayTimeShow" position="bottom" :overlay="true">
+          <van-popup v-model="birthdayTimeShow" position="bottom" :overlay="true" class="dateBox">
             <van-datetime-picker
+            title="请选择时间"
               v-model="currentDate"
               type="date"
               :min-date="minDate"
+              :max-date="maxDate"
               @cancel="birthdayTimeShow = false"
               @confirm="getBirthdayTime();"
             />
@@ -380,6 +382,7 @@ export default {
       currentDate: new Date(),
       birthday: "",
       minDate: new Date(1899, 12, 1),
+      maxDate: new Date(this.$root.moment().format("YYYY-MM-DD")),
 
       genderShow: false,
       genderValus: null,
@@ -745,5 +748,18 @@ export default {
 }
 .radioGroup /deep/ .van-nav-bar__arrow + .van-nav-bar__text {
   margin-left: -25px;
+}
+.dateBox /deep/ .van-picker__cancel,
+.dateBox /deep/ .van-picker__confirm {
+  color: #ff9b02;
+  font-size: 1.143rem;
+}
+
+.dateBox /deep/ .van-picker__toolbar {
+  border-bottom: 1px solid #ededee;
+}
+.dateBox /deep/ .van-picker-column__item.van-picker-column__item--selected {
+  color: #252525;
+  font-size: 1.286rem;
 }
 </style>
