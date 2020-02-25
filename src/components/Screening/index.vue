@@ -22,7 +22,7 @@
             <div class="text-gray-700 font-bold">经营商名称</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.dealerName"
+                v-model.trim="params.dealerName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
@@ -259,7 +259,7 @@
             <div class="text-gray-700 font-bold mt-5">法人姓名</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.contactsName"
+                v-model.trim="params.contactsName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -268,7 +268,7 @@
             <div class="text-gray-700 font-bold mt-5">统一社会信用代码</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.creditCode"
+                v-model.trim="params.creditCode"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -277,7 +277,7 @@
             <div class="text-gray-700 font-bold mt-5">注册地址</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.address"
+                v-model.trim="params.address"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -416,7 +416,7 @@
             <div class="text-gray-700 font-bold mt-5">证件号码</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.certNo"
+                v-model.trim="params.certNo"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -425,7 +425,7 @@
             <div class="text-gray-700 font-bold mt-5">手机号码</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.contactsPhone"
+                v-model.trim="params.contactsPhone"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -434,7 +434,7 @@
             <div class="text-gray-700 font-bold mt-5">备注信息</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.comment"
+                v-model.trim="params.comment"
                 :rows="5"
                 style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
                 placeholder="请输入"

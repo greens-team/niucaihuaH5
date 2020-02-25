@@ -21,7 +21,7 @@
             <div class="text-gray-700 font-bold">任务主题</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.taskName"
+                v-model.trim="params.taskName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />

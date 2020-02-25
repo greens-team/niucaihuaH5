@@ -22,7 +22,7 @@
             <div class="text-gray-700 font-bold">竞争对手名称</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.competorName"
+                v-model.trim="params.competorName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
@@ -103,7 +103,7 @@
             <div class="text-gray-700 font-bold mt-5">备注信息</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.comment"
+                v-model.trim="params.comment"
                 :rows="5"
                 style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
                 placeholder="请输入"
