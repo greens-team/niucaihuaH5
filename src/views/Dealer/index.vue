@@ -296,7 +296,8 @@ export default {
       this.$store.dispatch("getListData", Object.assign(data, { pageNum: 1 }));
 
       let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
-      
+
+      // 在筛选组件回显 负责人 参与人的 值
       this.ownerUserGids = data.ownerUserGids.map(r => {
         return { id: r.id, refRlNm: r.refRlNm };
       });
@@ -391,7 +392,6 @@ export default {
             pageNum: 1
           })
         );
-
         this.followerUserGids = [];
         this.ownerUserGids = ownerUserGids;
       }

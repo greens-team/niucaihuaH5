@@ -111,6 +111,8 @@
       <Screening
         @onSearch="searchAll"
         :competorTypeValue="$store.state.competitor.listParams.competorType"
+        :ownerUserGidsValue="ownerUserGids"
+        :followerUserGidsValue="followerUserGids"
       />
     </div>
 
@@ -162,11 +164,16 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      dropDown: false
+      dropDown: false,
+      followerUserGids: [],
+      ownerUserGids: []
     };
   },
 
   watch: {
+    "$store.state.competitor.listParams.competorType"() {
+      this.$refs.competitorListBox.scrollTop = 0;
+    },
     "$store.state.competitor.dropDownValue"() {
       this.$refs.competitorListBox.scrollTop = 0;
     }
@@ -179,6 +186,9 @@ export default {
     // this.$store.commit("setInitParams");
   },
   mounted() {
+    this.$store.commit("setInitParams");
+    this.$store.state.competitor.dropDownValue = 0;
+
     this.scrollLoad(this.$refs.competitorListBox, resolve => {
       this.$store
         .dispatch("listCompetitor", {
@@ -201,8 +211,7 @@ export default {
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
-      this.$store.commit("setInitParams");
-
+      // this.$store.commit("setInitParams");
       if (value == 0) {
         // 全部
         this.$store.dispatch("listCompetitor", {
@@ -210,6 +219,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = [];
       }
       if (value == 1) {
         // 我负责的
@@ -218,6 +229,8 @@ export default {
           ownerUserGids: ownerUserGids,
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = ownerUserGids;
       }
       if (value == 2) {
         // 我参与的
@@ -226,6 +239,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = ownerUserGids;
+        this.ownerUserGids = [];
       }
     },
     open() {
@@ -240,13 +255,44 @@ export default {
     },
     searchAll(data) {
       // 从全部列表中进行筛选
-      this.$store.commit("setInitParams");
-      this.$store.state.competitor.dropDownValue = 0;
       this.$refs.competitorListBox.scrollTop = 0;
+      this.$refs.swipe.swipeTo(data.competorType);
       this.$store.dispatch(
         "listCompetitor",
         Object.assign(data, { pageNum: 1 })
       );
+
+      let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
+      // 在筛选组件回显 负责人 参与人的 值
+      this.ownerUserGids = data.ownerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+      this.followerUserGids = data.followerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+
+      if (data.ownerUserGids.length != 0 && data.followerUserGids.length != 0) {
+        this.$store.state.competitor.dropDownValue = 0;
+      }
+      if (this.$store.state.competitor.dropDownValue == 1) {
+        if (
+          !(
+            data.ownerUserGids.length == 1 && data.ownerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.competitor.dropDownValue = 0;
+        }
+      }
+      if (this.$store.state.competitor.dropDownValue == 2) {
+        if (
+          !(
+            data.followerUserGids.length == 1 &&
+            data.followerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.competitor.dropDownValue = 0;
+        }
+      }
     }
   }
 };

@@ -7,7 +7,7 @@ export default {
     isLastPage: false,
     addParams: {
       competorName: '',
-      competorType: null,
+      competorType: '',
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
@@ -17,7 +17,7 @@ export default {
     editParams: {
       gid: '',
       competorName: '',
-      competorType: 1,
+      competorType: '',
       comment: '',
       ownerUserGids: [],
       followerUserGids: []
@@ -26,7 +26,7 @@ export default {
     listParams: {
       queryString: '',
       orderType: 1,
-      competorType: 1,
+      competorType: 0,
       pageNum: 1,
       pageSize: 15,
       followerUserGids: [],
@@ -124,29 +124,15 @@ export default {
         competorName:''
       }
     },
-    // setInitParams_tabs(state) {
-    //   state.currentTabsIndex = 0
-    // },
     setInitAddParams(state) {
-
       state.addParams = {
         competorName: '',
-        competorType: 1,
+        competorType: '',
         comment: '',
         ownerUserGids: [],
         followerUserGids: []
       }
     },
-    // setEditParams(state) {
-    //   state.editParams = {
-    //     gid: '',
-    //     competorName: '',
-    //     competorType: 1,
-    //     comment: '',
-    //     ownerUserGids: [],
-    //     followerUserGids: []
-    //   }
-    // },
     //编辑竞争对手 页面初始显示
     setParamsCompetitor(state, data = {}) {
       Object.assign(state.editParams, data)

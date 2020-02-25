@@ -6,11 +6,11 @@ export default {
   state: {
     isLastPage: false,
     addParams: {
-      birthday: 0,
+      birthday: '',
       comment: '',
       domicilePlace: '',
       followerUserGids: [],
-      gender: null,   //性别
+      gender: '',   //性别
       homeAddress: '',
       idcardBackPic: '',
       idcardFrontPic: '',
@@ -18,7 +18,7 @@ export default {
       lesseeName: '',
       lesseePhone: '',
       lesseeType: [],
-      marry: 0,    //婚否
+      marry: null,    //婚否
       ownerUserGids: [],
       userPic: '',
       workingYears: null
@@ -68,7 +68,7 @@ export default {
       lesseeName: '',
       lesseePhone: '',
       lesseeType: [],
-      marry: 0,
+      marry: '',
       ownerUserGids: [],
       userPic: '',
       workingYears: '',
@@ -87,8 +87,9 @@ export default {
 
       lesseeName: '',
       idcardNum: '',
-      birthday: 0,
-      gender: 0,
+      endBirthday: "",
+      startBirthday: "",
+      gender: '',
       followerUserGids: [],
       ownerUserGids: [],
       lesseeType: [],
@@ -174,10 +175,12 @@ export default {
         lesseeStatus: 0,
         pageNum: 1,
         pageSize: 15,
+
         lesseeName: '',
         idcardNum: '',
-        birthday: 0,
-        gender: 0,
+        endBirthday: "",
+        startBirthday: "",
+        gender: '',
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -193,7 +196,6 @@ export default {
     // },
     setInitAddParams(state) {
       state.addParams = {
-
         birthday: null,
         comment: '',
         domicilePlace: '',
@@ -206,7 +208,7 @@ export default {
         lesseeName: '',
         lesseePhone: '',
         lesseeType: [],
-        marry: 0,
+        marry: null,
         ownerUserGids: [],
         userPic: '',
         workingYears: null,
@@ -268,11 +270,9 @@ export default {
       }
 
       let timevals = {
-        startBirthday: String(params.startBirthday).length == 13 ? params.startBirthday / 1000 : params.startBirthday,
-        endBirthday: String(params.endBirthday).length == 13 ? params.endBirthday / 1000 : params.endBirthday,
+        startBirthday: params.startBirthday / 1000,
+        endBirthday: params.endBirthday / 1000,
       }
-
-
       let lesseeTypeNum = { lesseeType: params.lesseeType.map(i => +i) }
 
       if (params.pageNum == 1) {

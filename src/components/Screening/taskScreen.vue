@@ -21,7 +21,7 @@
             <div class="text-gray-700 font-bold">任务主题</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.taskName"
+                v-model.trim="params.taskName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -221,7 +221,7 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["taskTypeValue"],
+  props: ["taskTypeValue", "followerUserGidsValue", "ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -257,6 +257,8 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.taskType = this.taskTypeValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
@@ -277,7 +279,7 @@ export default {
       }, 0);
     },
     "$store.state.dealer.listParams.queryString"(keyword) {
-      this.dealerRow = []
+      this.dealerRow = [];
       this.$store.dispatch("getListData", { pageNum: 1 });
     }
   },
@@ -400,12 +402,12 @@ export default {
   justify-content: left;
 }
 
-.taskTypeCardStatus {
-  background-color: #fff2e6;
+.Screening .taskTypeCardStatus {
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
-.taskTypeCardStatus::after {
+.Screening .taskTypeCardStatus::after {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -414,12 +416,12 @@ export default {
   content: "";
 }
 
-.businessCardStatus {
-  background-color: #fff2e6;
+.Screening .businessCardStatus {
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
-.businessCardStatus::after {
+.Screening .businessCardStatus::after {
   position: absolute;
   right: 0;
   bottom: 0;

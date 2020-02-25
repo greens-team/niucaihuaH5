@@ -30,7 +30,7 @@ export default {
         ],
         orderType: [
             { text: '默认排序', value: 0 },
-            { text: '按截止/拜访时间', value: 1 },
+            { text: '按拜访/截止时间排序', value: 1 },
             { text: '按名称排序', value: 2 }
         ],
         taskTypeArr: [

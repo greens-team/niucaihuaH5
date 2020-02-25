@@ -22,7 +22,7 @@
             <div class="text-gray-700 font-bold">承租人名称</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.lesseeName"
+                v-model.trim="params.lesseeName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -31,7 +31,7 @@
             <div class="text-gray-700 font-bold mt-5">身份证号码</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.idcardNum"
+                v-model.trim="params.idcardNum"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -224,7 +224,7 @@
             <div class="text-gray-700 font-bold mt-5">手机号码</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.lesseePhone"
+                v-model.trim="params.lesseePhone"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -233,7 +233,7 @@
             <div class="text-gray-700 font-bold mt-5">户口所在地</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.domicilePlace"
+                v-model.trim="params.domicilePlace"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -242,7 +242,7 @@
             <div class="text-gray-700 font-bold mt-5">家庭住址</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.homeAddress"
+                v-model.trim="params.homeAddress"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入"
               />
@@ -252,7 +252,7 @@
             <div class="bg-gray-200 mt-2">
               <van-field
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
-                v-model="params.workingYears"
+                v-model.trim="params.workingYears"
                 type="number"
                 pattern="[0-9]*"
                 placeholder="请输入"
@@ -263,7 +263,7 @@
             <div class="text-gray-700 font-bold mt-5">备注信息</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.comment"
+                v-model.trim="params.comment"
                 :rows="5"
                 style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
                 placeholder="请输入"
@@ -300,7 +300,7 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["lesseeStatusValue"],
+  props: ["lesseeStatusValue","followerUserGidsValue","ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -313,7 +313,7 @@ export default {
         endBirthday: "",
         startBirthday: "",
         lesseeStatus: 0,
-        gender: null,
+        gender: "",
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -345,12 +345,15 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.lesseeStatus = this.lesseeStatusValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
       }
     },
     genderValus(type) {
+      console.log(this.genderValus,this.defultGender,this.selectGender)
       this.defultGender = this.$store.state.lessee.genderList[type].text;
     }
   },
@@ -360,6 +363,7 @@ export default {
     },
     finish() {
       this.screeningShow = false;
+      // this.params.comment = this.params.comment.trim()
       this.$emit("onSearch", this.params);
     },
     closeOverlay() {
@@ -372,7 +376,7 @@ export default {
         idcardNum: "",
         endBirthday: "",
         startBirthday: "",
-        gender: null,
+        gender: "",
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -384,6 +388,8 @@ export default {
         lesseeStatus: 0
       };
       this.lesseeTypeRowArr = [];
+      this.selectGender = '';
+      this.genderValus = ''
       // this.finish();
     },
 
@@ -434,7 +440,6 @@ export default {
 
       this.params.lesseeType = this.lesseeTypeRow.map(r => r.value);
       this.lesseeTypeNames = this.lesseeTypeRow.map(r => r.text);
-
       this.lesseeTypeRowArr = this.lesseeTypeRow.map(item => item);
     }
   }
@@ -480,9 +485,9 @@ export default {
 }
 
 .lesseeStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .lesseeStatus::after {
   position: absolute;

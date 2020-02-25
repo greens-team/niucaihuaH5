@@ -22,7 +22,7 @@
             <div class="text-gray-700 font-bold">竞争对手名称</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.competorName"
+                v-model.trim="params.competorName"
                 style="background-color: #F8FAFB; color: #252525; height: 2.5rem; padding:0; line-height: 2.5rem; padding-left:10px;"
                 placeholder="请输入用户名"
               />
@@ -103,7 +103,7 @@
             <div class="text-gray-700 font-bold mt-5">备注信息</div>
             <div class="bg-gray-200 mt-2">
               <van-field
-                v-model="params.comment"
+                v-model.trim="params.comment"
                 :rows="5"
                 style="background-color: #F8FAFB; color: #252525;  padding:0; padding-left:10px;margin-bottom:1rem;"
                 placeholder="请输入"
@@ -140,6 +140,7 @@ export default {
     UserList,
     UserDeptList
   },
+  props: ["competorTypeValue", "followerUserGidsValue", "ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -158,13 +159,14 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.competorType = this.competorTypeValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
       }
     }
   },
-  props: ["competorTypeValue"],
   methods: {
     setParams(val) {
       this.params.ownerUserGids = val;
@@ -227,9 +229,9 @@ export default {
 }
 
 .cardStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .cardStatus::after {
   position: absolute;
@@ -241,9 +243,9 @@ export default {
 }
 
 .businessCardStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .businessCardStatus::after {
   position: absolute;
