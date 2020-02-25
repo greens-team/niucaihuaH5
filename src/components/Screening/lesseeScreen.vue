@@ -353,6 +353,7 @@ export default {
       }
     },
     genderValus(type) {
+      console.log(this.genderValus,this.defultGender,this.selectGender)
       this.defultGender = this.$store.state.lessee.genderList[type].text;
     }
   },
@@ -387,6 +388,8 @@ export default {
         lesseeStatus: 0
       };
       this.lesseeTypeRowArr = [];
+      this.selectGender = '';
+      this.genderValus = ''
       // this.finish();
     },
 
