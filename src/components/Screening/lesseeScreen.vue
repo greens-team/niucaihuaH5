@@ -300,7 +300,7 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["lesseeStatusValue","followerUserGidsValue","ownerUserGidsValue"],
+  props: ["lesseeStatusValue", "followerUserGidsValue", "ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -353,8 +353,9 @@ export default {
       }
     },
     genderValus(type) {
-      console.log(this.genderValus,this.defultGender,this.selectGender)
-      this.defultGender = this.$store.state.lessee.genderList[type].text;
+      if (typeof type != "string") {
+        this.defultGender = this.$store.state.lessee.genderList[type].text;
+      }
     }
   },
   methods: {
@@ -388,8 +389,8 @@ export default {
         lesseeStatus: 0
       };
       this.lesseeTypeRowArr = [];
-      this.selectGender = '';
-      this.genderValus = ''
+      this.selectGender = "";
+      this.genderValus = "";
       // this.finish();
     },
 
