@@ -300,7 +300,7 @@ export default {
     UserList,
     UserDeptList
   },
-  props: ["lesseeStatusValue"],
+  props: ["lesseeStatusValue","followerUserGidsValue","ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -313,7 +313,7 @@ export default {
         endBirthday: "",
         startBirthday: "",
         lesseeStatus: 0,
-        gender: '',
+        gender: "",
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -345,6 +345,8 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.lesseeStatus = this.lesseeStatusValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
@@ -373,7 +375,7 @@ export default {
         idcardNum: "",
         endBirthday: "",
         startBirthday: "",
-        gender: '',
+        gender: "",
         followerUserGids: [],
         ownerUserGids: [],
         lesseeType: [],
@@ -480,9 +482,9 @@ export default {
 }
 
 .lesseeStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .lesseeStatus::after {
   position: absolute;

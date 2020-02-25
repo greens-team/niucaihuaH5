@@ -135,6 +135,7 @@ export default {
     UserList,
     UserDeptList
   },
+  props: ["followerUserGidsValue", "ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -153,6 +154,8 @@ export default {
   mounted() {},
   watch: {
     screeningShow(val) {
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;

@@ -111,6 +111,8 @@
       <Screening
         @onSearch="searchAll"
         :lesseeStatusValue="$store.state.lessee.listParams.lesseeStatus"
+        :ownerUserGidsValue="ownerUserGids"
+        :followerUserGidsValue="followerUserGids"
       />
     </div>
 
@@ -190,11 +192,16 @@ export default {
     return {
       searchBar: false,
       homeSearch: false,
-      dropDown: false
+      dropDown: false,
+      followerUserGids: [],
+      ownerUserGids: []
     };
   },
   watch: {
     "$store.state.lessee.dropDownValue"() {
+      this.$refs.lesseeListBox.scrollTop = 0;
+    },
+    "$store.state.lessee.listParams.lesseeStatus"() {
       this.$refs.lesseeListBox.scrollTop = 0;
     }
   },
@@ -232,7 +239,7 @@ export default {
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
-      this.$store.commit("setInitParams");
+      // this.$store.commit("setInitParams");
 
       if (value == 0) {
         // 全部
@@ -241,6 +248,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = [];
       }
       if (value == 1) {
         // 我负责的
@@ -249,6 +258,8 @@ export default {
           ownerUserGids: ownerUserGids,
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = ownerUserGids;
       }
       if (value == 2) {
         // 我参与的
@@ -257,6 +268,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = ownerUserGids;
+        this.ownerUserGids = [];
       }
     },
     open() {
@@ -267,10 +280,42 @@ export default {
     },
     searchAll(data) {
       // 从全部列表中进行筛选
-      this.$store.commit("setInitParams");
-      this.$store.state.lessee.dropDownValue = 0;
       this.$refs.lesseeListBox.scrollTop = 0;
+      this.$refs.swipe.swipeTo(data.lesseeStatus);
       this.$store.dispatch("listLessee", Object.assign(data, { pageNum: 1 }));
+
+      let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
+
+      // 在筛选组件回显 负责人 参与人的 值
+      this.ownerUserGids = data.ownerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+      this.followerUserGids = data.followerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+
+      if (data.ownerUserGids.length != 0 && data.followerUserGids.length != 0) {
+        this.$store.state.dealer.dropDownValue = 0;
+      }
+      if (this.$store.state.lessee.dropDownValue == 1) {
+        if (
+          !(
+            data.ownerUserGids.length == 1 && data.ownerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.lessee.dropDownValue = 0;
+        }
+      }
+      if (this.$store.state.lessee.dropDownValue == 2) {
+        if (
+          !(
+            data.followerUserGids.length == 1 &&
+            data.followerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.lessee.dropDownValue = 0;
+        }
+      }
     }
   }
 };

@@ -97,7 +97,7 @@
               <div
                 v-for="(r,i) of levelValue"
                 :key="i"
-                :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus:params.level.includes(i+1)}]"
+                :class="['p-2 bg-gray-200 w-32 mr-2 mb-2 mt-2',{cardStatus:params.level.includes(i+1)}]"
                 @click="changeStatus(i+1)"
               >{{r}}</div>
               <!-- <div :class="['p-2 bg-gray-200 w-24 mr-1 mb-1 mt-1 flex-1',{cardStatus: params.level == 3}]" @click="params.level = params.level == 3 ? '' : 3">三级经销商</div> -->
@@ -813,7 +813,6 @@ export default {
         return Number(r.value);
       });
       this.ownerCdNames = this.ownerCdRow.map(r => r.text);
-
       this.ownerCdRowArr = this.ownerCdRow.map(item => item);
     },
 
@@ -867,9 +866,9 @@ export default {
 }
 
 .cardStatus {
-  background-color: #fff2e6;
+  background-color: #FFF2E6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .cardStatus::after {
   position: absolute;
@@ -881,9 +880,9 @@ export default {
 }
 
 .businessCardStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .businessCardStatus::after {
   position: absolute;

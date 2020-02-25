@@ -100,7 +100,11 @@
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
 
-      <Screening @onSearch="searchAll" />
+      <Screening
+        @onSearch="searchAll"
+        :ownerUserGidsValue="ownerUserGids"
+        :followerUserGidsValue="followerUserGids"
+      />
     </div>
     <div class="border-b border-gray-200 flex pl-5" v-else></div>
 
@@ -149,7 +153,9 @@ export default {
       searchBar: false,
       homeSearch: false,
       flag: 0,
-      dropDown: false
+      dropDown: false,
+      followerUserGids: [],
+      ownerUserGids: []
     };
   },
 
@@ -167,6 +173,9 @@ export default {
   },
 
   mounted() {
+    this.$store.commit("setInitParams");
+    this.$store.state.contacts.dropDownValue = 0;
+
     // this.scrollLoad(this.$refs.contactsListBox, resolve => {
     //   this.$store
     //     .dispatch("listContacts", {
@@ -253,7 +262,7 @@ export default {
         }
       ];
 
-      this.$store.commit("setInitParams");
+      // this.$store.commit("setInitParams");
 
       if (value == 0) {
         // 全部
@@ -262,6 +271,9 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+
+        this.followerUserGids = [];
+        this.ownerUserGids = [];
       }
       if (value == 1) {
         // 我负责的
@@ -270,6 +282,9 @@ export default {
           ownerUserGids: ownerUserGids,
           pageNum: 1
         });
+
+        this.followerUserGids = [];
+        this.ownerUserGids = ownerUserGids;
       }
       if (value == 2) {
         // 我参与的
@@ -278,6 +293,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = ownerUserGids;
+        this.ownerUserGids = [];
       }
     },
     open() {
@@ -288,10 +305,42 @@ export default {
     },
     searchAll(data) {
       // 从全部列表中进行筛选
-      this.$store.commit("setInitParams");
-      this.$store.state.contacts.dropDownValue = 0;
       this.$refs.contactsListBox.scrollTop = 0;
       this.$store.dispatch("listContacts", Object.assign(data, { pageNum: 1 }));
+      
+
+      let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
+
+      // 在筛选组件回显 负责人 参与人的值
+      this.ownerUserGids = data.ownerUserGids.map(r => {  
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+      this.followerUserGids = data.followerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+
+      if (data.ownerUserGids.length != 0 && data.followerUserGids.length != 0) {
+        this.$store.state.contacts.dropDownValue = 0;
+      }
+      if (this.$store.state.contacts.dropDownValue == 1) {
+        if (
+          !(
+            data.ownerUserGids.length == 1 && data.ownerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.contacts.dropDownValue = 0;
+        }
+      }
+      if (this.$store.state.contacts.dropDownValue == 2) {
+        if (
+          !(
+            data.followerUserGids.length == 1 &&
+            data.followerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.contacts.dropDownValue = 0;
+        }
+      }
     }
   }
 };

@@ -109,7 +109,12 @@
         </van-dropdown-menu>
         <img class="order_icon" src="../../assets/lessee/order.png" alt />
       </div>
-      <Screening @onSearch="searchAll" :taskTypeValue="$store.state.moreTask.listParams.taskType" />
+      <Screening
+        @onSearch="searchAll"
+        :taskTypeValue="$store.state.moreTask.listParams.taskType"
+        :ownerUserGidsValue="ownerUserGids"
+        :followerUserGidsValue="followerUserGids"
+      />
     </div>
 
     <div class="flex-1 relative h-full">
@@ -159,7 +164,11 @@
           </van-swipe-item>
         </van-swipe>
 
-        <p v-if="isShowData" class="text-center mt-10" style="color:#80848d">没有筛选到相关的数据</p>
+        <p
+          v-show="!$store.state.moreTask.taskList.length"
+          class="text-center mt-10"
+          style="color:#80848d"
+        >没有筛选到相关的数据</p>
       </div>
     </div>
     <van-popup v-model="newTask" position="bottom">
@@ -195,12 +204,16 @@ export default {
       searchBar: false,
       homeSearch: false,
       dropDown: false,
-      isShowData: false,
-      newTask: false
+      newTask: false,
+      followerUserGids: [],
+      ownerUserGids: []
     };
   },
   watch: {
     "$store.state.moreTask.dropDownValue"() {
+      this.$refs.taskListBox.scrollTop = 0;
+    },
+    "$store.state.moreTask.listParams.taskType"() {
       this.$refs.taskListBox.scrollTop = 0;
     }
   },
@@ -211,6 +224,9 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit("setInitParams");
+    this.$store.state.dealer.dropDownValue = 0;
+
     this.scrollLoad(this.$refs.taskListBox, resolve => {
       this.$store
         .dispatch("getMoreTaskList", {
@@ -256,7 +272,7 @@ export default {
           refRlNm: userInfo.EMPLOYEE_NAME
         }
       ];
-      this.$store.commit("setEmptyParams");
+      // this.$store.commit("setEmptyParams");
 
       if (value == 0) {
         // 全部
@@ -265,6 +281,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = [];
       }
       if (value == 1) {
         // 我负责的
@@ -273,6 +291,8 @@ export default {
           ownerUserGids: ownerUserGids,
           pageNum: 1
         });
+        this.followerUserGids = [];
+        this.ownerUserGids = ownerUserGids;
       }
       if (value == 2) {
         // 我参与的
@@ -281,6 +301,8 @@ export default {
           ownerUserGids: [],
           pageNum: 1
         });
+        this.followerUserGids = ownerUserGids;
+        this.ownerUserGids = [];
       }
     },
     open() {
@@ -291,18 +313,46 @@ export default {
     },
     searchAll(data) {
       // 从全部列表中进行筛选
-      this.$store.commit("setEmptyParams");
-      this.$store.state.moreTask.dropDownValue = 0;
       this.$refs.taskListBox.scrollTop = 0;
-      this.$store
-        .dispatch("getMoreTaskList", Object.assign(data, { pageNum: 1 }))
-        .then(res => {
-          if (res.length) {
-            this.isShowData = false;
-          } else {
-            this.isShowData = true;
-          }
-        });
+      this.$refs.swipe.swipeTo(data.taskType);
+
+      this.$store.dispatch(
+        "getMoreTaskList",
+        Object.assign(data, { pageNum: 1 })
+      );
+
+      let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;
+
+      // 在筛选组件回显 负责人 参与人的 值
+      this.ownerUserGids = data.ownerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+      this.followerUserGids = data.followerUserGids.map(r => {
+        return { id: r.id, refRlNm: r.refRlNm };
+      });
+
+      if (data.ownerUserGids.length != 0 && data.followerUserGids.length != 0) {
+        this.$store.state.moreTask.dropDownValue = 0;
+      }
+      if (this.$store.state.moreTask.dropDownValue == 1) {
+        if (
+          !(
+            data.ownerUserGids.length == 1 && data.ownerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.moreTask.dropDownValue = 0;
+        }
+      }
+      if (this.$store.state.moreTask.dropDownValue == 2) {
+        if (
+          !(
+            data.followerUserGids.length == 1 &&
+            data.followerUserGids[0].id == userId
+          )
+        ) {
+          this.$store.state.moreTask.dropDownValue = 0;
+        }
+      }
     }
   }
 };

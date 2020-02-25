@@ -140,6 +140,7 @@ export default {
     UserList,
     UserDeptList
   },
+  props: ["competorTypeValue", "followerUserGidsValue", "ownerUserGidsValue"],
   data() {
     return {
       showUserDeptA: false,
@@ -158,13 +159,14 @@ export default {
   watch: {
     screeningShow(val) {
       this.params.competorType = this.competorTypeValue;
+      this.params.followerUserGids = this.followerUserGidsValue;
+      this.params.ownerUserGids = this.ownerUserGidsValue;
       if (val) {
         this.showUserDeptA = false;
         this.showUserDeptB = false;
       }
     }
   },
-  props: ["competorTypeValue"],
   methods: {
     setParams(val) {
       this.params.ownerUserGids = val;
@@ -227,9 +229,9 @@ export default {
 }
 
 .cardStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .cardStatus::after {
   position: absolute;
@@ -241,9 +243,9 @@ export default {
 }
 
 .businessCardStatus {
-  background-color: #fff2e6;
+  background-color: #fff2e6 !important;
   position: relative;
-  color: #ff9b02;
+  color: #ff9b02 !important;
 }
 .businessCardStatus::after {
   position: absolute;
