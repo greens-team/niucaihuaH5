@@ -27,7 +27,7 @@
               />
             </div>
 
-            <div class="text-gray-700 font-bold mt-5">拜访时间</div>
+            <div class="text-gray-700 font-bold mt-5">拜访/截止时间</div>
             <div class="flex justify-between items-center text-gray-600 mt-2">
               <div
                 @click="showTime = !showTime; timeType=0;isShowBtnGroup=false;"
