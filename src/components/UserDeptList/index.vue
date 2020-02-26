@@ -6,7 +6,7 @@
           <div
             slot="left"
             class="text-center"
-            style="font-size:1.143rem;color:#1989fa;"
+            style="font-size:1.143rem;color:#252525;"
             @click="onClickLeft"
           >取消</div>
         </div>
@@ -18,7 +18,7 @@
           v-if="tabs.length === 3"
           slot="right"
           class="text-center"
-          style="font-size:1.143rem;color:#1989fa;"
+          style="font-size:1.143rem;color:#ff9b02;"
           @click="onClickRight"
         >重置</div>
       </div>
@@ -104,10 +104,11 @@
       </div>
     </div>
 
-    <div class="bg-gray-100 p-1 pl-5 flex items-center">
+    <div class="bg-gray-100 p-1 pl-5 flex items-center" style="height:4rem;line-height:4rem;">
       <div>已选择：</div>
       <div
         class="ellipsis flex-1 pr-2"
+        @click="showResults=true"
         v-if="[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).length"
       >{{[].concat.apply([],tabs.filter((r,i)=>i && r).map(r=>r.values)).map(r=>r.split('_')[0]).toString()}}</div>
       <div class="flex-1 text-gray-500" v-else>无</div>
@@ -118,7 +119,11 @@
         class="text-orange-400 pr-2"
         style="font-weight: 600;"
       />
-      <div class="sendBtn ml-2" @click="getResults" style="width: 60px; padding: 12px;">确定</div>
+      <div
+        class="sendBtn ml-2"
+        @click="getResults"
+        style="width: 60px; height:38px;padding: 12px;"
+      >确定</div>
     </div>
 
     <van-popup v-model="showResults" position="bottom" :style="{ height: '50%' }">
@@ -480,5 +485,8 @@ export default {
 .userDeptList /deep/ .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after {
   border-width: 1px 0;
+}
+.bar_title {
+  font-size: 1.286rem;
 }
 </style>

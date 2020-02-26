@@ -25,13 +25,13 @@
               v-model="$store.state.competitor.dropDownValue"
               :options="$store.state.competitor.dropDownType"
             />
+            <img
+              class="dropdown_icon icon_toggle"
+              :class="{ active: dropDown}"
+              src="../../assets/dealer/dropdownMenu.png"
+              alt
+            />
           </van-dropdown-menu>
-          <img
-            class="dropdown_icon icon_toggle"
-            :class="{ active: dropDown}"
-            src="../../assets/dealer/dropdownMenu.png"
-            alt
-          />
         </div>
 
         <div class="flex-1 items-center flex text-xl">
@@ -385,6 +385,9 @@ export default {
   top: 16px;
   right: 0;
 }
+.CompetitorList /deep/ .titleDropdown .van-dropdown-menu__item {
+  z-index: 1;
+}
 .CompetitorList /deep/ .titleDropdown .van-dropdown-menu__title {
   padding: 0 25px 0 0;
   color: #252525;
@@ -395,12 +398,13 @@ export default {
   font-weight: bold;
 }
 .icon_toggle {
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg); /*顺时针旋转90°*/
 }
+
 .CompetitorList
   /deep/
   .titleDropdown

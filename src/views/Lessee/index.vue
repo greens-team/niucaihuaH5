@@ -416,6 +416,9 @@ export default {
   top: 16px;
   right: 0;
 }
+.LesseeList /deep/ .titleDropdown .van-dropdown-menu__item {
+  z-index: 1;
+}
 .LesseeList /deep/ .titleDropdown .van-dropdown-menu__title {
   padding: 0 25px 0 0;
   color: #252525;
@@ -426,7 +429,7 @@ export default {
   font-weight: bold;
 }
 .icon_toggle {
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .icon_toggle.active {
   -webkit-transform: rotate(180deg);
