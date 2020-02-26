@@ -56,7 +56,7 @@
         >
           <van-popup v-model="birthdayTimeShow" position="bottom" :overlay="true" class="dateBox">
             <van-datetime-picker
-            title="请选择时间"
+              title="请选择时间"
               v-model="currentDate"
               type="date"
               :min-date="minDate"
@@ -598,6 +598,9 @@ export default {
         : (ownerUserData = []);
       this.$store.state.lessee.editParams.ownerUserGids = ownerUserData;
 
+      if (!this.followerUserGids.length) {
+        this.$store.state.lessee.editParams.followerUserGids = "";
+      }
       let followerUserData = this.$store.state.lessee.editParams
         .followerUserGids;
 

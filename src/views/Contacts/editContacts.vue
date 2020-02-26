@@ -55,17 +55,20 @@
             @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>-->
 
-          <div class="flex-1 flex p5"  @click="showUserDeptA = true">
-            <div class="flex-1" style="color:#252525;" v-if="ownerUserGids.length">{{mainUserGidsFun(ownerUserGids)}}</div>
+          <div class="flex-1 flex p5" @click="showUserDeptA = true">
+            <div
+              class="flex-1"
+              style="color:#252525;"
+              v-if="ownerUserGids.length"
+            >{{mainUserGidsFun(ownerUserGids)}}</div>
             <div class="flex-1" v-else style="color:#80848d;">请选择负责人</div>
           </div>
-
         </div>
 
-        <UserDeptList 
-          v-if="showUserDeptA" 
+        <UserDeptList
+          v-if="showUserDeptA"
           :deptTree="false"
           @cancel="showUserDeptA=false"
           @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
@@ -86,17 +89,20 @@
             @setParams="val=>followerUserGids = val"
             :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
             soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>-->
 
-          <div class="flex-1 flex p5"  @click="showUserDeptB = true">
-            <div class="flex-1" style="color:#252525" v-if="followerUserGids.length">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
+          <div class="flex-1 flex p5" @click="showUserDeptB = true">
+            <div
+              class="flex-1"
+              style="color:#252525"
+              v-if="followerUserGids.length"
+            >{{mainFollowerUserGidsFun(followerUserGids)}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择参与人</div>
           </div>
-
         </div>
 
-        <UserDeptList 
-          v-if="showUserDeptB" 
+        <UserDeptList
+          v-if="showUserDeptB"
           :deptTree="false"
           @cancel="showUserDeptB=false"
           @confirm="(data)=>{showUserDeptB = false; followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
@@ -128,7 +134,7 @@
 </template>
 <script>
 import UserList from "@/components/UserList/index.vue";
-import UserDeptList from '@/components/UserDeptList'
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "editContacts",
   components: {
@@ -160,14 +166,12 @@ export default {
           id: r.ownerUserGid
         });
       });
-      console.log(this.followerUserGids, 1111);
       this.$store.state.contacts.contactsInfo.ownerUserList.map(r => {
         this.ownerUserGids.push({
           refRlNm: r.ownerUserName,
           id: r.ownerUserGid
         });
       });
-      console.log(this.ownerUserGids, 22222);
     },
     getOwnerUserList(val) {
       this.ownerUserGids = val;
@@ -207,6 +211,7 @@ export default {
         : "请选择参与人";
     },
     editContacts() {
+
       let ownerUserData = this.$store.state.contacts.editContactsParams
         .ownerUserGids;
       ownerUserData.length
@@ -214,12 +219,17 @@ export default {
         : (ownerUserData = []);
       this.$store.state.contacts.editContactsParams.ownerUserGids = ownerUserData;
 
+
+      if (!this.followerUserGids.length) {
+        this.$store.state.contacts.editContactsParams.followerUserGids = ''
+      }
       let followerUserData = this.$store.state.contacts.editContactsParams
         .followerUserGids;
       followerUserData.length
         ? (followerUserData = followerUserData.split(","))
         : (followerUserData = []);
       this.$store.state.contacts.editContactsParams.followerUserGids = followerUserData;
+      
 
       this.checkErrorMsg();
       if (
@@ -229,14 +239,6 @@ export default {
         !this.isShowErrorOwnerMsg
       ) {
         this.$store.dispatch("editContacts").then(res => {
-          // this.$dialog
-          //   .alert({
-          //     message: "操作成功"
-          //   })
-          //   .then(() => {
-          //     this.$router.go(-1);
-          //   });
-
           this.$toast("编辑成功");
           this.$router.go(-1);
         });

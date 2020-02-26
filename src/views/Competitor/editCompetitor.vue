@@ -45,14 +45,17 @@
             @setParams="getOwnerUserList"
             soltCon="true"
             :style="{color:ownerUserGids.length?'#252525':'rgba(69, 90, 100, 0.6)'}"
-          >{{mainUserGidsFun(ownerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptA = true">
-            <div class="flex-1 text-gray-800" v-if="ownerUserGids.length">{{mainUserGidsFun(ownerUserGids)}}</div>
+          >{{mainUserGidsFun(ownerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptA = true">
+            <div
+              class="flex-1 text-gray-800"
+              v-if="ownerUserGids.length"
+            >{{mainUserGidsFun(ownerUserGids)}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择负责人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptA" 
+        <UserDeptList
+          v-if="showUserDeptA"
           :deptTree="false"
           @cancel="showUserDeptA=false"
           @confirm="(data)=>{data.length ? (showUserDeptA = false, ownerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]}})) : $toast('负责人不能为空')}"
@@ -71,14 +74,17 @@
             @setParams="val=>followerUserGids = val"
             :style="{color:mainFollowerUserGidsFun(followerUserGids) != '请选择参与人' ?'#252525':'rgba(69, 90, 100, 0.6)'}"
             soltCon="true"
-          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList> -->
-          <div class="flex-1 flex p5"  @click="showUserDeptB = true">
-            <div class="flex-1 text-gray-800" v-if="followerUserGids.length">{{mainFollowerUserGidsFun(followerUserGids)}}</div>
+          >{{mainFollowerUserGidsFun(followerUserGids)}}</UserList>-->
+          <div class="flex-1 flex p5" @click="showUserDeptB = true">
+            <div
+              class="flex-1 text-gray-800"
+              v-if="followerUserGids.length"
+            >{{mainFollowerUserGidsFun(followerUserGids)}}</div>
             <div class="flex-1" v-else style="color:rgba(69, 90, 100, 0.6);">请选择参与人</div>
           </div>
         </div>
-        <UserDeptList 
-          v-if="showUserDeptB" 
+        <UserDeptList
+          v-if="showUserDeptB"
           :deptTree="false"
           @cancel="showUserDeptB=false"
           @confirm="(data)=>{showUserDeptB = false; followerUserGids = data.map(r=>{return {refRlNm:r.split('_')[0],id:r.split('_')[1]};})}"
@@ -93,7 +99,12 @@
             :style="{color:selectCompetorType?'#252525':'rgba(69, 90, 100, 0.6)'}"
           >{{selectCompetorType ? selectCompetorType : '请选择类型'}}</div>
         </div>
-        <van-popup v-model="competorTypeShow" position="bottom" :style="{ height: '40%'}" class="radioGroup">
+        <van-popup
+          v-model="competorTypeShow"
+          position="bottom"
+          :style="{ height: '40%'}"
+          class="radioGroup"
+        >
           <van-nav-bar
             title="竞对类型"
             left-text="取消"
@@ -113,7 +124,7 @@
                 v-for="(r,i) in $store.state.competitor.competorStatus"
                 :key="i"
                 :name="r.value"
-              >{{r.text}}</van-radio> -->
+              >{{r.text}}</van-radio>-->
 
               <van-cell-group>
                 <van-cell
@@ -147,7 +158,7 @@
 </template>
 <script>
 import UserList from "@/components/UserList/index.vue";
-import UserDeptList from '@/components/UserDeptList';
+import UserDeptList from "@/components/UserDeptList";
 export default {
   name: "editCompetitor",
   components: {
@@ -250,6 +261,9 @@ export default {
         : (ownerUserData = []);
       this.$store.state.competitor.editParams.ownerUserGids = ownerUserData;
 
+      if (!this.followerUserGids.length) {
+        this.$store.state.competitor.editParams.followerUserGids = "";
+      }
       let followerUserData = this.$store.state.competitor.editParams
         .followerUserGids;
       followerUserData.length
@@ -273,7 +287,7 @@ export default {
             //     this.$router.go(-1);
             //   });
 
-            this.$toast('编辑成功');
+            this.$toast("编辑成功");
             this.$router.go(-1);
           });
       }
