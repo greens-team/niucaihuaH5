@@ -269,11 +269,11 @@ export default {
 };
 </script>
 <style scoped>
-.CreateContacts /deep/ .van-cell:not(:last-child)::after {
-  /* border-bottom: 1px solid #ededee;
+/* .CreateContacts /deep/ .van-cell:not(:last-child)::after {
+  border-bottom: 1px solid #ededee;
   -webkit-transform: scaleY(1);
-  transform: scaleY(1); */
-}
+  transform: scaleY(1);
+} */
 .border_line {
   border-bottom: 1px solid #ededee;
 }
