@@ -266,14 +266,14 @@
                 :key="index"
               >
                 <div
-                  class="flex flex-col p-2 relative rowBox"
+                  class="flex flex-col p-1 relative rowBox"
                   v-for="(row, i) in $store.state.workbench.myTaskList"
                   :key="'t'+i"
                   @click="TaskDetail(row.gid)"
                 >
-                  <div class="flex">
+                  <div class="flex items-center">
                     <span class="text-base font-bold text_ellipsis">{{row.taskName}}</span>
-                    <van-tag round medium type="primary" class="text-sm mx-2">
+                    <van-tag round medium type="primary" class="text-sm mx-3" style="">
                       {{
                       $store.state.task.taskTypeArr[row.taskType-1] ? $store.state.task.taskTypeArr[row.taskType-1].text : ''
                       }}
@@ -408,14 +408,14 @@
                 :key="index"
               >
                 <div
-                  class="flex flex-col p-2 relative rowBox"
+                  class="flex flex-col p-1 relative rowBox"
                   v-for="(row, i) in $store.state.workbench.colleaguesTaskList"
                   :key="'c'+i"
                   @click="TaskDetail(row.gid)"
                 >
-                  <div class="flex">
+                  <div class="flex items-center	">
                     <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
-                    <van-tag round medium type="primary" class="text-sm mx-2">
+                    <van-tag round medium type="primary" class="text-sm mx-3">
                       {{
                       $store.state.task.taskTypeArr[row.taskType-1] ? $store.state.task.taskTypeArr[row.taskType-1].text : ''
                       }}
@@ -958,7 +958,7 @@ export default {
 .Workbench /deep/ .van-tag {
   color: #0885ff;
   justify-content: center;
-  width: 2.8rem;
-  height: 1.5rem;
+  width: 2.7rem;
+  height: 1.3rem;
 }
 </style>

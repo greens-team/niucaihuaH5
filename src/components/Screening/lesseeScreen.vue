@@ -256,6 +256,7 @@
                 type="number"
                 pattern="[0-9]*"
                 placeholder="请输入"
+                οnpaste="return false;"
                 @input="params.workingYears=params.workingYears.replace(/\D/g,'')"
               />
             </div>

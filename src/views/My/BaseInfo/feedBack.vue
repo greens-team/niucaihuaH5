@@ -68,6 +68,7 @@
           label-width="130"
           type="number"
           pattern="[0-9]*"
+          οnpaste="return false;"
           clearable
           @blur="checkErrorMsg"
         />

@@ -177,6 +177,7 @@
             v-model="$store.state.newDealer.params.contactsPhone"
             label="法人电话"
             pattern="[0-9]*"
+            οnpaste="return false;"
             :disabled="recordStatus"
             placeholder="请输入法人电话"
             label-width="130"

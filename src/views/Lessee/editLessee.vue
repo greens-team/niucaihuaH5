@@ -283,6 +283,7 @@
           label-width="130"
           type="number"
           pattern="[0-9]*"
+          οnpaste="return false;"
           @blur="checkErrorMsg"
         />
         <div class="checkContent" v-show="isShowErrorPhoneMsg">请输入正确的11位数字手机号码</div>
@@ -306,6 +307,7 @@
           type="number"
           pattern="[0-9]*"
           placeholder="请填写信息"
+          οnpaste="return false;"
           @input="$store.state.lessee.editParams.workingYears=$store.state.lessee.editParams.workingYears.replace(/\D/g,'')"
         />
 

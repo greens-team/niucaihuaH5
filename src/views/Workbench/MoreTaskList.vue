@@ -137,9 +137,9 @@
               :key="i"
               @click="TaskDetail(r.gid)"
             >
-              <div class="flex">
+              <div class="flex items-center">
                 <span class="text-lg font-bold text_ellipsis" style="color:#252525;">{{r.taskName}}</span>
-                <van-tag round medium type="primary" class="text-sm mx-2">
+                <van-tag round medium type="primary" class="text-sm mx-3">
                   {{
                   $store.state.moreTask.taskTypeArr[r.taskType-1] ? $store.state.moreTask.taskTypeArr[r.taskType-1].text : ''
                   }}
@@ -450,8 +450,8 @@ export default {
 .MoreTaskList /deep/ .van-tag {
   color: #0885ff;
   justify-content: center;
-  width: 2.8rem;
-  height: 1.5rem;
+  width: 2.7rem;
+  height: 1.3rem;
 }
 .text_ellipsis {
   max-width: 55%;

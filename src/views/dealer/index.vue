@@ -48,7 +48,7 @@
           />
         </div>
 
-        <span class="text-center font-bold bar_title" v-else>经销商</span>
+        <span class="text-center font-bold bar_title" v-else>新增经销商</span>
 
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>

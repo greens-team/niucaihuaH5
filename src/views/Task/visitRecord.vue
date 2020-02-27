@@ -46,6 +46,7 @@
               type="number"
               pattern="[0-9]*"
               placeholder="请输入单量"
+              οnpaste="return false;"
               @input="$store.state.task.addEditVisitlogParams.lbPreOrderCount=$store.state.task.addEditVisitlogParams.lbPreOrderCount.replace(/\D/g,'')"
             />
           </template>
@@ -94,6 +95,7 @@
               type="number"
               pattern="[0-9]*"
               placeholder="请输入竞对单量"
+              οnpaste="return false;"
               @input="$store.state.task.addEditVisitlogParams.competitorOrderCount=$store.state.task.addEditVisitlogParams.competitorOrderCount.replace(/\D/g,'')"
             />
           </template>

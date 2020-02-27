@@ -34,7 +34,7 @@
             alt
           />
         </div>
-        <div class="flex-1 text-center font-bold bar_title" v-else>联系人</div>
+        <div class="flex-1 text-center font-bold bar_title" v-else>新增联系人</div>
 
         <div class="flex-1 items-center flex text-xl" v-if="!flag">
           <div class="flex-1"></div>

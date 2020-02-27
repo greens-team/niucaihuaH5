@@ -13,10 +13,7 @@
       ></i>
       <i class="iconfont icongengduo ml-2" slot="right" style="font-size: 1.2rem;"></i> 
     </van-nav-bar>-->
-    <div
-      class="items-center pl-4 pr-4 flex bg-white fixed top-0 left-0 right-0 z-10 border_line" 
-      
-    >
+    <div class="items-center pl-4 pr-4 flex bg-white fixed top-0 left-0 right-0 z-10 border_line">
       <div class="flex-1 flex">
         <div
           @click="$router.go(-1);$store.state.dealer.dropDownValue = 0;"
@@ -296,12 +293,12 @@
                     <p class="text-xs text-gray-500" style="color:#80848D">负责人</p>
                     <p>{{info.ownerUserList.map(r=>r.ownerUserName).toString()}}</p>
                   </div>
-                  <div
-                    v-if="info.followerUserList && info.followerUserList.length"
-                    class="border-t border-gray-100 p-2 mt-2"
-                  >
+                  <!-- v-if="info.followerUserList && info.followerUserList.length" -->
+                  <div class="border-t border-gray-100 p-2 mt-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">参与人</p>
-                    <p>{{info.followerUserList.map(r=>r.ownerUserName).toString()}}</p>
+                    <p
+                      :style="{color:info.followerUserList && info.followerUserList.length ?'#252525':'rgba(69, 90, 100, 0.6)'}"
+                    >{{info.followerUserList && info.followerUserList.length ? info.followerUserList.map(r=>r.ownerUserName).toString():'-'}}</p>
                   </div>
                   <div class="border-t border-gray-100 p-2">
                     <p class="text-xs text-gray-500" style="color:#80848D">创建日期</p>
@@ -1270,6 +1267,6 @@ export default {
   margin-right: 0rem;
 }
 .border_line {
-  border-bottom:1px solid #f8f8f8;
+  border-bottom: 1px solid #f8f8f8;
 }
 </style>
