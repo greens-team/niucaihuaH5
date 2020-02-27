@@ -167,13 +167,13 @@
                   @click-left="dealerListShow = false;isShowBtnGroup = true;"
                   @click-right="confirm"
                 />
-                <van-search
+                <!-- <van-search
                   shape="round"
                   placeholder="请输入经销商名称"
                   clearable
                   v-model="$store.state.dealer.listParams.queryString"
                   class="m-2"
-                />
+                /> -->
                 <div class="flex-1 relative h-full">
                   <div class="absolute inset-0 overflow-y-auto" ref="dealerListsBox">
                     <van-checkbox-group v-model="dealerRow">
@@ -278,10 +278,10 @@ export default {
           });
       }, 0);
     },
-    "$store.state.dealer.listParams.queryString"(keyword) {
-      this.dealerRow = [];
-      this.$store.dispatch("getListData", { pageNum: 1 });
-    }
+    // "$store.state.dealer.listParams.queryString"(keyword) {
+    //   this.dealerRow = [];
+    //   this.$store.dispatch("getListData", { pageNum: 1 });
+    // }
   },
   methods: {
     setParams(val) {

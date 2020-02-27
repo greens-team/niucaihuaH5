@@ -17,7 +17,7 @@ export default {
       "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
       "ownerUserGids": [],        // 负责人gid 集合
       "pageNum": 1,               // 当前页数 1开始
-      "pageSize": 10,             // 每页数量
+      "pageSize": 15,             // 每页数量
       "province": "",             // 省
       "queryString": "",          // 查询输入值
       "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
@@ -124,7 +124,7 @@ export default {
         "orderType": 0,             // 排序规则：1 按拜访时间 2 按创建时间 3 按名称
         "ownerUserGids": [],        // 负责人gid 集合
         "pageNum": 1,               // 当前页数 1开始
-        "pageSize": 10,             // 每页数量
+        "pageSize": 15,             // 每页数量
         "province": "",             // 省
         "queryString": "",          // 查询输入值
         "relationHealth": 0,        // 关系健康度（1极差 2 差 3 一般 4 好 5 很好）
