@@ -148,8 +148,9 @@
             <div class="text-gray-700 font-bold mt-5">相关经销商</div>
             <div class="flex items-center mt-2">
               <div
-                @click="dealerListShow = !dealerListShow; isShowBtnGroup=false; dealerRow=dealerRowArr.map(item => item);$store.state.dealer.listParams.queryString=''"
+                @click="dealerListShow = !dealerListShow; isShowBtnGroup=false; dealerRow=dealerRowArr.map(item => item);"
                 class="bg-gray-200 flex-1 items-center flex px-3"
+                style="min-height:2.5rem;height:auto;"
                 :style="{color: params.dealerGids.length ? '#252525' : '#80848d'}"
               >{{params.dealerGids.length ? dealerNames.toString() : '请选择'}}</div>
               <van-popup
