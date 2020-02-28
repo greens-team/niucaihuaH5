@@ -166,7 +166,7 @@
     <!-- 我的任务 同事任务 -->
     <div class="flex flex-col bg-white mb-3 ml-4 mr-4 p-2 rounded-lg shadowaa">
       <div style="height:44px;" v-show="positioning"></div>
-      <div :class="['flex p-1 border-gray-200 items-center', {positioning:positioning}]" swipeable>
+      <div :class="['flex p-1 border-gray-200', {positioning:positioning}]" swipeable>
         <div
           :class="['font-bold gray tabCustomize flex flex-col justify-center items-center cursor-pointer', {tabActive: !$store.state.workbench.workbenchTaskStatus}]"
           @click="$refs.swipe.swipeTo(0);$store.commit('setWorkbenchTaskStatus', 0);"
@@ -214,7 +214,7 @@
           <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
             <!-- <CalendarControl /> -->
             <div
-              class="flex mt-2 justify-center items-center pl-2 pr-2 pb-5"
+              class="flex mt-2 justify-center items-center pl-2 pr-2 pb-3"
               style="color:#80848d;"
             >
               <div
@@ -273,7 +273,7 @@
                 >
                   <div class="flex items-center">
                     <span class="text-base font-bold text_ellipsis">{{row.taskName}}</span>
-                    <van-tag round medium type="primary" class="text-sm mx-3" style="">
+                    <van-tag round medium type="primary" class="text-sm mx-3" style>
                       {{
                       $store.state.task.taskTypeArr[row.taskType-1] ? $store.state.task.taskTypeArr[row.taskType-1].text : ''
                       }}
@@ -318,7 +318,7 @@
         <van-swipe-item>
           <!-- 同事任务列表 -->
           <div class="bg-white" :style="{minHeight:positioning ? H : 'auto'}">
-            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-5">
+            <div class="flex mt-2 justify-center items-center pl-2 pr-2 pb-3">
               <div
                 class="text-sm text-gray-700 flex justify-center items-center"
                 style="color:#80848d;"
@@ -413,7 +413,7 @@
                   :key="'c'+i"
                   @click="TaskDetail(row.gid)"
                 >
-                  <div class="flex items-center	">
+                  <div class="flex items-center">
                     <span class="text-base font-bold text-gray-900 text_ellipsis">{{row.taskName}}</span>
                     <van-tag round medium type="primary" class="text-sm mx-3">
                       {{
@@ -934,7 +934,7 @@ export default {
 .Workbench /deep/ .van-tabs__nav--card {
   margin: 0;
   border: 0;
-  width: 90%;
+  width: 85%;
 }
 .Workbench /deep/ .van-tabs__nav--card .van-tab {
   color: #979797;
@@ -947,6 +947,11 @@ export default {
   background: rgba(255, 250, 242, 1);
   color: #ff9b02;
   border: 1px solid #ff9b02;
+  height: 28px;
+  line-height: 28px;
+}
+.Workbench /deep/ .van-tabs__nav {
+  align-items: center;
 }
 .Workbench .rowBox:first-child {
   padding-top: 1rem;
@@ -960,5 +965,8 @@ export default {
   justify-content: center;
   width: 2.7rem;
   height: 1.3rem;
+}
+.Workbench /deep/ .van-tab span {
+  font-size: 0.75rem;
 }
 </style>

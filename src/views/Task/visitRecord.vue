@@ -174,7 +174,7 @@
       @click="finishTask"
       style="color:#FF9B02"
       class="bg-white p-4 text-center text-xl font-bold border-t border-gray-200 bg-gray-100"
-    >完成任务</div>
+    >保存并完成任务</div>
   </div>
 </template>
 
