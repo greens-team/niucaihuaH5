@@ -40,6 +40,11 @@
           </div>
         </div>
       </div>
+      <p
+        v-show="!$store.state.workbench.changeDealerList.length"
+        class="text-center mt-10"
+        style="color:#80848d"
+      >没有筛选到相关的数据</p>
     </div>
   </div>
 </template>
@@ -133,9 +138,9 @@ export default {
         message: "加载中..."
       });
     },
-    goInfo(id){
+    goInfo(id) {
       this.$store.state.dealerInfo.currentTabsIndex = 0;
-      this.$router.push({name: 'DealerInfo', query: {id: id}})
+      this.$router.push({ name: "DealerInfo", query: { id: id } });
     }
   }
 };
