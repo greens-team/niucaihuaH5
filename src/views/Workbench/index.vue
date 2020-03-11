@@ -666,6 +666,13 @@ export default {
         })
         .then(res => {
           if (!res.code) {
+            // debugger
+            // res.data = {
+            //   addContactsCount: 0,
+            //   addDealerCount: 0,
+            //   addVisitCount:0,
+            //   dealerChangeStateCount: 0
+            // }
             this.briefing = res.data;
           }
         });

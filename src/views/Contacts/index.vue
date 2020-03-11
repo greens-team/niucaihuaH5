@@ -111,6 +111,7 @@
     <div class="flex-1 relative h-full">
       <div class="absolute inset-0 overflow-y-scroll" ref="contactsListBox">
         <div>
+          <!-- {{$store.state.contacts.listContacts.length}} -->
           <div
             v-for="(r,i) in $store.state.contacts.listContacts"
             :key="i"

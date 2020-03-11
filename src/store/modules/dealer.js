@@ -217,7 +217,7 @@ export default {
 
         window.$ajax.dealer.listData(Object.assign({}, params, timevals)).then(res => {
           if (!res.code) {
-            state.listData = params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
+            state.listData  =  params.pageNum == 1 ? (res.data.list || []) : state.listData.concat(res.data.list)
             if (res.data.list && res.data.list.length < params.pageSize) {
               state.isLastPage = true
             }

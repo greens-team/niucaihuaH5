@@ -149,7 +149,7 @@ export default {
         }
         window.$ajax.contacts.listContacts(params).then(res => {
           if (!res.code) {
-            state.listContacts = params.pageNum == 1 ? res.data.list : state.listContacts.concat(res.data.list);
+            state.listContacts =  params.pageNum == 1 ? res.data.list : state.listContacts.concat(res.data.list);
             if (res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }

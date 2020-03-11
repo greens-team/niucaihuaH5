@@ -210,7 +210,7 @@ export default {
         }
         window.$ajax.workbench.changeDealerList(params).then(res => {
           if (!res.code) {
-            state.changeDealerList = params.pageNum == 1 ? (res.data.list || []) : state.changeDealerList.concat(res.data.list);
+            state.changeDealerList  =  params.pageNum == 1 ? (res.data.list || []) : state.changeDealerList.concat(res.data.list);
             if (res.data.list && res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }
@@ -234,7 +234,7 @@ export default {
         }
         window.$ajax.workbench.tasklistpage(params).then(res => {
           if (!res.code) {
-            state.newMyTasklist = params.pageNum == 1 ? (res.data.list || []) : state.newMyTasklist.concat(res.data.list);
+            state.newMyTasklist  =  params.pageNum == 1 ? (res.data.list || []) : state.newMyTasklist.concat(res.data.list);
             if (res.data.list && res.data.list.length < params.pageSize) {
               state.isLastPage = true;
             }

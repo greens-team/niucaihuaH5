@@ -5,7 +5,7 @@
     <van-nav-bar
       title="签到打卡"
       left-text="返回"
-      :right-text="$route.query.lng ? '' : '确定'"
+      :right-text="($route.query.lng || $route.query.dealerInfo) ? '' : '确定'"
       @click-left="$router.go(-1)"
       @click-right="setLocation"
     />

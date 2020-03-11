@@ -19,6 +19,7 @@
 
     <div class="border-b border-gray-200 flex items-center justify-around"></div>
 
+<!-- {{$store.state.workbench.changeDealerList.length}} -->
     <div class="flex-1 relative">
       <div class="absolute inset-0 overflow-y-scroll" ref="dealerListBox">
         <div
