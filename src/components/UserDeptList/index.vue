@@ -340,12 +340,9 @@ export default {
   },
   mounted () {
 
-    console.log(this.memberList, 88996)
-
     // 是否对部门进行处理
     !this.deptTree && this.tabs.splice(2,1)
-
-    this.getTabsData(2)
+    this.deptTree && this.getTabsData(2)
     this.active = 0
 
     this.tabs[1].values = Object.assign([],this.memberList)
@@ -420,7 +417,6 @@ export default {
     },
     
     getTabsData(index){
-      console.log(index)
       let params = this.tabs[index].getParams(this.searchKeyword)
       params.pageNum && (params.pageNum = 1)
       this.$store

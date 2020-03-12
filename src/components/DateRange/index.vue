@@ -221,7 +221,8 @@ export default {
         endTime: this.$root
           .moment()
           .endOf("day")
-          .format("YYYY-MM-DD HH:mm:ss")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        userType: 0
       });
       this.$router.go(-1);
     },

@@ -729,7 +729,7 @@ export default {
       this.$store.commit("setBriefingColleagues", {
         userGids: [],
         deptGids: [],
-        userType: 1
+        userType: 0
       });
       this.getBriefing();
     },
@@ -975,5 +975,14 @@ export default {
 }
 .Workbench /deep/ .van-tab span {
   font-size: 0.75rem;
+}
+.Workbench /deep/ .van-tabs--card{
+  padding-top:0;
+}
+.Workbench /deep/ .van-tabs__wrap{
+  padding: 3px;
+}
+.Workbench /deep/ .van-tabs--card>.van-tabs__wrap{
+  height: 35px;
 }
 </style>

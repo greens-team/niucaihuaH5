@@ -104,6 +104,7 @@ export default {
       state.briefingColleagues = data
     },
     setBriefingDate(state, data) {
+      // console.log(data, 23)
       state.briefingDate = data
     }
   },
