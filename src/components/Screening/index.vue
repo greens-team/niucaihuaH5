@@ -250,8 +250,10 @@
                       :key="i"
                       :title="r.text"
                       clickable
+                      :data-index="i"
+                      @click="(e)=>toggle(e, 'checkboxes')"
                     >
-                      <van-checkbox :name="r" slot="right-icon" />
+                      <van-checkbox :name="r" :class="'checkboxes'+i" slot="right-icon" />
                     </van-cell>
                   </van-cell-group>
                 </van-checkbox-group>
@@ -406,8 +408,10 @@
                         :key="i"
                         :title="r"
                         clickable
+                        :data-index="i"
+                        @click="(e)=>toggle(e, 'certTypCdBox')"
                       >
-                        <van-checkbox :name="i" slot="right-icon" />
+                        <van-checkbox :name="i" :class="'certTypCdBox'+i" slot="right-icon" />
                       </van-cell>
                     </van-cell-group>
                   </van-checkbox-group>
@@ -560,7 +564,10 @@ export default {
       return arr.toString();
     }
   },
-  mounted() {},
+  mounted() {
+    Object.assign(this.params, this.$store.state.dealer.listParams)
+    console.log(this.$store.state.dealer.listParams, this.params, 12345)
+  },
   watch: {
     screeningShow(val) {
       this.params.followStatus = this.followStatusValue;
@@ -824,6 +831,11 @@ export default {
 
       this.params.certTypCd = this.certTypCdRow.map(r => r);
       this.certTypCdRowArr = this.certTypCdRow.map(item => item);
+    },
+    toggle(event,domName){
+      const { index } = event.currentTarget.dataset;
+      const checkbox = document.getElementsByClassName(`${domName}${index}`);
+      checkbox[0].click()
     }
   }
 };

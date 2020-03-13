@@ -54,7 +54,7 @@
 export default {
   name: "changeDealer",
   created() {
-    this.$store.commit("setInitParams");
+    this.$store.commit("setInitDealerParams");
   },
   data() {
     return {};

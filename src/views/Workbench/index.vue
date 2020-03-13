@@ -137,7 +137,7 @@
       <div class="flex p-1 pt-2 justify-between">
         <div
           class="text-center text-gray-800"
-          @click="$root.checkRole('DEALER_SELECT','tipText') && $router.push('/DealerManage');$store.state.dealer.dropDownValue = 0;"
+          @click="goDealer"
         >
           <img src="../../assets/workbench/icon1.png" alt class="w-10 m-auto mb-1" />
           <div class="text-sm">经销商管理</div>
@@ -866,6 +866,12 @@ export default {
           userType: this.$store.state.workbench.briefingColleagues.userType
         }
       });
+    },
+    goDealer(){
+      this.$store.commit('setInitDealerParams');
+      this.$root.checkRole('DEALER_SELECT','tipText');
+      this.$router.push('/DealerManage');
+      this.$store.state.dealer.dropDownValue = 0;
     }
   }
 };

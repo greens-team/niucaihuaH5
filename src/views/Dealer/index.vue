@@ -182,7 +182,7 @@ export default {
 
     // 如果是全部经销商 清空参数值
     if (this.$store.state.dealer.dropDownValue == 0) {
-      this.$store.commit("setInitParams");
+      // this.$store.commit("setInitDealerParams");
     }
     // this.$store.commit("setInitParams");
   },
@@ -205,7 +205,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit("setInitParams");
+    // this.$store.commit("setInitDealerParams");
     this.$store.state.dealer.dropDownValue = 0;
 
     // this.scrollLoad(this.$refs.dealerListBox, resolve => {
@@ -272,7 +272,12 @@ export default {
         });
     });
 
-    this.$store.dispatch("getListData", {
+    // this.$store.commit("setInitDealerParams", {
+    //     ownerUserGids: this.ownerUserGids,
+    //     followerUserGids: this.followerUserGids
+    //   });
+
+    this.searchAll(Object.assign(this.$store.state.dealer.listParams,{
       pageNum: 1,
       startTime: startTime,
       endTime: endTime,
@@ -280,7 +285,16 @@ export default {
       deptGids: deptGids,
       userType: userType,
       onlyWrite: false
-    });
+    }))
+    // this.$store.dispatch("getListData", {
+    //   pageNum: 1,
+    //   startTime: startTime,
+    //   endTime: endTime,
+    //   userGids: userGids,
+    //   deptGids: deptGids,
+    //   userType: userType,
+    //   onlyWrite: false
+    // });
   },
   methods: {
     onClickRight() {
@@ -292,7 +306,7 @@ export default {
     searchAll(data) {
       this.$refs.dealerListBox.scrollTop = 0;
       this.$refs.swipe.swipeTo(data.followStatus);
-
+      
       this.$store.dispatch("getListData", Object.assign(data, { pageNum: 1 }));
 
       let userId = JSON.parse(sessionStorage.userInfo).EMPLOYEE_ID;

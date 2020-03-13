@@ -111,7 +111,12 @@ export default {
         value: ''
       }]
     },
-    setInitParams(state) {
+    setInitDealerParams(state, data = {}) {
+      if(Object.keys(data).length){
+        Object.assign(state.listParams, data)
+        return true
+      }
+      console.log(222)
       state.listParams = {
         "area": "",                 // 区域
         "city": "",                 // 城市
