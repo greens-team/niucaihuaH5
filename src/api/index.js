@@ -18,26 +18,10 @@
     })
  */
 
-import auth from './modules/auth'            // 登录、用户、部门
-import workbench from './modules/workbench'  // 工作台
-import dealer from './modules/dealer'        // 经销商
-import contacts from './modules/contacts'    // 联系人
-import competitor from './modules/competitor'  // 合作竞对
-import lessee from './modules/lessee'          // 承租人
-import record from './modules/record'          // 经销商备案
-import task from './modules/task'             // 任务
-import history from './modules/history'             // 动态记录、操作历史
-import my from './modules/my'
+import home from './modules/home'           
+import team from './modules/team'           
 
 export default {
-  auth,
-  workbench,
-  dealer,
-  contacts,
-  competitor,
-  lessee,
-  record,
-  task,
-  history,
-  my
+  home,
+  team
 }

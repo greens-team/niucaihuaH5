@@ -12,7 +12,7 @@ let mockApi = 'http://10.20.7.129:8090/app/mock/1/'
 //              /dp                                   /reviceLog
 //              http://10.112.180.13:8980             http://10.115.106.41:88 
 // let testApi = ['http://localhost:8980', 'http://localhost:88', 'http://user-behavior.gm.inc']
-let testApi = ['http://10.20.6.34:8000/lbccrm'] //['http://10.6.1.69:8000']   开发环境：http://10.20.7.129:8000    测试环境：http://10.20.6.34:8000
+let testApi = ['http://192.168.5.2:6655/'];//['https://api.server.nixin8.com/'] //['http://10.6.1.69:8000']   开发环境：http://10.20.7.129:8000    测试环境：http://10.20.6.34:8000
 
 let proxy = {}
 let methods = ['GET', 'POST', 'PUT', 'DELETE']
@@ -64,7 +64,7 @@ module.exports = {
   //   chunkFilename:'[name].js',// 设置按需加载后的chunk名字
   //   publicPath:'testdd/'
   // },
-  filenameHashing: false,
+  filenameHashing: true,
 
   // pages: {
   //   index: {

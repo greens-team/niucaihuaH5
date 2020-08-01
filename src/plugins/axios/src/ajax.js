@@ -6,20 +6,26 @@ import queryString from 'query-string';
 // import { Message } from 'element-ui';
 
 const ajax = (axios) => {
-
-  if (process.env.NODE_ENV === 'development') {
-    axios.defaults.baseURL = '/api';
-  } else {
-    axios.defaults.baseURL = window[window.ENV];
-  }
+  axios.defaults.baseURL = '/api';
+  // if (process.env.NODE_ENV === 'development') {
+  //   axios.defaults.baseURL = '/api';
+  // } else {
+  //   axios.defaults.baseURL = window[window.ENV];
+  // }
 
   let get = (url, params = {}) => {
     return new Promise((resolve) => {
-      axios.get(url,{
-        params: params
-      }).then((response) => {
-        resolve(response);
-      });
+      if(typeof params != 'object'){
+        axios.get(url+'/'+params).then((response) => {
+          resolve(response);
+        });
+      }else{
+        axios.get(url,{
+          params: params
+        }).then((response) => {
+          resolve(response);
+        });
+      }
     });
   };
 

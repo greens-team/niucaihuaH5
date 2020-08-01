@@ -6,22 +6,11 @@ import './plugins/vant.js'            // vant 按需加载
 import moment from './plugins/moment' // 时间统一处理
 import { Toast, Dialog } from 'vant'
 
+// import './assets/tailwind/tailwind.min.css'
+
 require('./plugins/serveConf')
 
-import VueAMap from 'vue-amap'
-Vue.use(VueAMap);
-// import BaiduMap from 'vue-baidu-map'
-// Vue.use(BaiduMap, {
-//   ak: 'VKoxtkFSuXPVRULh2ohYVQ9tubl99xss'
-// })
-VueAMap.initAMapApiLoader({
-  key: '276923c83894386e499c8b979ee7f446',
-  plugin: ['AMap.Geolocation','AMap.ToolBar'],
-  // 默认高德 sdk 版本为 1.4.4
-  v: '1.4.9',
-  uiVersion: "1.0.11"
-});
-
+Vue.prototype.serverUrl = window[window.ENV];
 
 Vue.config.productionTip = false
 
@@ -30,25 +19,20 @@ Vue.config.productionTip = false
 import ajax from '@/plugins/axios'
 import apiList from '@/api'
 
-ajax(apiList, error => {
+ajax (apiList, error => {
   document.getElementById('loadingBox').style.display = 'none'
   // 请求错误统一处理
   if (!error.response) {
     Dialog({ message: error.response.statusText || error.response.data.message });
-    // Notify({ type: 'warning', message: error.response.statusText })
     delete sessionStorage.Authorization
-    // store.commit('setLoginState', false)
     router.push('/')
   }
   if (error.response.status == 401) {
     Dialog({ message: error.response.statusText || error.response.data.message });
-    // Notify({ type: 'warning', message: error.response.statusText })
     delete sessionStorage.Authorization
-    // store.commit('setLoginState', false)
     router.push('/')
-  }else{
+  } else {
     Dialog({ message: error.response.data.msg || error.response.statusText || error.response.data.message });
-    // Notify({ type: 'warning', message: error.response.data.msg || error.response.statusText })
   }
 
 }, function (response) {
@@ -56,7 +40,6 @@ ajax(apiList, error => {
   // 请求成功统一处理
   if (Number(response.data.code)) {
     Dialog({ message: response.data.msg });
-    // Notify({ type: 'warning', message: response.data.msg })
     return
   }
 });
@@ -97,10 +80,27 @@ Vue.prototype.formatter = (type, value) => {
 
 //填加埋点
 Vue.prototype.addRecentvisit = (data) => {
+  //  this.addRecentvisit({ modelObjType: 4, modelId: this.id });
   store.dispatch('addRecentvisit', data).then(r => {
   })
 }
 
+
+// this.scrollLoad(this.$refs.contactsListBox, resolve => {
+//   this.$store
+//     .dispatch("listContacts", {
+//       pageNum: this.$store.state.contacts.listContactsParams.pageNum + 1,
+//       startTime: startTime,
+//       endTime: endTime,
+//       userGids: userGids,
+//       deptGids: deptGids,
+//       userType: userType,
+//       onlyWrite: false
+//     })
+//     .then(msg => {
+//       resolve(msg);
+//     });
+// });
 //滚动加载
 Vue.prototype.scrollLoad = (domBox, callback, positionCallback = false) => {
   let isSend = false
@@ -121,6 +121,13 @@ Vue.prototype.scrollLoad = (domBox, callback, positionCallback = false) => {
 
 
 //文件上传
+// this.uploadFile(
+//   file,
+//   fileUrl => {
+//     this.tapToSearch(fileUrl);
+//   },
+//   0
+// );
 Vue.prototype.uploadFile = (file, checkOrCallback, uploadType, objMap) => {
   if (typeof checkOrCallback == "boolean" && file.name) { // 上传文件前校验
     if (!file.type.includes('image/')) {
@@ -165,81 +172,21 @@ Vue.prototype.uploadFile = (file, checkOrCallback, uploadType, objMap) => {
   }
 }
 
-Vue.prototype.userAgent = (iosCallback, androidCallback) => {
-  var  u = navigator.userAgent;
-  if(u.indexOf('lbh_app_ios') > -1 ){ //  助手iOS
-    iosCallback()
-  }
-  if(u.indexOf('lbh_app_android') > -1){ // 助手Android
-    androidCallback()
-  }
-}
 
 
 new Vue({
   data() {
     return {
-      moment,
-      userInfo: {
-        roles: []
-      }
+      moment
     }
   },
   router,
   store,
   methods: {
-    checkRole(key, tip = false){
-      // console.log(this.userInfo.roles)
-      let res = this.userInfo.roles.includes(key)
-      !res && tip && Toast('没有权限');
-      return res
-    },
-    async dataCheck(data, callback){
-      let result = false
-      await this.$store.dispatch('dataprivilegecheck', data).then((res)=>{
-        !res.data && Toast('没有权限');
-        result = res.data
-      })
-      result && callback()
-    },
-    async selectdpcheck(data, callback){
-      let result = false
-      await this.$store.dispatch('selectdpcheck', data).then((res)=>{
-        !res.data && Toast('没有权限');
-        result = res.data
-      })
-      result && callback()
-    },
-    //百度坐标转高德（传入经度、纬度）
-    bgps_gps(bd_lng, bd_lat) {
-      var X_PI = Math.PI * 3000.0 / 180.0;
-      var x = bd_lng - 0.0065;
-      var y = bd_lat - 0.006;
-      var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
-      var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
-      var gg_lng = z * Math.cos(theta);
-      var gg_lat = z * Math.sin(theta);
-      return {lng: gg_lng, lat: gg_lat}
-    },
-    //高德坐标转百度（传入经度、纬度）
-    gps_bgps(gg_lng, gg_lat) {
-      var X_PI = Math.PI * 3000.0 / 180.0;
-      var x = gg_lng, y = gg_lat;
-      var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * X_PI);
-      var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * X_PI);
-      var bd_lng = z * Math.cos(theta) + 0.0065;
-      var bd_lat = z * Math.sin(theta) + 0.006;
-      return {
-          lat: bd_lat,
-          lng: bd_lng
-      };
-    }
   },
   created() {
   },
   mounted() {
-    
-    
   },
   render: h => h(App)
 }).$mount('#app')
